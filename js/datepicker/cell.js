@@ -1,0 +1,3 @@
+Datepicker.Cell = function () {
+
+};
