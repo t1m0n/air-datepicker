@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat');
 
 gulp.task('js', function () {
-    gulp.src(['js/datepicker/datepicker.js', 'js/datepicker/cell.js'])
+    gulp.src(['js/datepicker/datepicker.js', 'js/datepicker/cell.js', 'js/datepicker/body.js'])
         .pipe(concat('datepicker.js'))
         .pipe(gulp.dest('dist/js/'))
         .pipe(livereload())

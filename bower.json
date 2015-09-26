@@ -1,0 +1,6 @@
+{
+  "name": "datepicker",
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
