@@ -10,6 +10,8 @@ var Datepicker;
             '</div>',
         defaults = {
             inline: true,
+            region: 'ru',
+            firstDay: 1,
             start: '',
             format: 'dd.mm.yyyy'
         };
@@ -26,11 +28,25 @@ var Datepicker;
             this._buildDatepickersContainer();
         }
 
+        this.loc = Datepicker.region[this.opts.region];
+
         if ($body == undefined) {
             $body = $('body');
         }
 
         this.init()
+    };
+
+    Datepicker.getDaysCount = function (date) {
+       return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    };
+
+    Datepicker.getParsedDate = function (date) {
+        return {
+            year: date.getUTCFullYear(),
+            month: date.getUTCMonth(),
+            day: date.getUTCDay()
+        }
     };
 
     Datepicker.prototype = {
