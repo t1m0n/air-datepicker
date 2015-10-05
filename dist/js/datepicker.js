@@ -140,15 +140,17 @@ Datepicker.Cell = function () {
             this.$cells = $('.datepicker--days--cells', this.$el);
         },
 
-        _getDayNamesHtml: function (firstDay, curDay, html, circle) {
+        _getDayNamesHtml: function (firstDay, curDay, html, i) {
             curDay = curDay != undefined ? curDay : firstDay;
             html = html ? html : '';
-            if (curDay == firstDay && circle) return html;
-            if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, true);
+            i = i != undefined ? i : 0;
 
-            html += '<div class="datepicker--days--name">' + this.d.loc.days[curDay] + '</div>';
+            if (i > 7) return html;
+            if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, ++i);
 
-            return this._getDayNamesHtml(firstDay, ++curDay, html, circle);
+            html += '<div class="datepicker--days--name' + (i >= 5 ? " -weekend-" : "") + '">' + this.d.loc.days[curDay] + '</div>';
+
+            return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
 
         _renderDays: function () {

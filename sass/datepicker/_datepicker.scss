@@ -1,0 +1,31 @@
+@import "datepicker-config";
+
+/* -------------------------------------------------
+    Datepicker
+   ------------------------------------------------- */
+
+.datepicker {
+  border: 1px solid #dddddd;
+  width: $width;
+}
+
+//  Days
+// -------------------------------------------------
+
+.datepicker--days {}
+
+
+//  Day names
+// -------------------------
+
+.datepicker--days--names {
+  display: flex;
+}
+.datepicker--days--name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $cellSize;
+  height: $cellSize;
+  text-align: center;
+}

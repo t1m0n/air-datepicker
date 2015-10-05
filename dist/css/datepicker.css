@@ -1,0 +1,17 @@
+/* -------------------------------------------------
+    Datepicker
+   ------------------------------------------------- */
+.datepicker {
+  border: 1px solid #dddddd;
+  width: 224px; }
+
+.datepicker--days--names {
+  display: flex; }
+
+.datepicker--days--name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  text-align: center; }
