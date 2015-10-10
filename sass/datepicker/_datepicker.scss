@@ -6,7 +6,8 @@
 
 .datepicker {
   border: 1px solid #dddddd;
-  width: $width;
+  box-sizing: content-box;
+  width: $datepickerWidth;
 }
 
 //  Days
@@ -18,14 +19,15 @@
 //  Day names
 // -------------------------
 
-.datepicker--days--names {
+.datepicker--days-names {
   display: flex;
+  flex-wrap: wrap;
 }
-.datepicker--days--name {
+.datepicker--day-name {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: $cellSize;
-  height: $cellSize;
+  width: $dayCellSize;
+  height: $dayCellSize;
   text-align: center;
 }

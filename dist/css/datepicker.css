@@ -3,15 +3,34 @@
    ------------------------------------------------- */
 .datepicker {
   border: 1px solid #dddddd;
+  box-sizing: content-box;
   width: 224px; }
 
-.datepicker--days--names {
-  display: flex; }
+.datepicker--days-names {
+  display: flex;
+  flex-wrap: wrap; }
 
-.datepicker--days--name {
+.datepicker--day-name {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
   text-align: center; }
+
+/* -------------------------------------------------
+    Datepicker cells
+   ------------------------------------------------- */
+.datepicker--cells {
+  display: flex;
+  flex-wrap: wrap; }
+
+.datepicker--cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px; }
+
+.datepicker--cell-day.-another-month- {
+  color: #ddd; }

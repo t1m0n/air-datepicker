@@ -2,8 +2,8 @@
     var templates = {
         days:'' +
         '<div class="datepicker--days">' +
-        '<div class="datepicker--days--names"></div>' +
-        '<div class="datepicker--days--cells"></div>' +
+        '<div class="datepicker--days-names"></div>' +
+        '<div class="datepicker--cells datepicker--cells-days"></div>' +
         '</div>'
     };
 
@@ -24,8 +24,8 @@
 
         _buildBaseHtml: function () {
             this.$el = $(templates[this.type]).appendTo(this.d.$content);
-            this.$names = $('.datepicker--days--names', this.$el);
-            this.$cells = $('.datepicker--days--cells', this.$el);
+            this.$names = $('.datepicker--days-names', this.$el);
+            this.$cells = $('.datepicker--cells', this.$el);
         },
 
         _getDayNamesHtml: function (firstDay, curDay, html, i) {
@@ -36,16 +36,53 @@
             if (i > 7) return html;
             if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, ++i);
 
-            html += '<div class="datepicker--days--name' + (i >= 5 ? " -weekend-" : "") + '">' + this.d.loc.days[curDay] + '</div>';
+            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.days[curDay] + '</div>';
 
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
 
-        _renderDays: function () {
-            var count = Datepicker.getDaysCount(this.viewDate),
-                dayNames = this._getDayNamesHtml(this.opts.firstDay),
-                firstDayIndex = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1).getDay();
+        /**
+         * Calculates days number to render. Generates days html and returns it.
+         * @param {object} date - Date object
+         * @returns {string}
+         * @private
+         */
+        _getDaysHtml: function (date) {
+            var totalMonthDays = Datepicker.getDaysCount(date),
 
+                firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
+                lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
+
+                remainingDays = 6 - lastMonthDay + this.opts.firstDay,
+                startDayIndex = this.opts.firstDay - (firstMonthDay - 1), // Minus one, because of zero based counter
+
+                m, y,
+                html = '';
+
+            for (var i = startDayIndex, max = totalMonthDays + remainingDays; i <= max; i++) {
+                y = date.getFullYear();
+                m = date.getMonth();
+
+                html += this._getDayHtml(new Date(y, m, i))
+            }
+
+            return html;
+        },
+
+        _getDayHtml: function (date) {
+            var _class = "datepicker--cell datepicker--cell-day";
+
+            if (this.d.isWeekend(date.getDay())) _class += " -weekend-";
+            if (date.getMonth() != this.viewDate.getMonth()) _class += " -another-month-";
+
+            return '<div class="' + _class + '">' + date.getDate() + '</div>';
+        },
+
+        _renderDays: function () {
+            var dayNames = this._getDayNamesHtml(this.opts.firstDay),
+                days = this._getDaysHtml(this.viewDate);
+
+            this.$cells.html(days);
             this.$names.html(dayNames)
         },
 

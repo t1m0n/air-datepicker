@@ -11,8 +11,9 @@ var Datepicker;
         defaults = {
             inline: true,
             region: 'ru',
-            firstDay: 1,
-            start: '',
+            firstDay: 1, // Week's first day
+            start: '', // Start date
+            weekends: [6, 0],
             format: 'dd.mm.yyyy'
         };
 
@@ -58,6 +59,11 @@ var Datepicker;
 
         },
 
+        isWeekend: function (day) {
+            return this.opts.weekends.indexOf(day) !== -1;
+
+        },
+
         _buildDatepickersContainer: function () {
             this.containerBuilt = true;
             $body.append('<div class="datepickers-container" id="datepickers-container"></div>')
@@ -79,7 +85,6 @@ var Datepicker;
         }
     };
 
-
     $.fn[pluginName] = function ( options ) {
         if (Datepicker.prototype[options]) {
             Datepicker.prototype[options].apply(this.data(pluginName), Array.prototype.slice.call(arguments, 1));
@@ -99,3 +104,4 @@ var Datepicker;
     };
 
 })(window, jQuery, '');
+

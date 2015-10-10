@@ -1,0 +1,27 @@
+@import "datepicker-config";
+
+/* -------------------------------------------------
+    Datepicker cells
+   ------------------------------------------------- */
+
+.datepicker--cells {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.datepicker--cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $dayCellSize;
+  height: $dayCellSize;
+}
+
+//  Day cell
+// -------------------------------------------------
+
+.datepicker--cell-day {
+  &.-another-month- {
+    color: $colorAnotherMonth;
+  }
+}
