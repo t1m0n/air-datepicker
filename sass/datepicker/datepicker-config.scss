@@ -1,5 +1,13 @@
 $dayCellSize: 32px;
 $datepickerWidth: 7 * $dayCellSize;
 
-$colorAnotherMonth: #ddd;
+$navigationHeight: 32px;
 
+// Colors
+$colorGrey: #ddd;
+
+$colorAnotherMonth: #ddd;
+$colorCellHover: '';
+$colorCellCurrent: '';
+$colorCellSelected: '';
+$colorCellWeekend: '';

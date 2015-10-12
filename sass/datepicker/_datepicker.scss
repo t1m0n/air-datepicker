@@ -5,7 +5,8 @@
    ------------------------------------------------- */
 
 .datepicker {
-  border: 1px solid #dddddd;
+  border: 1px solid $colorGrey;
+  border-radius: 2px;
   box-sizing: content-box;
   width: $datepickerWidth;
 }

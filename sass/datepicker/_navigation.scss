@@ -1,0 +1,28 @@
+@import "datepicker-config";
+
+/* -------------------------------------------------
+    Navigation
+   ------------------------------------------------- */
+
+.datepicker--nav {
+  border-bottom: 1px solid $colorGrey;
+  display: flex;
+  justify-content: space-between;
+  height: $navigationHeight;
+}
+
+.datepicker--nav-title,
+.datepicker--nav-action {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.datepicker--nav-action {
+  width: $dayCellSize;
+
+  &:hover {
+    background: #f6f6f6;
+  }
+}

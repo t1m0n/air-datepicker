@@ -2,7 +2,8 @@
     Datepicker
    ------------------------------------------------- */
 .datepicker {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
+  border-radius: 2px;
   box-sizing: content-box;
   width: 224px; }
 
@@ -17,6 +18,27 @@
   width: 32px;
   height: 32px;
   text-align: center; }
+
+/* -------------------------------------------------
+    Navigation
+   ------------------------------------------------- */
+.datepicker--nav {
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  height: 32px; }
+
+.datepicker--nav-title,
+.datepicker--nav-action {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center; }
+
+.datepicker--nav-action {
+  width: 32px; }
+  .datepicker--nav-action:hover {
+    background: #f6f6f6; }
 
 /* -------------------------------------------------
     Datepicker cells

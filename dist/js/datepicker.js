@@ -5,7 +5,7 @@ var Datepicker;
         $body, $datepickersContainer,
         baseTemplate = '' +
             '<div class="datepicker">' +
-            '<header class="datepicker--header"></header>' +
+            '<nav class="datepicker--nav"></nav>' +
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
@@ -14,7 +14,11 @@ var Datepicker;
             firstDay: 1, // Week's first day
             start: '', // Start date
             weekends: [6, 0],
-            format: 'dd.mm.yyyy'
+            format: 'dd.mm.yyyy',
+
+            // navigation
+            prevHtml: '&laquo;',
+            nextHtml: '&raquo;'
         };
 
     Datepicker  = function (el, options) {
@@ -35,28 +39,19 @@ var Datepicker;
             $body = $('body');
         }
 
+        this.currentDate = this.opts.start;
+
         this.init()
     };
 
-    Datepicker.getDaysCount = function (date) {
-       return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    };
-
-    Datepicker.getParsedDate = function (date) {
-        return {
-            year: date.getUTCFullYear(),
-            month: date.getUTCMonth(),
-            day: date.getUTCDay()
-        }
-    };
 
     Datepicker.prototype = {
         containerBuilt: false,
         init: function () {
             this._buildBaseHtml();
 
-            this.days = new Datepicker.Body(this, 'days', this.opts)
-
+            this.nav = new Datepicker.Navigation(this, this.opts);
+            this.days = new Datepicker.Body(this, 'days', this.opts);
         },
 
         isWeekend: function (day) {
@@ -77,12 +72,33 @@ var Datepicker;
             }
             this.$datepicker = $(baseTemplate).appendTo($appendTarget);
             this.$content = $('.datepicker--content', this.$datepicker);
-            this.$header = $('.datepicker--header', this.$datepicker);
+            this.$nav = $('.datepicker--nav', this.$datepicker);
         },
 
         _defineDOM: function () {
 
         }
+    };
+
+
+    Datepicker.getDaysCount = function (date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    };
+
+    Datepicker.getParsedDate = function (date) {
+        return {
+            year: date.getUTCFullYear(),
+            month: date.getUTCMonth(),
+            day: date.getUTCDay()
+        }
+    };
+
+    Datepicker.template = function (str, data) {
+        return str.replace(/#\{([\w]+)\}/g, function (source, match) {
+            if (data[match] || data[match] === 0) {
+                return data[match]
+            }
+        });
     };
 
     $.fn[pluginName] = function ( options ) {
@@ -109,9 +125,45 @@ var Datepicker;
 ;(function () {
     Datepicker.region = {
         'ru': {
-            days: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
+            days: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
         }
     }
+})();
+
+;(function () {
+    var template = '' +
+        '<div class="datepicker--nav-action">#{prevHtml}</div>' +
+        '<div class="datepicker--nav-title">#{title}</div>' +
+        '<div class="datepicker--nav-action">#{nextHtml}</div>';
+
+    Datepicker.Navigation = function (d, opts) {
+        this.d = d;
+        this.opts = opts;
+
+        this.init();
+    };
+
+    Datepicker.Navigation.prototype = {
+        init: function () {
+            this._buildBaseHtml();
+        },
+        
+        _buildBaseHtml: function () {
+            var title = this._getTitle(this.d.currentDate);
+                html = Datepicker.template(template, $.extend({title: title}, this.opts));
+
+            this.d.$nav.html(html);
+        },
+
+        _getTitle: function (date) {
+            var month = this.d.loc.months[date.getUTCMonth()],
+                year = date.getUTCFullYear();
+
+            return month + ', ' + year;
+        }
+    }
+
 })();
 
 Datepicker.Cell = function () {
@@ -130,8 +182,6 @@ Datepicker.Cell = function () {
         this.d = d;
         this.type = type;
         this.opts = opts;
-
-        this.viewDate = opts.start;
 
         this.init();
     };
@@ -192,14 +242,14 @@ Datepicker.Cell = function () {
             var _class = "datepicker--cell datepicker--cell-day";
 
             if (this.d.isWeekend(date.getDay())) _class += " -weekend-";
-            if (date.getMonth() != this.viewDate.getMonth()) _class += " -another-month-";
+            if (date.getMonth() != this.d.currentDate.getMonth()) _class += " -another-month-";
 
             return '<div class="' + _class + '">' + date.getDate() + '</div>';
         },
 
         _renderDays: function () {
             var dayNames = this._getDayNamesHtml(this.opts.firstDay),
-                days = this._getDaysHtml(this.viewDate);
+                days = this._getDaysHtml(this.d.currentDate);
 
             this.$cells.html(days);
             this.$names.html(dayNames)

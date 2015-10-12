@@ -12,8 +12,6 @@
         this.type = type;
         this.opts = opts;
 
-        this.viewDate = opts.start;
-
         this.init();
     };
 
@@ -73,14 +71,14 @@
             var _class = "datepicker--cell datepicker--cell-day";
 
             if (this.d.isWeekend(date.getDay())) _class += " -weekend-";
-            if (date.getMonth() != this.viewDate.getMonth()) _class += " -another-month-";
+            if (date.getMonth() != this.d.currentDate.getMonth()) _class += " -another-month-";
 
             return '<div class="' + _class + '">' + date.getDate() + '</div>';
         },
 
         _renderDays: function () {
             var dayNames = this._getDayNamesHtml(this.opts.firstDay),
-                days = this._getDaysHtml(this.viewDate);
+                days = this._getDaysHtml(this.d.currentDate);
 
             this.$cells.html(days);
             this.$names.html(dayNames)
