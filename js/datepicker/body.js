@@ -17,6 +17,7 @@
 
     Datepicker.Body.prototype = {
         init: function () {
+            this._buildBaseHtml();
             this._render();
         },
 
@@ -47,17 +48,19 @@
          */
         _getDaysHtml: function (date) {
             var totalMonthDays = Datepicker.getDaysCount(date),
-
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
+                daysFromPevMonth = firstMonthDay - this.opts.firstDay,
+                daysFromNextMonth = 6 - lastMonthDay + this.opts.firstDay;
 
-                remainingDays = 6 - lastMonthDay + this.opts.firstDay,
-                startDayIndex = this.opts.firstDay - (firstMonthDay - 1), // Minus one, because of zero based counter
+            daysFromPevMonth = daysFromPevMonth < 0 ? daysFromPevMonth + 7 : daysFromPevMonth;
+            daysFromNextMonth = daysFromNextMonth > 6 ? daysFromNextMonth - 7 : daysFromNextMonth;
 
+            var startDayIndex = -daysFromPevMonth + 1,
                 m, y,
                 html = '';
 
-            for (var i = startDayIndex, max = totalMonthDays + remainingDays; i <= max; i++) {
+            for (var i = startDayIndex, max = totalMonthDays + daysFromNextMonth; i <= max; i++) {
                 y = date.getFullYear();
                 m = date.getMonth();
 
@@ -85,7 +88,6 @@
         },
 
         _render: function () {
-            this._buildBaseHtml();
             this._renderDays();
         }
     };

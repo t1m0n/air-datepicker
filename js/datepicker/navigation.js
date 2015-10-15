@@ -1,8 +1,8 @@
 ;(function () {
     var template = '' +
-        '<div class="datepicker--nav-action">#{prevHtml}</div>' +
+        '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
-        '<div class="datepicker--nav-action">#{nextHtml}</div>';
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>';
 
     Datepicker.Navigation = function (d, opts) {
         this.d = d;
@@ -14,20 +14,37 @@
     Datepicker.Navigation.prototype = {
         init: function () {
             this._buildBaseHtml();
+            this._bindEvents();
         },
-        
+
+        _bindEvents: function () {
+            this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
+        },
+
         _buildBaseHtml: function () {
-            var title = this._getTitle(this.d.currentDate);
+            this._render();
+            this.$navButton = $('.datepicker--nav-action', this.d.$nav);
+        },
+
+        _render: function () {
+            var title = this._getTitle(this.d.currentDate),
                 html = Datepicker.template(template, $.extend({title: title}, this.opts));
 
             this.d.$nav.html(html);
         },
 
         _getTitle: function (date) {
-            var month = this.d.loc.months[date.getUTCMonth()],
-                year = date.getUTCFullYear();
+            var month = this.d.loc.months[date.getMonth()],
+                year = date.getFullYear();
 
             return month + ', ' + year;
+        },
+
+        _onClickNavButton: function (e) {
+            var $el = $(e.target),
+                action = $el.data('action');
+
+            this.d[action]();
         }
     }
 

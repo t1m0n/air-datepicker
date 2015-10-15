@@ -14,6 +14,7 @@ var Datepicker;
             firstDay: 1, // Week's first day
             start: '', // Start date
             weekends: [6, 0],
+            defaultView: 'days',
             format: 'dd.mm.yyyy',
 
             // navigation
@@ -39,7 +40,11 @@ var Datepicker;
             $body = $('body');
         }
 
+        this.inited = false;
+
         this.currentDate = this.opts.start;
+        this.view = this.opts.defaultView;
+        this.activeView = this.opts.defaultView;
 
         this.init()
     };
@@ -52,11 +57,12 @@ var Datepicker;
 
             this.nav = new Datepicker.Navigation(this, this.opts);
             this.days = new Datepicker.Body(this, 'days', this.opts);
+
+            this.inited = true;
         },
 
         isWeekend: function (day) {
             return this.opts.weekends.indexOf(day) !== -1;
-
         },
 
         _buildDatepickersContainer: function () {
@@ -77,8 +83,38 @@ var Datepicker;
 
         _defineDOM: function () {
 
+        },
+
+        next: function () {
+            var d = this.parsedDate;
+            this.date = new Date(d.year, d.month + 1, 1);
+        },
+
+        prev: function () {
+            var d = this.parsedDate;
+            this.date = new Date(d.year, d.month - 1, 1);
+        },
+
+        get parsedDate() {
+            return Datepicker.getParsedDate(this.date);
         }
     };
+
+    Object.defineProperty(Datepicker.prototype , 'date', {
+        set: function (val) {
+            this.currentDate = val;
+
+            if (this.inited) {
+                this[this.activeView]._render();
+                this.nav._render();
+            }
+
+            return val;
+        },
+        get: function () {
+            return this.currentDate
+        }
+    });
 
 
     Datepicker.getDaysCount = function (date) {
@@ -87,9 +123,9 @@ var Datepicker;
 
     Datepicker.getParsedDate = function (date) {
         return {
-            year: date.getUTCFullYear(),
-            month: date.getUTCMonth(),
-            day: date.getUTCDay()
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            day: date.getDay()
         }
     };
 
