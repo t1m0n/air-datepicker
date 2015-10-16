@@ -10,11 +10,17 @@
 }
 
 .datepicker--cell {
+  border-radius: $datepickerBorderRadius;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: $dayCellSize;
   height: $dayCellSize;
+
+  &:hover {
+    background: $colorCellHover;
+  }
 }
 
 //  Day cell
@@ -24,4 +30,18 @@
   &.-another-month- {
     color: $colorAnotherMonth;
   }
+}
+
+
+//  Months
+// -------------------------------------------------
+
+.datepicker--months {}
+
+//  Month cells
+// -------------------------
+
+.datepicker--cell-month {
+  width: 33.33%;
+  height: 40px;
 }

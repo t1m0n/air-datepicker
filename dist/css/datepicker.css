@@ -7,6 +7,11 @@
   box-sizing: content-box;
   width: 224px; }
 
+.datepicker--body {
+  display: none; }
+  .datepicker--body.active {
+    display: block; }
+
 .datepicker--days-names {
   display: flex;
   flex-wrap: wrap; }
@@ -48,11 +53,19 @@
   flex-wrap: wrap; }
 
 .datepicker--cell {
+  border-radius: 2px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px; }
+  .datepicker--cell:hover {
+    background: #eee; }
 
 .datepicker--cell-day.-another-month- {
   color: #ddd; }
+
+.datepicker--cell-month {
+  width: 33.33%;
+  height: 40px; }

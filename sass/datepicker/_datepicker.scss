@@ -6,15 +6,21 @@
 
 .datepicker {
   border: 1px solid $colorGrey;
-  border-radius: 2px;
+  border-radius: $datepickerBorderRadius;
   box-sizing: content-box;
   width: $datepickerWidth;
 }
 
-//  Days
+//  Body
 // -------------------------------------------------
 
-.datepicker--days {}
+.datepicker--body {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
 
 
 //  Day names
@@ -32,3 +38,4 @@
   height: $dayCellSize;
   text-align: center;
 }
+

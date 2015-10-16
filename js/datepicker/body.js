@@ -1,9 +1,17 @@
 ;(function () {
     var templates = {
         days:'' +
-        '<div class="datepicker--days">' +
+        '<div class="datepicker--days datepicker--body">' +
         '<div class="datepicker--days-names"></div>' +
         '<div class="datepicker--cells datepicker--cells-days"></div>' +
+        '</div>',
+        months: '' +
+        '<div class="datepicker--months datepicker--body">' +
+        '<div class="datepicker--cells datepicker--cells-months"></div>' +
+        '</div>',
+        years: '' +
+        '<div class="datepicker--years datepicker--body">' +
+        '<div class="datepicker--cells datepicker--cells-years"></div>' +
         '</div>'
     };
 
@@ -79,6 +87,51 @@
             return '<div class="' + _class + '">' + date.getDate() + '</div>';
         },
 
+        /**
+         * Generates months html
+         * @param {object} date - date instance
+         * @returns {string}
+         * @private
+         */
+        _getMonthsHtml: function (date) {
+            var html = '',
+                d = Datepicker.getParsedDate(date),
+                i = 0;
+
+            while(i < 12) {
+                html += this._getMonthHtml(new Date(d.year, i));
+                i++
+            }
+
+            return html;
+        },
+
+        _getMonthHtml: function (date) {
+            var _class = "datepicker--cell datepicker--cell-month",
+                d = Datepicker.getParsedDate(date),
+                loc = this.d.loc;
+
+            return '<div class="' + _class + '">' + loc.months[d.month] + '</div>'
+        },
+
+        _renderTypes: {
+            days: function () {
+                var dayNames = this._getDayNamesHtml(this.opts.firstDay),
+                    days = this._getDaysHtml(this.d.currentDate);
+
+                this.$cells.html(days);
+                this.$names.html(dayNames)
+            },
+            months: function () {
+                var html = this._getMonthsHtml(this.d.currentDate);
+
+                this.$cells.html(html)
+            },
+            years: function () {
+                this.$cells.html('Years')
+            }
+        },
+
         _renderDays: function () {
             var dayNames = this._getDayNamesHtml(this.opts.firstDay),
                 days = this._getDaysHtml(this.d.currentDate);
@@ -88,7 +141,17 @@
         },
 
         _render: function () {
-            this._renderDays();
+            this._renderTypes[this.type].bind(this)()
+        },
+
+        show: function () {
+            this.$el.addClass('active');
+            this.acitve = true;
+        },
+
+        hide: function () {
+            this.$el.removeClass('active');
+            this.active = false;
         }
     };
 })();

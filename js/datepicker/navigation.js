@@ -19,6 +19,7 @@
 
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
+            this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
         },
 
         _buildBaseHtml: function () {
@@ -35,9 +36,13 @@
 
         _getTitle: function (date) {
             var month = this.d.loc.months[date.getMonth()],
-                year = date.getFullYear();
+                year = date.getFullYear(),
+                types = {
+                    days: month + ', ' + year,
+                    months: year
+                };
 
-            return month + ', ' + year;
+            return types[this.d.view];
         },
 
         _onClickNavButton: function (e) {
@@ -45,6 +50,14 @@
                 action = $el.data('action');
 
             this.d[action]();
+        },
+
+        _onClickNavTitle: function () {
+            if (this.d.view == 'days') {
+                return this.d.view = 'months'
+            }
+
+            this.d.view = 'years';
         }
     }
 

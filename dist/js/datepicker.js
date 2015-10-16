@@ -43,8 +43,8 @@ var Datepicker;
         this.inited = false;
 
         this.currentDate = this.opts.start;
-        this.view = this.opts.defaultView;
-        this.activeView = this.opts.defaultView;
+        this.currentView = this.opts.defaultView;
+        this.views = {};
 
         this.init()
     };
@@ -56,7 +56,9 @@ var Datepicker;
             this._buildBaseHtml();
 
             this.nav = new Datepicker.Navigation(this, this.opts);
-            this.days = new Datepicker.Body(this, 'days', this.opts);
+            this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
+
+            this.views[this.currentView].show();
 
             this.inited = true;
         },
@@ -87,34 +89,67 @@ var Datepicker;
 
         next: function () {
             var d = this.parsedDate;
-            this.date = new Date(d.year, d.month + 1, 1);
+            switch (this.view) {
+                case 'days':
+                    this.date = new Date(d.year, d.month + 1, 1);
+                    break;
+                case 'months':
+                    this.date = new Date(d.year + 1, d.month, 1);
+            }
+
         },
 
         prev: function () {
             var d = this.parsedDate;
-            this.date = new Date(d.year, d.month - 1, 1);
+            switch (this.view) {
+                case 'days':
+                    this.date = new Date(d.year, d.month - 1, 1);
+                    break;
+                case 'months':
+                    this.date = new Date(d.year - 1, d.month, 1);
+            }
         },
 
         get parsedDate() {
             return Datepicker.getParsedDate(this.date);
-        }
-    };
+        },
 
-    Object.defineProperty(Datepicker.prototype , 'date', {
-        set: function (val) {
+        set date (val) {
             this.currentDate = val;
 
             if (this.inited) {
-                this[this.activeView]._render();
+                this.views[this.view]._render();
                 this.nav._render();
             }
 
             return val;
         },
-        get: function () {
+
+        get date () {
             return this.currentDate
+        },
+
+        set view (val) {
+            this.prevView = this.currentView;
+            this.currentView = val;
+
+            if (this.inited) {
+                if (!this.views[val]) {
+                    this.views[val] = new Datepicker.Body(this, val, this.opts)
+                }
+
+                this.views[this.prevView].hide();
+                this.views[val].show();
+                this.nav._render();
+            }
+
+            return val
+        },
+
+        get view() {
+            return this.currentView;
         }
-    });
+    };
 
 
     Datepicker.getDaysCount = function (date) {
@@ -156,8 +191,6 @@ var Datepicker;
     };
 
 })(window, jQuery, '');
-
-
 ;(function () {
     Datepicker.region = {
         'ru': {
@@ -188,6 +221,7 @@ var Datepicker;
 
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
+            this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
         },
 
         _buildBaseHtml: function () {
@@ -204,9 +238,13 @@ var Datepicker;
 
         _getTitle: function (date) {
             var month = this.d.loc.months[date.getMonth()],
-                year = date.getFullYear();
+                year = date.getFullYear(),
+                types = {
+                    days: month + ', ' + year,
+                    months: year
+                };
 
-            return month + ', ' + year;
+            return types[this.d.view];
         },
 
         _onClickNavButton: function (e) {
@@ -214,6 +252,14 @@ var Datepicker;
                 action = $el.data('action');
 
             this.d[action]();
+        },
+
+        _onClickNavTitle: function () {
+            if (this.d.view == 'days') {
+                return this.d.view = 'months'
+            }
+
+            this.d.view = 'years';
         }
     }
 
@@ -225,9 +271,17 @@ Datepicker.Cell = function () {
 ;(function () {
     var templates = {
         days:'' +
-        '<div class="datepicker--days">' +
+        '<div class="datepicker--days datepicker--body">' +
         '<div class="datepicker--days-names"></div>' +
         '<div class="datepicker--cells datepicker--cells-days"></div>' +
+        '</div>',
+        months: '' +
+        '<div class="datepicker--months datepicker--body">' +
+        '<div class="datepicker--cells datepicker--cells-months"></div>' +
+        '</div>',
+        years: '' +
+        '<div class="datepicker--years datepicker--body">' +
+        '<div class="datepicker--cells datepicker--cells-years"></div>' +
         '</div>'
     };
 
@@ -303,6 +357,51 @@ Datepicker.Cell = function () {
             return '<div class="' + _class + '">' + date.getDate() + '</div>';
         },
 
+        /**
+         * Generates months html
+         * @param {object} date - date instance
+         * @returns {string}
+         * @private
+         */
+        _getMonthsHtml: function (date) {
+            var html = '',
+                d = Datepicker.getParsedDate(date),
+                i = 0;
+
+            while(i < 12) {
+                html += this._getMonthHtml(new Date(d.year, i));
+                i++
+            }
+
+            return html;
+        },
+
+        _getMonthHtml: function (date) {
+            var _class = "datepicker--cell datepicker--cell-month",
+                d = Datepicker.getParsedDate(date),
+                loc = this.d.loc;
+
+            return '<div class="' + _class + '">' + loc.months[d.month] + '</div>'
+        },
+
+        _renderTypes: {
+            days: function () {
+                var dayNames = this._getDayNamesHtml(this.opts.firstDay),
+                    days = this._getDaysHtml(this.d.currentDate);
+
+                this.$cells.html(days);
+                this.$names.html(dayNames)
+            },
+            months: function () {
+                var html = this._getMonthsHtml(this.d.currentDate);
+
+                this.$cells.html(html)
+            },
+            years: function () {
+                this.$cells.html('Years')
+            }
+        },
+
         _renderDays: function () {
             var dayNames = this._getDayNamesHtml(this.opts.firstDay),
                 days = this._getDaysHtml(this.d.currentDate);
@@ -312,7 +411,17 @@ Datepicker.Cell = function () {
         },
 
         _render: function () {
-            this._renderDays();
+            this._renderTypes[this.type].bind(this)()
+        },
+
+        show: function () {
+            this.$el.addClass('active');
+            this.acitve = true;
+        },
+
+        hide: function () {
+            this.$el.removeClass('active');
+            this.active = false;
         }
     };
 })();

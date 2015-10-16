@@ -43,8 +43,8 @@ var Datepicker;
         this.inited = false;
 
         this.currentDate = this.opts.start;
-        this.view = this.opts.defaultView;
-        this.activeView = this.opts.defaultView;
+        this.currentView = this.opts.defaultView;
+        this.views = {};
 
         this.init()
     };
@@ -56,7 +56,9 @@ var Datepicker;
             this._buildBaseHtml();
 
             this.nav = new Datepicker.Navigation(this, this.opts);
-            this.days = new Datepicker.Body(this, 'days', this.opts);
+            this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
+
+            this.views[this.currentView].show();
 
             this.inited = true;
         },
@@ -87,34 +89,67 @@ var Datepicker;
 
         next: function () {
             var d = this.parsedDate;
-            this.date = new Date(d.year, d.month + 1, 1);
+            switch (this.view) {
+                case 'days':
+                    this.date = new Date(d.year, d.month + 1, 1);
+                    break;
+                case 'months':
+                    this.date = new Date(d.year + 1, d.month, 1);
+            }
+
         },
 
         prev: function () {
             var d = this.parsedDate;
-            this.date = new Date(d.year, d.month - 1, 1);
+            switch (this.view) {
+                case 'days':
+                    this.date = new Date(d.year, d.month - 1, 1);
+                    break;
+                case 'months':
+                    this.date = new Date(d.year - 1, d.month, 1);
+            }
         },
 
         get parsedDate() {
             return Datepicker.getParsedDate(this.date);
-        }
-    };
+        },
 
-    Object.defineProperty(Datepicker.prototype , 'date', {
-        set: function (val) {
+        set date (val) {
             this.currentDate = val;
 
             if (this.inited) {
-                this[this.activeView]._render();
+                this.views[this.view]._render();
                 this.nav._render();
             }
 
             return val;
         },
-        get: function () {
+
+        get date () {
             return this.currentDate
+        },
+
+        set view (val) {
+            this.prevView = this.currentView;
+            this.currentView = val;
+
+            if (this.inited) {
+                if (!this.views[val]) {
+                    this.views[val] = new Datepicker.Body(this, val, this.opts)
+                }
+
+                this.views[this.prevView].hide();
+                this.views[val].show();
+                this.nav._render();
+            }
+
+            return val
+        },
+
+        get view() {
+            return this.currentView;
         }
-    });
+    };
 
 
     Datepicker.getDaysCount = function (date) {
@@ -156,4 +191,3 @@ var Datepicker;
     };
 
 })(window, jQuery, '');
-
