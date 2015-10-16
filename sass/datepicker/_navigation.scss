@@ -23,6 +23,16 @@
   width: $dayCellSize;
 
   &:hover {
-    background: #f6f6f6;
+    background: $colorCellHover;
+  }
+}
+
+.datepicker--nav-title {
+  align-self: center;
+  padding: 4px;
+  border-radius: $datepickerBorderRadius;
+
+  &:hover {
+    background: $colorCellHover;
   }
 }

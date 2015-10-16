@@ -95,6 +95,10 @@ var Datepicker;
                     break;
                 case 'months':
                     this.date = new Date(d.year + 1, d.month, 1);
+                    break;
+                case 'years':
+                    this.date = new Date(d.year + 10, 0, 1);
+                    break;
             }
 
         },
@@ -107,6 +111,10 @@ var Datepicker;
                     break;
                 case 'months':
                     this.date = new Date(d.year - 1, d.month, 1);
+                    break;
+                case 'years':
+                    this.date = new Date(d.year - 10, 0, 1);
+                    break;
             }
         },
 
@@ -136,6 +144,8 @@ var Datepicker;
             if (this.inited) {
                 if (!this.views[val]) {
                     this.views[val] = new Datepicker.Body(this, val, this.opts)
+                } else {
+                    this.views[val]._render();
                 }
 
                 this.views[this.prevView].hide();
@@ -162,6 +172,12 @@ var Datepicker;
             month: date.getMonth(),
             day: date.getDay()
         }
+    };
+
+    Datepicker.getDecade = function (date) {
+        var firstYear = Math.floor(date.getFullYear() / 10) * 10;
+
+        return [firstYear, firstYear + 9];
     };
 
     Datepicker.template = function (str, data) {

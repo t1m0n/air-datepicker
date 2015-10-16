@@ -37,9 +37,11 @@
         _getTitle: function (date) {
             var month = this.d.loc.months[date.getMonth()],
                 year = date.getFullYear(),
+                decade = Datepicker.getDecade(date),
                 types = {
                     days: month + ', ' + year,
-                    months: year
+                    months: year,
+                    years: decade[0] + ' - ' + decade[1]
                 };
 
             return types[this.d.view];

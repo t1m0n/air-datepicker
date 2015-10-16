@@ -27,6 +27,12 @@
         init: function () {
             this._buildBaseHtml();
             this._render();
+
+            this._bindEvents();
+        },
+
+        _bindEvents: function () {
+            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
@@ -84,7 +90,7 @@
             if (this.d.isWeekend(date.getDay())) _class += " -weekend-";
             if (date.getMonth() != this.d.currentDate.getMonth()) _class += " -another-month-";
 
-            return '<div class="' + _class + '">' + date.getDate() + '</div>';
+            return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
         },
 
         /**
@@ -111,7 +117,33 @@
                 d = Datepicker.getParsedDate(date),
                 loc = this.d.loc;
 
-            return '<div class="' + _class + '">' + loc.months[d.month] + '</div>'
+            return '<div class="' + _class + '" data-month="' + d.month + '">' + loc.months[d.month] + '</div>'
+        },
+
+        _getYearsHtml: function (date) {
+            var d = Datepicker.getParsedDate(date),
+                decade = Datepicker.getDecade(date),
+                firstYear = decade[0] - 1,
+                html = '',
+                i = firstYear;
+
+            for (i; i <= decade[1] + 1; i++) {
+                html += this._getYearHtml(new Date(i , 0));
+            }
+
+            return html;
+        },
+
+        _getYearHtml: function (date) {
+            var _class = "datepicker--cell datepicker--cell-year",
+                decade = Datepicker.getDecade(this.d.date),
+                d = Datepicker.getParsedDate(date);
+
+            if (d.year < decade[0] || d.year > decade[1]) {
+                _class += ' -another-decade-';
+            }
+
+            return '<div class="' + _class + '" data-year="' + d.year + '">' + d.year + '</div>'
         },
 
         _renderTypes: {
@@ -128,16 +160,10 @@
                 this.$cells.html(html)
             },
             years: function () {
-                this.$cells.html('Years')
+                var html = this._getYearsHtml(this.d.currentDate);
+
+                this.$cells.html(html)
             }
-        },
-
-        _renderDays: function () {
-            var dayNames = this._getDayNamesHtml(this.opts.firstDay),
-                days = this._getDaysHtml(this.d.currentDate);
-
-            this.$cells.html(days);
-            this.$names.html(dayNames)
         },
 
         _render: function () {
@@ -152,6 +178,34 @@
         hide: function () {
             this.$el.removeClass('active');
             this.active = false;
+        },
+
+        //  Events
+        // -------------------------------------------------
+
+        _handleClick: {
+            days: function (el) {
+
+            },
+            months: function (el) {
+                var month = el.data('month'),
+                    d = this.d.parsedDate;
+
+                this.d.date = new Date(d.year, month, 1);
+                this.d.view = 'days';
+            },
+            years: function (el) {
+                var year = el.data('year');
+
+                this.d.date = new Date(year, 0, 1);
+                this.d.view = 'months';
+            }
+        },
+
+        _onClickCell: function (e) {
+            var $el = $(e.target).closest('.datepicker--cell');
+
+            this._handleClick[this.d.currentView].bind(this)($el);
         }
     };
 })();

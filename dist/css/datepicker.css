@@ -43,7 +43,14 @@
 .datepicker--nav-action {
   width: 32px; }
   .datepicker--nav-action:hover {
-    background: #f6f6f6; }
+    background: #eee; }
+
+.datepicker--nav-title {
+  align-self: center;
+  padding: 4px;
+  border-radius: 2px; }
+  .datepicker--nav-title:hover {
+    background: #eee; }
 
 /* -------------------------------------------------
     Datepicker cells
@@ -69,3 +76,9 @@
 .datepicker--cell-month {
   width: 33.33%;
   height: 40px; }
+
+.datepicker--cell-year {
+  width: 25%;
+  height: 40px; }
+  .datepicker--cell-year.-another-decade- {
+    color: #ddd; }

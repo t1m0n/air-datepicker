@@ -45,3 +45,20 @@
   width: 33.33%;
   height: 40px;
 }
+
+//  Years
+// -------------------------------------------------
+
+.datepicker--years {}
+
+//  Month cells
+// -------------------------
+
+.datepicker--cell-year {
+  width: 100% / $yearsPerRow;
+  height: 40px;
+
+  &.-another-decade- {
+    color: $colorAnotherMonth;
+  }
+}
