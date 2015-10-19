@@ -185,7 +185,14 @@
 
         _handleClick: {
             days: function (el) {
+                var date = el.data('date'),
+                    d = this.d.parsedDate;
 
+                this.d.date = new Date(d.year, d.month, date);
+
+                if (this.d.opts.onChange) {
+                    this.d._triggerOnChange()
+                }
             },
             months: function (el) {
                 var month = el.data('month'),

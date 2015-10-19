@@ -15,11 +15,14 @@ var Datepicker;
             start: '', // Start date
             weekends: [6, 0],
             defaultView: 'days',
-            format: 'dd.mm.yyyy',
+            dateFormat: 'dd.mm.yyyy',
 
             // navigation
             prevHtml: '&laquo;',
-            nextHtml: '&raquo;'
+            nextHtml: '&raquo;',
+
+            // events
+            onChange: ''
         };
 
     Datepicker  = function (el, options) {
@@ -87,6 +90,12 @@ var Datepicker;
 
         },
 
+        _triggerOnChange: function (cellType) {
+            var dateString = this.formatDate(this.opts.dateFormat, this.date);
+
+            this.opts.onChange(dateString, this.date, this);
+        },
+
         next: function () {
             var d = this.parsedDate;
             switch (this.view) {
@@ -116,6 +125,30 @@ var Datepicker;
                     this.date = new Date(d.year - 10, 0, 1);
                     break;
             }
+        },
+
+        formatDate: function (string, date) {
+            var result = string,
+                d = this.parsedDate;
+
+            switch (true) {
+                case /dd/.test(result):
+                    result = result.replace('dd', d.fullDate);
+                case /d/.test(result):
+                    result = result.replace('d', d.date);
+                case /mm/.test(result):
+                    result = result.replace('mm',d.fullMonth);
+                case /m/.test(result):
+                    result = result.replace('m',d.month + 1);
+                case /MM/.test(result):
+                    result = result.replace('MM', this.loc.months[d.month]);
+                case /yyyy/.test(result):
+                    result = result.replace('yyyy', d.year);
+                case /yy/.test(result):
+                    result = result.replace('yy', d.year.toString().slice(-2));
+            }
+
+            return result;
         },
 
         get parsedDate() {
@@ -161,7 +194,6 @@ var Datepicker;
         }
     };
 
-
     Datepicker.getDaysCount = function (date) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     };
@@ -170,6 +202,9 @@ var Datepicker;
         return {
             year: date.getFullYear(),
             month: date.getMonth(),
+            fullMonth: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1, // One based
+            date: date.getDate(),
+            fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
             day: date.getDay()
         }
     };
@@ -473,7 +508,14 @@ Datepicker.Cell = function () {
 
         _handleClick: {
             days: function (el) {
+                var date = el.data('date'),
+                    d = this.d.parsedDate;
 
+                this.d.date = new Date(d.year, d.month, date);
+
+                if (this.d.opts.onChange) {
+                    this.d._triggerOnChange()
+                }
             },
             months: function (el) {
                 var month = el.data('month'),

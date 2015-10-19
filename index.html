@@ -15,7 +15,11 @@
         </div>
         <script type="text/javascript" src="dist/js/datepicker.js"></script>
         <script type="text/javascript">
-            $('.calendar').datepicker();
+            $('.calendar').datepicker({
+                onChange: function (dateString, date, inst) {
+
+                }
+            });
         </script>
     </body>
 </html>
