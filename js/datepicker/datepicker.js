@@ -47,7 +47,7 @@ var Datepicker;
 
         this.currentDate = this.opts.start;
         this.currentView = this.opts.defaultView;
-        this.selectedDate = '';
+        this.selectedDate = [];
         this.views = {};
 
         this.init()
@@ -110,7 +110,6 @@ var Datepicker;
                     this.date = new Date(d.year + 10, 0, 1);
                     break;
             }
-
         },
 
         prev: function () {

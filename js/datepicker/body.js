@@ -85,11 +85,15 @@
         },
 
         _getDayHtml: function (date) {
-            var _class = "datepicker--cell datepicker--cell-day";
+            var _class = "datepicker--cell datepicker--cell-day",
+                currentDate = new Date(),
+                d = Datepicker.getParsedDate(date);
 
-            if (this.d.isWeekend(date.getDay())) _class += " -weekend-";
-            if (date.getMonth() != this.d.currentDate.getMonth()) _class += " -another-month-";
-            if (date.getDate() == new Date().getDate()) _class += ' -current-';
+            if (this.d.isWeekend(d.day)) _class += " -weekend-";
+            if (d.month != this.d.parsedDate.month) _class += " -another-month-";
+            if (d.date == currentDate.getDate() &&
+                d.month == currentDate.getMonth() &&
+                d.year == currentDate.getFullYear()) _class += ' -current-';
 
             return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
         },
