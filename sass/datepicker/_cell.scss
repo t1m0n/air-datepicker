@@ -11,15 +11,27 @@
 
 .datepicker--cell {
   border-radius: $datepickerBorderRadius;
+  color: $textColor;
   cursor: pointer;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: $dayCellSize;
   height: $dayCellSize;
+  z-index: 1;
 
   &:hover {
     background: $colorCellHover;
+  }
+
+  &.-current- {
+    color: $colorCellCurrent;
+    border: 1px solid $colorCellCurrent;
+
+    &:hover {
+      background: rgba($colorCellCurrent, .05);
+    }
   }
 }
 

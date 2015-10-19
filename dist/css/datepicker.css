@@ -8,7 +8,8 @@
   width: 224px; }
 
 .datepicker--body {
-  display: none; }
+  display: none;
+  margin: -1px; }
   .datepicker--body.active {
     display: block; }
 
@@ -61,14 +62,22 @@
 
 .datepicker--cell {
   border-radius: 2px;
+  color: #333;
   cursor: pointer;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: 32px;
-  height: 32px; }
+  height: 32px;
+  z-index: 1; }
   .datepicker--cell:hover {
     background: #eee; }
+  .datepicker--cell.-current- {
+    color: #60C4F5;
+    border: 1px solid #60C4F5; }
+    .datepicker--cell.-current-:hover {
+      background: rgba(96, 196, 245, 0.05); }
 
 .datepicker--cell-day.-another-month- {
   color: #ddd; }

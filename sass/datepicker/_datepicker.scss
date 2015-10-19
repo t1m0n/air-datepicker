@@ -16,6 +16,7 @@
 
 .datepicker--body {
   display: none;
+  margin: -1px;
 
   &.active {
     display: block;

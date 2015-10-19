@@ -89,6 +89,7 @@
 
             if (this.d.isWeekend(date.getDay())) _class += " -weekend-";
             if (date.getMonth() != this.d.currentDate.getMonth()) _class += " -another-month-";
+            if (date.getDate() == new Date().getDate()) _class += ' -current-';
 
             return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
         },
@@ -115,7 +116,10 @@
         _getMonthHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-month",
                 d = Datepicker.getParsedDate(date),
+                currentDate = new Date(),
                 loc = this.d.loc;
+
+            if (d.month == currentDate.getMonth() && d.year == currentDate.getFullYear()) _class += ' -current-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + loc.months[d.month] + '</div>'
         },
@@ -142,6 +146,8 @@
             if (d.year < decade[0] || d.year > decade[1]) {
                 _class += ' -another-decade-';
             }
+
+            if (d.year == new Date().getFullYear()) _class += ' -current-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + d.year + '</div>'
         },
