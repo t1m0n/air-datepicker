@@ -91,9 +91,8 @@
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
             if (d.month != this.d.parsedDate.month) _class += " -another-month-";
-            if (d.date == currentDate.getDate() &&
-                d.month == currentDate.getMonth() &&
-                d.year == currentDate.getFullYear()) _class += ' -current-';
+            if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
+            if (this._isSelected(date, 'day')) _class += ' -selected-';
 
             return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
         },
@@ -123,7 +122,7 @@
                 currentDate = new Date(),
                 loc = this.d.loc;
 
-            if (d.month == currentDate.getMonth() && d.year == currentDate.getFullYear()) _class += ' -current-';
+            if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + loc.months[d.month] + '</div>'
         },
@@ -145,13 +144,14 @@
         _getYearHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-year",
                 decade = Datepicker.getDecade(this.d.date),
+                currentDate = new Date(),
                 d = Datepicker.getParsedDate(date);
 
             if (d.year < decade[0] || d.year > decade[1]) {
                 _class += ' -another-decade-';
             }
 
-            if (d.year == new Date().getFullYear()) _class += ' -current-';
+            if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + d.year + '</div>'
         },
@@ -180,6 +180,23 @@
             this._renderTypes[this.type].bind(this)()
         },
 
+        _isSelected: function (cellDate, cellType) {
+            var selectedDates = this.d.selectedDates,
+                len = selectedDates.length,
+                result;
+
+            if (!len) return false;
+
+            for (var i = 0; i < len; i++) {
+                if (Datepicker.isSame(selectedDates[i], cellDate, cellType)) {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        },
+
         show: function () {
             this.$el.addClass('active');
             this.acitve = true;
@@ -199,6 +216,7 @@
                     d = this.d.parsedDate;
 
                 this.d.date = new Date(d.year, d.month, date);
+                this.d.selectDate(this.d.date);
 
                 if (this.d.opts.onChange) {
                     this.d._triggerOnChange()

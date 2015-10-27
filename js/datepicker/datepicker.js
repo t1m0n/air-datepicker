@@ -17,6 +17,13 @@ var Datepicker;
             defaultView: 'days',
             dateFormat: 'dd.mm.yyyy',
 
+            //TODO сделать минимальные, максимальные даты
+            minDate: '',
+            maxData: '',
+
+            //TODO сделать множественные даты
+            multipleDates: false,
+
             // navigation
             prevHtml: '&laquo;',
             nextHtml: '&raquo;',
@@ -47,7 +54,7 @@ var Datepicker;
 
         this.currentDate = this.opts.start;
         this.currentView = this.opts.defaultView;
-        this.selectedDate = [];
+        this.selectedDates = [];
         this.views = {};
 
         this.init()
@@ -151,6 +158,16 @@ var Datepicker;
             return result;
         },
 
+        selectDate: function (date) {
+            if (this.opts.multipleDates) {
+                // validate, push
+            } else {
+                this.selectedDates = [date];
+            }
+
+            this.views[this.currentView]._render()
+        },
+
         get parsedDate() {
             return Datepicker.getParsedDate(this.date);
         },
@@ -221,6 +238,20 @@ var Datepicker;
                 return data[match]
             }
         });
+    };
+
+    Datepicker.isSame = function (date1, date2, type) {
+        var d1 = Datepicker.getParsedDate(date1),
+            d2 = Datepicker.getParsedDate(date2),
+            _type = type ? type : 'day',
+
+            conditions = {
+                day: d1.date == d2.date && d1.month == d2.month && d1.year == d2.year,
+                month: d1.month == d2.month && d1.year == d2.year,
+                year: d1.year == d2.year
+            };
+
+        return conditions[_type];
     };
 
     $.fn[pluginName] = function ( options ) {

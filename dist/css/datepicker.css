@@ -74,10 +74,12 @@
   .datepicker--cell:hover {
     background: #eee; }
   .datepicker--cell.-current- {
-    color: #60C4F5;
-    border: 1px solid #60C4F5; }
+    color: #60C4F5; }
     .datepicker--cell.-current-:hover {
       background: rgba(96, 196, 245, 0.05); }
+  .datepicker--cell.-selected- {
+    color: #fff;
+    background: skyblue; }
 
 .datepicker--cell-day.-another-month- {
   color: #ddd; }

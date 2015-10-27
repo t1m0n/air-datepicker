@@ -27,11 +27,15 @@
 
   &.-current- {
     color: $colorCellCurrent;
-    border: 1px solid $colorCellCurrent;
 
     &:hover {
       background: rgba($colorCellCurrent, .05);
     }
+  }
+
+  &.-selected- {
+    color: #fff;
+    background: skyblue;
   }
 }
 
