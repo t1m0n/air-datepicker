@@ -92,7 +92,7 @@
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
             if (d.month != this.d.parsedDate.month) _class += " -another-month-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
-            if (this._isSelected(date, 'day')) _class += ' -selected-';
+            if (this.d._isSelected(date, 'day')) _class += ' -selected-';
 
             return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
         },
@@ -178,23 +178,6 @@
 
         _render: function () {
             this._renderTypes[this.type].bind(this)()
-        },
-
-        _isSelected: function (cellDate, cellType) {
-            var selectedDates = this.d.selectedDates,
-                len = selectedDates.length,
-                result;
-
-            if (!len) return false;
-
-            for (var i = 0; i < len; i++) {
-                if (Datepicker.isSame(selectedDates[i], cellDate, cellType)) {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
         },
 
         show: function () {

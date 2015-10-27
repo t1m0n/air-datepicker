@@ -21,7 +21,7 @@ var Datepicker;
             minDate: '',
             maxData: '',
 
-            //TODO сделать множественные даты
+            //TODO возможно добавить огрнаичивать число выделяемых дат
             multipleDates: false,
 
             // navigation
@@ -29,6 +29,7 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
+            // TODO сделать с множественными датами
             onChange: ''
         };
 
@@ -160,12 +161,21 @@ var Datepicker;
 
         selectDate: function (date) {
             if (this.opts.multipleDates) {
-                // validate, push
+                if (!this._isSelected(date)) {
+                    console.log('push');
+                    this.selectedDates.push(date);
+                }
             } else {
                 this.selectedDates = [date];
             }
 
             this.views[this.currentView]._render()
+        },
+
+        _isSelected: function (checkDate, cellType) {
+            return this.selectedDates.some(function (date) {
+                return Datepicker.isSame(date, checkDate, cellType)
+            })
         },
 
         get parsedDate() {

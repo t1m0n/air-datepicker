@@ -21,7 +21,7 @@ var Datepicker;
             minDate: '',
             maxData: '',
 
-            //TODO сделать множественные даты
+            //TODO возможно добавить огрнаичивать число выделяемых дат
             multipleDates: false,
 
             // navigation
@@ -29,6 +29,7 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
+            // TODO сделать с множественными датами
             onChange: ''
         };
 
@@ -160,12 +161,21 @@ var Datepicker;
 
         selectDate: function (date) {
             if (this.opts.multipleDates) {
-                // validate, push
+                if (!this._isSelected(date)) {
+                    console.log('push');
+                    this.selectedDates.push(date);
+                }
             } else {
                 this.selectedDates = [date];
             }
 
             this.views[this.currentView]._render()
+        },
+
+        _isSelected: function (checkDate, cellType) {
+            return this.selectedDates.some(function (date) {
+                return Datepicker.isSame(date, checkDate, cellType)
+            })
         },
 
         get parsedDate() {
@@ -446,7 +456,7 @@ Datepicker.Cell = function () {
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
             if (d.month != this.d.parsedDate.month) _class += " -another-month-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
-            if (this._isSelected(date, 'day')) _class += ' -selected-';
+            if (this.d._isSelected(date, 'day')) _class += ' -selected-';
 
             return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
         },
@@ -532,23 +542,6 @@ Datepicker.Cell = function () {
 
         _render: function () {
             this._renderTypes[this.type].bind(this)()
-        },
-
-        _isSelected: function (cellDate, cellType) {
-            var selectedDates = this.d.selectedDates,
-                len = selectedDates.length,
-                result;
-
-            if (!len) return false;
-
-            for (var i = 0; i < len; i++) {
-                if (Datepicker.isSame(selectedDates[i], cellDate, cellType)) {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
         },
 
         show: function () {
