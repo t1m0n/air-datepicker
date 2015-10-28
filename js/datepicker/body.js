@@ -94,7 +94,7 @@
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
 
-            return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
+            return '<div class="' + _class + '" data-date="' + date.getDate() + '" data-month="' + date.getMonth() + '">' + date.getDate() + '</div>';
         },
 
         /**
@@ -196,10 +196,10 @@
         _handleClick: {
             days: function (el) {
                 var date = el.data('date'),
+                    month = el.data('month'),
                     d = this.d.parsedDate;
 
-                this.d.date = new Date(d.year, d.month, date);
-                this.d.selectDate(this.d.date);
+                this.d.selectDate(new Date(d.year, month, date));
 
                 if (this.d.opts.onChange) {
                     this.d._triggerOnChange()

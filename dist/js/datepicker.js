@@ -22,14 +22,14 @@ var Datepicker;
             maxData: '',
 
             //TODO возможно добавить огрнаичивать число выделяемых дат
-            multipleDates: false,
+            multipleDates: true,
+            multipleDatesSeparator: ',',
 
             // navigation
             prevHtml: '&laquo;',
             nextHtml: '&raquo;',
 
             // events
-            // TODO сделать с множественными датами
             onChange: ''
         };
 
@@ -81,7 +81,7 @@ var Datepicker;
 
         _buildDatepickersContainer: function () {
             this.containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>')
+            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
             $datepickersContainer = $('#datepickers-container');
         },
 
@@ -100,9 +100,25 @@ var Datepicker;
         },
 
         _triggerOnChange: function (cellType) {
-            var dateString = this.formatDate(this.opts.dateFormat, this.date);
+            var selectedDates = this.selectedDates,
+                parsedSelected = Datepicker.getParsedDate(selectedDates[0]),
+                formattedDates = this.formatDate(this.opts.dateFormat, selectedDates[0]),
+                _this = this,
+                dates = new Date(parsedSelected.year, parsedSelected.month, parsedSelected.date);
 
-            this.opts.onChange(dateString, this.date, this);
+            if (this.opts.multipleDates) {
+                formattedDates = selectedDates.map(function (date) {
+                    return _this.formatDate(_this.opts.dateFormat, date)
+                }).join(this.opts.multipleDatesSeparator);
+
+                // Create new dates array, to separate it from original selectedDates
+                dates = selectedDates.map(function(date) {
+                    var parsedDate = Datepicker.getParsedDate(date);
+                    return new Date(parsedDate.year, parsedDate.month, parsedDate.date)
+                })
+            }
+
+            this.opts.onChange(formattedDates, dates, this);
         },
 
         next: function () {
@@ -137,7 +153,7 @@ var Datepicker;
 
         formatDate: function (string, date) {
             var result = string,
-                d = this.parsedDate;
+                d = Datepicker.getParsedDate(date);
 
             switch (true) {
                 case /dd/.test(result):
@@ -162,7 +178,6 @@ var Datepicker;
         selectDate: function (date) {
             if (this.opts.multipleDates) {
                 if (!this._isSelected(date)) {
-                    console.log('push');
                     this.selectedDates.push(date);
                 }
             } else {
@@ -458,7 +473,7 @@ Datepicker.Cell = function () {
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
 
-            return '<div class="' + _class + '" data-date="' + date.getDate() + '">' + date.getDate() + '</div>';
+            return '<div class="' + _class + '" data-date="' + date.getDate() + '" data-month="' + date.getMonth() + '">' + date.getDate() + '</div>';
         },
 
         /**
@@ -560,10 +575,10 @@ Datepicker.Cell = function () {
         _handleClick: {
             days: function (el) {
                 var date = el.data('date'),
+                    month = el.data('month'),
                     d = this.d.parsedDate;
 
-                this.d.date = new Date(d.year, d.month, date);
-                this.d.selectDate(this.d.date);
+                this.d.selectDate(new Date(d.year, month, date));
 
                 if (this.d.opts.onChange) {
                     this.d._triggerOnChange()
