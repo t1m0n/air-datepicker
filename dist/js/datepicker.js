@@ -16,13 +16,17 @@ var Datepicker;
             weekends: [6, 0],
             defaultView: 'days',
             dateFormat: 'dd.mm.yyyy',
+            toggleSelected: true,
+
+            showOtherMonths: '',
+            selectOtherMonths: '',
 
             //TODO сделать минимальные, максимальные даты
             minDate: '',
-            maxData: '',
+            maxDate: '',
 
             //TODO возможно добавить огрнаичивать число выделяемых дат
-            multipleDates: true,
+            multipleDates: false,
             multipleDatesSeparator: ',',
 
             // navigation
@@ -100,6 +104,10 @@ var Datepicker;
         },
 
         _triggerOnChange: function (cellType) {
+            if (!this.selectedDates.length) {
+                return this.opts.onChange('', '', this);
+            }
+
             var selectedDates = this.selectedDates,
                 parsedSelected = Datepicker.getParsedDate(selectedDates[0]),
                 formattedDates = this.formatDate(this.opts.dateFormat, selectedDates[0]),
@@ -185,6 +193,19 @@ var Datepicker;
             }
 
             this.views[this.currentView]._render()
+        },
+
+        removeDate: function (date) {
+            var selected = this.selectedDates,
+                _this = this;
+
+            return selected.some(function (curDate, i) {
+                if (Datepicker.isSame(curDate, date)) {
+                    selected.splice(i, 1);
+                    _this.views[_this.currentView]._render();
+                    return true
+                }
+            })
         },
 
         _isSelected: function (checkDate, cellType) {
@@ -469,7 +490,7 @@ Datepicker.Cell = function () {
                 d = Datepicker.getParsedDate(date);
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
-            if (d.month != this.d.parsedDate.month) _class += " -another-month-";
+            if (d.month != this.d.parsedDate.month) _class += " -other-month-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
 
@@ -576,11 +597,20 @@ Datepicker.Cell = function () {
             days: function (el) {
                 var date = el.data('date'),
                     month = el.data('month'),
-                    d = this.d.parsedDate;
+                    d = this.d.parsedDate,
+                    selectedDate = new Date(d.year, month, date),
+                    alreadySelected = this.d._isSelected(selectedDate, 'day'),
+                    triggerOnChange = true;
 
-                this.d.selectDate(new Date(d.year, month, date));
+                if (!alreadySelected) {
+                    this.d.selectDate(selectedDate);
+                } else if (alreadySelected && this.opts.toggleSelected){
+                    this.d.removeDate(selectedDate);
+                } else if (alreadySelected && !this.opts.toggleSelected) {
+                    triggerOnChange = false;
+                }
 
-                if (this.d.opts.onChange) {
+                if (triggerOnChange) {
                     this.d._triggerOnChange()
                 }
             },

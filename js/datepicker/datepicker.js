@@ -16,13 +16,17 @@ var Datepicker;
             weekends: [6, 0],
             defaultView: 'days',
             dateFormat: 'dd.mm.yyyy',
+            toggleSelected: true,
+
+            showOtherMonths: '',
+            selectOtherMonths: '',
 
             //TODO сделать минимальные, максимальные даты
             minDate: '',
-            maxData: '',
+            maxDate: '',
 
             //TODO возможно добавить огрнаичивать число выделяемых дат
-            multipleDates: true,
+            multipleDates: false,
             multipleDatesSeparator: ',',
 
             // navigation
@@ -30,7 +34,6 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
-            // TODO сделать с множественными датами
             onChange: ''
         };
 
@@ -101,6 +104,10 @@ var Datepicker;
         },
 
         _triggerOnChange: function (cellType) {
+            if (!this.selectedDates.length) {
+                return this.opts.onChange('', '', this);
+            }
+
             var selectedDates = this.selectedDates,
                 parsedSelected = Datepicker.getParsedDate(selectedDates[0]),
                 formattedDates = this.formatDate(this.opts.dateFormat, selectedDates[0]),
@@ -186,6 +193,19 @@ var Datepicker;
             }
 
             this.views[this.currentView]._render()
+        },
+
+        removeDate: function (date) {
+            var selected = this.selectedDates,
+                _this = this;
+
+            return selected.some(function (curDate, i) {
+                if (Datepicker.isSame(curDate, date)) {
+                    selected.splice(i, 1);
+                    _this.views[_this.currentView]._render();
+                    return true
+                }
+            })
         },
 
         _isSelected: function (checkDate, cellType) {

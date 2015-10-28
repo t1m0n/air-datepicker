@@ -90,7 +90,7 @@
                 d = Datepicker.getParsedDate(date);
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
-            if (d.month != this.d.parsedDate.month) _class += " -another-month-";
+            if (d.month != this.d.parsedDate.month) _class += " -other-month-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
 
@@ -197,11 +197,20 @@
             days: function (el) {
                 var date = el.data('date'),
                     month = el.data('month'),
-                    d = this.d.parsedDate;
+                    d = this.d.parsedDate,
+                    selectedDate = new Date(d.year, month, date),
+                    alreadySelected = this.d._isSelected(selectedDate, 'day'),
+                    triggerOnChange = true;
 
-                this.d.selectDate(new Date(d.year, month, date));
+                if (!alreadySelected) {
+                    this.d.selectDate(selectedDate);
+                } else if (alreadySelected && this.opts.toggleSelected){
+                    this.d.removeDate(selectedDate);
+                } else if (alreadySelected && !this.opts.toggleSelected) {
+                    triggerOnChange = false;
+                }
 
-                if (this.d.opts.onChange) {
+                if (triggerOnChange) {
                     this.d._triggerOnChange()
                 }
             },
