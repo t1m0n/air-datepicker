@@ -87,14 +87,27 @@
         _getDayHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-day",
                 currentDate = new Date(),
-                d = Datepicker.getParsedDate(date);
+                d = Datepicker.getParsedDate(date),
+                html = d.date;
+
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
-            if (d.month != this.d.parsedDate.month) _class += " -other-month-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
+            if (d.month != this.d.parsedDate.month) {
+                _class += " -other-month-";
 
-            return '<div class="' + _class + '" data-date="' + date.getDate() + '" data-month="' + date.getMonth() + '">' + date.getDate() + '</div>';
+                if (!this.opts.selectOtherMonths || !this.opts.showOtherMonths) {
+                    _class += " -disabled-";
+                }
+
+                if (!this.opts.showOtherMonths) html = '';
+            }
+
+            return '<div class="' + _class + '" ' +
+                'data-date="' + date.getDate() + '" ' +
+                'data-month="' + date.getMonth() + '" ' +
+                'data-year="' + date.getFullYear() + '">' + html + '</div>';
         },
 
         /**
@@ -177,7 +190,7 @@
         },
 
         _render: function () {
-            this._renderTypes[this.type].bind(this)()
+            this._renderTypes[this.type].bind(this)();
         },
 
         show: function () {
@@ -195,10 +208,12 @@
 
         _handleClick: {
             days: function (el) {
+                if (el.hasClass('-disabled-')) return;
+
                 var date = el.data('date'),
                     month = el.data('month'),
-                    d = this.d.parsedDate,
-                    selectedDate = new Date(d.year, month, date),
+                    year = el.data('year'),
+                    selectedDate = new Date(year, month, date),
                     alreadySelected = this.d._isSelected(selectedDate, 'day'),
                     triggerOnChange = true;
 

@@ -33,9 +33,19 @@
     }
   }
 
+  &.-disabled- {
+    cursor: default;
+    background: none;
+  }
+
   &.-selected- {
     color: #fff;
-    background: skyblue;
+    background: $colorCellSelected;
+
+    &.-current- {
+      color: #fff;
+      background: $colorCellSelected;
+    }
   }
 }
 
@@ -43,8 +53,21 @@
 // -------------------------------------------------
 
 .datepicker--cell-day {
+  border-radius: 50%;
+
   &.-other-month- {
     color: $colorAnotherMonth;
+
+    &.-selected- {
+      color: #fff;
+      background: lighten($colorCellSelected, 20%);
+
+      &.-disabled- {
+        background: none;
+        border: none;
+      }
+
+    }
   }
 }
 

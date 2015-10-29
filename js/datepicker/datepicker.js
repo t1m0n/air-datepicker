@@ -9,6 +9,7 @@ var Datepicker;
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
+            //TODO сделать работу с инпутом
             inline: true,
             region: 'ru',
             firstDay: 1, // Week's first day
@@ -18,8 +19,10 @@ var Datepicker;
             dateFormat: 'dd.mm.yyyy',
             toggleSelected: true,
 
-            showOtherMonths: '',
-            selectOtherMonths: '',
+            //TODO сделать тоже самое с годами
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            moveToOtherMonthsOnSelect: true,
 
             //TODO сделать минимальные, максимальные даты
             minDate: '',
@@ -56,7 +59,7 @@ var Datepicker;
         }
 
         this.inited = false;
-
+        this.silent = false; // Need to prevent unnecessary rendering
         this.currentDate = this.opts.start;
         this.currentView = this.opts.defaultView;
         this.selectedDates = [];
@@ -184,6 +187,15 @@ var Datepicker;
         },
 
         selectDate: function (date) {
+            var d = this.parsedDate;
+
+            if (date.getMonth() != d.month && this.opts.moveToOtherMonthsOnSelect) {
+                this.silent = true;
+                this.date = new Date(date.getFullYear(),date.getMonth(), 1);
+                this.silent = false;
+                this.nav._render()
+            }
+
             if (this.opts.multipleDates) {
                 if (!this._isSelected(date)) {
                     this.selectedDates.push(date);
@@ -221,7 +233,7 @@ var Datepicker;
         set date (val) {
             this.currentDate = val;
 
-            if (this.inited) {
+            if (this.inited && !this.silent) {
                 this.views[this.view]._render();
                 this.nav._render();
             }

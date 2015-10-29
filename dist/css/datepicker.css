@@ -8,8 +8,7 @@
   width: 224px; }
 
 .datepicker--body {
-  display: none;
-  margin: -1px; }
+  display: none; }
   .datepicker--body.active {
     display: block; }
 
@@ -77,12 +76,26 @@
     color: #60C4F5; }
     .datepicker--cell.-current-:hover {
       background: rgba(96, 196, 245, 0.05); }
+  .datepicker--cell.-disabled- {
+    cursor: default;
+    background: none; }
   .datepicker--cell.-selected- {
     color: #fff;
     background: skyblue; }
+    .datepicker--cell.-selected-.-current- {
+      color: #fff;
+      background: skyblue; }
 
-.datepicker--cell-day.-other-month- {
-  color: #ddd; }
+.datepicker--cell-day {
+  border-radius: 50%; }
+  .datepicker--cell-day.-other-month- {
+    color: #ddd; }
+    .datepicker--cell-day.-other-month-.-selected- {
+      color: #fff;
+      background: #def2fa; }
+      .datepicker--cell-day.-other-month-.-selected-.-disabled- {
+        background: none;
+        border: none; }
 
 .datepicker--cell-month {
   width: 33.33%;
