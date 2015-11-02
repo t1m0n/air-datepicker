@@ -94,6 +94,7 @@
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
+            if (!this.d._isInRange(date)) _class += ' -disabled-';
             if (d.month != this.d.parsedDate.month) {
                 _class += " -other-month-";
 
@@ -136,6 +137,7 @@
                 loc = this.d.loc;
 
             if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
+            if (!this.d._isInRange(date, 'month')) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + loc.months[d.month] + '</div>'
         },
@@ -165,6 +167,7 @@
             }
 
             if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
+            if (!this.d._isInRange(date, 'year')) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + d.year + '</div>'
         },

@@ -78,6 +78,7 @@
       background: rgba(96, 196, 245, 0.05); }
   .datepicker--cell.-disabled- {
     cursor: default;
+    color: #ddd;
     background: none; }
   .datepicker--cell.-selected- {
     color: #fff;

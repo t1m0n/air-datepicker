@@ -24,9 +24,10 @@ var Datepicker;
             selectOtherMonths: true,
             moveToOtherMonthsOnSelect: true,
 
-            //TODO сделать минимальные, максимальные даты
             minDate: '',
             maxDate: '',
+            //TODO сделать реакцию навигации на минимальную и максимальную даты
+            disableNavWhenOutOfRange: '',
 
             //TODO возможно добавить огрнаичивать число выделяемых дат
             multipleDates: false,
@@ -60,8 +61,11 @@ var Datepicker;
 
         this.inited = false;
         this.silent = false; // Need to prevent unnecessary rendering
+
         this.currentDate = this.opts.start;
         this.currentView = this.opts.defaultView;
+        this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
+        this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
         this.selectedDates = [];
         this.views = {};
 
@@ -226,6 +230,28 @@ var Datepicker;
             })
         },
 
+        /**
+         * Check if date is between minDate and maxDate
+         * @param date {object} - date object
+         * @param type {string} - cell type
+         * @returns {*}
+         * @private
+         */
+        _isInRange: function (date, type) {
+            var time = date.getTime(),
+                d = Datepicker.getParsedDate(date),
+                min = Datepicker.getParsedDate(this.minDate),
+                max = Datepicker.getParsedDate(this.maxDate),
+                dMinTime = new Date(d.year, d.month, min.date).getTime(),
+                dMaxTime = new Date(d.year, d.month, max.date).getTime(),
+                types = {
+                    day: time >= this.minTime && time <= this.maxTime,
+                    month: dMinTime >= this.minTime && dMaxTime <= this.maxTime,
+                    year: d.year >= min.year && d.year <= max.year
+                };
+            return type ? types[type] : types.day
+        },
+
         get parsedDate() {
             return Datepicker.getParsedDate(this.date);
         },
@@ -266,6 +292,17 @@ var Datepicker;
 
         get view() {
             return this.currentView;
+        },
+
+        get minTime() {
+            // Reset hours to 00:00, in case of new Date() is passed as option to minDate
+            var min = Datepicker.getParsedDate(this.minDate);
+            return new Date(min.year, min.month, min.date).getTime()
+        },
+
+        get maxTime() {
+            var max = Datepicker.getParsedDate(this.maxDate);
+            return new Date(max.year, max.month, max.date).getTime()
         }
     };
 
