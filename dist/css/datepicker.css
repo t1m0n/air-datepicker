@@ -44,6 +44,8 @@
   width: 32px; }
   .datepicker--nav-action:hover {
     background: #eee; }
+  .datepicker--nav-action.-disabled- {
+    visibility: hidden; }
 
 .datepicker--nav-title {
   align-self: center;

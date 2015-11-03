@@ -32,6 +32,7 @@
                 html = Datepicker.template(template, $.extend({title: title}, this.opts));
 
             this.d.$nav.html(html);
+            this.setNavStatus();
         },
 
         _getTitle: function (date) {
@@ -60,7 +61,52 @@
             }
 
             this.d.view = 'years';
+        },
+
+        setNavStatus: function () {
+            if (!(this.opts.minDate || this.opts.maxDate) || !this.opts.disableNavWhenOutOfRange) return;
+
+            var date = this.d.parsedDate,
+                m = date.month,
+                y = date.year,
+                d = date.date;
+
+            switch (this.d.view) {
+                case 'days':
+                    if (!this.d._isInRange(new Date(y, m-1, d), 'month')) {
+                        this._disableNav('prev')
+                    }
+                    if (!this.d._isInRange(new Date(y, m+1, d), 'month')) {
+                        this._disableNav('next')
+                    }
+                    break;
+                case 'months':
+                    if (!this.d._isInRange(new Date(y-1, m, d), 'year')) {
+                        this._disableNav('prev')
+                    }
+                    if (!this.d._isInRange(new Date(y+1, m, d), 'year')) {
+                        this._disableNav('next')
+                    }
+                    break;
+                case 'years':
+                    if (!this.d._isInRange(new Date(y-10, m, d), 'year')) {
+                        this._disableNav('prev')
+                    }
+                    if (!this.d._isInRange(new Date(y+10, m, d), 'year')) {
+                        this._disableNav('next')
+                    }
+                    break;
+            }
+        },
+
+        _disableNav: function (nav) {
+            $('[data-action="' + nav + '"]', this.d.$nav).addClass('-disabled-')
+        },
+
+        _activateNav: function (nav) {
+            $('[data-action="' + nav + '"]', this.d.$nav).removeClass('-disabled-')
         }
+
     }
 
 })();

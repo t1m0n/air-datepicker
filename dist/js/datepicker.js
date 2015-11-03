@@ -26,8 +26,7 @@ var Datepicker;
 
             minDate: '',
             maxDate: '',
-            //TODO сделать реакцию навигации на минимальную и максимальную даты
-            disableNavWhenOutOfRange: '',
+            disableNavWhenOutOfRange: true,
 
             //TODO возможно добавить огрнаичивать число выделяемых дат
             multipleDates: false,
@@ -38,6 +37,7 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
+            //TODO сделать обратный вызов
             onChange: ''
         };
 
@@ -234,7 +234,7 @@ var Datepicker;
          * Check if date is between minDate and maxDate
          * @param date {object} - date object
          * @param type {string} - cell type
-         * @returns {*}
+         * @returns {boolean}
          * @private
          */
         _isInRange: function (date, type) {
@@ -411,6 +411,7 @@ var Datepicker;
                 html = Datepicker.template(template, $.extend({title: title}, this.opts));
 
             this.d.$nav.html(html);
+            this.setNavStatus();
         },
 
         _getTitle: function (date) {
@@ -439,7 +440,52 @@ var Datepicker;
             }
 
             this.d.view = 'years';
+        },
+
+        setNavStatus: function () {
+            if (!(this.opts.minDate || this.opts.maxDate) || !this.opts.disableNavWhenOutOfRange) return;
+
+            var date = this.d.parsedDate,
+                m = date.month,
+                y = date.year,
+                d = date.date;
+
+            switch (this.d.view) {
+                case 'days':
+                    if (!this.d._isInRange(new Date(y, m-1, d), 'month')) {
+                        this._disableNav('prev')
+                    }
+                    if (!this.d._isInRange(new Date(y, m+1, d), 'month')) {
+                        this._disableNav('next')
+                    }
+                    break;
+                case 'months':
+                    if (!this.d._isInRange(new Date(y-1, m, d), 'year')) {
+                        this._disableNav('prev')
+                    }
+                    if (!this.d._isInRange(new Date(y+1, m, d), 'year')) {
+                        this._disableNav('next')
+                    }
+                    break;
+                case 'years':
+                    if (!this.d._isInRange(new Date(y-10, m, d), 'year')) {
+                        this._disableNav('prev')
+                    }
+                    if (!this.d._isInRange(new Date(y+10, m, d), 'year')) {
+                        this._disableNav('next')
+                    }
+                    break;
+            }
+        },
+
+        _disableNav: function (nav) {
+            $('[data-action="' + nav + '"]', this.d.$nav).addClass('-disabled-')
+        },
+
+        _activateNav: function (nav) {
+            $('[data-action="' + nav + '"]', this.d.$nav).removeClass('-disabled-')
         }
+
     }
 
 })();
@@ -685,13 +731,17 @@ Datepicker.Cell = function () {
                 var month = el.data('month'),
                     d = this.d.parsedDate;
 
+                this.d.silent = true;
                 this.d.date = new Date(d.year, month, 1);
+                this.d.silent = false;
                 this.d.view = 'days';
             },
             years: function (el) {
                 var year = el.data('year');
 
+                this.d.silent = true;
                 this.d.date = new Date(year, 0, 1);
+                this.d.silent = false;
                 this.d.view = 'months';
             }
         },

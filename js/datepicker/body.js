@@ -236,13 +236,17 @@
                 var month = el.data('month'),
                     d = this.d.parsedDate;
 
+                this.d.silent = true;
                 this.d.date = new Date(d.year, month, 1);
+                this.d.silent = false;
                 this.d.view = 'days';
             },
             years: function (el) {
                 var year = el.data('year');
 
+                this.d.silent = true;
                 this.d.date = new Date(year, 0, 1);
+                this.d.silent = false;
                 this.d.view = 'months';
             }
         },

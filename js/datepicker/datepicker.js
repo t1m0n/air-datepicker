@@ -26,8 +26,7 @@ var Datepicker;
 
             minDate: '',
             maxDate: '',
-            //TODO сделать реакцию навигации на минимальную и максимальную даты
-            disableNavWhenOutOfRange: '',
+            disableNavWhenOutOfRange: true,
 
             //TODO возможно добавить огрнаичивать число выделяемых дат
             multipleDates: false,
@@ -38,6 +37,7 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
+            //TODO сделать обратный вызов
             onChange: ''
         };
 
@@ -234,7 +234,7 @@ var Datepicker;
          * Check if date is between minDate and maxDate
          * @param date {object} - date object
          * @param type {string} - cell type
-         * @returns {*}
+         * @returns {boolean}
          * @private
          */
         _isInRange: function (date, type) {

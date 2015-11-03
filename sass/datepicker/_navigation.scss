@@ -25,6 +25,10 @@
   &:hover {
     background: $colorCellHover;
   }
+
+  &.-disabled- {
+    visibility: hidden;
+  }
 }
 
 .datepicker--nav-title {
