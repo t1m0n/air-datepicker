@@ -16,6 +16,8 @@ var Datepicker;
             start: '', // Start date
             weekends: [6, 0],
             defaultView: 'days',
+            //TODO сделать минимальный вид
+            minView: 'days',
             dateFormat: 'dd.mm.yyyy',
             toggleSelected: true,
 
@@ -37,8 +39,8 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
-            //TODO сделать обратный вызов
-            onChange: ''
+            onChange: '',
+            onRenderCell: ''
         };
 
     Datepicker  = function (el, options) {

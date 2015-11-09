@@ -16,6 +16,8 @@ var Datepicker;
             start: '', // Start date
             weekends: [6, 0],
             defaultView: 'days',
+            //TODO сделать минимальный вид
+            minView: 'days',
             dateFormat: 'dd.mm.yyyy',
             toggleSelected: true,
 
@@ -37,8 +39,8 @@ var Datepicker;
             nextHtml: '&raquo;',
 
             // events
-            //TODO сделать обратный вызов
-            onChange: ''
+            onChange: '',
+            onRenderCell: ''
         };
 
     Datepicker  = function (el, options) {
@@ -583,13 +585,19 @@ Datepicker.Cell = function () {
             var _class = "datepicker--cell datepicker--cell-day",
                 currentDate = new Date(),
                 d = Datepicker.getParsedDate(date),
+                render,
                 html = d.date;
 
+            if (this.opts.onRenderCell) {
+                render = this.opts.onRenderCell(date, 'day') || {};
+                html = render.html ? render.html : html;
+                _class += render.classes ? ' ' + render.classes : '';
+            }
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
-            if (!this.d._isInRange(date)) _class += ' -disabled-';
+            if (!this.d._isInRange(date) || render.disabled) _class += ' -disabled-';
             if (d.month != this.d.parsedDate.month) {
                 _class += " -other-month-";
 
@@ -629,12 +637,20 @@ Datepicker.Cell = function () {
             var _class = "datepicker--cell datepicker--cell-month",
                 d = Datepicker.getParsedDate(date),
                 currentDate = new Date(),
-                loc = this.d.loc;
+                loc = this.d.loc,
+                html = loc.months[d.month],
+                render = {};
+
+            if (this.opts.onRenderCell) {
+                render = this.opts.onRenderCell(date, 'month') || {};
+                html = render.html ? render.html : html;
+                _class += render.classes ? ' ' + render.classes : '';
+            }
 
             if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
-            if (!this.d._isInRange(date, 'month')) _class += ' -disabled-';
+            if (!this.d._isInRange(date, 'month') || render.disabled) _class += ' -disabled-';
 
-            return '<div class="' + _class + '" data-month="' + d.month + '">' + loc.months[d.month] + '</div>'
+            return '<div class="' + _class + '" data-month="' + d.month + '">' + html + '</div>'
         },
 
         _getYearsHtml: function (date) {
@@ -655,16 +671,24 @@ Datepicker.Cell = function () {
             var _class = "datepicker--cell datepicker--cell-year",
                 decade = Datepicker.getDecade(this.d.date),
                 currentDate = new Date(),
-                d = Datepicker.getParsedDate(date);
+                d = Datepicker.getParsedDate(date),
+                html = d.year,
+                render = {};
+
+            if (this.opts.onRenderCell) {
+                render = this.opts.onRenderCell(date, 'year') || {};
+                html = render.html ? render.html : html;
+                _class += render.classes ? ' ' + render.classes : '';
+            }
 
             if (d.year < decade[0] || d.year > decade[1]) {
-                _class += ' -another-decade-';
+                _class += ' -other-decade-';
             }
 
             if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
-            if (!this.d._isInRange(date, 'year')) _class += ' -disabled-';
+            if (!this.d._isInRange(date, 'year') || render.disabled) _class += ' -disabled-';
 
-            return '<div class="' + _class + '" data-year="' + d.year + '">' + d.year + '</div>'
+            return '<div class="' + _class + '" data-year="' + d.year + '">' + html + '</div>'
         },
 
         _renderTypes: {
@@ -706,8 +730,6 @@ Datepicker.Cell = function () {
 
         _handleClick: {
             days: function (el) {
-                if (el.hasClass('-disabled-')) return;
-
                 var date = el.data('date'),
                     month = el.data('month'),
                     year = el.data('year'),
@@ -748,6 +770,8 @@ Datepicker.Cell = function () {
 
         _onClickCell: function (e) {
             var $el = $(e.target).closest('.datepicker--cell');
+
+            if ($el.hasClass('-disabled-')) return;
 
             this._handleClick[this.d.currentView].bind(this)($el);
         }
