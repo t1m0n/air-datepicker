@@ -413,6 +413,9 @@ var Datepicker;
                 html = Datepicker.template(template, $.extend({title: title}, this.opts));
 
             this.d.$nav.html(html);
+            if (this.d.view == 'years') {
+                $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
+            }
             this.setNavStatus();
         },
 
@@ -436,7 +439,9 @@ var Datepicker;
             this.d[action]();
         },
 
-        _onClickNavTitle: function () {
+        _onClickNavTitle: function (e) {
+            if ($(e.target).hasClass('-disabled-')) return;
+
             if (this.d.view == 'days') {
                 return this.d.view = 'months'
             }
@@ -585,7 +590,7 @@ Datepicker.Cell = function () {
             var _class = "datepicker--cell datepicker--cell-day",
                 currentDate = new Date(),
                 d = Datepicker.getParsedDate(date),
-                render,
+                render = {},
                 html = d.date;
 
             if (this.opts.onRenderCell) {

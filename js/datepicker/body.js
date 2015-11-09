@@ -88,7 +88,7 @@
             var _class = "datepicker--cell datepicker--cell-day",
                 currentDate = new Date(),
                 d = Datepicker.getParsedDate(date),
-                render,
+                render = {},
                 html = d.date;
 
             if (this.opts.onRenderCell) {

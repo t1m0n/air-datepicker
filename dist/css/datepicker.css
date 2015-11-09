@@ -53,6 +53,9 @@
   border-radius: 2px; }
   .datepicker--nav-title:hover {
     background: #eee; }
+  .datepicker--nav-title.-disabled- {
+    cursor: default;
+    background: none; }
 
 /* -------------------------------------------------
     Datepicker cells

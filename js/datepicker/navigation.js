@@ -32,6 +32,9 @@
                 html = Datepicker.template(template, $.extend({title: title}, this.opts));
 
             this.d.$nav.html(html);
+            if (this.d.view == 'years') {
+                $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
+            }
             this.setNavStatus();
         },
 
@@ -55,7 +58,9 @@
             this.d[action]();
         },
 
-        _onClickNavTitle: function () {
+        _onClickNavTitle: function (e) {
+            if ($(e.target).hasClass('-disabled-')) return;
+
             if (this.d.view == 'days') {
                 return this.d.view = 'months'
             }

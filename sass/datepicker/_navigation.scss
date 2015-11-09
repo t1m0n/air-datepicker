@@ -39,4 +39,9 @@
   &:hover {
     background: $colorCellHover;
   }
+
+  &.-disabled- {
+    cursor: default;
+    background: none;
+  }
 }
