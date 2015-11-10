@@ -12,19 +12,22 @@ var Datepicker;
             //TODO сделать работу с инпутом
             inline: true,
             region: 'ru',
-            firstDay: 1, // Week's first day
             start: '', // Start date
+            firstDay: 1, // Week's first day
             weekends: [6, 0],
-            defaultView: 'days',
-            //TODO сделать минимальный вид
-            minView: 'days',
             dateFormat: 'dd.mm.yyyy',
             toggleSelected: true,
 
-            //TODO сделать тоже самое с годами
+            defaultView: 'years',
+            minView: 'years',
+
             showOtherMonths: true,
             selectOtherMonths: true,
             moveToOtherMonthsOnSelect: true,
+
+            showOtherYears: true,
+            selectOtherYears: true,
+            moveToOtherYearsOnSelect: true,
 
             minDate: '',
             maxDate: '',
@@ -77,13 +80,15 @@ var Datepicker;
 
     Datepicker.prototype = {
         containerBuilt: false,
+        viewIndexes: ['days', 'months', 'years'],
+
         init: function () {
             this._buildBaseHtml();
 
             this.nav = new Datepicker.Navigation(this, this.opts);
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
-
             this.views[this.currentView].show();
+            this.view = this.currentView;
 
             this.inited = true;
         },
@@ -193,11 +198,25 @@ var Datepicker;
         },
 
         selectDate: function (date) {
-            var d = this.parsedDate;
+            var d = this.parsedDate,
+                newDate = '';
 
-            if (date.getMonth() != d.month && this.opts.moveToOtherMonthsOnSelect) {
+            if (this.view == 'days') {
+                if (date.getMonth() != d.month && this.opts.moveToOtherMonthsOnSelect) {
+                    newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+
+                }
+            }
+
+            if (this.view == 'years') {
+                if (date.getFullYear() != d.year && this.opts.moveToOtherYearsOnSelect) {
+                    newDate = new Date(date.getFullYear(), 0, 1);
+                }
+            }
+
+            if (newDate) {
                 this.silent = true;
-                this.date = new Date(date.getFullYear(),date.getMonth(), 1);
+                this.date = newDate;
                 this.silent = false;
                 this.nav._render()
             }
@@ -276,6 +295,7 @@ var Datepicker;
         set view (val) {
             this.prevView = this.currentView;
             this.currentView = val;
+            this.viewIndex = this.viewIndexes.indexOf(val);
 
             if (this.inited) {
                 if (!this.views[val]) {
@@ -297,7 +317,6 @@ var Datepicker;
         },
 
         get minTime() {
-            // Reset hours to 00:00, in case of new Date() is passed as option to minDate
             var min = Datepicker.getParsedDate(this.minDate);
             return new Date(min.year, min.month, min.date).getTime()
         },
@@ -307,6 +326,9 @@ var Datepicker;
             return new Date(max.year, max.month, max.date).getTime()
         }
     };
+
+    //  Utils
+    // -------------------------------------------------
 
     Datepicker.getDaysCount = function (date) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();

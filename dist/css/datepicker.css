@@ -1,3 +1,13 @@
+.datepicker--cell-day.-other-month-, .datepicker--cell-year.-other-decade- {
+  color: #ddd;
+  font-size: .9em; }
+  .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
+    color: #fff;
+    background: #def2fa; }
+  .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
+    background: none;
+    border: none; }
+
 /* -------------------------------------------------
     Datepicker
    ------------------------------------------------- */
@@ -23,6 +33,16 @@
   width: 32px;
   height: 32px;
   text-align: center; }
+
+.datepicker--cell-day.-other-month-, .datepicker--cell-year.-other-decade- {
+  color: #ddd;
+  font-size: .9em; }
+  .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
+    color: #fff;
+    background: #def2fa; }
+  .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
+    background: none;
+    border: none; }
 
 /* -------------------------------------------------
     Navigation
@@ -56,6 +76,16 @@
   .datepicker--nav-title.-disabled- {
     cursor: default;
     background: none; }
+
+.datepicker--cell-day.-other-month-, .datepicker--cell-year.-other-decade- {
+  color: #ddd;
+  font-size: .9em; }
+  .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
+    color: #fff;
+    background: #def2fa; }
+  .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
+    background: none;
+    border: none; }
 
 /* -------------------------------------------------
     Datepicker cells
@@ -94,14 +124,6 @@
 
 .datepicker--cell-day {
   border-radius: 50%; }
-  .datepicker--cell-day.-other-month- {
-    color: #ddd; }
-    .datepicker--cell-day.-other-month-.-selected- {
-      color: #fff;
-      background: #def2fa; }
-      .datepicker--cell-day.-other-month-.-selected-.-disabled- {
-        background: none;
-        border: none; }
 
 .datepicker--cell-month {
   width: 33.33%;
@@ -110,5 +132,3 @@
 .datepicker--cell-year {
   width: 25%;
   height: 40px; }
-  .datepicker--cell-year.-other-decade- {
-    color: #ddd; }

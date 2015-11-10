@@ -14,3 +14,19 @@ $colorCellHover: #eee;
 $colorCellCurrent: #60C4F5;
 $colorCellSelected: skyblue;
 $colorCellWeekend: '';
+
+// Objects
+%otherMonth {
+  color: $colorAnotherMonth;
+  font-size: .9em;
+
+  &.-selected- {
+    color: #fff;
+    background: lighten($colorCellSelected, 20%);
+  }
+
+  &:empty {
+    background: none;
+    border: none;
+  }
+}

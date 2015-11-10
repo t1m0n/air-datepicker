@@ -57,18 +57,7 @@
   border-radius: 50%;
 
   &.-other-month- {
-    color: $colorAnotherMonth;
-
-    &.-selected- {
-      color: #fff;
-      background: lighten($colorCellSelected, 20%);
-
-      &.-disabled- {
-        background: none;
-        border: none;
-      }
-
-    }
+    @extend %otherMonth;
   }
 }
 
@@ -99,6 +88,6 @@
   height: 40px;
 
   &.-other-decade- {
-    color: $colorAnotherMonth;
+    @extend %otherMonth;
   }
 }

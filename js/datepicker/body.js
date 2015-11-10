@@ -104,7 +104,7 @@
             if (d.month != this.d.parsedDate.month) {
                 _class += " -other-month-";
 
-                if (!this.opts.selectOtherMonths || !this.opts.showOtherMonths) {
+                if (!this.opts.selectOtherMonths) {
                     _class += " -disabled-";
                 }
 
@@ -151,6 +151,7 @@
             }
 
             if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
+            if (this.d._isSelected(date, 'month')) _class += ' -selected-';
             if (!this.d._isInRange(date, 'month') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + html + '</div>'
@@ -186,9 +187,16 @@
 
             if (d.year < decade[0] || d.year > decade[1]) {
                 _class += ' -other-decade-';
+
+                if (!this.opts.selectOtherYears) {
+                    _class += " -disabled-";
+                }
+
+                if (!this.opts.showOtherYears) html = '';
             }
 
             if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
+            if (this.d._isSelected(date, 'year')) _class += ' -selected-';
             if (!this.d._isInRange(date, 'year') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + html + '</div>'
@@ -231,43 +239,38 @@
         //  Events
         // -------------------------------------------------
 
-        _handleClick: {
-            days: function (el) {
-                var date = el.data('date'),
-                    month = el.data('month'),
-                    year = el.data('year'),
-                    selectedDate = new Date(year, month, date),
-                    alreadySelected = this.d._isSelected(selectedDate, 'day'),
-                    triggerOnChange = true;
+        _handleClick: function (el) {
+            var date = el.data('date') || 1,
+                month = el.data('month') || 0,
+                year = el.data('year') || this.d.parsedDate.year;
 
-                if (!alreadySelected) {
-                    this.d.selectDate(selectedDate);
-                } else if (alreadySelected && this.opts.toggleSelected){
-                    this.d.removeDate(selectedDate);
-                } else if (alreadySelected && !this.opts.toggleSelected) {
-                    triggerOnChange = false;
-                }
-
-                if (triggerOnChange) {
-                    this.d._triggerOnChange()
-                }
-            },
-            months: function (el) {
-                var month = el.data('month'),
-                    d = this.d.parsedDate;
+            // Change view if min view does not reach yet
+            if (this.d.view != this.opts.minView) {
+                var nextViewIndex = this.d.viewIndex - 1;
 
                 this.d.silent = true;
-                this.d.date = new Date(d.year, month, 1);
+                this.d.date = new Date(year, month, date);
                 this.d.silent = false;
-                this.d.view = 'days';
-            },
-            years: function (el) {
-                var year = el.data('year');
+                this.d.view = this.d.viewIndexes[nextViewIndex];
 
-                this.d.silent = true;
-                this.d.date = new Date(year, 0, 1);
-                this.d.silent = false;
-                this.d.view = 'months';
+                return;
+            }
+
+            // Select date if min view is reached
+            var selectedDate = new Date(year, month, date),
+                alreadySelected = this.d._isSelected(selectedDate, this.d.view.substring(0, this.d.view.length - 1)),
+                triggerOnChange = true;
+
+            if (!alreadySelected) {
+                this.d.selectDate(selectedDate);
+            } else if (alreadySelected && this.opts.toggleSelected){
+                this.d.removeDate(selectedDate);
+            } else if (alreadySelected && !this.opts.toggleSelected) {
+                triggerOnChange = false;
+            }
+
+            if (triggerOnChange) {
+                this.d._triggerOnChange()
             }
         },
 
@@ -276,7 +279,7 @@
 
             if ($el.hasClass('-disabled-')) return;
 
-            this._handleClick[this.d.currentView].bind(this)($el);
+            this._handleClick.bind(this)($el);
         }
     };
 })();
