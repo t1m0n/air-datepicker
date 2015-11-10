@@ -18,8 +18,8 @@ var Datepicker;
             dateFormat: 'dd.mm.yyyy',
             toggleSelected: true,
 
-            defaultView: 'years',
-            minView: 'years',
+            view: 'days',
+            minView: 'days',
 
             showOtherMonths: true,
             selectOtherMonths: true,
@@ -68,7 +68,7 @@ var Datepicker;
         this.silent = false; // Need to prevent unnecessary rendering
 
         this.currentDate = this.opts.start;
-        this.currentView = this.opts.defaultView;
+        this.currentView = this.opts.view;
         this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
         this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
         this.selectedDates = [];
