@@ -33,8 +33,7 @@ var Datepicker;
             maxDate: '',
             disableNavWhenOutOfRange: true,
 
-            //TODO возможно добавить огрнаичивать число выделяемых дат
-            multipleDates: false,
+            multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
 
             // navigation
@@ -222,6 +221,7 @@ var Datepicker;
             }
 
             if (this.opts.multipleDates) {
+                if (this.selectedDates.length === this.opts.multipleDates) return;
                 if (!this._isSelected(date)) {
                     this.selectedDates.push(date);
                 }
