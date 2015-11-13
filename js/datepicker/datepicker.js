@@ -11,7 +11,7 @@ var Datepicker;
         defaults = {
             //TODO сделать работу с инпутом
             inline: true,
-            region: 'ru',
+            language: 'ru',
             start: '', // Start date
             firstDay: 1, // Week's first day
             weekends: [6, 0],
@@ -36,6 +36,9 @@ var Datepicker;
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
 
+            todayButton: false,
+            clearButton: false,
+
             // navigation
             prevHtml: '&laquo;',
             nextHtml: '&raquo;',
@@ -57,7 +60,7 @@ var Datepicker;
             this._buildDatepickersContainer();
         }
 
-        this.loc = Datepicker.region[this.opts.region];
+        this.loc = Datepicker.language[this.opts.language];
 
         if ($body == undefined) {
             $body = $('body');
@@ -84,9 +87,9 @@ var Datepicker;
         init: function () {
             this._buildBaseHtml();
 
-            this.nav = new Datepicker.Navigation(this, this.opts);
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
+            this.nav = new Datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
             this.inited = true;
@@ -116,7 +119,7 @@ var Datepicker;
 
         },
 
-        _triggerOnChange: function (cellType) {
+        _triggerOnChange: function () {
             if (!this.selectedDates.length) {
                 return this.opts.onChange('', '', this);
             }
@@ -187,6 +190,8 @@ var Datepicker;
                     result = result.replace('m',d.month + 1);
                 case /MM/.test(result):
                     result = result.replace('MM', this.loc.months[d.month]);
+                case /M/.test(result):
+                    result = result.replace('M', this.loc.monthsShort[d.month]);
                 case /yyyy/.test(result):
                     result = result.replace('yyyy', d.year);
                 case /yy/.test(result):
@@ -243,6 +248,19 @@ var Datepicker;
                     return true
                 }
             })
+        },
+
+        today: function () {
+            this.silent = true;
+            this.view = this.opts.minView;
+            this.silent = false;
+            this.date = new Date();
+        },
+
+        clear: function () {
+            this.selectedDates = [];
+            this.views[this.currentView]._render();
+            this._triggerOnChange()
         },
 
         _isSelected: function (checkDate, cellType) {
@@ -314,6 +332,10 @@ var Datepicker;
 
         get view() {
             return this.currentView;
+        },
+
+        get cellType() {
+            return this.view.substring(0, this.view.length - 1)
         },
 
         get minTime() {

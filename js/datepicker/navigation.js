@@ -2,11 +2,15 @@
     var template = '' +
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
-        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>';
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
+        buttonsContainerTemplate = '<div class="datepicker--buttons"></div>',
+        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>';
 
     Datepicker.Navigation = function (d, opts) {
         this.d = d;
         this.opts = opts;
+
+        this.$buttonsContainer = '';
 
         this.init();
     };
@@ -20,10 +24,19 @@
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
             this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
+            if (this.$buttonsContainer.length) {
+                this.$buttonsContainer.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
+            }
         },
 
         _buildBaseHtml: function () {
             this._render();
+            if (this.opts.todayButton) {
+                this._addButton('today')
+            }
+            if (this.opts.clearButton) {
+                this._addButton('clear')
+            }
             this.$navButton = $('.datepicker--nav-action', this.d.$nav);
         },
 
@@ -51,21 +64,23 @@
             return types[this.d.view];
         },
 
-        _onClickNavButton: function (e) {
-            var $el = $(e.target),
-                action = $el.data('action');
-
-            this.d[action]();
-        },
-
-        _onClickNavTitle: function (e) {
-            if ($(e.target).hasClass('-disabled-')) return;
-
-            if (this.d.view == 'days') {
-                return this.d.view = 'months'
+        _addButton: function (type) {
+            if (!this.$buttonsContainer.length) {
+                this._addButtonsContainer();
             }
 
-            this.d.view = 'years';
+            var data = {
+                    action: type,
+                    label: this.d.loc[type]
+                },
+                html = Datepicker.template(button, data);
+
+            this.$buttonsContainer.append(html);
+        },
+
+        _addButtonsContainer: function () {
+            this.d.$datepicker.append(buttonsContainerTemplate);
+            this.$buttonsContainer = $('.datepicker--buttons', this.d.$datepicker);
         },
 
         setNavStatus: function () {
@@ -110,8 +125,24 @@
 
         _activateNav: function (nav) {
             $('[data-action="' + nav + '"]', this.d.$nav).removeClass('-disabled-')
-        }
+        },
 
+        _onClickNavButton: function (e) {
+            var $el = $(e.target),
+                action = $el.data('action');
+
+            this.d[action]();
+        },
+
+        _onClickNavTitle: function (e) {
+            if ($(e.target).hasClass('-disabled-')) return;
+
+            if (this.d.view == 'days') {
+                return this.d.view = 'months'
+            }
+
+            this.d.view = 'years';
+        }
     }
 
 })();

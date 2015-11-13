@@ -45,3 +45,27 @@
     background: none;
   }
 }
+
+//  Buttons
+// -------------------------------------------------
+
+.datepicker--buttons {
+  display: flex;
+  margin: $navigationButtonsOffset*2 $navigationButtonsOffset;
+}
+
+.datepicker--button {
+  background: $bgButton;
+  cursor: pointer;
+  border-radius: $datepickerBorderRadius;
+  margin: 0 $navigationButtonsOffset;
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+
+  &:hover {
+    background: $bgButtonHover;
+  }
+}

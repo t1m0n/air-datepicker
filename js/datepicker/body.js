@@ -49,7 +49,7 @@
             if (i > 7) return html;
             if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, ++i);
 
-            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.days[curDay] + '</div>';
+            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.daysShort[curDay] + '</div>';
 
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
@@ -258,7 +258,7 @@
 
             // Select date if min view is reached
             var selectedDate = new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.view.substring(0, this.d.view.length - 1)),
+                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType),
                 triggerOnChange = true;
 
             if (!alreadySelected) {

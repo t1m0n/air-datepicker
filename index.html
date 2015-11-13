@@ -16,6 +16,8 @@
         <script type="text/javascript" src="dist/js/datepicker.js"></script>
         <script type="text/javascript">
             $('.calendar').datepicker({
+                todayButton: true,
+                clearButton: true,
                 onChange: function (dateString, date, inst) {
                     console.log(dateString);
                 }

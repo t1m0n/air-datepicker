@@ -77,6 +77,23 @@
     cursor: default;
     background: none; }
 
+.datepicker--buttons {
+  display: flex;
+  margin: 4px 2px; }
+
+.datepicker--button {
+  background: #f2f2f2;
+  cursor: pointer;
+  border-radius: 2px;
+  margin: 0 2px;
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px; }
+  .datepicker--button:hover {
+    background: #eaeaea; }
+
 .datepicker--cell-day.-other-month-, .datepicker--cell-year.-other-decade- {
   color: #ddd;
   font-size: .9em; }

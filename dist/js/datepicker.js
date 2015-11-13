@@ -11,7 +11,7 @@ var Datepicker;
         defaults = {
             //TODO сделать работу с инпутом
             inline: true,
-            region: 'ru',
+            language: 'ru',
             start: '', // Start date
             firstDay: 1, // Week's first day
             weekends: [6, 0],
@@ -36,6 +36,9 @@ var Datepicker;
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
 
+            todayButton: false,
+            clearButton: false,
+
             // navigation
             prevHtml: '&laquo;',
             nextHtml: '&raquo;',
@@ -57,7 +60,7 @@ var Datepicker;
             this._buildDatepickersContainer();
         }
 
-        this.loc = Datepicker.region[this.opts.region];
+        this.loc = Datepicker.language[this.opts.language];
 
         if ($body == undefined) {
             $body = $('body');
@@ -84,9 +87,9 @@ var Datepicker;
         init: function () {
             this._buildBaseHtml();
 
-            this.nav = new Datepicker.Navigation(this, this.opts);
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
+            this.nav = new Datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
             this.inited = true;
@@ -116,7 +119,7 @@ var Datepicker;
 
         },
 
-        _triggerOnChange: function (cellType) {
+        _triggerOnChange: function () {
             if (!this.selectedDates.length) {
                 return this.opts.onChange('', '', this);
             }
@@ -187,6 +190,8 @@ var Datepicker;
                     result = result.replace('m',d.month + 1);
                 case /MM/.test(result):
                     result = result.replace('MM', this.loc.months[d.month]);
+                case /M/.test(result):
+                    result = result.replace('M', this.loc.monthsShort[d.month]);
                 case /yyyy/.test(result):
                     result = result.replace('yyyy', d.year);
                 case /yy/.test(result):
@@ -243,6 +248,19 @@ var Datepicker;
                     return true
                 }
             })
+        },
+
+        today: function () {
+            this.silent = true;
+            this.view = this.opts.minView;
+            this.silent = false;
+            this.date = new Date();
+        },
+
+        clear: function () {
+            this.selectedDates = [];
+            this.views[this.currentView]._render();
+            this._triggerOnChange()
         },
 
         _isSelected: function (checkDate, cellType) {
@@ -314,6 +332,10 @@ var Datepicker;
 
         get view() {
             return this.currentView;
+        },
+
+        get cellType() {
+            return this.view.substring(0, this.view.length - 1)
         },
 
         get minTime() {
@@ -392,24 +414,30 @@ var Datepicker;
     };
 
 })(window, jQuery, '');
-;(function () {
-    Datepicker.region = {
-        'ru': {
-            days: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
-            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-        }
+Datepicker.language = {
+    ru: {
+        days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+        daysShort: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+        months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+        monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+        today: 'Сегодня',
+        clear: 'Очистить'
     }
-})();
+};
 
 ;(function () {
     var template = '' +
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
-        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>';
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
+        buttonsContainerTemplate = '<div class="datepicker--buttons"></div>',
+        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>';
 
     Datepicker.Navigation = function (d, opts) {
         this.d = d;
         this.opts = opts;
+
+        this.$buttonsContainer = '';
 
         this.init();
     };
@@ -423,10 +451,19 @@ var Datepicker;
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
             this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
+            if (this.$buttonsContainer.length) {
+                this.$buttonsContainer.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
+            }
         },
 
         _buildBaseHtml: function () {
             this._render();
+            if (this.opts.todayButton) {
+                this._addButton('today')
+            }
+            if (this.opts.clearButton) {
+                this._addButton('clear')
+            }
             this.$navButton = $('.datepicker--nav-action', this.d.$nav);
         },
 
@@ -454,21 +491,23 @@ var Datepicker;
             return types[this.d.view];
         },
 
-        _onClickNavButton: function (e) {
-            var $el = $(e.target),
-                action = $el.data('action');
-
-            this.d[action]();
-        },
-
-        _onClickNavTitle: function (e) {
-            if ($(e.target).hasClass('-disabled-')) return;
-
-            if (this.d.view == 'days') {
-                return this.d.view = 'months'
+        _addButton: function (type) {
+            if (!this.$buttonsContainer.length) {
+                this._addButtonsContainer();
             }
 
-            this.d.view = 'years';
+            var data = {
+                    action: type,
+                    label: this.d.loc[type]
+                },
+                html = Datepicker.template(button, data);
+
+            this.$buttonsContainer.append(html);
+        },
+
+        _addButtonsContainer: function () {
+            this.d.$datepicker.append(buttonsContainerTemplate);
+            this.$buttonsContainer = $('.datepicker--buttons', this.d.$datepicker);
         },
 
         setNavStatus: function () {
@@ -513,8 +552,24 @@ var Datepicker;
 
         _activateNav: function (nav) {
             $('[data-action="' + nav + '"]', this.d.$nav).removeClass('-disabled-')
-        }
+        },
 
+        _onClickNavButton: function (e) {
+            var $el = $(e.target),
+                action = $el.data('action');
+
+            this.d[action]();
+        },
+
+        _onClickNavTitle: function (e) {
+            if ($(e.target).hasClass('-disabled-')) return;
+
+            if (this.d.view == 'days') {
+                return this.d.view = 'months'
+            }
+
+            this.d.view = 'years';
+        }
     }
 
 })();
@@ -573,7 +628,7 @@ Datepicker.Cell = function () {
             if (i > 7) return html;
             if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, ++i);
 
-            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.days[curDay] + '</div>';
+            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.daysShort[curDay] + '</div>';
 
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
@@ -782,7 +837,7 @@ Datepicker.Cell = function () {
 
             // Select date if min view is reached
             var selectedDate = new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.view.substring(0, this.d.view.length - 1)),
+                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType),
                 triggerOnChange = true;
 
             if (!alreadySelected) {
