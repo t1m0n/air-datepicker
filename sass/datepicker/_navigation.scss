@@ -8,6 +8,7 @@
   border-bottom: 1px solid $colorGrey;
   display: flex;
   justify-content: space-between;
+  padding: $datepickerPadding;
   height: $navigationHeight;
 }
 
@@ -21,6 +22,7 @@
 
 .datepicker--nav-action {
   width: $dayCellSize;
+  border-radius: $datepickerBorderRadius;
 
   &:hover {
     background: $colorCellHover;
@@ -32,9 +34,8 @@
 }
 
 .datepicker--nav-title {
-  align-self: center;
-  padding: 4px;
   border-radius: $datepickerBorderRadius;
+  padding: 0 8px;
 
   &:hover {
     background: $colorCellHover;
@@ -51,7 +52,7 @@
 
 .datepicker--buttons {
   display: flex;
-  margin: $navigationButtonsOffset*2 $navigationButtonsOffset;
+  margin: 0 $navigationButtonsOffset $datepickerPadding;
 }
 
 .datepicker--button {

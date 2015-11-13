@@ -55,6 +55,7 @@
 
 .datepicker--cell-day {
   border-radius: 50%;
+  width: (100/7)#{'%'};
 
   &.-other-month- {
     @extend %otherMonth;

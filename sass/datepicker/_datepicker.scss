@@ -11,6 +11,10 @@
   width: $datepickerWidth;
 }
 
+.datepicker--content {
+  padding: $datepickerPadding;
+}
+
 //  Body
 // -------------------------------------------------
 
@@ -30,10 +34,12 @@
   display: flex;
   flex-wrap: wrap;
 }
+
 .datepicker--day-name {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
   width: $dayCellSize;
   height: $dayCellSize;
   text-align: center;
