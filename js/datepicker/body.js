@@ -49,7 +49,7 @@
             if (i > 7) return html;
             if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, ++i);
 
-            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.daysShort[curDay] + '</div>';
+            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.daysMin[curDay] + '</div>';
 
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
@@ -64,8 +64,8 @@
             var totalMonthDays = Datepicker.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
-                daysFromPevMonth = firstMonthDay - this.opts.firstDay,
-                daysFromNextMonth = 6 - lastMonthDay + this.opts.firstDay;
+                daysFromPevMonth = firstMonthDay - this.d.loc.firstDay,
+                daysFromNextMonth = 6 - lastMonthDay + this.d.loc.firstDay;
 
             daysFromPevMonth = daysFromPevMonth < 0 ? daysFromPevMonth + 7 : daysFromPevMonth;
             daysFromNextMonth = daysFromNextMonth > 6 ? daysFromNextMonth - 7 : daysFromNextMonth;
@@ -204,7 +204,7 @@
 
         _renderTypes: {
             days: function () {
-                var dayNames = this._getDayNamesHtml(this.opts.firstDay),
+                var dayNames = this._getDayNamesHtml(this.d.loc.firstDay),
                     days = this._getDaysHtml(this.d.currentDate);
 
                 this.$cells.html(days);

@@ -7,9 +7,7 @@ var gulp = require('gulp'),
 
 gulp.task('js', function () {
     gulp.src(['js/datepicker/datepicker.js',
-        'js/datepicker/i18n.js',
         'js/datepicker/navigation.js',
-        'js/datepicker/cell.js',
         'js/datepicker/body.js'])
         .pipe(concat('datepicker.js'))
         .pipe(gulp.dest('dist/js/'))
@@ -24,7 +22,12 @@ gulp.task('sass', function () {
         .pipe(livereload())
 });
 
-gulp.task('build', ['js', 'sass']);
+gulp.task('locale', function () {
+    gulp.src('js/datepicker/i18n/*.js')
+        .pipe(gulp.dest('dist/js/i18n'))
+});
+
+gulp.task('build', ['js', 'sass', 'locale']);
 
 gulp.task('pageSass', function () {
     gulp.src('sass/page-init.scss')

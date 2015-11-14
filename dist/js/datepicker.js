@@ -12,10 +12,10 @@ var Datepicker;
             //TODO сделать работу с инпутом
             inline: true,
             language: 'ru',
-            start: '', // Start date
-            firstDay: 1, // Week's first day
+            startDate: new Date(),
+            firstDay: '',
             weekends: [6, 0],
-            dateFormat: 'dd.mm.yyyy',
+            dateFormat: '',
             toggleSelected: true,
 
             view: 'days',
@@ -53,14 +53,12 @@ var Datepicker;
 
         this.opts = $.extend({}, defaults, options);
 
-        if (!this.opts.start) {
-            this.opts.start = new Date();
+        if (!this.opts.startDate) {
+            this.opts.startDate = new Date();
         }
         if (this.containerBuilt && !this.opts.inline) {
             this._buildDatepickersContainer();
         }
-
-        this.loc = Datepicker.language[this.opts.language];
 
         if ($body == undefined) {
             $body = $('body');
@@ -69,7 +67,7 @@ var Datepicker;
         this.inited = false;
         this.silent = false; // Need to prevent unnecessary rendering
 
-        this.currentDate = this.opts.start;
+        this.currentDate = this.opts.startDate;
         this.currentView = this.opts.view;
         this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
         this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
@@ -86,6 +84,7 @@ var Datepicker;
 
         init: function () {
             this._buildBaseHtml();
+            this._defineLocale(this.opts.language);
 
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
@@ -97,6 +96,26 @@ var Datepicker;
 
         isWeekend: function (day) {
             return this.opts.weekends.indexOf(day) !== -1;
+        },
+
+        _defineLocale: function (lang) {
+            if (typeof lang == 'string') {
+                this.loc = Datepicker.language[lang];
+                if (!this.loc) {
+                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
+                    this.loc = Datepicker.language.ru
+                }
+            } else {
+                this.loc = $.extend({}, Datepicker.language.ru, lang)
+            }
+
+            if (this.opts.dateFormat) {
+                this.loc.dateFormat = this.opts.dateFormat
+            }
+
+            if (this.opts.firstDay) {
+                this.loc.firstDay = this.opts.firstDay
+            }
         },
 
         _buildDatepickersContainer: function () {
@@ -177,6 +196,7 @@ var Datepicker;
 
         formatDate: function (string, date) {
             var result = string,
+                locale = this.loc,
                 d = Datepicker.getParsedDate(date);
 
             switch (true) {
@@ -184,14 +204,18 @@ var Datepicker;
                     result = result.replace('dd', d.fullDate);
                 case /d/.test(result):
                     result = result.replace('d', d.date);
+                case /DD/.test(result):
+                    result = result.replace('DD', locale.days[d.day]);
+                case /D/.test(result):
+                    result = result.replace('D', locale.daysShort[d.day]);
                 case /mm/.test(result):
-                    result = result.replace('mm',d.fullMonth);
+                    result = result.replace('mm', d.fullMonth);
                 case /m/.test(result):
-                    result = result.replace('m',d.month + 1);
+                    result = result.replace('m', d.month + 1);
                 case /MM/.test(result):
                     result = result.replace('MM', this.loc.months[d.month]);
                 case /M/.test(result):
-                    result = result.replace('M', this.loc.monthsShort[d.month]);
+                    result = result.replace('M', locale.monthsShort[d.month]);
                 case /yyyy/.test(result):
                     result = result.replace('yyyy', d.year);
                 case /yy/.test(result):
@@ -395,6 +419,20 @@ var Datepicker;
         return conditions[_type];
     };
 
+    Datepicker.language = {
+        ru: {
+            days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+            daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
+            daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            today: 'Сегодня',
+            clear: 'Очистить',
+            dateFormat: 'dd.mm.yyyy',
+            firstDay: 1
+        }
+    };
+
     $.fn[pluginName] = function ( options ) {
         if (Datepicker.prototype[options]) {
             Datepicker.prototype[options].apply(this.data(pluginName), Array.prototype.slice.call(arguments, 1));
@@ -414,17 +452,6 @@ var Datepicker;
     };
 
 })(window, jQuery, '');
-Datepicker.language = {
-    ru: {
-        days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-        daysShort: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
-        months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-        monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-        today: 'Сегодня',
-        clear: 'Очистить'
-    }
-};
-
 ;(function () {
     var template = '' +
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
@@ -574,9 +601,6 @@ Datepicker.language = {
 
 })();
 
-Datepicker.Cell = function () {
-
-};
 ;(function () {
     var templates = {
         days:'' +
@@ -628,7 +652,7 @@ Datepicker.Cell = function () {
             if (i > 7) return html;
             if (curDay == 7) return this._getDayNamesHtml(firstDay, 0, html, ++i);
 
-            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.daysShort[curDay] + '</div>';
+            html += '<div class="datepicker--day-name' + (this.d.isWeekend(curDay) ? " -weekend-" : "") + '">' + this.d.loc.daysMin[curDay] + '</div>';
 
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
@@ -643,8 +667,8 @@ Datepicker.Cell = function () {
             var totalMonthDays = Datepicker.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
-                daysFromPevMonth = firstMonthDay - this.opts.firstDay,
-                daysFromNextMonth = 6 - lastMonthDay + this.opts.firstDay;
+                daysFromPevMonth = firstMonthDay - this.d.loc.firstDay,
+                daysFromNextMonth = 6 - lastMonthDay + this.d.loc.firstDay;
 
             daysFromPevMonth = daysFromPevMonth < 0 ? daysFromPevMonth + 7 : daysFromPevMonth;
             daysFromNextMonth = daysFromNextMonth > 6 ? daysFromNextMonth - 7 : daysFromNextMonth;
@@ -783,7 +807,7 @@ Datepicker.Cell = function () {
 
         _renderTypes: {
             days: function () {
-                var dayNames = this._getDayNamesHtml(this.opts.firstDay),
+                var dayNames = this._getDayNamesHtml(this.d.loc.firstDay),
                     days = this._getDaysHtml(this.d.currentDate);
 
                 this.$cells.html(days);
