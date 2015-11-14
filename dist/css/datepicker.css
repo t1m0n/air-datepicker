@@ -23,9 +23,27 @@
   width: 224px;
   position: absolute;
   left: -100000px;
-  opacity: 0; }
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, left 0s 0.3s; }
+  .datepicker.-from-top- {
+    transform: translateY(-8px); }
+  .datepicker.-from-right- {
+    transform: translateX(8px); }
+  .datepicker.-from-bottom- {
+    transform: translateY(8px); }
+  .datepicker.-from-left- {
+    transform: translateX(-8px); }
   .datepicker.active {
-    opacity: 1; }
+    opacity: 1;
+    transform: translate(0);
+    transition: opacity 0.3s ease, transform 0.3s ease, left 0s 0s; }
+
+.datepicker-inline .datepicker {
+  position: static;
+  left: auto;
+  right: auto;
+  opacity: 1;
+  transform: none; }
 
 .datepicker--content {
   padding: 2px; }

@@ -10,15 +10,13 @@
     <body>
         <div class="contents">
             <article>
-                <input class="calendar" type="text"/>
+                <div class="calendar"></div>
             </article>
         </div>
         <script type="text/javascript" src="dist/js/datepicker.js"></script>
         <script type="text/javascript" src="dist/js/i18n/datepicker.en.js"></script>
         <script type="text/javascript">
             $('.calendar').datepicker({
-                todayButton: true,
-                clearButton: true,
                 onChange: function (dateString, date, inst) {
                     console.log(dateString);
                 }

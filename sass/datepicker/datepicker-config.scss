@@ -19,6 +19,11 @@ $colorCellWeekend: '';
 $bgButton: #f2f2f2;
 $bgButtonHover: darken($bgButton, 3);
 
+// Transitions
+$transitionSpeed: .3s;
+$transitionEase: ease;
+$transitionOffset: 8px;
+
 // Objects
 %otherMonth {
   color: $colorAnotherMonth;

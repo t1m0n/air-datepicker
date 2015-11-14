@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
+    uglify = require('gulp-uglify'),
     livereload = require('gulp-livereload'),
     concat = require('gulp-concat');
 

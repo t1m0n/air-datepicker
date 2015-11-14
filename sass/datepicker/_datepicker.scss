@@ -18,9 +18,36 @@
   position: absolute;
   left: -100000px;
   opacity: 0;
+  transition: opacity $transitionSpeed $transitionEase, transform $transitionSpeed $transitionEase, left 0s $transitionSpeed;
+
+  &.-from-top- {
+    transform: translateY(-$transitionOffset);
+  }
+  &.-from-right- {
+    transform: translateX($transitionOffset);
+  }
+  &.-from-bottom- {
+    transform: translateY($transitionOffset);
+  }
+  &.-from-left- {
+    transform: translateX(-$transitionOffset);
+  }
+
 
   &.active {
     opacity: 1;
+    transform: translate(0);
+    transition: opacity $transitionSpeed $transitionEase, transform $transitionSpeed $transitionEase, left 0s 0s;
+  }
+}
+
+.datepicker-inline {
+  .datepicker {
+    position: static;
+    left: auto;
+    right: auto;
+    opacity: 1;
+    transform: none;
   }
 }
 
