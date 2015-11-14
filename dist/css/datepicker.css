@@ -11,11 +11,21 @@
 /* -------------------------------------------------
     Datepicker
    ------------------------------------------------- */
+.datepickers-container {
+  position: absolute;
+  left: 0;
+  top: 0; }
+
 .datepicker {
   border: 1px solid #ddd;
   border-radius: 2px;
   box-sizing: content-box;
-  width: 224px; }
+  width: 224px;
+  position: absolute;
+  left: -100000px;
+  opacity: 0; }
+  .datepicker.active {
+    opacity: 1; }
 
 .datepicker--content {
   padding: 2px; }

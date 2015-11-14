@@ -10,13 +10,14 @@ var Datepicker;
             '</div>',
         defaults = {
             //TODO сделать работу с инпутом
-            inline: true,
+            inline: false,
             language: 'ru',
             startDate: new Date(),
             firstDay: '',
             weekends: [6, 0],
             dateFormat: '',
             toggleSelected: true,
+            position: 'bottom left',
 
             view: 'days',
             minView: 'days',
@@ -39,6 +40,8 @@ var Datepicker;
             todayButton: false,
             clearButton: false,
 
+            showEvent: 'focus',
+
             // navigation
             prevHtml: '&laquo;',
             nextHtml: '&raquo;',
@@ -49,22 +52,29 @@ var Datepicker;
         };
 
     Datepicker  = function (el, options) {
-        this.$el = typeof el == 'string' ? $(el) : el;
+        this.el = el;
+        this.$el = $(el);
 
         this.opts = $.extend({}, defaults, options);
-
-        if (!this.opts.startDate) {
-            this.opts.startDate = new Date();
-        }
-        if (this.containerBuilt && !this.opts.inline) {
-            this._buildDatepickersContainer();
-        }
 
         if ($body == undefined) {
             $body = $('body');
         }
 
+        if (!this.opts.startDate) {
+            this.opts.startDate = new Date();
+        }
+
+        if (this.el.nodeName == 'INPUT') {
+            this.elIsInput = true;
+        }
+
+        if (!this.containerBuilt && !this.opts.inline && this.elIsInput) {
+            this._buildDatepickersContainer();
+        }
+
         this.inited = false;
+        this.visible = false;
         this.silent = false; // Need to prevent unnecessary rendering
 
         this.currentDate = this.opts.startDate;
@@ -86,12 +96,25 @@ var Datepicker;
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
 
+            if (this.elIsInput) {
+                if (!this.opts.inline) {
+                    this._bindEvents()
+                }
+            }
+
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
             this.nav = new Datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
             this.inited = true;
+        },
+
+        _bindEvents : function () {
+            this.$el.on(this.opts.showEvent, this._onShowEvent.bind(this));
+            this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
+            this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
+            $body.on('mousedown.datepicker', this._onMouseDownBody.bind(this));
         },
 
         isWeekend: function (day) {
@@ -126,8 +149,13 @@ var Datepicker;
 
         _buildBaseHtml: function () {
             var $appendTarget = this.$el;
-            if(!this.opts.inline) {
-                $appendTarget = $datepickersContainer;
+
+            if(this.el.nodeName == 'INPUT') {
+                if (!this.opts.inline) {
+                    $appendTarget = $datepickersContainer;
+                } else {
+
+                }
             }
             this.$datepicker = $(baseTemplate).appendTo($appendTarget);
             this.$content = $('.datepicker--content', this.$datepicker);
@@ -145,7 +173,7 @@ var Datepicker;
 
             var selectedDates = this.selectedDates,
                 parsedSelected = Datepicker.getParsedDate(selectedDates[0]),
-                formattedDates = this.formatDate(this.opts.dateFormat, selectedDates[0]),
+                formattedDates = this.formatDate(this.loc.dateFormat, selectedDates[0]),
                 _this = this,
                 dates = new Date(parsedSelected.year, parsedSelected.month, parsedSelected.date);
 
@@ -315,6 +343,74 @@ var Datepicker;
             return type ? types[type] : types.day
         },
 
+        _getDimensions: function () {
+            var offset = this.$el.offset();
+
+            return {
+                width: this.$el.outerWidth(),
+                height: this.$el.outerHeight(),
+                left: offset.left,
+                top: offset.top
+            }
+        },
+
+        setPosition: function (position) {
+            var dims = this._getDimensions(),
+                pos = position.split(' '),
+                top, left,
+                offset = 6,
+                main = pos[0],
+                secondary = pos[1];
+
+            switch (main) {
+                case 'bottom':
+                    top = dims.top + dims.height + offset;
+                    break;
+            }
+
+            switch(secondary) {
+                case 'left':
+                    left = dims.left
+            }
+
+            this.$datepicker.css({
+                left: left,
+                top: top
+            })
+        },
+
+        show: function () {
+            this.$datepicker.addClass('active');
+            this.setPosition(this.opts.position);
+            this.visible = true;
+        },
+
+        hide: function () {
+            this.$datepicker.removeClass('active');
+            this.visible = false;
+        },
+
+        _onShowEvent: function () {
+            if (!this.visible) {
+                this.show();
+            }
+        },
+
+        _onMouseDownBody: function (e) {
+            if (!this.inFocus) {
+                this.hide();
+            }
+        },
+
+        _onMouseDownDatepicker: function (e) {
+            this.inFocus = true;
+        },
+
+        _onMouseUpDatepicker: function (e) {
+            this.inFocus = false;
+            this.$el.focus()
+        },
+
         get parsedDate() {
             return Datepicker.getParsedDate(this.date);
         },
@@ -451,7 +547,7 @@ var Datepicker;
         }
     };
 
-})(window, jQuery, '');
+})(window, jQuery);
 ;(function () {
     var template = '' +
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +

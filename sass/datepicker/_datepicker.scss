@@ -4,11 +4,24 @@
     Datepicker
    ------------------------------------------------- */
 
+.datepickers-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .datepicker {
   border: 1px solid $colorGrey;
   border-radius: $datepickerBorderRadius;
   box-sizing: content-box;
   width: $datepickerWidth;
+  position: absolute;
+  left: -100000px;
+  opacity: 0;
+
+  &.active {
+    opacity: 1;
+  }
 }
 
 .datepicker--content {
