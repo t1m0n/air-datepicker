@@ -9,7 +9,6 @@ var Datepicker;
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
-            //TODO сделать кастомизируемые заголовки
             inline: false,
             language: 'ru',
             startDate: new Date(),
@@ -48,6 +47,11 @@ var Datepicker;
             // navigation
             prevHtml: '&laquo;',
             nextHtml: '&raquo;',
+            navTitles: {
+                days: 'MM, yyyy',
+                months: 'yyyy',
+                years: 'yyyy1 - yyyy2'
+            },
 
             // events
             onChange: '',
@@ -228,31 +232,37 @@ var Datepicker;
         },
 
         formatDate: function (string, date) {
+            date = date || this.date;
             var result = string,
                 locale = this.loc,
+                decade = Datepicker.getDecade(date),
                 d = Datepicker.getParsedDate(date);
 
             switch (true) {
                 case /dd/.test(result):
-                    result = result.replace('dd', d.fullDate);
+                    result = result.replace(/\bdd\b/, d.fullDate);
                 case /d/.test(result):
-                    result = result.replace('d', d.date);
+                    result = result.replace(/\bd\b/, d.date);
                 case /DD/.test(result):
-                    result = result.replace('DD', locale.days[d.day]);
+                    result = result.replace(/\bDD\b/, locale.days[d.day]);
                 case /D/.test(result):
-                    result = result.replace('D', locale.daysShort[d.day]);
+                    result = result.replace(/\bD\b/, locale.daysShort[d.day]);
                 case /mm/.test(result):
-                    result = result.replace('mm', d.fullMonth);
+                    result = result.replace(/\bmm\b/, d.fullMonth);
                 case /m/.test(result):
-                    result = result.replace('m', d.month + 1);
+                    result = result.replace(/\bm\b/, d.month + 1);
                 case /MM/.test(result):
-                    result = result.replace('MM', this.loc.months[d.month]);
+                    result = result.replace(/\bMM\b/, this.loc.months[d.month]);
                 case /M/.test(result):
-                    result = result.replace('M', locale.monthsShort[d.month]);
+                    result = result.replace(/\bM\b/, locale.monthsShort[d.month]);
                 case /yyyy/.test(result):
-                    result = result.replace('yyyy', d.year);
+                    result = result.replace(/\byyyy\b/, d.year);
+                case /yyyy1/.test(result):
+                    result = result.replace(/\byyyy1\b/, decade[0]);
+                case /yyyy2/.test(result):
+                    result = result.replace(/\byyyy2\b/, decade[1]);
                 case /yy/.test(result):
-                    result = result.replace('yy', d.year.toString().slice(-2));
+                    result = result.replace(/\byy\b/, d.year.toString().slice(-2));
             }
 
             return result;
@@ -668,16 +678,7 @@ var Datepicker;
         },
 
         _getTitle: function (date) {
-            var month = this.d.loc.months[date.getMonth()],
-                year = date.getFullYear(),
-                decade = Datepicker.getDecade(date),
-                types = {
-                    days: month + ', ' + year,
-                    months: year,
-                    years: decade[0] + ' - ' + decade[1]
-                };
-
-            return types[this.d.view];
+            return this.d.formatDate(this.opts.navTitles[this.d.view], date)
         },
 
         _addButton: function (type) {
