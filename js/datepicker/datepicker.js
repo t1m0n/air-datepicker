@@ -376,6 +376,7 @@ var Datepicker;
 
             this._createShortCuts();
             this._syncWithMinMaxDates();
+            this._defineLocale(this.opts.language);
             this.nav._addButtonsIfNeed();
             this.nav._render();
             this.views[this.currentView]._render();

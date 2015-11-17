@@ -37,6 +37,12 @@
                             .update('maxDate', date)
                 }
             })
+
+            $('button').on('click', function () {
+                $start.data('datepicker').update({
+                    language: 'en'
+                })
+            });
         </script>
     </body>
 </html>
