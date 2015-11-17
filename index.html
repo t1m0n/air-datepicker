@@ -18,7 +18,10 @@
         <script type="text/javascript" src="dist/js/i18n/datepicker.en.js"></script>
         <script type="text/javascript">
             $('.calendar').datepicker({
-                onChange: function (dateString, date, inst) {
+                onChangeDecade: function (val) {
+                    console.log(val);
+                },
+                onSelect: function (dateString, date, inst) {
                     console.log(dateString);
                 }
             });

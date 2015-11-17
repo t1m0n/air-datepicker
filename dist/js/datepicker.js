@@ -54,7 +54,11 @@ var Datepicker;
             },
 
             // events
-            onChange: '',
+            onSelect: '',
+            onChangeMonth: '',
+            onChangeYear: '',
+            onChangeDecade: '',
+            onChangeView: '',
             onRenderCell: ''
         };
 
@@ -177,7 +181,7 @@ var Datepicker;
 
         _triggerOnChange: function () {
             if (!this.selectedDates.length) {
-                return this.opts.onChange('', '', this);
+                return this.opts.onSelect('', '', this);
             }
 
             var selectedDates = this.selectedDates,
@@ -198,35 +202,43 @@ var Datepicker;
                 })
             }
 
-            this.opts.onChange(formattedDates, dates, this);
+            this.opts.onSelect(formattedDates, dates, this);
         },
 
         next: function () {
-            var d = this.parsedDate;
+            var d = this.parsedDate,
+                o = this.opts;
             switch (this.view) {
                 case 'days':
                     this.date = new Date(d.year, d.month + 1, 1);
+                    if (o.onChangeMonth) o.onChangeMonth(d.month + 1);
                     break;
                 case 'months':
                     this.date = new Date(d.year + 1, d.month, 1);
+                    if (o.onChangeYear) o.onChangeYear(d.year + 1);
                     break;
                 case 'years':
                     this.date = new Date(d.year + 10, 0, 1);
+                    if (o.onChangeDecade) o.onChangeDecade(this.curDecade);
                     break;
             }
         },
 
         prev: function () {
-            var d = this.parsedDate;
+            var d = this.parsedDate,
+                o = this.opts;
             switch (this.view) {
                 case 'days':
                     this.date = new Date(d.year, d.month - 1, 1);
+                    if (o.onChangeMonth) o.onChangeMonth(d.month - 1);
                     break;
                 case 'months':
                     this.date = new Date(d.year - 1, d.month, 1);
+                    if (o.onChangeYear) o.onChangeYear(d.year - 1);
                     break;
                 case 'years':
                     this.date = new Date(d.year - 10, 0, 1);
+                    if (o.onChangeDecade) o.onChangeDecade(this.curDecade);
                     break;
             }
         },
@@ -336,6 +348,7 @@ var Datepicker;
             this.views[this.currentView]._render();
             this._triggerOnChange()
         },
+
 
         _isSelected: function (checkDate, cellType) {
             return this.selectedDates.some(function (date) {
@@ -521,6 +534,10 @@ var Datepicker;
                 this.views[this.prevView].hide();
                 this.views[val].show();
                 this.nav._render();
+
+                if (this.opts.onChangeView) {
+                    this.opts.onChangeView(val)
+                }
             }
 
             return val
@@ -542,6 +559,10 @@ var Datepicker;
         get maxTime() {
             var max = Datepicker.getParsedDate(this.maxDate);
             return new Date(max.year, max.month, max.date).getTime()
+        },
+
+        get curDecade() {
+            return Datepicker.getDecade(this.date)
         }
     };
 
