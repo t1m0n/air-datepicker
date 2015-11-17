@@ -258,20 +258,14 @@
 
             // Select date if min view is reached
             var selectedDate = new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType),
-                triggerOnChange = true;
+                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
                 this.d.selectDate(selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
-            } else if (alreadySelected && !this.opts.toggleSelected) {
-                triggerOnChange = false;
             }
 
-            if (triggerOnChange) {
-                this.d._triggerOnChange()
-            }
         },
 
         _onClickCell: function (e) {

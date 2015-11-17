@@ -24,20 +24,21 @@
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
             this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
-            if (this.$buttonsContainer.length) {
-                this.$buttonsContainer.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
-            }
+            this.d.$datepicker.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
         },
 
         _buildBaseHtml: function () {
             this._render();
+            this._addButtonsIfNeed();
+        },
+
+        _addButtonsIfNeed: function () {
             if (this.opts.todayButton) {
                 this._addButton('today')
             }
             if (this.opts.clearButton) {
                 this._addButton('clear')
             }
-            this.$navButton = $('.datepicker--nav-action', this.d.$nav);
         },
 
         _render: function () {

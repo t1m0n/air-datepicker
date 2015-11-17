@@ -3,6 +3,7 @@ var Datepicker;
 (function (window, $, undefined) {
     var pluginName = 'datepicker',
         $body, $datepickersContainer,
+        containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
             '<nav class="datepicker--nav"></nav>' +
@@ -66,7 +67,7 @@ var Datepicker;
         this.el = el;
         this.$el = $(el);
 
-        this.opts = $.extend({}, defaults, options);
+        this.opts = $.extend(true, {}, defaults, options);
 
         if ($body == undefined) {
             $body = $('body');
@@ -80,18 +81,13 @@ var Datepicker;
             this.elIsInput = true;
         }
 
-        if (!this.containerBuilt && !this.opts.inline && this.elIsInput) {
-            this._buildDatepickersContainer();
-        }
-
         this.inited = false;
         this.visible = false;
         this.silent = false; // Need to prevent unnecessary rendering
 
         this.currentDate = this.opts.startDate;
         this.currentView = this.opts.view;
-        this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
-        this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
+        this._createShortCuts();
         this.selectedDates = [];
         this.views = {};
 
@@ -100,12 +96,15 @@ var Datepicker;
 
 
     Datepicker.prototype = {
-        containerBuilt: false,
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
+            if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+                this._buildDatepickersContainer();
+            }
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
+            this._syncWithMinMaxDates();
 
             if (this.elIsInput) {
                 if (!this.opts.inline) {
@@ -121,6 +120,12 @@ var Datepicker;
             this.view = this.currentView;
 
             this.inited = true;
+        },
+
+        _createShortCuts: function () {
+
+            this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
+            this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
         },
 
         _bindEvents : function () {
@@ -155,7 +160,7 @@ var Datepicker;
         },
 
         _buildDatepickersContainer: function () {
-            this.containerBuilt = true;
+            containerBuilt = true;
             $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
             $datepickersContainer = $('#datepickers-container');
         },
@@ -315,6 +320,10 @@ var Datepicker;
 
             this._setInputValue();
 
+            if (this.opts.onSelect) {
+                this._triggerOnChange();
+            }
+
             if (this.opts.autoClose) {
                 this.hide();
             } else {
@@ -331,6 +340,9 @@ var Datepicker;
                     selected.splice(i, 1);
                     _this.views[_this.currentView]._render();
                     _this._setInputValue();
+                    if (_this.opts.onSelect) {
+                        _this._triggerOnChange();
+                    }
                     return true
                 }
             })
@@ -349,6 +361,47 @@ var Datepicker;
             this._triggerOnChange()
         },
 
+        /**
+         * Updates datepicker options
+         * @param {String|Object} param - parameter's name to update. If object then it will extend current options
+         * @param {String|Number|Object} [value] - new param value
+         */
+        update: function (param, value) {
+            var len = arguments.length;
+            if (len == 2) {
+                this.opts[param] = value;
+            } else if (len == 1 && typeof param == 'object') {
+                this.opts = $.extend(true, this.opts, param)
+            }
+
+            this._createShortCuts();
+            this._syncWithMinMaxDates();
+            this.nav._addButtonsIfNeed();
+            this.nav._render();
+            this.views[this.currentView]._render();
+
+            if (this.elIsInput && !this.opts.inline) {
+                this._setPositionClasses(this.opts.position);
+                if (this.visible) {
+                    this.setPosition(this.opts.position)
+                }
+            }
+
+            return this;
+        },
+
+        _syncWithMinMaxDates: function () {
+            var curTime = this.date.getTime();
+            this.silent = true;
+            if (this.minTime > curTime) {
+                this.date = this.minDate;
+            }
+
+            if (this.maxTime < curTime) {
+                this.date = this.maxDate;
+            }
+            this.silent = false;
+        },
 
         _isSelected: function (checkDate, cellType) {
             return this.selectedDates.some(function (date) {
@@ -404,9 +457,14 @@ var Datepicker;
         _setPositionClasses: function (pos) {
             pos = pos.split(' ');
             var main = pos[0],
-                sec = pos[1];
+                sec = pos[1],
+                classes = 'datepicker -' + main + '-' + sec + '- -from-' + main + '-';
 
-            this.$datepicker.addClass('-' + main + '-' + sec + '- -from-' + main + '-');
+            if (this.visible) classes += ' active';
+
+            this.$datepicker
+                .removeAttr('class')
+                .addClass(classes);
         },
 
         setPosition: function (position) {
@@ -520,9 +578,14 @@ var Datepicker;
         },
 
         set view (val) {
+            this.viewIndex = this.viewIndexes.indexOf(val);
+
+            if (this.viewIndex < 0) {
+                return;
+            }
+
             this.prevView = this.currentView;
             this.currentView = val;
-            this.viewIndex = this.viewIndexes.indexOf(val);
 
             if (this.inited) {
                 if (!this.views[val]) {
@@ -671,20 +734,21 @@ var Datepicker;
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
             this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
-            if (this.$buttonsContainer.length) {
-                this.$buttonsContainer.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
-            }
+            this.d.$datepicker.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
         },
 
         _buildBaseHtml: function () {
             this._render();
+            this._addButtonsIfNeed();
+        },
+
+        _addButtonsIfNeed: function () {
             if (this.opts.todayButton) {
                 this._addButton('today')
             }
             if (this.opts.clearButton) {
                 this._addButton('clear')
             }
-            this.$navButton = $('.datepicker--nav-action', this.d.$nav);
         },
 
         _render: function () {
@@ -1045,20 +1109,14 @@ var Datepicker;
 
             // Select date if min view is reached
             var selectedDate = new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType),
-                triggerOnChange = true;
+                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
                 this.d.selectDate(selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
-            } else if (alreadySelected && !this.opts.toggleSelected) {
-                triggerOnChange = false;
             }
 
-            if (triggerOnChange) {
-                this.d._triggerOnChange()
-            }
         },
 
         _onClickCell: function (e) {

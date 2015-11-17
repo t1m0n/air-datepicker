@@ -11,20 +11,32 @@
         <div class="contents">
             <article>
                 <div class="calendar"></div>
-                <input type="text" class="calendar"/>
+                <input type="text" name="start" placeholder="Start"/>
+                <input type="text" name="end" placeholder="End"/>
+                <br/>
+                <br/>
+
+                <button>Update</button>
             </article>
         </div>
         <script type="text/javascript" src="dist/js/datepicker.js"></script>
         <script type="text/javascript" src="dist/js/i18n/datepicker.en.js"></script>
         <script type="text/javascript">
-            $('.calendar').datepicker({
-                onChangeDecade: function (val) {
-                    console.log(val);
-                },
-                onSelect: function (dateString, date, inst) {
-                    console.log(dateString);
+            var $start = $('[name="start"]'),
+                    $end = $('[name="end"]');
+
+            $start.datepicker({
+                onSelect: function (format, date) {
+                    $end.data('datepicker')
+                            .update('minDate', date)
                 }
-            });
+            })
+            $end.datepicker({
+                onSelect: function (format, date) {
+                    $start.data('datepicker')
+                            .update('maxDate', date)
+                }
+            })
         </script>
     </body>
 </html>
