@@ -6,6 +6,7 @@ var Datepicker;
         containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
+            '<i class="datepicker--pointer"></i>' +
             '<nav class="datepicker--nav"></nav>' +
             '<div class="datepicker--content"></div>' +
             '</div>',
@@ -19,7 +20,7 @@ var Datepicker;
             toggleSelected: true,
 
             position: 'bottom left',
-            offset: 8,
+            offset: 12,
 
             view: 'days',
             minView: 'days',
@@ -602,6 +603,7 @@ var Datepicker;
                 if (this.opts.onChangeView) {
                     this.opts.onChangeView(val)
                 }
+                this.setPosition(this.opts.position)
             }
 
             return val

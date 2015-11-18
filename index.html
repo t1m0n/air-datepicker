@@ -11,12 +11,29 @@
         <div class="contents">
             <article>
                 <div class="calendar"></div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
                 <input type="text" name="start" placeholder="Start"/>
                 <input type="text" name="end" placeholder="End"/>
                 <br/>
                 <br/>
 
                 <button>Update</button>
+
+
             </article>
         </div>
         <script type="text/javascript" src="dist/js/datepicker.js"></script>
@@ -32,6 +49,7 @@
                 }
             })
             $end.datepicker({
+                position: 'right top',
                 onSelect: function (format, date) {
                     $start.data('datepicker')
                             .update('maxDate', date)

@@ -8,14 +8,17 @@ $textColor: #333;
 $navigationHeight: 32px;
 $navigationButtonsOffset: 1px;
 
+$pointerSize: 10px;
+$pointerOffset: 8px;
+
 // Colors
 $colorGrey: #ddd;
-
 $colorAnotherMonth: #ddd;
 $colorCellHover: #eee;
 $colorCellCurrent: #60C4F5;
 $colorCellSelected: skyblue;
 $colorCellWeekend: '';
+$borderColor: $colorGrey;
 $bgButton: #f2f2f2;
 $bgButtonHover: darken($bgButton, 3);
 
