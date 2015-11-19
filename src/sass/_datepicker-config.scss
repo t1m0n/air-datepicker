@@ -1,9 +1,17 @@
 $dayCellSize: 32px;
-$datepickerWidth: 7 * $dayCellSize;
+$datepickerWidth: 232px;
+$datepickerMinBodyHeight: 170px;
 $datepickerBorderRadius: 2px;
 $datepickerPadding: 2px;
+
+$fontFamily: Tahoma;
+$fontSize: 14px;
+
 $yearsPerRow: 4;
-$textColor: #333;
+$textColor: (
+  common: #4a4a4a,
+  dayNames: #f5a33a,
+);
 
 $navigationHeight: 32px;
 $navigationButtonsOffset: 1px;

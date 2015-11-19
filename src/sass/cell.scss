@@ -11,13 +11,11 @@
 
 .datepicker--cell {
   border-radius: $datepickerBorderRadius;
-  color: $textColor;
   cursor: pointer;
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
-  width: $dayCellSize;
   height: $dayCellSize;
   z-index: 1;
 
@@ -50,6 +48,26 @@
   }
 }
 
+//  Day names
+// -------------------------------------------------
+
+.datepicker--days-names {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.datepicker--day-name {
+  color: map_get($textColor, dayNames);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: $dayCellSize;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
 //  Day cell
 // -------------------------------------------------
 
@@ -68,25 +86,34 @@
 
 .datepicker--months {}
 
-//  Month cells
+.datepicker--cells-months {
+  height: $datepickerMinBodyHeight;
+}
+
+//  Month cell
 // -------------------------
 
 .datepicker--cell-month {
   width: 33.33%;
-  height: 40px;
+  height: 25%;
 }
 
 //  Years
 // -------------------------------------------------
 
-.datepicker--years {}
+.datepicker--years {
+  height: $datepickerMinBodyHeight;
+}
 
-//  Month cells
+.datepicker--cells-years {
+  height: $datepickerMinBodyHeight;
+}
+//  Year cell
 // -------------------------
 
 .datepicker--cell-year {
   width: 100% / $yearsPerRow;
-  height: 40px;
+  height: 33.33%;
 
   &.-other-decade- {
     @extend %otherMonth;

@@ -15,6 +15,9 @@
   border: 1px solid $borderColor;
   border-radius: $datepickerBorderRadius;
   box-sizing: content-box;
+  font-family: $fontFamily, sans-serif;
+  font-size: $fontSize;
+  color: map_get($textColor, common);
   width: $datepickerWidth;
   position: absolute;
   left: -100000px;
@@ -49,6 +52,10 @@
     right: auto;
     opacity: 1;
     transform: none;
+  }
+
+  .datepicker--pointer {
+    display: none;
   }
 }
 
@@ -126,23 +133,3 @@ $pointerHalfSize: $pointerSize / 2 - 1;
     display: block;
   }
 }
-
-
-//  Day names
-// -------------------------
-
-.datepicker--days-names {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.datepicker--day-name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  width: $dayCellSize;
-  height: $dayCellSize;
-  text-align: center;
-}
-

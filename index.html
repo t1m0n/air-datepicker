@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Datepicker</title>
-        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="page/css/style.css"/>
         <link rel="stylesheet" href="dist/css/datepicker.css"/>
         <script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script>
     </head>
@@ -40,14 +40,15 @@
         <script type="text/javascript" src="dist/js/i18n/datepicker.en.js"></script>
         <script type="text/javascript">
             var $start = $('[name="start"]'),
-                    $end = $('[name="end"]');
+                    $end = $('[name="end"]').hide();
 
             $start.datepicker({
+                inline: true,
                 onSelect: function (format, date) {
                     $end.data('datepicker')
                             .update('minDate', date)
                 }
-            })
+            }).data('datepicker').show()
             $end.datepicker({
                 position: 'right top',
                 onSelect: function (format, date) {
