@@ -6,7 +6,7 @@ gulp.task('css', require('./tasks/css'));
 gulp.task('js', require('./tasks/js'));
 gulp.task('i18n', require('./tasks/i18n'));
 gulp.task('cssPage', require('./tasks/cssPage'));
-
+gulp.task('jade', require('./tasks/jade'));
 
 
 gulp.task('watch', function () {
@@ -21,6 +21,10 @@ gulp.task('watch', function () {
     });
 
     gulp.watch('page/sass/*.scss', ['cssPage']).on('change', function (file) {
+        livereload.changed(file)
+    });
+
+    gulp.watch('page/jade/**/*.jade', ['jade']).on('change', function (file) {
         livereload.changed(file)
     });
 });

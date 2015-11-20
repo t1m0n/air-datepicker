@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+	input(type='text', name='start')
+	input(type='text', name='end')
+
+	script.
+		var $start = $('[name="start"]'),
+				$end = $('[name="end"]').hide();
+
+		$start.datepicker({
+			inline: true,
+			onSelect: function (format, date) {
+				$end.data('datepicker')
+						.update('minDate', date)
+			}
+		}).data('datepicker').show()
+
+		$end.datepicker({
+			position: 'right top',
+			onSelect: function (format, date) {
+				$start.data('datepicker')
+						.update('maxDate', date)
+			}
+		})
+
+		$('button').on('click', function () {
+			$start.data('datepicker').update({
+				language: 'en'
+			})
+		});

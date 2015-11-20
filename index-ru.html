@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Air Datepicker</title>
+    <meta charset="UTF-8">
+    <link href="page/css/style.css" rel="stylesheet" type="text/css">
+    <link href="dist/css/datepicker.min.css" rel="stylesheet" type="text/css">
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="dist/js/datepicker.min.js"></script>
+    <script src="dist/js/i18n/datepicker.en.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <main role="main" class="main">
+        <div class="container">
+          <input type="text" name="start">
+          <input type="text" name="end">
+          <script>
+            var $start = $('[name="start"]'),
+            		$end = $('[name="end"]').hide();
+            
+            $start.datepicker({
+            	inline: true,
+            	onSelect: function (format, date) {
+            		$end.data('datepicker')
+            				.update('minDate', date)
+            	}
+            }).data('datepicker').show()
+            
+            $end.datepicker({
+            	position: 'right top',
+            	onSelect: function (format, date) {
+            		$start.data('datepicker')
+            				.update('maxDate', date)
+            	}
+            })
+            
+            $('button').on('click', function () {
+            	$start.data('datepicker').update({
+            		language: 'en'
+            	})
+            });
+          </script>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

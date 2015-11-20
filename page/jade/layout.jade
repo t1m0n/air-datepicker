@@ -1,0 +1,22 @@
+include mixins/example
+include mixins/example-content
+include mixins/example-code
+include mixins/example-inline
+include mixins/param
+
+doctype html
+html
+	head
+		title Air Datepicker
+		meta(charset='UTF-8')
+		link(href='page/css/style.css', rel='stylesheet', type='text/css')
+		link(href='dist/css/datepicker.min.css', rel='stylesheet', type='text/css')
+		script(src='vendor/jquery/dist/jquery.min.js')
+		script(src='dist/js/datepicker.min.js')
+		script(src='dist/js/i18n/datepicker.en.js')
+	body
+		div.wrapper
+			main.main(role='main')
+				.container
+					block content
+

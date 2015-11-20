@@ -6,6 +6,7 @@
     "gulp": "^3.9.0",
     "gulp-clone": "^1.0.0",
     "gulp-concat": "^2.6.0",
+    "gulp-jade": "^1.1.0",
     "gulp-livereload": "^3.8.0",
     "gulp-minify-css": "^1.2.1",
     "gulp-postcss": "^6.0.1",
