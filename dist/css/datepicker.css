@@ -172,7 +172,8 @@
   border-top: 1px solid #ddd;
   border-right: 1px solid #ddd;
   width: 10px;
-  height: 10px; }
+  height: 10px;
+  z-index: -1; }
   .-top-left- .datepicker--pointer, .-top-center- .datepicker--pointer, .-top-right- .datepicker--pointer {
     top: calc(100% - 4px);
     -webkit-transform: rotate(135deg);

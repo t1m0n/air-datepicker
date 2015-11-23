@@ -74,6 +74,7 @@ $pointerHalfSize: $pointerSize / 2 - 1;
   border-right: 1px solid $borderColor;
   width: $pointerSize;
   height: $pointerSize;
+  z-index: -1;
 
   //  Main axis
   // -------------------------

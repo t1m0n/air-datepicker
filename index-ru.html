@@ -1,48 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Air Datepicker</title>
-    <meta charset="UTF-8">
-    <link href="page/css/style.css" rel="stylesheet" type="text/css">
-    <link href="dist/css/datepicker.min.css" rel="stylesheet" type="text/css">
-    <script src="vendor/jquery/dist/jquery.min.js"></script>
-    <script src="dist/js/datepicker.min.js"></script>
-    <script src="dist/js/i18n/datepicker.en.js"></script>
-  </head>
-  <body>
-    <div class="wrapper">
-      <main role="main" class="main">
-        <div class="container">
-          <input type="text" name="start">
-          <input type="text" name="end">
-          <script>
-            var $start = $('[name="start"]'),
-            		$end = $('[name="end"]').hide();
-            
-            $start.datepicker({
-            	inline: true,
-            	onSelect: function (format, date) {
-            		$end.data('datepicker')
-            				.update('minDate', date)
-            	}
-            }).data('datepicker').show()
-            
-            $end.datepicker({
-            	position: 'right top',
-            	onSelect: function (format, date) {
-            		$start.data('datepicker')
-            				.update('maxDate', date)
-            	}
-            })
-            
-            $('button').on('click', function () {
-            	$start.data('datepicker').update({
-            		language: 'en'
-            	})
-            });
-          </script>
-        </div>
-      </main>
-    </div>
-  </body>
-</html>
+<!DOCTYPE html><html><head><title>Air Datepicker</title><meta charset="UTF-8"><link href="page/css/style.css" rel="stylesheet" type="text/css"><link href="page/css/github-gist.css" rel="stylesheet" type="text/css"><link href="dist/css/datepicker.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500&amp;subset=latin,cyrillic" rel="stylesheet" type="text/css"><script src="vendor/jquery/dist/jquery.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script src="dist/js/datepicker.min.js"></script><script src="dist/js/i18n/datepicker.en.js"></script></head><body><div class="wrapper"><main role="main" class="main"><div class="container"><h1 class="promo-header">AIR DATEPICKER<span>легкий соврменныый jQuery календарь</span></h1><p class="-text-center-"><input type="text" id="example-promo" data-position="bottom center" class="promo-input datepicker-here"></p><h2>Установка</h2><pre class="example-code"><code class="html">bower i --save air-datepicker</code></pre><p>Либо можно скачать файлы напрямую с <a href="">GitHub</a></p><h2>Использование</h2><p>Календарь автоматически проинициализируется на элементах с классом<span class="example-inline"><code class="css">.datepicker-here</code></span>, при этом опции можно передать через<span class="example-inline"><code class="html">data</code></span>атрибуты.</p><pre class="example-code"><code class="html">&lt;input type='text' class=&quot;datepicker-here&quot; data-position=&quot;right top&quot; /&gt;</code></pre><h3>Ручная инициализация</h3><pre class="example-code"><code class="js">// Инициализация
+$('#my-element').datepicker([options])
+
+// Доступ к экземпляру объекта
+$('#my-element').data('datepicker')
+</code></pre><h2>Примеры</h2><h3>Инициализация с опциями по умолчанию</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type='text' class='datepicker-here' /&gt;</code></pre></div></div></main></div><script>var $code = $('code');
+$code.each(function (i, el) {
+	hljs.highlightBlock(el);
+})</script></body></html>

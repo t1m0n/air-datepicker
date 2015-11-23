@@ -2,6 +2,7 @@ var Datepicker;
 
 (function (window, $, undefined) {
     var pluginName = 'datepicker',
+        autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
         containerBuilt = false,
         baseTemplate = '' +
@@ -68,7 +69,7 @@ var Datepicker;
         this.el = el;
         this.$el = $(el);
 
-        this.opts = $.extend(true, {}, defaults, options);
+        this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
         if ($body == undefined) {
             $body = $('body');
@@ -124,7 +125,6 @@ var Datepicker;
         },
 
         _createShortCuts: function () {
-
             this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
             this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
         },
@@ -709,5 +709,9 @@ var Datepicker;
             });
         }
     };
+
+    $(function () {
+        $(autoInitSelector).datepicker();
+    })
 
 })(window, jQuery);

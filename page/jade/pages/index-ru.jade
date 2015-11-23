@@ -1,31 +1,40 @@
 extends ../layout
 
 block content
-	input(type='text', name='start')
-	input(type='text', name='end')
+	h1.promo-header
+		| AIR DATEPICKER
+		span легкий соврменныый jQuery календарь
 
-	script.
-		var $start = $('[name="start"]'),
-				$end = $('[name="end"]').hide();
+	p.-text-center-
+		input.promo-input.datepicker-here(type='text' id='example-promo' data-position='bottom center')
 
-		$start.datepicker({
-			inline: true,
-			onSelect: function (format, date) {
-				$end.data('datepicker')
-						.update('minDate', date)
-			}
-		}).data('datepicker').show()
+	h2 Установка
+	+example-code('html') bower i --save air-datepicker
+	p Либо можно скачать файлы напрямую с <a href="">GitHub</a>
 
-		$end.datepicker({
-			position: 'right top',
-			onSelect: function (format, date) {
-				$start.data('datepicker')
-						.update('maxDate', date)
-			}
-		})
+	h2 Использование
+	p
+		|Календарь автоматически проинициализируется на элементах с классом
+		+example-inline('.datepicker-here', 'css')
+		|, при этом опции можно передать через
+		+example-inline('data', 'html')
+		| атрибуты.
+	+example-code('html')
+		:code
+			<input type='text' class="datepicker-here" data-position="right top" />
+	h3 Ручная инициализация
+	+example-code('js').
+		// Инициализация
+		$('#my-element').datepicker([options])
 
-		$('button').on('click', function () {
-			$start.data('datepicker').update({
-				language: 'en'
-			})
-		});
+		// Доступ к экземпляру объекта
+		$('#my-element').data('datepicker')
+
+	h2 Примеры
+	h3 Инициализация с опциями по умолчанию
+	+example
+		+example-content
+			input(type='text').datepicker-here
+		+example-code('html')
+			:code
+				<input type='text' class='datepicker-here' />
