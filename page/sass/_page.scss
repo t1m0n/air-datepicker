@@ -54,12 +54,22 @@ input[type='text'] {
   border: 1px solid #c0c0c0;
   padding: 0 8px;
   margin: 0 0 14px;
+  color: #444;
   font-family: $fontFamily;
   transition: all .2s;
+  width: 250px;
 
   &:focus {
     border-color: gold;
     box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+  }
+}
+
+ul {
+  margin: 0 0 16px;
+  li {
+    list-style: none;
+    margin-bottom: 8px;
   }
 }
 
@@ -104,7 +114,7 @@ $exampleBorderRadius: 4px;
   margin: 0 4px;
 
   .hljs {
-    padding: 4px;
+    padding: 0 4px;
   }
 }
 
@@ -146,6 +156,34 @@ a {
   }
 }
 
+//  Param
+// -------------------------------------------------
+
+
+.param {
+  strong {
+    background: #efefef;
+    color: #333;
+    border-radius: $exampleBorderRadius;
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 3px 6px 4px;
+    margin-right: 4px;
+  }
+
+  i {
+    color: #838383;
+    font-size: .95em;
+    font-style: normal;
+    font-weight: 100;
+    font-family: 'Fira Sans', sans-serif;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+}
+
 //  Promo block
 // -------------------------------------------------
 
@@ -164,4 +202,46 @@ a {
   height: 40px;
   margin: 26px 0;
   width: 300px;
+}
+
+//  Range example
+// -------------------------------------------------
+
+.range-example {
+  input[type='text'] {
+    width: 150px;
+  }
+  span {
+    display: inline-block;
+    margin: 0 8px;
+  }
+}
+
+//  Param header
+// -------------------------------------------------
+
+.param-header {
+  margin-bottom: 8px;
+  h3 {
+    margin-bottom: 2px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+  }
+}
+
+.param-header--row {
+
+}
+
+.param {
+  margin-bottom: 32px;
+}
+
+.param-header--label {
+  color: #707070;
+  display: inline-block;
+  vertical-align: middle;
 }

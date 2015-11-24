@@ -3,7 +3,80 @@ $('#my-element').datepicker([options])
 
 // Доступ к экземпляру объекта
 $('#my-element').data('datepicker')
-</code></pre><h2>Примеры</h2><h3>Инициализация с опциями по умолчанию</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type='text' class='datepicker-here' /&gt;</code></pre></div></div></main></div><script>var $code = $('code');
+</code></pre><h2>Примеры</h2><h3>Инициализация с опциями по умолчанию</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type='text' class='datepicker-here' /&gt;
+</code></pre></div><h3>Выбор нескольких дат</h3><p>Передайте параметр<span class="example-inline"><code class="js">{multipleDates: true}</code></span>для выбора нескольких дат. Если требуется ограничить количество выбранных дат, то передайте необходимое число<span class="example-inline"><code class="js">{multipleDates: 3}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-multiple-dates="3" data-multiple-dates-separator=", " class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
+	class=&quot;datepicker-here&quot;
+	data-multiple-dates=&quot;3&quot;
+	data-multiple-dates-separator=&quot;, &quot; /&gt;
+</code></pre></div><h3>Постоянно видимый календарь</h3><p>Проинициализируйте плагин на элементе, который не является текстовым полем, например на<span class="example-inline"><code class="html">&lt;div&gt; …  &lt;/div&gt;</code></span>, либо передайте параметр<span class="example-inline"><code class="js">{inline: true}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><div class="datepicker-here"></div></div><pre class="example-code"><code class="html">&lt;div class=&quot;datepicker-here&quot;&gt;&lt;/div&gt;
+</code></pre></div><h3>Выбор месяца</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-min-view="months" data-view="months" data-date-format="MM yyyy" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
+	class=&quot;datepicker-here&quot;
+	data-min-view=&quot;months&quot;
+	data-view=&quot;months&quot;
+	data-date-format=&quot;MM yyyy&quot; /&gt;
+</code></pre></div><h3>Минимальная и максимальные даты</h3><p>Чтобы ограничить выбор даты, используйте<span class="example-inline"><code class="js">minDate</code></span>и<span class="example-inline"><code class="js">maxDate</code></span>, которым нужно передать объект даты.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input id="minMaxExample" type="text"><script>$('#minMaxExample').datepicker({
+	minDate: new Date() // Можно выбрать тольо даты, идущие за сегодняшним днем
+})</script></div><pre class="example-code"><code class="js">$('#minMaxExample').datepicker({
+	minDate: new Date() // Можно выбрать тольо даты, идущие за сегодняшним днем
+})
+</code></pre></div><h3>Диапозон дат</h3><p>По умолчанию в плагине нет встроенного механизма выбора диапозона дат для нескольких текстовых полей.
+Тем не менее это можно сделть вручную.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><div class="range-example"><input type="text" placeholder="Начало" id="start"><span>&ndash;</span><input type="text" placeholder="Конец" id="end"></div><script>var $start = $('#start'),
+		$end = $('#end');
+
+$start.datepicker({
+	onSelect: function (fd, date) {
+		$end.data('datepicker')
+				.update('minDate', date)
+	}
+})
+
+$end.datepicker({
+	onSelect: function (fd, date) {
+		$start.data('datepicker')
+				.update('maxDate', date)
+	}
+})
+</script></div><pre class="example-code"><code class="js">var $start = $('#start'),
+	$end = $('#end');
+
+	$start.datepicker({
+		onSelect: function (fd, date) {
+			$end.data('datepicker')
+				.update('minDate', date)
+		}
+	})
+
+	$end.datepicker({
+		onSelect: function (fd, date) {
+			$start.data('datepicker')
+				.update('maxDate', date)
+		}
+	})
+</code></pre></div><article><h2>Локализация</h2><p>Вы можете добавить свою локализацию в объект<span class="example-inline"><code class="js">Datepicker.language[&quot;my-lang&quot;]</code></span>и при вызове календаря передать название языка в параметр<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">Datepicker.language['my-lang'] = {...}
+
+$('.my-datepicker').datepicker({
+	language: 'my-lang'
+})
+</code></pre><p>Также объект локализации можно передавать непосредственно в<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">$('.my-datepicker').datepicker({
+	language: {
+		days: [...]
+		...
+	}
+})
+</code></pre><p>Если в вашей локализации не будет хватать каких-то полей, то они будут взяты из языка по умолчанию.</p><h3>Пример объекта локализации</h3><pre class="example-code"><code class="js">Datepicker.language['ru'] =  {
+	days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
+	daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
+	daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+	months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+	monthsShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+	today: 'Сегодня',
+	clear: 'Очистить',
+	dateFormat: 'dd.mm.yyyy',
+	firstDay: 1
+};
+</code></pre><article><h2>Опции</h2><div class="param"><header class="param-header"><h3>inline</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">boolean</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">false</code></span></p></header><p>Если true, то календарь будет виден постоянно.</p></div><div class="param"><header class="param-header"><h3>language</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">string|object</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">&quot;ru&quot;</code></span></p></header><p>Язык календаря. Если передается строка, то поиск языка будет осуществляться в объекте<span class="example-inline"><code class="js">Datepicker.language</code></span>Если передан объект, то данные будут браться из него.</p><p>Если в объекте локализации не будет хватать каких то полей, то они будут взяты из языка по умолчанию.</p></div><div class="param"><header class="param-header"><h3>startDate</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">Date</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">new Date()</code></span></p></header><p>Какую дату нужно показывать при инициализации календаря.</p></div><div class="param"><header class="param-header"><h3>firstDay</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">number</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">&quot;&quot;</code></span></p></header><p>Индекс дня, с которого начинается неделя. Возможные значение от 0 до 6, где 0 - воскресенье и 6 - суббота.
+По умолчанию берется из локализации, если значение передать сюда, то оно будет иметь больший приоритет.
+</p></div><div class="param"><header class="param-header"><h3>weekends</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">array</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">[6, 0]</code></span></p></header><p>Массив индексов дней, которые будут считаться выходными днями. Им будет добавлен класс<span class="example-inline"><code class="css">.-weekend-</code></span>. По умолчанию это суббота и воскресенье.</p></div><div class="param"><header class="param-header"><h3>dateFormat</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">string</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">&quot;&quot;</code></span></p></header><p>Формат даты, кобминация из d, m, yyyy, D, M, и т.д.  По умолчанию берется из локализации, если передать значение сюда, то оно будет иметь больший приоритет.</p><ul><li><span class="param"><strong>d</strong></span>- дата</li><li><span class="param"><strong>dd</strong></span>- дата с лидирующем нулем</li><li><span class="param"><strong>D</strong></span>- сокращенное наименование дня</li><li><span class="param"><strong>DD</strong></span>- полное наименование дня</li><li><span class="param"><strong>m</strong></span>- номер мясяца</li><li><span class="param"><strong>mm</strong></span>- номер месяца с лидирующем нулем</li><li><span class="param"><strong>M</strong></span>- сокращенное наименовение месяца</li><li><span class="param"><strong>MM</strong></span>- полное наименовение месяца</li><li><span class="param"><strong>yy</strong></span>- сокращенный номер года</li><li><span class="param"><strong>yyyy</strong></span>- полный номер года</li><li><span class="param"><strong>yyyy1</strong></span>- первый год декады, в которую входит текущий год</li><li><span class="param"><strong>yyyy2</strong></span>- последний год декады, в которую входит текущий год</li></ul></div><div class="param"><header class="param-header"><h3>toggleSelected</h3><p class="param-header--row"><span class="param-header--label">Тип:</span><span class="example-inline"><code class="js">boolean</code></span></p><p class="param-header--row"><span class="param-header--label">Значение по умполчанию:</span><span class="example-inline"><code class="js">true</code></span></p></header><p>Если true, то клик на выделенной дате снимет выделение.</p></div></article></article></div></main></div><script>var $code = $('code');
 $code.each(function (i, el) {
 	hljs.highlightBlock(el);
 })</script></body></html>

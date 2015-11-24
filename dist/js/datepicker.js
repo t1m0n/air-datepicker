@@ -145,10 +145,12 @@ var Datepicker;
                 this.loc = Datepicker.language[lang];
                 if (!this.loc) {
                     console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = Datepicker.language.ru
+                    this.loc = $.extend(true, {}, Datepicker.language.ru)
                 }
+
+                this.loc = $.extend(true, {}, Datepicker.language[lang], Datepicker.language.ru)
             } else {
-                this.loc = $.extend({}, Datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, Datepicker.language.ru, lang)
             }
 
             if (this.opts.dateFormat) {
@@ -418,7 +420,7 @@ var Datepicker;
                     return _this.formatDate(format, date)
                 });
 
-            value.join(this.opts.multipleDatesSeparator);
+            value = value.join(this.opts.multipleDatesSeparator);
 
             this.$el.val(value)
         },

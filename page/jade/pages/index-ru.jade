@@ -14,9 +14,9 @@ block content
 
 	h2 Использование
 	p
-		|Календарь автоматически проинициализируется на элементах с классом
+		| Календарь автоматически проинициализируется на элементах с классом
 		+example-inline('.datepicker-here', 'css')
-		|, при этом опции можно передать через
+		| , при этом опции можно передать через
 		+example-inline('data', 'html')
 		| атрибуты.
 	+example-code('html')
@@ -38,3 +38,233 @@ block content
 		+example-code('html')
 			:code
 				<input type='text' class='datepicker-here' />
+
+	h3 Выбор нескольких дат
+	p
+		| Передайте параметр
+		+example-inline('{multipleDates: true}','js')
+		| для выбора нескольких дат. Если требуется ограничить количество выбранных дат, то передайте необходимое число
+		+example-inline('{multipleDates: 3}','js')
+		| .
+	+example
+		+example-content
+			input(type='text' data-multiple-dates='3' data-multiple-dates-separator=', ').datepicker-here
+		+example-code('html')
+			:code
+				<input type="text"
+					class="datepicker-here"
+					data-multiple-dates="3"
+					data-multiple-dates-separator=", " />
+
+	h3 Постоянно видимый календарь
+	p
+		| Проинициализируйте плагин на элементе, который не является текстовым полем, например на
+		+example-inline('<div> …  </div>', 'html')
+		| , либо передайте параметр
+		+example-inline('{inline: true}', 'js')
+		| .
+	+example
+		+example-content
+			div.datepicker-here
+		+example-code('html')
+			:code
+				<div class="datepicker-here"></div>
+
+	h3 Выбор месяца
+	+example
+		+example-content
+			input.datepicker-here(type='text' data-min-view='months' data-view='months' data-date-format='MM yyyy')
+		+example-code('html')
+			:code
+				<input type="text"
+					class="datepicker-here"
+					data-min-view="months"
+					data-view="months"
+					data-date-format="MM yyyy" />
+
+	h3 Минимальная и максимальные даты
+	p
+		| Чтобы ограничить выбор даты, используйте
+		+example-inline('minDate', 'js')
+		| и
+		+example-inline('maxDate', 'js')
+		| , которым нужно передать объект даты.
+	+example
+		+example-content
+			input#minMaxExample(type='text')
+			script.
+				$('#minMaxExample').datepicker({
+					minDate: new Date() // Можно выбрать тольо даты, идущие за сегодняшним днем
+				})
+		+example-code('js').
+			$('#minMaxExample').datepicker({
+				minDate: new Date() // Можно выбрать тольо даты, идущие за сегодняшним днем
+			})
+
+	h3 Диапозон дат
+	p.
+		По умолчанию в плагине нет встроенного механизма выбора диапозона дат для нескольких текстовых полей.
+		Тем не менее это можно сделть вручную.
+	+example
+		+example-content
+			div.range-example
+				input(type='text' placeholder='Начало')#start
+				span &ndash;
+				input(type='text' placeholder='Конец')#end
+
+			script.
+				var $start = $('#start'),
+						$end = $('#end');
+
+				$start.datepicker({
+					onSelect: function (fd, date) {
+						$end.data('datepicker')
+								.update('minDate', date)
+					}
+				})
+
+				$end.datepicker({
+					onSelect: function (fd, date) {
+						$start.data('datepicker')
+								.update('maxDate', date)
+					}
+				})
+
+		+example-code('js').
+			var $start = $('#start'),
+				$end = $('#end');
+
+				$start.datepicker({
+					onSelect: function (fd, date) {
+						$end.data('datepicker')
+							.update('minDate', date)
+					}
+				})
+
+				$end.datepicker({
+					onSelect: function (fd, date) {
+						$start.data('datepicker')
+							.update('maxDate', date)
+					}
+				})
+
+	article
+		h2 Локализация
+		p
+			| Вы можете добавить свою локализацию в объект
+			+example-inline('Datepicker.language["my-lang"]', 'js')
+			| и при вызове календаря передать название языка в параметр
+			+example-inline('language', 'js')
+
+		+example-code('js').
+			Datepicker.language['my-lang'] = {...}
+
+			$('.my-datepicker').datepicker({
+				language: 'my-lang'
+			})
+
+		p
+			| Также объект локализации можно передавать непосредственно в
+			+example-inline('language', 'js')
+
+		+example-code('js').
+			$('.my-datepicker').datepicker({
+				language: {
+					days: [...]
+					...
+				}
+			})
+
+		p Если в вашей локализации не будет хватать каких-то полей, то они будут взяты из языка по умолчанию.
+
+		h3 Пример объекта локализации
+		+example-code('js').
+			Datepicker.language['ru'] =  {
+				days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
+				daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
+				daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+				months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+				monthsShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+				today: 'Сегодня',
+				clear: 'Очистить',
+				dateFormat: 'dd.mm.yyyy',
+				firstDay: 1
+			};
+
+		article
+			h2 Опции
+
+			.param
+				+param-header('inline', 'boolean', 'false')
+				p Если true, то календарь будет виден постоянно.
+
+			.param
+				+param-header('language', 'string|object', '"ru"')
+				p
+					| Язык календаря. Если передается строка, то поиск языка будет осуществляться в объекте
+					+example-inline('Datepicker.language', 'js')
+					| Если передан объект, то данные будут браться из него.
+				p Если в объекте локализации не будет хватать каких то полей, то они будут взяты из языка по умолчанию.
+
+			.param
+				+param-header('startDate', 'Date', 'new Date()')
+				p Какую дату нужно показывать при инициализации календаря.
+
+			.param
+				+param-header('firstDay', 'number', '""')
+				p.
+					Индекс дня, с которого начинается неделя. Возможные значение от 0 до 6, где 0 - воскресенье и 6 - суббота.
+					По умолчанию берется из локализации, если значение передать сюда, то оно будет иметь больший приоритет.
+
+			.param
+				+param-header('weekends', 'array', '[6, 0]')
+				p
+					|Массив индексов дней, которые будут считаться выходными днями. Им будет добавлен класс
+					+example-inline('.-weekend-','css')
+					|. По умолчанию это суббота и воскресенье.
+
+			.param
+				+param-header('dateFormat', 'string', '""')
+				p Формат даты, кобминация из d, m, yyyy, D, M, и т.д.  По умолчанию берется из локализации, если передать значение сюда, то оно будет иметь больший приоритет.
+				ul
+					li
+						+param('d')
+						| - дата
+					li
+						+param('dd')
+						| - дата с лидирующем нулем
+					li
+						+param('D')
+						| - сокращенное наименование дня
+					li
+						+param('DD')
+						| - полное наименование дня
+					li
+						+param('m')
+						| - номер мясяца
+					li
+						+param('mm')
+						| - номер месяца с лидирующем нулем
+					li
+						+param('M')
+						| - сокращенное наименовение месяца
+					li
+						+param('MM')
+						| - полное наименовение месяца
+					li
+						+param('yy')
+						| - сокращенный номер года
+					li
+						+param('yyyy')
+						| - полный номер года
+					li
+						+param('yyyy1')
+						| - первый год декады, в которую входит текущий год
+					li
+						+param('yyyy2')
+						| - последний год декады, в которую входит текущий год
+
+			.param
+				+param-header('toggleSelected', 'boolean', 'true')
+				p Если true, то клик на выделенной дате снимет выделение.
+
