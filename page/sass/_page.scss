@@ -15,7 +15,7 @@ p {
   margin-bottom: 14px;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-family: 'Fira Sans', sans-serif;
   line-height: 1;
 }
@@ -30,6 +30,13 @@ h3 {
   font-weight: 500;
   font-size: 18px;
   margin: 24px 0 8px;
+}
+
+h4 {
+  font-weight: normal;
+  color: #939393;
+  font-size: 16px;
+  margin: 24px 0 0;
 }
 
 
@@ -160,7 +167,8 @@ a {
 // -------------------------------------------------
 
 
-.param {
+.param-inline {
+  font-family: Consolas, monospace;
   strong {
     background: #efefef;
     color: #333;

@@ -3,7 +3,7 @@ extends ../layout
 block content
 	h1.promo-header
 		| AIR DATEPICKER
-		span легкий соврменныый jQuery календарь
+		span легкий соврменный jQuery календарь
 
 	p.-text-center-
 		input.promo-input.datepicker-here(type='text' id='example-promo' data-position='bottom center')
@@ -219,9 +219,9 @@ block content
 			.param
 				+param-header('weekends', 'array', '[6, 0]')
 				p
-					|Массив индексов дней, которые будут считаться выходными днями. Им будет добавлен класс
+					| Массив индексов дней, которые будут считаться выходными днями. Им будет добавлен класс
 					+example-inline('.-weekend-','css')
-					|. По умолчанию это суббота и воскресенье.
+					| . По умолчанию это суббота и воскресенье.
 
 			.param
 				+param-header('dateFormat', 'string', '""')
@@ -268,3 +268,210 @@ block content
 				+param-header('toggleSelected', 'boolean', 'true')
 				p Если true, то клик на выделенной дате снимет выделение.
 
+			.param
+				+param-header('position', 'string', '"bottom left"')
+				p
+					| Позиционирование календаря отностиельно текстового поля. Первым значением задается основная ось позиционирования,
+					| воторым - положение на этой оси. Например
+					+example-inline('{position: "right top"}', 'js')
+					| - утсановит позицию клаендаря справа вверху от текстового поля.
+
+			.param
+				+param-header('offset','number', 12)
+				p Отступ от основной оси позиционирования.
+
+			.param
+				+param-header('view', 'string', '"days"')
+				p Начальный вид календаря. Возможноые значения:
+					ul
+						li
+							+example-inline('days','js')
+							| - отображение дней месяца
+						li
+							+example-inline('months','js')
+							| - отображение месяцев одного года
+						li
+							+example-inline('years','js')
+							| - отображение годов одной декады
+
+			.param
+				+param-header('minView', 'string', '"days"')
+				p
+					| Минимальное представление календаря, по наступлению которого, выбор ячейки приведет к ее активации, а не переходу к следующему виду.
+					| Возможные значения такие же как и у параметра
+					+example-inline('view')
+					| .
+
+			.param
+				+param-header('showOtherMonths', 'boolean', 'true')
+				p Если true, то будут отображаться дни других месяцев.
+
+			.param
+				+param-header('selectOtherMonths', 'boolean', 'true')
+				p Если true, то можно будет выбрать дни из других месяцев.
+
+			.param
+				+param-header('moveToOtherMonthsOnSelect', 'boolean', 'true')
+				p Если true, то при выборе дней из других месяца, будет осуществялться переход к этому месяцу.
+
+			.param
+				+param-header('showOtherYears', 'boolean', 'true')
+				p Если true, то при отображении декады, будут показаны годы из других декад.
+
+			.param
+				+param-header('selectOtherYears', 'boolean', 'true')
+				p Если true, то можно будет выбрать года из других декад
+
+			.param
+				+param-header('moveToOtherYearsOnSelect', 'boolean', 'true')
+				p Если true, то при выборе года из другой декады, будет осуществлен переход к этой декаде.
+
+			.param
+				+param-header('minDate', 'Date', '""')
+				p Минимальная дата для возможности выбора. Все даты, идущее до нее нельзя будет активировать.
+
+			.param
+				+param-header('maxDate', 'Date', '""')
+				p Максимальная дата для возможности выбора. Все даты, идущее после нее нельзя будет выбрать.
+
+			.param
+				+param-header('disableNavWhenOutOfRange', 'boolean', 'true')
+				p Если true, то при наступлении даты, которая была бы меньше минимально возможной или больше максимально возможной, деактвировались бы кнопки навигации 'вперед', 'назад'
+
+			.param
+				+param-header('multipleDates', 'boolean|number', 'false')
+				p Если true, то можно будет выбрать неограниченное количество дат. Если передать число, то количество выбираемых дат будет ограниченно этим числом.
+
+			.param
+				+param-header('multipleDatesSeparator', 'string', '","')
+				p Разделитель дат, который будет вставлен между датами при объеденения нескольких дат в одну строку.
+
+			.param
+				+param-header('todayButton', 'boolean', 'false')
+				p Если true, то будет отображена кнопка "Сегодня".
+
+			.param
+				+param-header('clearButton', 'boolean', 'false')
+				p Если true, то будет отображена кнопка "Очистить".
+
+			.param
+				+param-header('showEvent','string','"focus"')
+				p Тип события, по наступлению которого будет показан календарь.
+
+			.param
+				+param-header('autoClose', 'boolean', 'false')
+				p Если true, то при активации даты, календарь закроется.
+
+			.param
+				+param-header('prevHtml', 'string', '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>')
+				p Контент кнопки 'предыдущий месяц|год|декада'.
+
+			.param
+				+param-header('nextHtml', 'string', '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>')
+				p Контент кнопки 'следующий месяц|год|декада'.
+
+			.param
+				+param-header('navTitles', 'object')
+					+example-code('js').
+						navTitles = {
+							days: 'MM, yyyy',
+							months: 'yyyy',
+							years: 'yyyy1 - yyyy2'
+						};
+				p
+					| Значение заголовка календаря в зависимости от текущего вида, можно использовать те же обозночения что и в
+					+example-inline('dateFormat', 'js')
+					| . Недостающие поля будут взяты из значения по умолчанию. Также можно использовать html теги.
+				+example-code('js')
+					:code
+						$('#my-datepicker').datepicker({
+							navTitles: {
+								days: '<h3>Выберете дату заезда</h3> MM, yyyy'
+							}
+						})
+
+			h2 События
+			.param
+				+param-header('onSelect(formattedDate, date, inst)', 'function', 'null')
+				p Функция обратного вызова при выборе даты.
+				ul
+					li
+						+param('formattedDate', 'string')
+						| - отформатированная дата.
+					li
+						+param('date', 'Date|array')
+						| - объект
+						+example-inline('Date', 'js')
+						| выбранной даты, если
+						+example-inline('{multipleDates: true}', 'js')
+						| , то будет передан массив таких объектов.
+					li
+						+param('inst','object')
+						| - экземпляр плагина.
+
+			.param
+				+param-header('onChangeMonth(month, year)','function','null')
+				p Функция обратного вызова при изменении месяца.
+				ul
+					li
+						+param('month','number')
+						| - номер месяца (от 0 до 12), к которому осуществлен переход.
+					li
+						+param('year','number')
+						| - номер года, к которому осуществлен переход.
+
+			.param
+				+param-header('onChangeYear(year)','function', 'null')
+				p Функция обратного вызова при изменении года.
+				ul
+					li
+						+param('year','number')
+						| - номер года, к которому осуществлен переход
+
+			.param
+				+param-header('onChangeDecade(decade)','function', 'null')
+				p Функция обратного вызова при изменении декады.
+				ul
+					li
+						+param('decade','array')
+						| - массив, состоящий из номера года с которого начинается декада, и года на котором она заканчивается.
+
+			.param
+				+param-header('onChangeView(view)', 'function', 'null')
+				p Функция обратного вызова при изменении вида календаря
+				ul
+					li
+						+param('view', 'string')
+						| - вид, к которому осуществлен переход (days, months, years).
+
+			.param
+				+param-header('onRenderCell(date, cellType)', 'function', 'null')
+				p Функция обратного вызова при отрисовке ячейки календаря.
+				ul
+					li
+						+param('date', 'Date')
+						| - объект даты текущей ячейки
+					li
+						+param('cellType', 'string')
+						| - тип текущей ячейки (day, month, year).
+				p Функция должна возвращать объект, которой может состоять из трех полей:
+				+example-code('js').
+					{
+						html: '', // Кастомный контент ячейки
+						classes: '', // Дополнительные классы для ячейки
+						disabled: '' // true/false, если true, то ячейку нельзя будет выбрать
+					}
+				h4 Пример
+				+example-code('js').
+					$('#my-datepicker').datepicker({
+						// Передаем функцию, которая добавляет 4 числу каждого месяца класс 'my-class'
+						// и делает их невозможными к выбору.
+						onRenderCell: function(date, cellType) {
+							if (cellType == 'day' && date.getDate() == 4) {
+								return {
+									classes: 'my-class',
+									disabled: true
+								}
+							}
+						}
+					})

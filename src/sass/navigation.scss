@@ -22,6 +22,7 @@
 .datepicker--nav-action {
   width: $dayCellSize;
   border-radius: $datepickerBorderRadius;
+  user-select: none;
 
   &:hover {
     background: $colorCellHover;
@@ -29,6 +30,17 @@
 
   &.-disabled- {
     visibility: hidden;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  path {
+    fill: none;
+    stroke: #bdbdbd;
+    stroke-width: 2px;
   }
 }
 

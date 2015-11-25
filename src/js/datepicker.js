@@ -48,8 +48,8 @@ var Datepicker;
             autoClose: false,
 
             // navigation
-            prevHtml: '&laquo;',
-            nextHtml: '&raquo;',
+            prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
+            nextHtml: '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>',
             navTitles: {
                 days: 'MM, yyyy',
                 months: 'yyyy',
@@ -219,11 +219,11 @@ var Datepicker;
             switch (this.view) {
                 case 'days':
                     this.date = new Date(d.year, d.month + 1, 1);
-                    if (o.onChangeMonth) o.onChangeMonth(d.month + 1);
+                    if (o.onChangeMonth) o.onChangeMonth(this.parsedDate.month, this.parsedDate.year);
                     break;
                 case 'months':
                     this.date = new Date(d.year + 1, d.month, 1);
-                    if (o.onChangeYear) o.onChangeYear(d.year + 1);
+                    if (o.onChangeYear) o.onChangeYear(this.parsedDate.year);
                     break;
                 case 'years':
                     this.date = new Date(d.year + 10, 0, 1);
@@ -238,11 +238,11 @@ var Datepicker;
             switch (this.view) {
                 case 'days':
                     this.date = new Date(d.year, d.month - 1, 1);
-                    if (o.onChangeMonth) o.onChangeMonth(d.month - 1);
+                    if (o.onChangeMonth) o.onChangeMonth(this.parsedDate.month, this.parsedDate.year);
                     break;
                 case 'months':
                     this.date = new Date(d.year - 1, d.month, 1);
-                    if (o.onChangeYear) o.onChangeYear(d.year - 1);
+                    if (o.onChangeYear) o.onChangeYear(this.parsedDate.year);
                     break;
                 case 'years':
                     this.date = new Date(d.year - 10, 0, 1);

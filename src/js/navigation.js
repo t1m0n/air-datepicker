@@ -120,7 +120,7 @@
         },
 
         _onClickNavButton: function (e) {
-            var $el = $(e.target),
+            var $el = $(e.target).closest('[data-action]'),
                 action = $el.data('action');
 
             this.d[action]();

@@ -246,11 +246,22 @@
 
 .datepicker--nav-action {
   width: 32px;
-  border-radius: 2px; }
+  border-radius: 2px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
   .datepicker--nav-action:hover {
     background: #eee; }
   .datepicker--nav-action.-disabled- {
     visibility: hidden; }
+  .datepicker--nav-action svg {
+    width: 32px;
+    height: 32px; }
+  .datepicker--nav-action path {
+    fill: none;
+    stroke: #bdbdbd;
+    stroke-width: 2px; }
 
 .datepicker--nav-title {
   border-radius: 2px;
