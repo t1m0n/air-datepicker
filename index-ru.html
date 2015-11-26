@@ -102,7 +102,27 @@ $('.my-datepicker').datepicker({
 			}
 		}
 	}
-})</code></pre></div></article></article></div></main></div><script>var $code = $('code');
+})
+</code></pre></div></article><article><h2>API</h2><p>Досутп к экземпляру плагина осуществляется через<span class="example-inline"><code>data</code></span>атрибут.</p><pre class="example-code"><code class="js">var myDatepicker = $('#my-elem').datepicker().data('datepicker');
+
+myDatepicker.show();
+</code></pre><div class="param"><header class="param-header"><h3>show()</h3></header><p>Показывает календарь.</p></div><div class="param"><header class="param-header"><h3>hide()</h3></header><p>Скрывает календарь.</p></div><div class="param"><header class="param-header"><h3>next()</h3></header><p>Переходит на следующий месяц если вид days, на следующий год если months, и следующую декаду если years.</p></div><div class="param"><header class="param-header"><h3>prev()</h3></header><p>Переходит на предыдщуий месяц если вид days, на предыдущий год если months, и предыдущую декаду если years.</p></div><div class="param"><header class="param-header"><h3>selectDate(date)</h3></header><ul><li><span class="param-inline"><strong>date</strong><i>Date</i></span>- дата в формате JavaScript<span class="example-inline"><code class="js">Date()</code></span></li></ul><p>Выбирает переданную дату. Если<span class="example-inline"><code class="js">{multipleDates: false}</code></span>и уже есть активная дата, то она будет деактивирована. Если<span class="example-inline"><code class="js">{multipleDates: true}</code></span>то будет добавлена еще одна активная дата.</p></div><div class="param"><header class="param-header"><h3>removeDate(date)</h3></header><ul><li><span class="param-inline"><strong>date</strong><i>Date</i></span>- дата в формате JavaScript<span class="example-inline"><code class="js">Date()</code></span></li></ul><p>Снимает выделение с переданной даты.</p></div><div class="param"><header class="param-header"><h3>update(field[, value])</h3></header><ul><li><span class="param-inline"><strong>field</strong><i>string|object</i></span>- название поля значение которого нужно обновить.</li><li><span class="param-inline"><strong>field</strong><i>string|*</i></span>- новое значение параметра</li></ul><p>Обновление опций календаря, после вызова метода он автоматически перерисуется.
+Можно обновлять сразу же несколько параметров, для этого нужно передать объект с требуемыми полями.
+</p><pre class="example-code"><code class="js">var datepicker = $('#my-elem').datepicker().data('datepicker');
+
+// Обновление одного параметра
+datepicker.update('minDate', new Date())
+
+// Обновление нескольких параметров
+datepicker.update({
+	position: "top right",
+	maxDate: new Date(),
+	todayButton: true
+})
+</code></pre></div><div class="param"><header class="param-header"><h3>view</h3></header><p>Устанавливает новое представление для календаря.</p><pre class="example-code"><code class="js">datepicker.view = 'months';
+</code></pre></div><div class="param"><header class="param-header"><h3>date</h3></header><p>Устанавливает новую отображаемую дату, нужно передать JavaScript<span class="example-inline"><code>Date()</code></span></p><pre class="example-code"><code class="js">datepicker.date = new Date();
+
+</code></pre></div><div id="from" class="datepicker-here"></div><div id="to" class="datepicker-here"></div></article></article></div></main></div><script>var $code = $('code');
 $code.each(function (i, el) {
 	hljs.highlightBlock(el);
 })</script></body></html>

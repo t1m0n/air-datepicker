@@ -292,6 +292,8 @@ var Datepicker;
             var d = this.parsedDate,
                 newDate = '';
 
+            if (!(date instanceof Date)) return;
+
             if (this.view == 'days') {
                 if (date.getMonth() != d.month && this.opts.moveToOtherMonthsOnSelect) {
                     newDate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -337,6 +339,8 @@ var Datepicker;
         removeDate: function (date) {
             var selected = this.selectedDates,
                 _this = this;
+
+            if (!(date instanceof Date)) return;
 
             return selected.some(function (curDate, i) {
                 if (Datepicker.isSame(curDate, date)) {
@@ -567,6 +571,8 @@ var Datepicker;
         },
 
         set date (val) {
+            if (!(val instanceof Date)) return;
+
             this.currentDate = val;
 
             if (this.inited && !this.silent) {

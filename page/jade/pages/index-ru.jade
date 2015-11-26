@@ -475,3 +475,99 @@ block content
 							}
 						}
 					})
+
+		article
+			h2 API
+			p
+				| Досутп к экземпляру плагина осуществляется через
+				+example-inline('data')
+				| атрибут.
+			+example-code('js').
+				var myDatepicker = $('#my-elem').datepicker().data('datepicker');
+
+				myDatepicker.show();
+
+			.param
+				+param-header('show()')
+				p Показывает календарь.
+
+			.param
+				+param-header('hide()')
+				p Скрывает календарь.
+
+			.param
+				+param-header('next()')
+				p Переходит на следующий месяц если вид days, на следующий год если months, и следующую декаду если years.
+
+			.param
+				+param-header('prev()')
+				p Переходит на предыдщуий месяц если вид days, на предыдущий год если months, и предыдущую декаду если years.
+
+			.param
+				+param-header('selectDate(date)')
+				ul
+					li
+						+param('date','Date')
+						| - дата в формате JavaScript
+						+example-inline('Date()', 'js')
+				p
+					| Выбирает переданную дату. Если
+					+example-inline('{multipleDates: false}','js')
+					| и уже есть активная дата, то она будет деактивирована. Если
+					+example-inline('{multipleDates: true}','js')
+					| то будет добавлена еще одна активная дата.
+
+			.param
+				+param-header('removeDate(date)')
+				ul
+					li
+						+param('date','Date')
+						| - дата в формате JavaScript
+						+example-inline('Date()', 'js')
+				p
+					| Снимает выделение с переданной даты.
+
+			.param
+				+param-header('update(field[, value])')
+				ul
+					li
+						+param('field','string|object')
+						| - название поля значение которого нужно обновить.
+					li
+						+param('field','string|*')
+						| - новое значение параметра
+				p.
+					Обновление опций календаря, после вызова метода он автоматически перерисуется.
+					Можно обновлять сразу же несколько параметров, для этого нужно передать объект с требуемыми полями.
+
+				+example-code('js').
+					var datepicker = $('#my-elem').datepicker().data('datepicker');
+
+					// Обновление одного параметра
+					datepicker.update('minDate', new Date())
+
+					// Обновление нескольких параметров
+					datepicker.update({
+						position: "top right",
+						maxDate: new Date(),
+						todayButton: true
+					})
+
+			.param
+				+param-header('view')
+				p Устанавливает новое представление для календаря.
+				+example-code('js').
+					datepicker.view = 'months';
+
+			.param
+				+param-header('date')
+				p
+					| Устанавливает новую отображаемую дату, нужно передать JavaScript
+					+example-inline('Date()')
+
+				+example-code('js').
+					datepicker.date = new Date();
+
+
+			.datepicker-here#from
+			.datepicker-here#to
