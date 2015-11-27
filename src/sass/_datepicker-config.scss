@@ -1,34 +1,40 @@
 $dayCellSize: 32px;
-$datepickerWidth: 232px;
+$datepickerWidth: 250px;
 $datepickerMinBodyHeight: 170px;
-$datepickerBorderRadius: 2px;
-$datepickerPadding: 2px;
+$datepickerBorderRadius: 4px;
+$datepickerPadding: 4px;
 
 $fontFamily: Tahoma;
 $fontSize: 14px;
 
 $yearsPerRow: 4;
+
 $textColor: (
+  button: #5cc4ef,
+  otherMonth: #dedede,
+  disabled: #aeaeae,
+  currentDate: #4EB5E6,
   common: #4a4a4a,
-  dayNames: #f5a33a,
+  dayNames: #FF9A19,
+  navArrows: #9c9c9c
+);
+
+$bg: (
+  selected: #5cc4ef,
+  hover: #eee
+);
+
+$borderColor: (
+  nav: #f4f4f4,
+  inline: #d7d7d7,
+  default: #cccccc
 );
 
 $navigationHeight: 32px;
-$navigationButtonsOffset: 1px;
+$navigationButtonsOffset: 2px;
 
 $pointerSize: 10px;
-$pointerOffset: 8px;
-
-// Colors
-$colorGrey: #ddd;
-$colorAnotherMonth: #ddd;
-$colorCellHover: #eee;
-$colorCellCurrent: #60C4F5;
-$colorCellSelected: skyblue;
-$colorCellWeekend: '';
-$borderColor: $colorGrey;
-$bgButton: #f2f2f2;
-$bgButtonHover: darken($bgButton, 3);
+$pointerOffset: 10px;
 
 // Transitions
 $transitionSpeed: .3s;
@@ -37,12 +43,21 @@ $transitionOffset: 8px;
 
 // Objects
 %otherMonth {
-  color: $colorAnotherMonth;
-  font-size: .9em;
+  color: map_get($textColor, otherMonth);
+
+  &:hover {
+    color: darken(map_get($textColor, otherMonth), 10);
+  }
+
+  &.-disabled- {
+    &:hover {
+      color: map_get($textColor, otherMonth);
+    }
+  }
 
   &.-selected- {
     color: #fff;
-    background: lighten($colorCellSelected, 20%);
+    background: lighten(map_get($bg, selected), 15);
   }
 
   &:empty {

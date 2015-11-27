@@ -20,30 +20,31 @@
   z-index: 1;
 
   &:hover {
-    background: $colorCellHover;
+    background: map_get($bg, hover);
   }
 
   &.-current- {
-    color: $colorCellCurrent;
+    color: map_get($textColor, currentDate);
 
     &:hover {
-      background: rgba($colorCellCurrent, .05);
+      color:  map_get($textColor, common);
+      //background: rgba(map_get($textColor, currentDate), .05);
     }
   }
 
   &.-disabled- {
     cursor: default;
-    color: $colorGrey;
+    color: map_get($textColor, disabled);
     background: none;
   }
 
   &.-selected- {
     color: #fff;
-    background: $colorCellSelected;
+    background: map_get($bg, selected);
 
     &.-current- {
       color: #fff;
-      background: $colorCellSelected;
+      background: map_get($bg, selected);
     }
   }
 }
@@ -54,6 +55,7 @@
 .datepicker--days-names {
   display: flex;
   flex-wrap: wrap;
+  margin: 8px 0 3px;
 }
 
 .datepicker--day-name {
@@ -62,17 +64,15 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  height: $dayCellSize;
   text-align: center;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: .8em;
 }
 
 //  Day cell
 // -------------------------------------------------
 
 .datepicker--cell-day {
-  border-radius: 50%;
   width: (100/7)#{'%'};
 
   &.-other-month- {

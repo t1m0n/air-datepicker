@@ -141,7 +141,7 @@
                 d = Datepicker.getParsedDate(date),
                 currentDate = new Date(),
                 loc = this.d.loc,
-                html = loc.months[d.month],
+                html = loc[this.opts.monthsFiled][d.month],
                 render = {};
 
             if (this.opts.onRenderCell) {

@@ -48,10 +48,11 @@ var Datepicker;
             autoClose: false,
 
             // navigation
+            monthsFiled: 'monthsShort',
             prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
             nextHtml: '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>',
             navTitles: {
-                days: 'MM, yyyy',
+                days: 'MM, <i>yyyy</i>',
                 months: 'yyyy',
                 years: 'yyyy1 - yyyy2'
             },
@@ -148,7 +149,7 @@ var Datepicker;
                     this.loc = $.extend(true, {}, Datepicker.language.ru)
                 }
 
-                this.loc = $.extend(true, {}, Datepicker.language[lang], Datepicker.language.ru)
+                this.loc = $.extend(true, {}, Datepicker.language.ru, Datepicker.language[lang])
             } else {
                 this.loc = $.extend(true, {}, Datepicker.language.ru, lang)
             }
@@ -179,7 +180,7 @@ var Datepicker;
                     $appendTarget = $inline.insertAfter(this.$el)
                 }
             } else {
-                $appendTarget = $inline.insertAfter(this.$el)
+                $appendTarget = $inline.appendTo(this.$el)
             }
 
             this.$datepicker = $(baseTemplate).appendTo($appendTarget);

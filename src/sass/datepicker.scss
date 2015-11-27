@@ -12,7 +12,8 @@
 
 .datepicker {
   background: #fff;
-  border: 1px solid $borderColor;
+  border: 1px solid map_get($borderColor, default);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
   border-radius: $datepickerBorderRadius;
   box-sizing: content-box;
   font-family: $fontFamily, sans-serif;
@@ -47,6 +48,8 @@
 
 .datepicker-inline {
   .datepicker {
+    border-color: map-get($borderColor, inline);
+    box-shadow: none;
     position: static;
     left: auto;
     right: auto;
@@ -60,6 +63,7 @@
 }
 
 .datepicker--content {
+  box-sizing: content-box;
   padding: $datepickerPadding;
 }
 
@@ -70,8 +74,8 @@ $pointerHalfSize: $pointerSize / 2 - 1;
 .datepicker--pointer {
   position: absolute;
   background: #fff;
-  border-top: 1px solid $borderColor;
-  border-right: 1px solid $borderColor;
+  border-top: 1px solid map-get($borderColor, default);
+  border-right: 1px solid map-get($borderColor, default);
   width: $pointerSize;
   height: $pointerSize;
   z-index: -1;

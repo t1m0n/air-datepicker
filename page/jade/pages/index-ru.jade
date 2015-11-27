@@ -3,16 +3,40 @@ extends ../layout
 block content
 	h1.promo-header
 		| AIR DATEPICKER
-		span легкий соврменный jQuery календарь
+		span легкий современный jQuery календарь
 
 	p.-text-center-
-		input.promo-input.datepicker-here(type='text' id='example-promo' data-position='bottom center')
+		.datepicker-here.datepicker-promo
+		script.
+			var $promo = $('.datepicker-promo');
 
+			$promo.datepicker()
+
+
+	h2 Описание
+	p
+		|Легкий кроссбраузерный календарь, написан с использованием
+		+example-inline('flexbox')
+		|. Работает во всех современных браузерах:
+		| <strong>IE 10+</strong>, <strong>Chrome</strong>, <strong>Firefox</strong>, <strong>Safari 8+</strong>, <strong>Opera 17+</strong>.
 	h2 Установка
 	+example-code('html') bower i --save air-datepicker
 	p Либо можно скачать файлы напрямую с <a href="">GitHub</a>
 
 	h2 Использование
+	p
+		|Подключите стили и скрипты из папки
+		+example-inline('/dist')
+		| :
+
+	+example-code('html')
+		:code
+			<html>
+				<head>
+					<link href="dist/css/datepicker.min.css" rel="stylesheet" type="text/css">
+					<script src="dist/js/datepicker.min.js"></script>
+				</head>
+			</html>
 	p
 		| Календарь автоматически проинициализируется на элементах с классом
 		+example-inline('.datepicker-here', 'css')
@@ -48,13 +72,14 @@ block content
 		| .
 	+example
 		+example-content
-			input(type='text' data-multiple-dates='3' data-multiple-dates-separator=', ').datepicker-here
+			input(type='text' data-multiple-dates='3' data-multiple-dates-separator=', ', data-position='right top').datepicker-here
 		+example-code('html')
 			:code
 				<input type="text"
 					class="datepicker-here"
 					data-multiple-dates="3"
-					data-multiple-dates-separator=", " />
+					data-multiple-dates-separator=", "
+					data-position='right top'/>
 
 	h3 Постоянно видимый календарь
 	p
@@ -372,12 +397,13 @@ block content
 
 			.param
 				+param-header('navTitles', 'object')
-					+example-code('js').
-						navTitles = {
-							days: 'MM, yyyy',
-							months: 'yyyy',
-							years: 'yyyy1 - yyyy2'
-						};
+					+example-code('js')
+						:code
+							navTitles = {
+								days: 'MM, <i>yyyy</i>',
+								months: 'yyyy',
+								years: 'yyyy1 - yyyy2'
+							};
 				p
 					| Значение заголовка календаря в зависимости от текущего вида, можно использовать те же обозночения что и в
 					+example-inline('dateFormat', 'js')
@@ -389,6 +415,9 @@ block content
 								days: '<h3>Выберете дату заезда</h3> MM, yyyy'
 							}
 						})
+			.param
+				+param-header('monthsField','string','"monthsShort"')
+				p Какое поле из объекта локализации использовать в качестве названий месяцев, когда каледнарь отображает год.
 
 			h2 События
 			.param
@@ -567,7 +596,3 @@ block content
 
 				+example-code('js').
 					datepicker.date = new Date();
-
-
-			.datepicker-here#from
-			.datepicker-here#to
