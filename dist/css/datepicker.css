@@ -38,7 +38,7 @@
   height: 32px;
   z-index: 1; }
   .datepicker--cell:hover {
-    background: #eee; }
+    background: #f0f0f0; }
   .datepicker--cell.-current- {
     color: #4EB5E6; }
     .datepicker--cell.-current-:hover {
@@ -124,8 +124,8 @@
 
 .datepicker {
   background: #fff;
-  border: 1px solid #cccccc;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #dbdbdb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   box-sizing: content-box;
   font-family: Tahoma, sans-serif;
@@ -178,8 +178,8 @@
 .datepicker--pointer {
   position: absolute;
   background: #fff;
-  border-top: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
+  border-top: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
   width: 10px;
   height: 10px;
   z-index: -1; }
@@ -240,7 +240,7 @@
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid #efefef;
   min-height: 32px;
   padding: 4px; }
 
@@ -265,7 +265,7 @@
       -ms-user-select: none;
           user-select: none; }
   .datepicker--nav-action:hover {
-    background: #eee; }
+    background: #f0f0f0; }
   .datepicker--nav-action.-disabled- {
     visibility: hidden; }
   .datepicker--nav-action svg {
@@ -284,7 +284,7 @@
     color: #9c9c9c;
     margin-left: 5px; }
   .datepicker--nav-title:hover {
-    background: #eee; }
+    background: #f0f0f0; }
   .datepicker--nav-title.-disabled- {
     cursor: default;
     background: none; }
@@ -294,7 +294,7 @@
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
-  border-top: 1px solid #f4f4f4; }
+  border-top: 1px solid #efefef; }
 
 .datepicker--button {
   color: #4EB5E6;
@@ -315,7 +315,7 @@
   height: 32px; }
   .datepicker--button:hover {
     color: #4a4a4a;
-    background: #eee; }
+    background: #f0f0f0; }
 
 .datepicker--cell-day.-other-month-, .datepicker--cell-year.-other-decade- {
   color: #dedede; }

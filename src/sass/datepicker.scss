@@ -13,7 +13,7 @@
 .datepicker {
   background: #fff;
   border: 1px solid map_get($borderColor, default);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
   border-radius: $datepickerBorderRadius;
   box-sizing: content-box;
   font-family: $fontFamily, sans-serif;
