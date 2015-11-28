@@ -13,7 +13,7 @@ $('.my-datepicker').datepicker([options])
 ```
 
 ## Demo and docs
-[Demo]()
+[Demo](http://t1m0n.name/air-datepicker/docs/)
 
 
 

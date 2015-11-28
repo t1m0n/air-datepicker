@@ -136,6 +136,7 @@ var Datepicker;
             this.$el.on('input', this._onInput.bind(this));
             this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
             this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
+            $(window).on('resize', this._onResize.bind(this))
         },
 
         isWeekend: function (day) {
@@ -480,6 +481,8 @@ var Datepicker;
         },
 
         setPosition: function (position) {
+            position = position || this.opts.position;
+
             var dims = this._getDimensions(this.$el),
                 selfDims = this._getDimensions(this.$datepicker),
                 pos = position.split(' '),
@@ -575,6 +578,12 @@ var Datepicker;
 
             if (!val) {
                 this.clear();
+            }
+        },
+
+        _onResize: function () {
+            if (this.visible) {
+                this.setPosition();
             }
         },
 
