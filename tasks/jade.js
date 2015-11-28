@@ -15,8 +15,8 @@ _jade.filters.code = function( block ) {
 };
 
 module.exports = function () {
-    gulp.src('page/jade/pages/*.jade')
+    gulp.src('docs/jade/pages/*.jade')
         .pipe(plumber())
         .pipe(jade())
-        .pipe(gulp.dest('./'))
+        .pipe(gulp.dest('docs/'))
 };

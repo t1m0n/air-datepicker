@@ -8,6 +8,13 @@ gulp.task('i18n', require('./tasks/i18n'));
 gulp.task('cssPage', require('./tasks/cssPage'));
 gulp.task('jade', require('./tasks/jade'));
 
+var gzip = require('gulp-gzip');
+gulp.task('gzip', function (cb) {
+    gulp.src('dist/js/datepicker.min.js')
+        .pipe(gzip())
+        .pipe(gulp.dest('dist/'))
+});
+
 
 gulp.task('watch', function () {
     livereload.listen();
@@ -20,11 +27,11 @@ gulp.task('watch', function () {
         livereload.changed(file)
     });
 
-    gulp.watch('page/sass/*.scss', ['cssPage']).on('change', function (file) {
+    gulp.watch('docs/sass/*.scss', ['cssPage']).on('change', function (file) {
         livereload.changed(file)
     });
 
-    gulp.watch('page/jade/**/*.jade', ['jade']).on('change', function (file) {
+    gulp.watch('docs/jade/**/*.jade', ['jade']).on('change', function (file) {
         livereload.changed(file)
     });
 });

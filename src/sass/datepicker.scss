@@ -24,6 +24,7 @@
   left: -100000px;
   opacity: 0;
   transition: opacity $transitionSpeed $transitionEase, transform $transitionSpeed $transitionEase, left 0s $transitionSpeed;
+  z-index: $datepickerZIndex;
 
   &.-from-top- {
     transform: translateY(-$transitionOffset);

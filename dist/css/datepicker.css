@@ -137,7 +137,8 @@
   opacity: 0;
   transition: opacity 0.3s ease, left 0s 0.3s, -webkit-transform 0.3s ease;
   transition: opacity 0.3s ease, transform 0.3s ease, left 0s 0.3s;
-  transition: opacity 0.3s ease, transform 0.3s ease, left 0s 0.3s, -webkit-transform 0.3s ease; }
+  transition: opacity 0.3s ease, transform 0.3s ease, left 0s 0.3s, -webkit-transform 0.3s ease;
+  z-index: 100; }
   .datepicker.-from-top- {
     -webkit-transform: translateY(-8px);
             transform: translateY(-8px); }

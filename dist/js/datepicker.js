@@ -133,6 +133,7 @@ var Datepicker;
         _bindEvents : function () {
             this.$el.on(this.opts.showEvent, this._onShowEvent.bind(this));
             this.$el.on('blur', this._onBlur.bind(this));
+            this.$el.on('input', this._onInput.bind(this));
             this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
             this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
         },
@@ -366,7 +367,9 @@ var Datepicker;
         clear: function () {
             this.selectedDates = [];
             this.views[this.currentView]._render();
-            this._triggerOnChange()
+            if (this.opts.onSelect) {
+                this._triggerOnChange()
+            }
         },
 
         /**
@@ -565,6 +568,14 @@ var Datepicker;
         _onMouseUpDatepicker: function (e) {
             this.inFocus = false;
             this.$el.focus()
+        },
+
+        _onInput: function () {
+            var val = this.$el.val();
+
+            if (!val) {
+                this.clear();
+            }
         },
 
         get parsedDate() {

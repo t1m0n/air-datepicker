@@ -8,10 +8,10 @@ var gulp = require('gulp'),
     concat = require('gulp-concat');
 
 module.exports = function () {
-    gulp.src('page/sass/init.scss')
+    gulp.src('docs/sass/init.scss')
         .pipe(concat('style.css'))
         .pipe(sass().on('error', sass.logError))
         .pipe(postcss([autoprefixer]))
         .pipe(minify())
-        .pipe(gulp.dest('page/css'))
+        .pipe(gulp.dest('docs/css'))
 };
