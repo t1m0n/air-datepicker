@@ -46,7 +46,7 @@ article {
 
     &:after {
       content: '';
-      background: rgba(#FF9A19, .2);
+      background: rgba(#439cff, .2);
       border-radius: 4px;
       opacity: 0;
       left: -8px;
@@ -55,12 +55,13 @@ article {
       bottom: -4px;
       position: absolute;
       z-index: -1;
-      transition: all .3s .7s linear;
+      transition: all .4s .3s linear;
     }
 
     &.-hilited- {
       &:after {
         opacity: 1;
+        transition: all .4s .7s linear;
       }
     }
   }

@@ -20,6 +20,7 @@
     "node_modules",
     "bower_components",
     "tasks",
+    "docs",
     "page",
     "package.json",
     "gulpfile.js",
