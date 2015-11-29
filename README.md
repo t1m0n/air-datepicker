@@ -13,5 +13,5 @@ $('.my-datepicker').datepicker([options])
 ```
 
 ## Demo and docs
-[Docs in English](http://t1m0n.name/air-datepicker/docs/)
-[Docs in Russian](http://t1m0n.name/air-datepicker/docs/index-ru.html)
+* [Docs in English](http://t1m0n.name/air-datepicker/docs/)
+* [Docs in Russian](http://t1m0n.name/air-datepicker/docs/index-ru.html)
