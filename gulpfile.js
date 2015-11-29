@@ -6,7 +6,8 @@ gulp.task('css', require('./tasks/css'));
 gulp.task('js', require('./tasks/js'));
 gulp.task('i18n', require('./tasks/i18n'));
 gulp.task('cssPage', require('./tasks/cssPage'));
-gulp.task('jade', require('./tasks/jade'));
+gulp.task('jade-ru', require('./tasks/jade').ru);
+gulp.task('jade-en', require('./tasks/jade').en);
 
 var gzip = require('gulp-gzip');
 gulp.task('gzip', function (cb) {
@@ -31,7 +32,7 @@ gulp.task('watch', function () {
         livereload.changed(file)
     });
 
-    gulp.watch('docs/jade/**/*.jade', ['jade']).on('change', function (file) {
+    gulp.watch('docs/jade/**/*.jade', ['jade-ru', 'jade-en']).on('change', function (file) {
         livereload.changed(file)
     });
 });

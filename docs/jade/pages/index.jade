@@ -1,32 +1,38 @@
 extends ../layout
 block content
+	a.lang-link(href='index-ru.html')
+		img(src='img/ru.png')
+		span На русском языке
+
 	h1.promo-header
 		| AIR DATEPICKER
-		span легкий кроссбраузерный jQuery календарь
+		span lightweight cross-browser jQuery datepicker
 	p.-text-center-
 		.datepicker-here.datepicker-promo
 		script.
 			var $promo = $('.datepicker-promo');
-			$promo.datepicker()
+			$promo.datepicker({
+				language: 'en'
+			})
 	article
-		h2#intro Описание
+		h2#intro Description
 		p
-			| Легкий (<strong>~20kb</strong> минифицированный js файл и <strong>~5.5kb</strong> gziped) кроссбраузерный календарь, написан с использованием
+			| Light (<strong>~20kb</strong> minified js file and <strong>~5.5kb</strong> gziped) cross-browser calendar, built with
 			+example-inline('es5')
-			| и
+			| and
 			+example-inline('css flexbox', 'js')
-			| . Работает во всех современных браузерах:
+			| .Works in all modern browsers:
 			| <strong>IE 10+</strong>, <strong>Chrome</strong>, <strong>Firefox</strong>, <strong>Safari 8+</strong>, <strong>Opera 17+</strong>.
 	article
-		h2#install Установка
+		h2#install Installation
 		+example-code('html') bower i --save air-datepicker
-		p Либо можно скачать файлы напрямую с <a href="">GitHub</a>
+		p Or you can download files directly from <a href="https://github.com/t1m0n/air-datepicker/tree/master/dist">GitHub</a>
 	article
-		h2#usage Использование
+		h2#usage Usage
 		p
-			| Подключите стили и скрипты из папки
+			| Include styles and scripts from
 			+example-inline('/dist')
-			| :
+			| directory:
 		+example-code('html')
 			:code
 				<html>
@@ -36,34 +42,34 @@ block content
 					</head>
 				</html>
 		p
-			| Календарь автоматически проинициализируется на элементах с классом
+			| Datepicker will automatically initialize on elements with class
 			+example-inline('.datepicker-here', 'css')
-			| , при этом опции можно передать через
+			| , options may be sent via
 			+example-inline('data', 'html')
-			| атрибуты.
+			| attributes.
 		+example-code('html')
 			:code
 				<input type='text' class="datepicker-here" data-position="right top" />
-		h3 Ручная инициализация
+		h3 Manual initialization
 		+example-code('js').
-			// Инициализация
+			// Initialization
 			$('#my-element').datepicker([options])
-			// Доступ к экземпляру объекта
+			// Access to an instance of an object
 			$('#my-element').data('datepicker')
 	article
-		h2#examples Примеры
-		h3 Инициализация с опциями по умолчанию
+		h2#examples Examples
+		h3 Initialization with default options
 		+example
 			+example-content
-				input(type='text').datepicker-here
+				input(type='text', data-language='en').datepicker-here
 			+example-code('html')
 				:code
-					<input type='text' class='datepicker-here' />
-		h3 Выбор нескольких дат
+					<input type='text' class='datepicker-here', data-language='en' />
+		h3 Selecting multiple dates
 		p
-			| Передайте параметр
+			| Pass the parameter
 			+example-inline('{multipleDates: true}','js')
-			| для выбора нескольких дат. Если требуется ограничить количество выбранных дат, то передайте необходимое число
+			| for selection of multiple dates. If you want to limit the number of selected dates, pass the desired number
 			+example-inline('{multipleDates: 3}','js')
 			| .
 		+example
@@ -76,68 +82,72 @@ block content
 						   data-multiple-dates="3"
 						   data-multiple-dates-separator=", "
 						   data-position='right top'/>
-		h3 Постоянно видимый календарь
+		h3 Permanently visible calendar
 		p
-			| Проинициализируйте плагин на элементе, который не является текстовым полем, например на
+			| Initialize the plugin on non text input element, such as
 			+example-inline('<div> …  </div>', 'html')
-			| , либо передайте параметр
+			| ,or pass the parameter
 			+example-inline('{inline: true}', 'js')
 			| .
 		+example
 			+example-content
-				div.datepicker-here
+				div.datepicker-here(data-language='en')
 			+example-code('html')
 				:code
-					<div class="datepicker-here"></div>
-		h3 Выбор месяца
+					<div class="datepicker-here" data-language='en'></div>
+		h3 Month selection
 		+example
 			+example-content
-				input.datepicker-here(type='text' data-min-view='months' data-view='months' data-date-format='MM yyyy')
+				input.datepicker-here(type='text' data-min-view='months' data-view='months' data-date-format='MM yyyy' data-language='en')
 			+example-code('html')
 				:code
 					<input type="text"
 						   class="datepicker-here"
+						   data-language='en'
 						   data-min-view="months"
 						   data-view="months"
 						   data-date-format="MM yyyy" />
-		h3 Минимальная и максимальные даты
+		h3 Minimum and maximum dates
 		p
-			| Чтобы ограничить выбор даты, используйте
+			| To limit date selection, use
 			+example-inline('minDate', 'js')
-			| и
+			| and
 			+example-inline('maxDate', 'js')
-			| , которым нужно передать объект даты.
+			| , they must receive JavaScript Date object.
 		+example
 			+example-content
 				input#minMaxExample(type='text')
 				script.
 					$('#minMaxExample').datepicker({
-						minDate: new Date() // Можно выбрать тольо даты, идущие за сегодняшним днем
+						language: 'en',
+						minDate: new Date() // Now can select only dates, which goes after today
 					})
 			+example-code('js').
 				$('#minMaxExample').datepicker({
-					minDate: new Date() // Можно выбрать тольо даты, идущие за сегодняшним днем
+					language: 'en',
+					minDate: new Date() // Now can select only dates, which goes after today
 				})
-		h3 Диапозон дат
+		h3 Range
 		p.
-			По умолчанию в плагине нет встроенного механизма выбора диапозона дат для нескольких текстовых полей.
-			Тем не менее это можно сделть вручную.
+			By default there is no functionality to select dates range, but it can be easily achieved manually.
 		+example
 			+example-content
 				div.range-example
-					input(type='text' placeholder='Начало')#start
+					input(type='text' placeholder='Start')#start
 					span &ndash;
-					input(type='text' placeholder='Конец')#end
+					input(type='text' placeholder='End')#end
 				script.
 					var $start = $('#start'),
 							$end = $('#end');
 					$start.datepicker({
+						language: 'en',
 						onSelect: function (fd, date) {
 							$end.data('datepicker')
 									.update('minDate', date)
 						}
 					})
 					$end.datepicker({
+						language: 'en',
 						onSelect: function (fd, date) {
 							$start.data('datepicker')
 									.update('maxDate', date)
@@ -147,31 +157,36 @@ block content
 				var $start = $('#start'),
 					$end = $('#end');
 					$start.datepicker({
+						language: 'en',
 						onSelect: function (fd, date) {
 							$end.data('datepicker')
 								.update('minDate', date)
 						}
 					})
 					$end.datepicker({
+						language: 'en',
 						onSelect: function (fd, date) {
 							$start.data('datepicker')
 								.update('maxDate', date)
 						}
 					})
 	article
-		h2#localization Локализация
+		h2#localization Localization
 		p
-			| Вы можете добавить свою локализацию в объект
+			| You can add your localization to object
 			+example-inline('Datepicker.language["my-lang"]', 'js')
-			| и при вызове календаря передать название языка в параметр
+			| and pass it name to parameter
 			+example-inline('language', 'js')
 		+example-code('js').
+			// Add custom localization
 			Datepicker.language['my-lang'] = {...}
+
+			// Initialize datepicker with it
 			$('.my-datepicker').datepicker({
 				language: 'my-lang'
 			})
 		p
-			| Также объект локализации можно передавать непосредственно в
+			| You can also pass localization object directly in
 			+example-inline('language', 'js')
 		+example-code('js').
 			$('.my-datepicker').datepicker({
@@ -180,170 +195,175 @@ block content
 					...
 				}
 			})
-		p Если в вашей локализации не будет хватать каких-то полей, то они будут взяты из языка по умолчанию.
-		h3 Пример объекта локализации
+		p If some fields are missing, they will be taken from default localization object ('Russian').
+		h3 Example of localization object
 		+example-code('js').
-			Datepicker.language['ru'] =  {
-				days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
-				daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
-				daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
-				months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-				monthsShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
-				today: 'Сегодня',
-				clear: 'Очистить',
-				dateFormat: 'dd.mm.yyyy',
-				firstDay: 1
+			Datepicker.language['en'] = {
+				days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+				daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+				daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+				months: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
+				monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+				today: 'Today',
+				clear: 'Clear',
+				dateFormat: 'mm/dd/yy',
+				firstDay: 0
 			};
+		p Available localizations located in
+			+example-inline('dist/js/i18n', 'js')
+			| directory.
 	article
-		h2#options Опции
+		h2#options Options
 		.param
 			+param-header('inline', 'boolean', 'false')
-			p Если true, то календарь будет виден постоянно.
+			p If true, then datepicker will be always visible.
 		.param
 			+param-header('language', 'string|object', '"ru"')
 			p
-				| Язык календаря. Если передается строка, то поиск языка будет осуществляться в объекте
+				| Datepicker's language. If string is passed, then language will be searched in
 				+example-inline('Datepicker.language', 'js')
-				| Если передан объект, то данные будут браться из него.
-			p Если в объекте локализации не будет хватать каких то полей, то они будут взяты из языка по умолчанию.
+				| object.
+				| If object is passed, then data will be taken from this object directly.
+			p If some fields are missing, they will be taken from default localization object ('Russian').
 		.param
 			+param-header('startDate', 'Date', 'new Date()')
-			p Какую дату нужно показывать при инициализации календаря.
+			p Which date must be shown at first initialization.
 		.param
 			+param-header('firstDay', 'number', '""')
 			p.
-				Индекс дня, с которого начинается неделя. Возможные значение от 0 до 6, где 0 - воскресенье и 6 - суббота.
-				По умолчанию берется из локализации, если значение передать сюда, то оно будет иметь больший приоритет.
+				Day index from which week will be started. Possible values are from 0 to 6, where 0 - sunday и 6 - saturday.
+				By default value is taken from current localization, but if it passed here, then it will have higher priority.
 		.param
 			+param-header('weekends', 'array', '[6, 0]')
 			p
-				| Массив индексов дней, которые будут считаться выходными днями. Им будет добавлен класс
+				| Array of day's indexes, which must be considered as holidays. Class
 				+example-inline('.-weekend-','css')
-				| . По умолчанию это суббота и воскресенье.
+				| will be added to relevant cells.
+				| . By default its saturday and sunday.
 		.param
 			+param-header('dateFormat', 'string', '""')
-			p Формат даты, кобминация из d, m, yyyy, D, M, и т.д.  По умолчанию берется из локализации, если передать значение сюда, то оно будет иметь больший приоритет.
+			p Format of date, it's combination of d, m, yyyy, D, M, и т.д. By default value is taken from current localization, but if it passed here, then it will have higher priority.
 			ul
 				li
 					+param('d')
-					| - дата
+					| - date number
 				li
 					+param('dd')
-					| - дата с лидирующем нулем
+					| - date with leading zero
 				li
 					+param('D')
-					| - сокращенное наименование дня
+					| - short day name
 				li
 					+param('DD')
-					| - полное наименование дня
+					| - full day name
 				li
 					+param('m')
-					| - номер мясяца
+					| - month number
 				li
 					+param('mm')
-					| - номер месяца с лидирующем нулем
+					| - month number with leading zero
 				li
 					+param('M')
-					| - сокращенное наименовение месяца
+					| - short month name
 				li
 					+param('MM')
-					| - полное наименовение месяца
+					| - full month name
 				li
 					+param('yy')
-					| - сокращенный номер года
+					| - two digit year number
 				li
 					+param('yyyy')
-					| - полный номер года
+					| - four digit year number
 				li
 					+param('yyyy1')
-					| - первый год декады, в которую входит текущий год
+					| - first year of decade, which included current year
 				li
 					+param('yyyy2')
-					| - последний год декады, в которую входит текущий год
+					| - last year of decade, which included current year
 		.param
 			+param-header('toggleSelected', 'boolean', 'true')
-			p Если true, то клик на выделенной дате снимет выделение.
+			p If true, then clicking on selected cell will remove selection.
 		.param
 			+param-header('position', 'string', '"bottom left"')
 			p
-				| Позиционирование календаря отностиельно текстового поля. Первым значением задается основная ось позиционирования,
-				| воторым - положение на этой оси. Например
+				| Position of datepicker relative to text input. First value is name of main axis, and second is position on that axis.
+				| For example
 				+example-inline('{position: "right top"}', 'js')
-				| - утсановит позицию клаендаря справа вверху от текстового поля.
+				| - will set datepicker's position from right side on top of text input.
 		.param
 			+param-header('offset','number', 12)
-			p Отступ от основной оси позиционирования.
+			p Offset from the main positioning axes.
 		.param
 			+param-header('view', 'string', '"days"')
-			p Начальный вид календаря. Возможноые значения:
+			p Start datepicker view. Possible values are:
 				ul
 					li
 						+example-inline('days','js')
-						| - отображение дней месяца
+						| - display days of one month
 					li
 						+example-inline('months','js')
-						| - отображение месяцев одного года
+						| - display months of one year
 					li
 						+example-inline('years','js')
-						| - отображение годов одной декады
+						| - display years of one decade
 		.param
 			+param-header('minView', 'string', '"days"')
 			p
-				| Минимальное представление календаря, по наступлению которого, выбор ячейки приведет к ее активации, а не переходу к следующему виду.
-				| Возможные значения такие же как и у параметра
+				| Minimal datepicker's view, on that view selecting cells will not trigger rendering next view, instead it will activate it.
+				| Possible values are the same as in
 				+example-inline('view')
 				| .
 		.param
 			+param-header('showOtherMonths', 'boolean', 'true')
-			p Если true, то будут отображаться дни других месяцев.
+			p If true, then days from other months will be visible.
 		.param
 			+param-header('selectOtherMonths', 'boolean', 'true')
-			p Если true, то можно будет выбрать дни из других месяцев.
+			p If true, then one can select days form other months.
 		.param
 			+param-header('moveToOtherMonthsOnSelect', 'boolean', 'true')
-			p Если true, то при выборе дней из других месяца, будет осуществялться переход к этому месяцу.
+			p If true, then selecting days from other month, will cause transition to that month.
 		.param
 			+param-header('showOtherYears', 'boolean', 'true')
-			p Если true, то при отображении декады, будут показаны годы из других декад.
+			p If true, then years from other decades will be visible.
 		.param
 			+param-header('selectOtherYears', 'boolean', 'true')
-			p Если true, то можно будет выбрать года из других декад
+			p If true, then on can select years from other decades
 		.param
 			+param-header('moveToOtherYearsOnSelect', 'boolean', 'true')
-			p Если true, то при выборе года из другой декады, будет осуществлен переход к этой декаде.
+			p If true, then selecting year from other decade, will cause transition to that decade.
 		.param
 			+param-header('minDate', 'Date', '""')
-			p Минимальная дата для возможности выбора. Все даты, идущее до нее нельзя будет активировать.
+			p The minimum date for selection. All dates, running before it can't be activated.
 		.param
 			+param-header('maxDate', 'Date', '""')
-			p Максимальная дата для возможности выбора. Все даты, идущее после нее нельзя будет выбрать.
+			p The maximum date for selection. All dates which comes after it cannot be selected.
 		.param
 			+param-header('disableNavWhenOutOfRange', 'boolean', 'true')
-			p Если true, то при наступлении даты, которая была бы меньше минимально возможной или больше максимально возможной, деактвировались бы кнопки навигации 'вперед', 'назад'
+			p If true, then at the date, which would be less than minimum possible or more then maximum possible, navigation buttons ('forward', 'back') will be deactivated.
 		.param
 			+param-header('multipleDates', 'boolean|number', 'false')
-			p Если true, то можно будет выбрать неограниченное количество дат. Если передать число, то количество выбираемых дат будет ограниченно этим числом.
+			p If true, then one can select unlimited dates. If number is passed, then amount of selected dates will be limited by it.
 		.param
 			+param-header('multipleDatesSeparator', 'string', '","')
-			p Разделитель дат, который будет вставлен между датами при объеденения нескольких дат в одну строку.
+			p Dates separator, which will be used when concatenating dates to string.
 		.param
 			+param-header('todayButton', 'boolean', 'false')
-			p Если true, то будет отображена кнопка "Сегодня".
+			p If true, then button "Today" will be visible.
 		.param
 			+param-header('clearButton', 'boolean', 'false')
-			p Если true, то будет отображена кнопка "Очистить".
+			p If true, then button "Clear" will be visible.
 		.param
 			+param-header('showEvent','string','"focus"')
-			p Тип события, по наступлению которого будет показан календарь.
+			p Event type, on which datepicker must be shown.
 		.param
 			+param-header('autoClose', 'boolean', 'false')
-			p Если true, то при активации даты, календарь закроется.
+			p If true, when after date selection, datepicker will be closed.
 		.param
 			+param-header('prevHtml', 'string', '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>')
-			p Контент кнопки 'предыдущий месяц|год|декада'.
+			p Contents of 'next' button.
 		.param
 			+param-header('nextHtml', 'string', '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>')
-			p Контент кнопки 'следующий месяц|год|декада'.
+			p Contents of 'prev' button.
 		.param
 			+param-header('navTitles', 'object')
 				+example-code('js')
@@ -354,93 +374,93 @@ block content
 							  years: 'yyyy1 - yyyy2'
 						  };
 			p
-				| Значение заголовка календаря в зависимости от текущего вида, можно использовать те же обозночения что и в
+				| Content of datepicker's title depending on current view, can use same notation as in parameter
 				+example-inline('dateFormat', 'js')
-				| . Недостающие поля будут взяты из значения по умолчанию. Также можно использовать html теги.
+				| . Missing fields will be taken from default values. Html tags are also possible.
 			+example-code('js')
 				:code
 					$('#my-datepicker').datepicker({
 						   navTitles: {
-							   days: '<h3>Выберете дату заезда</h3> MM, yyyy'
+							   days: '<h3>Check in date:</h3> MM, yyyy'
 						   }
 					   })
 		.param
 			+param-header('monthsField','string','"monthsShort"')
-			p Какое поле из объекта локализации использовать в качестве названий месяцев, когда каледнарь отображает год.
+			p Which field from localization object must be used as months names, when view is 'months'.
+
 	article
-		h2#events События
+		h2#events Events
 		.param
 			+param-header('onSelect(formattedDate, date, inst)', 'function', 'null')
-			p Функция обратного вызова при выборе даты.
+			p Callback when selecting date
 			ul
 				li
 					+param('formattedDate', 'string')
-					| - отформатированная дата.
+					| - formatted date.
 				li
 					+param('date', 'Date|array')
-					| - объект
-					+example-inline('Date', 'js')
-					| выбранной даты, если
+					| - JavaScript Date object
+					| if
 					+example-inline('{multipleDates: true}', 'js')
-					| , то будет передан массив таких объектов.
+					| , then it will be an array of js dates.
 				li
 					+param('inst','object')
-					| - экземпляр плагина.
+					| - plugin instance.
 		.param
 			+param-header('onChangeMonth(month, year)','function','null')
-			p Функция обратного вызова при изменении месяца.
+			p Callback when months are changed.
 			ul
 				li
 					+param('month','number')
-					| - номер месяца (от 0 до 12), к которому осуществлен переход.
+					| - month number (from 0 to 12), to which transition is done.
 				li
 					+param('year','number')
-					| - номер года, к которому осуществлен переход.
+					| - year, to which transition is done.
 		.param
 			+param-header('onChangeYear(year)','function', 'null')
-			p Функция обратного вызова при изменении года.
+			p Callback when year is changed
 			ul
 				li
 					+param('year','number')
-					| - номер года, к которому осуществлен переход
+					| - year, to which transition is done.
 		.param
 			+param-header('onChangeDecade(decade)','function', 'null')
-			p Функция обратного вызова при изменении декады.
+			p Callback when decade is changed
 			ul
 				li
 					+param('decade','array')
-					| - массив, состоящий из номера года с которого начинается декада, и года на котором она заканчивается.
+					| - array which consists of two years: first year in decade and last year in decade.
 		.param
 			+param-header('onChangeView(view)', 'function', 'null')
-			p Функция обратного вызова при изменении вида календаря
+			p Callback when datepicker's view is changed
 			ul
 				li
 					+param('view', 'string')
-					| - вид, к которому осуществлен переход (days, months, years).
+					| - view name, to which transition is done (days, months, years).
 		.param
 			+param-header('onRenderCell(date, cellType)', 'function', 'null')
-			p Функция обратного вызова при отрисовке ячейки календаря.
+			p Callback when datepicker's cell is rendered.
 			ul
 				li
 					+param('date', 'Date')
-					| - объект даты текущей ячейки
+					| - current cell date
 				li
 					+param('cellType', 'string')
-					| - тип текущей ячейки (day, month, year).
-			p Функция должна возвращать объект, которой может состоять из трех полей:
+					| - current cell type (day, month, year).
+			p The callback must return object which may consists of three fields:
 			+example-code('js').
 				{
-					html: '', // Кастомный контент ячейки
-					classes: '', // Дополнительные классы для ячейки
-					disabled: '' // true/false, если true, то ячейку нельзя будет выбрать
+					html: '', // Custom cell content
+					classes: '', // Extra css classes to cell
+					disabled: '' // true/false, if true, when cell will be disabled
 				}
-			h4 Пример
+			h4 Example
 			+example-code('js').
 				$('#my-datepicker').datepicker({
-					// Передаем функцию, которая добавляет 4 числу каждого месяца класс 'my-class'
-					// и делает их невозможными к выбору.
+					// Let's make a function which will add class 'my-class' to every 11 of the month
+					// and make these cells disabled.
 					onRenderCell: function(date, cellType) {
-						if (cellType == 'day' && date.getDate() == 4) {
+						if (cellType == 'day' && date.getDate() == 11) {
 							return {
 								classes: 'my-class',
 								disabled: true
@@ -451,63 +471,68 @@ block content
 	article
 		h2#api API
 		p
-			| Досутп к экземпляру плагина осуществляется через
+			| Plugin instance is accessible through
 			+example-inline('data')
-			| атрибут.
+			| attribute.
 		+example-code('js').
 			var myDatepicker = $('#my-elem').datepicker().data('datepicker');
 			myDatepicker.show();
 		.param
 			+param-header('show()')
-			p Показывает календарь.
+			p Shows datepicker.
 		.param
 			+param-header('hide()')
-			p Скрывает календарь.
+			p Hides datepicker.
 		.param
 			+param-header('next()')
-			p Переходит на следующий месяц если вид days, на следующий год если months, и следующую декаду если years.
+			p Renders next month, year or decade, depending on current view.
 		.param
 			+param-header('prev()')
-			p Переходит на предыдщуий месяц если вид days, на предыдущий год если months, и предыдущую декаду если years.
+			p Renders previous month, year or decade, depending on current view.
 		.param
 			+param-header('selectDate(date)')
 			ul
 				li
 					+param('date','Date')
-					| - дата в формате JavaScript
+					| - JavaScript
 					+example-inline('Date()', 'js')
 			p
-				| Выбирает переданную дату. Если
+				| Activates passed date. If
 				+example-inline('{multipleDates: false}','js')
-				| и уже есть активная дата, то она будет деактивирована. Если
+				| and date is already active, then it will be deactivated. If
 				+example-inline('{multipleDates: true}','js')
-				| то будет добавлена еще одна активная дата.
+				| then another active date will be added.
 		.param
 			+param-header('removeDate(date)')
 			ul
 				li
 					+param('date','Date')
-					| - дата в формате JavaScript
+					| - JavaScript
 					+example-inline('Date()', 'js')
 			p
-				| Снимает выделение с переданной даты.
+				| Removes selection from passed date.
+
+		.param
+			+param-header('clear()')
+			p Clears all selected dates.
+
 		.param
 			+param-header('update(field[, value])')
 			ul
 				li
 					+param('field','string|object')
-					| - название поля значение которого нужно обновить.
+					| - field name which must be updated.
 				li
 					+param('field','string|*')
-					| - новое значение параметра
+					| - new value.
 			p.
-				Обновление опций календаря, после вызова метода он автоматически перерисуется.
-				Можно обновлять сразу же несколько параметров, для этого нужно передать объект с требуемыми полями.
+				This method updates datepicker's options. After calling this method, datepicker will be redrawn.
+				You can update several parameters at one time, just pass on object with necessary fields.
 			+example-code('js').
 				var datepicker = $('#my-elem').datepicker().data('datepicker');
-				// Обновление одного параметра
+				// Single parameter update
 				datepicker.update('minDate', new Date())
-				// Обновление нескольких параметров
+				// Multiple parameters
 				datepicker.update({
 					position: "top right",
 					maxDate: new Date(),
@@ -515,13 +540,13 @@ block content
 				})
 		.param
 			+param-header('view')
-			p Устанавливает новое представление для календаря.
+			p Sets new view for datepicker.
 			+example-code('js').
 				datepicker.view = 'months';
 		.param
 			+param-header('date')
 			p
-				| Устанавливает новую отображаемую дату, нужно передать JavaScript
+				| Sets new viewing date for datepicker, must pass a JavaScript Date object
 				+example-inline('Date()')
 			+example-code('js').
 				datepicker.date = new Date();

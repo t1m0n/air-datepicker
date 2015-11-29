@@ -1,14 +1,18 @@
 mixin param-header(name, type, defaults)
+	-var typeLabel = 'Тип';
+	-var defaultLabel = 'Значение по умолчанию';
+	-if (lang == 'en') typeLabel = 'Type'; defaultLabel = 'Defaults';
+
 	header.param-header
-		h3= name
-		if type
-			p.param-header--row
-				span.param-header--label Тип:
-				+example-inline(type, 'js')
-		if (defaults || block)
-			p.param-header--row
-				span.param-header--label Значение по умполчанию:
-				if defaults
-					+example-inline(defaults, 'js')
-				if block
-					block
+			h3= name
+			if type
+				p.param-header--row
+					span.param-header--label= typeLabel
+					+example-inline(type, 'js')
+			if (defaults || block)
+				p.param-header--row
+					span.param-header--label= defaultLabel
+					if defaults
+						+example-inline(defaults, 'js')
+					if block
+						block

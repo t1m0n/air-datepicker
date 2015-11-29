@@ -72,6 +72,7 @@ article {
   max-width: 960px;
   margin: 0 auto;
   padding: 1px 0;
+  position: relative;
 
   article {
     margin: 60px 0 30px;
@@ -88,6 +89,24 @@ article {
   @media all and (max-width: 650px) {
     margin-right: 20px;
     margin-left: 20px;
+  }
+}
+
+.lang-link {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  right: 0;
+  top: 15px;
+
+  img {
+    margin-right: 5px;
+  }
+
+  @media all and (max-width: 650px) {
+    span {
+      display: none;
+    }
   }
 }
 
@@ -238,6 +257,7 @@ a {
   font-size: 48px;
   font-weight: 100;
   text-align: center;
+  margin-top: 54px;
 
   span {
     display: block;

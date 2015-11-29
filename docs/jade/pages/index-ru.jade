@@ -1,6 +1,10 @@
 extends ../layout
 
 block content
+	a.lang-link(href='index.html')
+		img(src='img/en.png')
+		span In English
+
 	h1.promo-header
 		| AIR DATEPICKER
 		span легкий кроссбраузерный jQuery календарь
@@ -26,7 +30,7 @@ block content
 	article
 		h2#install Установка
 		+example-code('html') bower i --save air-datepicker
-		p Либо можно скачать файлы напрямую с <a href="">GitHub</a>
+		p Либо можно скачать файлы напрямую с <a href="https://github.com/t1m0n/air-datepicker/tree/master/dist">GitHub</a>
 
 	article
 		h2#usage Использование
@@ -501,10 +505,10 @@ block content
 			h4 Пример
 			+example-code('js').
 				$('#my-datepicker').datepicker({
-					// Передаем функцию, которая добавляет 4 числу каждого месяца класс 'my-class'
+					// Передаем функцию, которая добавляет 11 числу каждого месяца класс 'my-class'
 					// и делает их невозможными к выбору.
 					onRenderCell: function(date, cellType) {
-						if (cellType == 'day' && date.getDate() == 4) {
+						if (cellType == 'day' && date.getDate() == 11) {
 							return {
 								classes: 'my-class',
 								disabled: true
@@ -563,6 +567,10 @@ block content
 					+example-inline('Date()', 'js')
 			p
 				| Снимает выделение с переданной даты.
+
+		.param
+			+param-header('clear()')
+			p Убирает выделение со всех активных дат.
 
 		.param
 			+param-header('update(field[, value])')

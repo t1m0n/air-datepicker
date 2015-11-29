@@ -1,4 +1,6 @@
 mixin example()
+	-var label = 'Пример';
+	-if (lang == 'en') label = 'Example';
 	.example
-		.example--label Пример
+		.example--label= label
 		block
