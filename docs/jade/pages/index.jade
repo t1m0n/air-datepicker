@@ -54,7 +54,7 @@ block content
 		+example-code('js').
 			// Initialization
 			$('#my-element').datepicker([options])
-			// Access to an instance of an object
+			// Access instance of plugin
 			$('#my-element').data('datepicker')
 	article
 		h2#examples Examples
@@ -67,24 +67,25 @@ block content
 					<input type='text' class='datepicker-here', data-language='en' />
 		h3 Selecting multiple dates
 		p
-			| Pass the parameter
+			| Pass parameter
 			+example-inline('{multipleDates: true}','js')
 			| for selection of multiple dates. If you want to limit the number of selected dates, pass the desired number
 			+example-inline('{multipleDates: 3}','js')
 			| .
 		+example
 			+example-content
-				input(type='text' data-multiple-dates='3' data-multiple-dates-separator=', ', data-position='top left').datepicker-here
+				input(type='text' data-multiple-dates='3' data-multiple-dates-separator=', ', data-position='top left', data-language='en').datepicker-here
 			+example-code('html')
 				:code
 					<input type="text"
 						   class="datepicker-here"
+						   data-language='en'
 						   data-multiple-dates="3"
 						   data-multiple-dates-separator=", "
-						   data-position='right top'/>
+						   data-position='top left'/>
 		h3 Permanently visible calendar
 		p
-			| Initialize the plugin on non text input element, such as
+			| Initialize plugin on non text input element, such as
 			+example-inline('<div> …  </div>', 'html')
 			| ,or pass the parameter
 			+example-inline('{inline: true}', 'js')
@@ -227,22 +228,22 @@ block content
 			p If some fields are missing, they will be taken from default localization object ('Russian').
 		.param
 			+param-header('startDate', 'Date', 'new Date()')
-			p Which date must be shown at first initialization.
+			p This date will be shown at first initialization.
 		.param
 			+param-header('firstDay', 'number', '""')
 			p.
-				Day index from which week will be started. Possible values are from 0 to 6, where 0 - sunday и 6 - saturday.
-				By default value is taken from current localization, but if it passed here, then it will have higher priority.
+				Day index from which week will be started. Possible values are from 0 to 6, where 0 - Sunday and 6 - Saturday.
+				By default value is taken from current localization, but if it passed here then it will have higher priority.
 		.param
 			+param-header('weekends', 'array', '[6, 0]')
 			p
-				| Array of day's indexes, which must be considered as holidays. Class
+				| Array of day's indexes which will be considered as weekends. Class
 				+example-inline('.-weekend-','css')
 				| will be added to relevant cells.
-				| . By default its saturday and sunday.
+				| . By default its Saturday and Sunday.
 		.param
 			+param-header('dateFormat', 'string', '""')
-			p Format of date, it's combination of d, m, yyyy, D, M, и т.д. By default value is taken from current localization, but if it passed here, then it will have higher priority.
+			p Desirable date format. It's combination of d, m, yyyy, D, M, etc. By default value is taken from current localization, but if it passed here, then it will have higher priority.
 			ul
 				li
 					+param('d')
@@ -354,7 +355,7 @@ block content
 			p If true, then button "Clear" will be visible.
 		.param
 			+param-header('showEvent','string','"focus"')
-			p Event type, on which datepicker must be shown.
+			p Event type, on which datepicker should be shown.
 		.param
 			+param-header('autoClose', 'boolean', 'false')
 			p If true, when after date selection, datepicker will be closed.
@@ -386,7 +387,7 @@ block content
 					   })
 		.param
 			+param-header('monthsField','string','"monthsShort"')
-			p Which field from localization object must be used as months names, when view is 'months'.
+			p Field name from localization object which should be used as months names, when view is 'months'.
 
 	article
 		h2#events Events
@@ -527,7 +528,7 @@ block content
 					| - new value.
 			p.
 				This method updates datepicker's options. After calling this method, datepicker will be redrawn.
-				You can update several parameters at one time, just pass on object with necessary fields.
+				You can update several parameters at one time, just pass in object with necessary fields.
 			+example-code('js').
 				var datepicker = $('#my-elem').datepicker().data('datepicker');
 				// Single parameter update
