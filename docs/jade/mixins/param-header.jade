@@ -1,7 +1,7 @@
 mixin param-header(name, type, defaults)
 	-var typeLabel = 'Тип';
 	-var defaultLabel = 'Значение по умолчанию';
-	-if (lang == 'en') typeLabel = 'Type'; defaultLabel = 'Defaults';
+	-if (lang == 'en') {typeLabel = 'Type'; defaultLabel = 'Defaults'};
 
 	header.param-header
 			h3= name
