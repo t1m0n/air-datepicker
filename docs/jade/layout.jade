@@ -20,11 +20,12 @@ html
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
 		script(src='../dist/js/datepicker.js')
 		script(src='../dist/js/i18n/datepicker.en.js')
-
 	body
 		div.wrapper
 			main.main(role='main')
 				.container
+					.buttons
+						a(aria-label="Star t1m0n/air-datepicker on GitHub" data-count-aria-label="# stargazers on GitHub" data-count-api="/repos/t1m0n/air-datepicker#stargazers_count" data-count-href="/t1m0n/air-datepicker/stargazers" data-icon="octicon-star" href="https://github.com/t1m0n/air-datepicker" class="github-button") Star
 					block content
 
 		script(src='js/navigation.js')
@@ -35,3 +36,5 @@ html
 			})
 
 			navigation.init();
+
+		script(async defer id="github-bjs" src="https://buttons.github.io/buttons.js")
