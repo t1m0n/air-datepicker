@@ -599,6 +599,9 @@ var Datepicker;
             if (this.inited && !this.silent) {
                 this.views[this.view]._render();
                 this.nav._render();
+                if (this.visible && this.elIsInput) {
+                    this.setPosition();
+                }
             }
 
             return val;
@@ -632,7 +635,7 @@ var Datepicker;
                 if (this.opts.onChangeView) {
                     this.opts.onChangeView(val)
                 }
-                this.setPosition(this.opts.position)
+                if (this.elIsInput && this.visible) this.setPosition();
             }
 
             return val

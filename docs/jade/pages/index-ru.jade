@@ -14,17 +14,14 @@ block content
 		script.
 			var $promo = $('.datepicker-promo');
 
-			$promo.datepicker()
-
-
 	article
 		h2#intro Описание
 		p
-			|Легкий (<strong>~20kb</strong> минифицированный js файл и <strong>~5.5kb</strong> gziped) кроссбраузерный календарь, написан с использованием
+			| Легкий (<strong>~20kb</strong> минифицированный js файл и <strong>~5.5kb</strong> gziped) кроссбраузерный календарь, написан с использованием
 			+example-inline('es5')
 			| и
 			+example-inline('css flexbox', 'js')
-			|. Работает во всех современных браузерах:
+			| . Работает во всех современных браузерах:
 			| <strong>IE 10+</strong>, <strong>Chrome</strong>, <strong>Firefox</strong>, <strong>Safari 8+</strong>, <strong>Opera 17+</strong>.
 
 	article
@@ -35,7 +32,7 @@ block content
 	article
 		h2#usage Использование
 		p
-			|Подключите стили и скрипты из папки
+			| Подключите стили и скрипты из папки
 			+example-inline('/dist')
 			| :
 
@@ -69,10 +66,20 @@ block content
 		h3 Инициализация с опциями по умолчанию
 		+example
 			+example-content
-				input(type='text').datepicker-here
+				input(type='text')#test.datepicker-here
 			+example-code('html')
 				:code
 					<input type='text' class='datepicker-here' />
+
+			script.
+				$('#test').datepicker({
+					onChangeYear: function () {
+						console.log(arguments);
+					},
+					onChangeMonth: function (m, y) {
+						console.log(arguments);
+					}
+				})
 
 		h3 Выбор нескольких дат
 		p
@@ -432,7 +439,7 @@ block content
 			+param-header('monthsField','string','"monthsShort"')
 			p Какое поле из объекта локализации использовать в качестве названий месяцев, когда
 				+example-inline('view = "months"', 'js')
-				|.
+				| .
 
 	article
 		h2#events События
