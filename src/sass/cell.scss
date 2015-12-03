@@ -27,7 +27,7 @@
     color: map_get($textColor, currentDate);
 
     &.-focus- {
-      color: map_get($textColor, common);;
+      color: map_get($textColor, common);
     }
 
     &:hover {
@@ -40,6 +40,17 @@
     cursor: default;
     color: map_get($textColor, disabled);
     background: none;
+
+    &.-focus- {
+      color: map_get($textColor, disabled);
+      background: map_get($bg, hover);
+    }
+
+    &.-current- {
+      &:hover {
+        color: map_get($textColor, disabled);
+      }
+    }
   }
 
   &.-selected- {

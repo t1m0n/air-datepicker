@@ -12,6 +12,7 @@ var Datepicker;
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
+            classes: '',
             inline: false,
             language: 'ru',
             startDate: new Date(),
@@ -127,6 +128,10 @@ var Datepicker;
                     this._setPositionClasses(this.opts.position);
                     this._bindEvents()
                 }
+            }
+
+            if (this.opts.classes) {
+                this.$datepicker.addClass(this.opts.classes)
             }
 
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
@@ -416,6 +421,10 @@ var Datepicker;
                 }
             }
 
+            if (this.opts.classes) {
+                this.$datepicker.addClass(this.opts.classes)
+            }
+
             return this;
         },
 
@@ -598,7 +607,7 @@ var Datepicker;
 
         _onBlur: function () {
             if (!this.inFocus && this.visible) {
-                //this.hide();
+                this.hide();
             }
         },
 
@@ -624,7 +633,7 @@ var Datepicker;
                 this.setPosition();
             }
         },
-
+//TODO добавить esc
         _onKeyDown: function (e) {
             var code = e.which;
 
@@ -637,6 +646,7 @@ var Datepicker;
 
             if (code == 13) {
                 if (this.focused) {
+                    if (this._getCell(this.focused).hasClass('-disabled-')) return;
                     if (this.view != this.opts.minView) {
                         this.down()
                     } else {
@@ -691,13 +701,18 @@ var Datepicker;
                     break;
             }
 
-            totalDaysInNextMonth = Datepicker.getDaysCount( new Date(y,m));
+            totalDaysInNextMonth = Datepicker.getDaysCount(new Date(y,m));
 
+            nd = new Date(y,m,d);
             if (totalDaysInNextMonth < d) d = totalDaysInNextMonth;
 
-            if (this._isInRange(new Date(y,m,d), this.cellType)) {
-                this.focused = new Date(y,m,d);
+            if (nd.getTime() < this.minTime) {
+                nd = this.minDate;
+            } else if (nd.getTime() > this.maxTime) {
+                nd = this.maxDate;
             }
+
+            this.focused = nd;
         },
 
         _registerKey: function (key) {
@@ -774,9 +789,14 @@ var Datepicker;
                     break;
             }
 
-            if (this._isInRange(new Date(y,m,d), this.cellType)) {
-                this.focused = new Date(y,m,d);
+            var nd = new Date(y,m,d);
+            if (nd.getTime() < this.minTime) {
+                nd = this.minDate;
+            } else if (nd.getTime() > this.maxTime) {
+                nd = this.maxDate;
             }
+
+            this.focused = nd;
 
         },
 
@@ -810,13 +830,12 @@ var Datepicker;
 
             switch (type) {
                 case 'month':
-                    selector += '[data-month="' + d.month + '"]';
+                    selector = '[data-month="' + d.month + '"]';
                     break;
                 case 'day':
                     selector += '[data-month="' + d.month + '"][data-date="' + d.date + '"]';
                     break;
             }
-
             $cell = this.views[this.currentView].$el.find(selector);
 
             return $cell.length ? $cell : '';
@@ -977,10 +996,10 @@ var Datepicker;
                     $.data(this,  pluginName,
                         new Datepicker( this, options ));
                 } else {
-                    var _this = $.data(this, pluginName),
-                        oldOpts = _this.opts;
+                    var _this = $.data(this, pluginName);
 
-                    _this.opts = $.extend({}, oldOpts, options);
+                    _this.opts = $.extend(true, _this.opts, options);
+                    _this.update();
                 }
             });
         }

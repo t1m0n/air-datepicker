@@ -49,6 +49,11 @@
     cursor: default;
     color: #aeaeae;
     background: none; }
+    .datepicker--cell.-disabled-.-focus- {
+      color: #aeaeae;
+      background: #f0f0f0; }
+    .datepicker--cell.-disabled-.-current-:hover {
+      color: #aeaeae; }
   .datepicker--cell.-selected- {
     color: #fff;
     background: #5cc4ef; }

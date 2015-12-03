@@ -11,13 +11,24 @@ $('#my-element').datepicker([options])
 // Доступ к экземпляру объекта
 $('#my-element').data('datepicker')
 </code></pre></article><article><h2 id="examples">Примеры</h2><h3>Инициализация с опциями по умолчанию</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" readonly id="test" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type='text' class='datepicker-here' /&gt;
-</code></pre><script>$('#test').datepicker({
-	onChangeYear: function () {
-		console.log(arguments);
-	},
-	onChangeMonth: function (m, y) {
-		console.log(arguments);
-	}
+</code></pre><script>$(function () {
+	$('#test').datepicker({
+		onRenderCell: function (d, type) {
+			if (type == 'day' && d.getDate() == 4) {
+				return {
+					disabled: true
+				}
+			}
+		},
+		classes: 'hello',
+		onChangeYear: function () {
+			console.log(arguments);
+		},
+		onChangeMonth: function (m, y) {
+			console.log(arguments);
+		}
+	})
+
 })
 </script></div><h3>Выбор нескольких дат</h3><p>Передайте параметр<span class="example-inline"><code class="js">{multipleDates: true}</code></span>для выбора нескольких дат. Если требуется ограничить количество выбранных дат, то передайте необходимое число<span class="example-inline"><code class="js">{multipleDates: 3}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-multiple-dates="3" data-multiple-dates-separator=", " data-position="top left" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
 	class=&quot;datepicker-here&quot;
