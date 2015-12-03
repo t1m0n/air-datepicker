@@ -37,10 +37,12 @@
           justify-content: center;
   height: 32px;
   z-index: 1; }
-  .datepicker--cell:hover {
+  .datepicker--cell:hover, .datepicker--cell.-focus- {
     background: #f0f0f0; }
   .datepicker--cell.-current- {
     color: #4EB5E6; }
+    .datepicker--cell.-current-.-focus- {
+      color: #4a4a4a; }
     .datepicker--cell.-current-:hover {
       color: #4a4a4a; }
   .datepicker--cell.-disabled- {

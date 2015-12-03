@@ -19,12 +19,16 @@
   height: $dayCellSize;
   z-index: 1;
 
-  &:hover {
+  &:hover, &.-focus- {
     background: map_get($bg, hover);
   }
 
   &.-current- {
     color: map_get($textColor, currentDate);
+
+    &.-focus- {
+      color: map_get($textColor, common);;
+    }
 
     &:hover {
       color:  map_get($textColor, common);

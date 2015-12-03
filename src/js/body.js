@@ -99,6 +99,7 @@
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
             if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
+            if (this.d.focused && Datepicker.isSame(date, this.d.focused)) _class += ' -focus-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
             if (!this.d._isInRange(date) || render.disabled) _class += ' -disabled-';
             if (d.month != this.d.parsedDate.month) {
@@ -152,6 +153,7 @@
 
             if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
             if (this.d._isSelected(date, 'month')) _class += ' -selected-';
+            if (this.d.focused && Datepicker.isSame(date, this.d.focused, 'month')) _class += ' -focus-';
             if (!this.d._isInRange(date, 'month') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + html + '</div>'
@@ -197,6 +199,7 @@
 
             if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
             if (this.d._isSelected(date, 'year')) _class += ' -selected-';
+            if (this.d.focused && Datepicker.isSame(date, this.d.focused, 'year')) _class += ' -focus-';
             if (!this.d._isInRange(date, 'year') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + html + '</div>'
@@ -246,13 +249,7 @@
 
             // Change view if min view does not reach yet
             if (this.d.view != this.opts.minView) {
-                var nextViewIndex = this.d.viewIndex - 1;
-
-                this.d.silent = true;
-                this.d.date = new Date(year, month, date);
-                this.d.silent = false;
-                this.d.view = this.d.viewIndexes[nextViewIndex];
-
+                this.d.down(new Date(year, month, date));
                 return;
             }
 
