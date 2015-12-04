@@ -370,9 +370,9 @@ var Datepicker;
 
             if (this.opts.autoClose) {
                 this.hide();
-            } else {
-                this.views[this.currentView]._render()
             }
+
+            this.views[this.currentView]._render()
         },
 
         removeDate: function (date) {
