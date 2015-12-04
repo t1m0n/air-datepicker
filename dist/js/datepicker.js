@@ -19,6 +19,8 @@ var Datepicker;
             firstDay: '',
             weekends: [6, 0],
             dateFormat: '',
+            altField: '',
+            altFieldDateFormat: '@',
             toggleSelected: true,
 
             position: 'bottom left',
@@ -99,6 +101,10 @@ var Datepicker;
 
         if (this.el.nodeName == 'INPUT') {
             this.elIsInput = true;
+        }
+
+        if (this.opts.altField) {
+            this.$altField = typeof this.opts.altField == 'string' ? $(this.opts.altField) : this.opts.altField;
         }
 
         this.inited = false;
@@ -290,6 +296,8 @@ var Datepicker;
                 d = Datepicker.getParsedDate(date);
 
             switch (true) {
+                case /@/.test(result):
+                    result = result.replace(/@/, date.getTime());
                 case /dd/.test(result):
                     result = result.replace(/\bdd\b/, d.fullDate);
                 case /d/.test(result):
@@ -457,9 +465,18 @@ var Datepicker;
         _setInputValue: function () {
             var _this = this,
                 format = this.loc.dateFormat,
+                altFormat = this.opts.altFieldDateFormat,
                 value = this.selectedDates.map(function (date) {
                     return _this.formatDate(format, date)
+                }),
+                altValues;
+
+            if (this.$altField) {
+                altValues = this.selectedDates.map(function (date) {
+                    return _this.formatDate(altFormat, date)
                 });
+                this.$altField.val(altValues);
+            }
 
             value = value.join(this.opts.multipleDatesSeparator);
 
