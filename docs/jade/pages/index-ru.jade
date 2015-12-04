@@ -66,7 +66,7 @@ block content
 		h3 Инициализация с опциями по умолчанию
 		+example
 			+example-content
-				input(type='text' readonly)#test.datepicker-here
+				input(type='text').datepicker-here
 			+example-code('html')
 				:code
 					<input type='text' class='datepicker-here' />
@@ -230,6 +230,10 @@ block content
 		h2#options Опции
 
 		.param
+			+param-header('classes', 'string', '""')
+			p Дополнительные классы для календаря.
+
+		.param
 			+param-header('inline', 'boolean', 'false')
 			p Если true, то календарь будет виден постоянно.
 
@@ -262,6 +266,9 @@ block content
 			+param-header('dateFormat', 'string', '""')
 			p Желаемый формат даты, кобминация из d, m, yyyy, D, M, и т.д.  По умолчанию берется из локализации, если передать значение сюда, то оно будет иметь больший приоритет.
 			ul
+				li
+					+param('@')
+					| - время в миллесекундах
 				li
 					+param('d')
 					| - дата
@@ -300,8 +307,48 @@ block content
 					| - последний год декады, в которую входит текущий год
 
 		.param
+			+param-header('altField', 'string|jQuery', '""')
+			p Альтернативное поле воода в значение которого будут попадать выбранные даты с форматом
+				+example-inline('altFieldDateFormat')
+				|.
+
+		.param
+			+param-header('altFieldDateFormat', 'string', '"@"')
+			p Формат даты для альтернативного поля.
+
+		.param
 			+param-header('toggleSelected', 'boolean', 'true')
 			p Если true, то клик на выделенной дате снимет выделение.
+
+		.param
+			+param-header('keyboardNav', 'boolean', 'true')
+			p Если true, то по календарю можно будет осуществлять навигацию с помощью клавиатуры.
+			p Сочетания клавиш:
+			ul
+				li
+					+param('Ctrl + &rarr; | &uarr;')
+					| - переход на месяц вперед
+				li
+					+param('Ctrl + &larr; | &darr;')
+					| - переход на месяц назад
+				li
+					+param('Shift + &rarr; | &uarr;')
+					| - переход на год вперед
+				li
+					+param('Shift + &larr; | &darr;')
+					| - переход на год назад
+				li
+					+param('Alt + &rarr; | &uarr;')
+					| - переход на 10 лет вперед
+				li
+					+param('Alt + &larr; | &darr;')
+					| - переход на 10 лет назад
+				li
+					+param('Ctrl + Shift + &uarr; | &darr;')
+					| - переход на следующий вид
+				li
+					+param('Esc')
+					| - закрывает календарь
 
 		.param
 			+param-header('position', 'string', '"bottom left"')

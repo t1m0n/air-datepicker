@@ -22,6 +22,7 @@ var Datepicker;
             altField: '',
             altFieldDateFormat: '@',
             toggleSelected: true,
+            keyboardNav: true,
 
             position: 'bottom left',
             offset: 12,
@@ -59,7 +60,6 @@ var Datepicker;
                 months: 'yyyy',
                 years: 'yyyy1 - yyyy2'
             },
-            keyboardNav: true,
 
             // events
             onSelect: '',

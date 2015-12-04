@@ -216,6 +216,10 @@ block content
 	article
 		h2#options Options
 		.param
+			+param-header('classes', 'string', '""')
+			p Extra css classes for datepicker.
+
+		.param
 			+param-header('inline', 'boolean', 'false')
 			p If true, then datepicker will be always visible.
 		.param
@@ -245,6 +249,9 @@ block content
 			+param-header('dateFormat', 'string', '""')
 			p Desirable date format. It's combination of d, m, yyyy, D, M, etc. By default value is taken from current localization, but if it passed here, then it will have higher priority.
 			ul
+				li
+					+param('@')
+					| - time in milliseconds
 				li
 					+param('d')
 					| - date number
@@ -282,8 +289,48 @@ block content
 					+param('yyyy2')
 					| - last year of decade, which included current year
 		.param
+			+param-header('altField', 'string|jQuery', '""')
+			p Alternative text input. Use
+				+example-inline('altFieldDateFormat')
+				| for date formatting.
+		.param
+			+param-header('altFieldDateFormat', 'string', '"@"')
+			p Date format for alternative field.
+
+		.param
 			+param-header('toggleSelected', 'boolean', 'true')
 			p If true, then clicking on selected cell will remove selection.
+
+		.param
+			+param-header('keyboardNav', 'boolean', 'true')
+			p If true, then one can navigate through calendar by keyboard.
+			p Hot keys:
+			ul
+				li
+					+param('Ctrl + &rarr; | &uarr;')
+					| - move one month forwards
+				li
+					+param('Ctrl + &larr; | &darr;')
+					| - move one month backwards
+				li
+					+param('Shift + &rarr; | &uarr;')
+					| - move one year forwards
+				li
+					+param('Shift + &larr; | &darr;')
+					| - move one year backwards
+				li
+					+param('Alt + &rarr; | &uarr;')
+					| - move 10 years forwards
+				li
+					+param('Alt + &larr; | &darr;')
+					| - move 10 years backwards
+				li
+					+param('Ctrl + Shift + &uarr; | &darr;')
+					| - move to next view
+				li
+					+param('Esc')
+					| - hides datepicker
+
 		.param
 			+param-header('position', 'string', '"bottom left"')
 			p
@@ -358,7 +405,7 @@ block content
 			p Event type, on which datepicker should be shown.
 		.param
 			+param-header('autoClose', 'boolean', 'false')
-			p If true, when after date selection, datepicker will be closed.
+			p If true, then after date selection, datepicker will be closed.
 		.param
 			+param-header('prevHtml', 'string', '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>')
 			p Contents of 'next' button.
@@ -453,7 +500,7 @@ block content
 				{
 					html: '', // Custom cell content
 					classes: '', // Extra css classes to cell
-					disabled: '' // true/false, if true, when cell will be disabled
+					disabled: '' // true/false, if true, then cell will be disabled
 				}
 			h4 Example
 			+example-code('js').
