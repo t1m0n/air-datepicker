@@ -61,6 +61,10 @@
       color: #fff;
       background: map_get($bg, selected);
     }
+
+    &.-focus- {
+      background: map_get($bg, selectedHover);
+    }
   }
 }
 

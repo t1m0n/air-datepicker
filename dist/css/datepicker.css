@@ -60,6 +60,8 @@
     .datepicker--cell.-selected-.-current- {
       color: #fff;
       background: #5cc4ef; }
+    .datepicker--cell.-selected-.-focus- {
+      background: #45bced; }
 
 .datepicker--days-names {
   display: -webkit-flex;

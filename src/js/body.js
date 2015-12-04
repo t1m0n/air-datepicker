@@ -13,9 +13,10 @@
         '<div class="datepicker--years datepicker--body">' +
         '<div class="datepicker--cells datepicker--cells-years"></div>' +
         '</div>'
-    };
+        },
+        D = Datepicker;
 
-    Datepicker.Body = function (d, type, opts) {
+    D.Body = function (d, type, opts) {
         this.d = d;
         this.type = type;
         this.opts = opts;
@@ -23,7 +24,7 @@
         this.init();
     };
 
-    Datepicker.Body.prototype = {
+    D.Body.prototype = {
         init: function () {
             this._buildBaseHtml();
             this._render();
@@ -61,7 +62,7 @@
          * @private
          */
         _getDaysHtml: function (date) {
-            var totalMonthDays = Datepicker.getDaysCount(date),
+            var totalMonthDays = D.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
                 daysFromPevMonth = firstMonthDay - this.d.loc.firstDay,
@@ -87,7 +88,7 @@
         _getDayHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-day",
                 currentDate = new Date(),
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 render = {},
                 html = d.date;
 
@@ -98,8 +99,8 @@
             }
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
-            if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
-            if (this.d.focused && Datepicker.isSame(date, this.d.focused)) _class += ' -focus-';
+            if (D.isSame(currentDate, date)) _class += ' -current-';
+            if (this.d.focused && D.isSame(date, this.d.focused)) _class += ' -focus-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
             if (!this.d._isInRange(date) || render.disabled) _class += ' -disabled-';
             if (d.month != this.d.parsedDate.month) {
@@ -126,7 +127,7 @@
          */
         _getMonthsHtml: function (date) {
             var html = '',
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 i = 0;
 
             while(i < 12) {
@@ -139,7 +140,7 @@
 
         _getMonthHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-month",
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 currentDate = new Date(),
                 loc = this.d.loc,
                 html = loc[this.opts.monthsFiled][d.month],
@@ -151,17 +152,17 @@
                 _class += render.classes ? ' ' + render.classes : '';
             }
 
-            if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
+            if (D.isSame(currentDate, date, 'month')) _class += ' -current-';
             if (this.d._isSelected(date, 'month')) _class += ' -selected-';
-            if (this.d.focused && Datepicker.isSame(date, this.d.focused, 'month')) _class += ' -focus-';
+            if (this.d.focused && D.isSame(date, this.d.focused, 'month')) _class += ' -focus-';
             if (!this.d._isInRange(date, 'month') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + html + '</div>'
         },
 
         _getYearsHtml: function (date) {
-            var d = Datepicker.getParsedDate(date),
-                decade = Datepicker.getDecade(date),
+            var d = D.getParsedDate(date),
+                decade = D.getDecade(date),
                 firstYear = decade[0] - 1,
                 html = '',
                 i = firstYear;
@@ -175,9 +176,9 @@
 
         _getYearHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-year",
-                decade = Datepicker.getDecade(this.d.date),
+                decade = D.getDecade(this.d.date),
                 currentDate = new Date(),
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 html = d.year,
                 render = {};
 
@@ -197,9 +198,9 @@
                 if (!this.opts.showOtherYears) html = '';
             }
 
-            if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
+            if (D.isSame(currentDate, date, 'year')) _class += ' -current-';
             if (this.d._isSelected(date, 'year')) _class += ' -selected-';
-            if (this.d.focused && Datepicker.isSame(date, this.d.focused, 'year')) _class += ' -focus-';
+            if (this.d.focused && D.isSame(date, this.d.focused, 'year')) _class += ' -focus-';
             if (!this.d._isInRange(date, 'year') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + html + '</div>'

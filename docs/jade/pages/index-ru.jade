@@ -71,27 +71,6 @@ block content
 				:code
 					<input type='text' class='datepicker-here' />
 
-			script.
-				$(function () {
-					$('#test').datepicker({
-						onRenderCell: function (d, type) {
-							if (type == 'day' && d.getDate() == 4) {
-								return {
-									disabled: true
-								}
-							}
-						},
-						classes: 'hello',
-						onChangeYear: function () {
-							console.log(arguments);
-						},
-						onChangeMonth: function (m, y) {
-							console.log(arguments);
-						}
-					})
-
-				})
-
 		h3 Выбор нескольких дат
 		p
 			| Передайте параметр

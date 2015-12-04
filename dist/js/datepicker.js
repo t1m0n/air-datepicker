@@ -57,6 +57,7 @@ var Datepicker;
                 months: 'yyyy',
                 years: 'yyyy1 - yyyy2'
             },
+            keyboardNav: true,
 
             // events
             onSelect: '',
@@ -75,6 +76,10 @@ var Datepicker;
             'shiftUp': [16, 38],
             'shiftLeft': [16, 37],
             'shiftDown': [16, 40],
+            'altUp': [18, 38],
+            'altRight': [18, 39],
+            'altLeft': [18, 37],
+            'altDown': [18, 40],
             'ctrlShiftUp': [16, 17, 38]
         };
 
@@ -155,9 +160,11 @@ var Datepicker;
             this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
             $(window).on('resize', this._onResize.bind(this));
 
-            this.$el.on('keydown', this._onKeyDown.bind(this));
-            this.$el.on('keyup', this._onKeyUp.bind(this));
-            this.$el.on('hotKey', this._onHotKey.bind(this));
+            if (this.opts.keyboardNav) {
+                this.$el.on('keydown', this._onKeyDown.bind(this));
+                this.$el.on('keyup', this._onKeyUp.bind(this));
+                this.$el.on('hotKey', this._onHotKey.bind(this));
+            }
         },
 
         isWeekend: function (day) {
@@ -572,109 +579,45 @@ var Datepicker;
                     left: '-100000px'
                 });
 
+            this.focused = '';
+            this.keys = [];
+
             this.inFocus = false;
             this.visible = false;
             this.$el.blur();
         },
 
         down: function (date) {
-            date = date || this.focused || this.date;
-
-            var nextViewIndex = this.viewIndex - 1;
-            if (nextViewIndex < 0) nextViewIndex = 0;
-            this.silent = true;
-            this.date = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.silent = false;
-            this.view = this.viewIndexes[nextViewIndex];
+            this._changeView(date, 'down');
         },
 
         up: function (date) {
+            this._changeView(date, 'up');
+        },
+
+        _changeView: function (date, dir) {
             date = date || this.focused || this.date;
 
-            var nextViewIndex = this.viewIndex + 1;
-            if (nextViewIndex > 2) nextViewIndex = 2;
+            var nextView = dir == 'up' ? this.viewIndex + 1 : this.viewIndex - 1;
+            if (nextView > 2) nextView = 2;
+            if (nextView < 0) nextView = 0;
+
             this.silent = true;
             this.date = new Date(date.getFullYear(), date.getMonth(), 1);
             this.silent = false;
-            this.view = this.viewIndexes[nextViewIndex];
-        },
+            this.view = this.viewIndexes[nextView];
 
-        _onShowEvent: function () {
-            if (!this.visible) {
-                this.show();
-            }
-        },
-
-        _onBlur: function () {
-            if (!this.inFocus && this.visible) {
-                this.hide();
-            }
-        },
-
-        _onMouseDownDatepicker: function (e) {
-            this.inFocus = true;
-        },
-
-        _onMouseUpDatepicker: function (e) {
-            this.inFocus = false;
-            this.$el.focus()
-        },
-
-        _onInput: function () {
-            var val = this.$el.val();
-
-            if (!val) {
-                this.clear();
-            }
-        },
-
-        _onResize: function () {
-            if (this.visible) {
-                this.setPosition();
-            }
-        },
-//TODO добавить esc
-        _onKeyDown: function (e) {
-            var code = e.which;
-
-            this._registerKey(code);
-
-            if (code >= 37 && code <= 40) {
-                e.preventDefault();
-                this._focusNextCell(code);
-            }
-
-            if (code == 13) {
-                if (this.focused) {
-                    if (this._getCell(this.focused).hasClass('-disabled-')) return;
-                    if (this.view != this.opts.minView) {
-                        this.down()
-                    } else {
-                        var alreadySelected = this._isSelected(this.focused, this.cellType);
-
-                        if (!alreadySelected) {
-                            this.selectDate(this.focused);
-                        } else if (alreadySelected && this.opts.toggleSelected){
-                            this.removeDate(this.focused);
-                        }
-                    }
-                }
-            }
-        },
-
-        _onKeyUp: function (e) {
-            var code = e.which;
-            this._unRegisterKey(code);
-        },
-
-        _onHotKey: function (e, hotKey) {
-            this._handleHotKey(hotKey);
         },
 
         _handleHotKey: function (key) {
             var date = Datepicker.getParsedDate(this._getFocusedDate()),
-                nd,
+                focusedParsed,
+                o = this.opts,
+                newDate,
                 totalDaysInNextMonth,
+                monthChanged = false,
+                yearChanged = false,
+                decadeChanged = false,
                 y = date.year,
                 m = date.month,
                 d = date.date;
@@ -683,18 +626,32 @@ var Datepicker;
                 case 'ctrlRight':
                 case 'ctrlUp':
                     m += 1;
+                    monthChanged = true;
                     break;
                 case 'ctrlLeft':
                 case 'ctrlDown':
                     m -= 1;
+                    monthChanged = true;
                     break;
                 case 'shiftRight':
                 case 'shiftUp':
+                    yearChanged = true;
                     y += 1;
                     break;
                 case 'shiftLeft':
                 case 'shiftDown':
+                    yearChanged = true;
                     y -= 1;
+                    break;
+                case 'altRight':
+                case 'altUp':
+                    decadeChanged = true;
+                    y += 10;
+                    break;
+                case 'altLeft':
+                case 'altDown':
+                    decadeChanged = true;
+                    y -= 10;
                     break;
                 case 'ctrlShiftUp':
                     this.up();
@@ -702,17 +659,30 @@ var Datepicker;
             }
 
             totalDaysInNextMonth = Datepicker.getDaysCount(new Date(y,m));
+            newDate = new Date(y,m,d);
 
-            nd = new Date(y,m,d);
+            // If next month has less days than current, set date to total days in that month
             if (totalDaysInNextMonth < d) d = totalDaysInNextMonth;
 
-            if (nd.getTime() < this.minTime) {
-                nd = this.minDate;
-            } else if (nd.getTime() > this.maxTime) {
-                nd = this.maxDate;
+            // Check if newDate is in valid range
+            if (newDate.getTime() < this.minTime) {
+                newDate = this.minDate;
+            } else if (newDate.getTime() > this.maxTime) {
+                newDate = this.maxDate;
             }
 
-            this.focused = nd;
+            this.focused = newDate;
+
+            focusedParsed = Datepicker.getParsedDate(newDate);
+            if (monthChanged && o.onChangeMonth) {
+                o.onChangeMonth(focusedParsed.month, focusedParsed.year)
+            }
+            if (yearChanged && o.onChangeYear) {
+                o.onChangeYear(focusedParsed.year)
+            }
+            if (decadeChanged && o.onChangeDecade) {
+                o.onChangeDecade(this.curDecade)
+            }
         },
 
         _registerKey: function (key) {
@@ -841,7 +811,95 @@ var Datepicker;
             return $cell.length ? $cell : '';
         },
 
+        _onShowEvent: function () {
+            if (!this.visible) {
+                this.show();
+            }
+        },
+
+        _onBlur: function () {
+            if (!this.inFocus && this.visible) {
+                this.hide();
+            }
+        },
+
+        _onMouseDownDatepicker: function (e) {
+            this.inFocus = true;
+        },
+
+        _onMouseUpDatepicker: function (e) {
+            this.inFocus = false;
+            this.$el.focus()
+        },
+
+        _onInput: function () {
+            var val = this.$el.val();
+
+            if (!val) {
+                this.clear();
+            }
+        },
+
+        _onResize: function () {
+            if (this.visible) {
+                this.setPosition();
+            }
+        },
+
+        _onKeyDown: function (e) {
+            var code = e.which;
+
+            this._registerKey(code);
+
+            // Arrows
+            if (code >= 37 && code <= 40) {
+                e.preventDefault();
+                this._focusNextCell(code);
+            }
+
+            // Enter
+            if (code == 13) {
+                if (this.focused) {
+                    if (this._getCell(this.focused).hasClass('-disabled-')) return;
+                    if (this.view != this.opts.minView) {
+                        this.down()
+                    } else {
+                        var alreadySelected = this._isSelected(this.focused, this.cellType);
+
+                        if (!alreadySelected) {
+                            this.selectDate(this.focused);
+                        } else if (alreadySelected && this.opts.toggleSelected){
+                            this.removeDate(this.focused);
+                        }
+                    }
+                }
+            }
+
+            // Esc
+            if (code == 27) {
+                this.hide();
+            }
+        },
+
+        _onKeyUp: function (e) {
+            var code = e.which;
+            this._unRegisterKey(code);
+        },
+
+        _onHotKey: function (e, hotKey) {
+            this._handleHotKey(hotKey);
+        },
+
+
+
         set focused(val) {
+            if (!val && this.focused) {
+                var $cell = this._getCell(this.focused);
+
+                if ($cell.length) {
+                    $cell.removeClass('-focus-')
+                }
+            }
             this._focused = val;
             this.date = val;
         },
@@ -1025,9 +1083,10 @@ var Datepicker;
         '<div class="datepicker--years datepicker--body">' +
         '<div class="datepicker--cells datepicker--cells-years"></div>' +
         '</div>'
-    };
+        },
+        D = Datepicker;
 
-    Datepicker.Body = function (d, type, opts) {
+    D.Body = function (d, type, opts) {
         this.d = d;
         this.type = type;
         this.opts = opts;
@@ -1035,7 +1094,7 @@ var Datepicker;
         this.init();
     };
 
-    Datepicker.Body.prototype = {
+    D.Body.prototype = {
         init: function () {
             this._buildBaseHtml();
             this._render();
@@ -1073,7 +1132,7 @@ var Datepicker;
          * @private
          */
         _getDaysHtml: function (date) {
-            var totalMonthDays = Datepicker.getDaysCount(date),
+            var totalMonthDays = D.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
                 daysFromPevMonth = firstMonthDay - this.d.loc.firstDay,
@@ -1099,7 +1158,7 @@ var Datepicker;
         _getDayHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-day",
                 currentDate = new Date(),
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 render = {},
                 html = d.date;
 
@@ -1110,8 +1169,8 @@ var Datepicker;
             }
 
             if (this.d.isWeekend(d.day)) _class += " -weekend-";
-            if (Datepicker.isSame(currentDate, date)) _class += ' -current-';
-            if (this.d.focused && Datepicker.isSame(date, this.d.focused)) _class += ' -focus-';
+            if (D.isSame(currentDate, date)) _class += ' -current-';
+            if (this.d.focused && D.isSame(date, this.d.focused)) _class += ' -focus-';
             if (this.d._isSelected(date, 'day')) _class += ' -selected-';
             if (!this.d._isInRange(date) || render.disabled) _class += ' -disabled-';
             if (d.month != this.d.parsedDate.month) {
@@ -1138,7 +1197,7 @@ var Datepicker;
          */
         _getMonthsHtml: function (date) {
             var html = '',
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 i = 0;
 
             while(i < 12) {
@@ -1151,7 +1210,7 @@ var Datepicker;
 
         _getMonthHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-month",
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 currentDate = new Date(),
                 loc = this.d.loc,
                 html = loc[this.opts.monthsFiled][d.month],
@@ -1163,17 +1222,17 @@ var Datepicker;
                 _class += render.classes ? ' ' + render.classes : '';
             }
 
-            if (Datepicker.isSame(currentDate, date, 'month')) _class += ' -current-';
+            if (D.isSame(currentDate, date, 'month')) _class += ' -current-';
             if (this.d._isSelected(date, 'month')) _class += ' -selected-';
-            if (this.d.focused && Datepicker.isSame(date, this.d.focused, 'month')) _class += ' -focus-';
+            if (this.d.focused && D.isSame(date, this.d.focused, 'month')) _class += ' -focus-';
             if (!this.d._isInRange(date, 'month') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-month="' + d.month + '">' + html + '</div>'
         },
 
         _getYearsHtml: function (date) {
-            var d = Datepicker.getParsedDate(date),
-                decade = Datepicker.getDecade(date),
+            var d = D.getParsedDate(date),
+                decade = D.getDecade(date),
                 firstYear = decade[0] - 1,
                 html = '',
                 i = firstYear;
@@ -1187,9 +1246,9 @@ var Datepicker;
 
         _getYearHtml: function (date) {
             var _class = "datepicker--cell datepicker--cell-year",
-                decade = Datepicker.getDecade(this.d.date),
+                decade = D.getDecade(this.d.date),
                 currentDate = new Date(),
-                d = Datepicker.getParsedDate(date),
+                d = D.getParsedDate(date),
                 html = d.year,
                 render = {};
 
@@ -1209,9 +1268,9 @@ var Datepicker;
                 if (!this.opts.showOtherYears) html = '';
             }
 
-            if (Datepicker.isSame(currentDate, date, 'year')) _class += ' -current-';
+            if (D.isSame(currentDate, date, 'year')) _class += ' -current-';
             if (this.d._isSelected(date, 'year')) _class += ' -selected-';
-            if (this.d.focused && Datepicker.isSame(date, this.d.focused, 'year')) _class += ' -focus-';
+            if (this.d.focused && D.isSame(date, this.d.focused, 'year')) _class += ' -focus-';
             if (!this.d._isInRange(date, 'year') || render.disabled) _class += ' -disabled-';
 
             return '<div class="' + _class + '" data-year="' + d.year + '">' + html + '</div>'
