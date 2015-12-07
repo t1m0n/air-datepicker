@@ -23,6 +23,7 @@ $textColor: (
 $bg: (
   selected: #5cc4ef,
   selectedHover: darken(#5cc4ef, 5),
+  inRange: lighten(#5cc4ef, 15),
   hover: #f0f0f0
 );
 

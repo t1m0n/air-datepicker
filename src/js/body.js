@@ -102,6 +102,21 @@
                 classes += render.classes ? ' ' + render.classes : '';
             }
 
+            if (this.opts.range) {
+                if (D.isSame(this.d.selectedDates[0], date)) classes += ' -range-from-';
+                if (D.isSame(this.d.selectedDates[1], date)) classes += ' -range-to-';
+
+                if (this.d.selectedDates.length == 1 && this.d.focused) {
+                    if (Datepicker.bigger(this.d.selectedDates[0], date) && D.less(this.d.focused, date)) {
+                        classes += ' -in-range-'
+                    }
+                } else if (this.d.selectedDates.length == 2) {
+                    if (D.bigger(this.d.selectedDates[0], date) && D.less(this.d.selectedDates[1], date)) {
+                        classes += ' -in-range-'
+                    }
+                }
+            }
+
             if (D.isSame(currentDate, date, type)) classes += ' -current-';
             if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';
             if (this.d._isSelected(date, type)) classes += ' -selected-';
@@ -218,6 +233,7 @@
         },
 
         _render: function () {
+            console.log('render');
             this._renderTypes[this.type].bind(this)();
         },
 

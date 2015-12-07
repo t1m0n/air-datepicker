@@ -36,15 +36,20 @@
       -ms-flex-pack: center;
           justify-content: center;
   height: 32px;
-  z-index: 1; }
-  .datepicker--cell:hover, .datepicker--cell.-focus- {
+  z-index: 1;
+  /*&:hover, */ }
+  .datepicker--cell.-focus- {
     background: #f0f0f0; }
   .datepicker--cell.-current- {
     color: #4EB5E6; }
     .datepicker--cell.-current-.-focus- {
       color: #4a4a4a; }
-    .datepicker--cell.-current-:hover {
-      color: #4a4a4a; }
+  .datepicker--cell.-in-range- {
+    background: #a2ddf6;
+    color: #fff;
+    padding: 2px 0;
+    background-clip: content-box;
+    border-radius: 0; }
   .datepicker--cell.-disabled- {
     cursor: default;
     color: #aeaeae;
@@ -62,6 +67,10 @@
       background: #5cc4ef; }
     .datepicker--cell.-selected-.-focus- {
       background: #45bced; }
+  .datepicker--cell.-range-from- {
+    border-radius: 4px 0 0 4px; }
+  .datepicker--cell.-range-to- {
+    border-radius: 0 4px 4px 0; }
 
 .datepicker--days-names {
   display: -webkit-flex;

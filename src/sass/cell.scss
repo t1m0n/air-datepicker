@@ -19,7 +19,7 @@
   height: $dayCellSize;
   z-index: 1;
 
-  &:hover, &.-focus- {
+  /*&:hover, */&.-focus- {
     background: map_get($bg, hover);
   }
 
@@ -30,10 +30,18 @@
       color: map_get($textColor, common);
     }
 
-    &:hover {
-      color:  map_get($textColor, common);
-      //background: rgba(map_get($textColor, currentDate), .05);
-    }
+    //&:hover {
+    //  color:  map_get($textColor, common);
+    //  //background: rgba(map_get($textColor, currentDate), .05);
+    //}
+  }
+
+  &.-in-range- {
+    background: map_get($bg, inRange);
+    color: #fff;
+    padding: 2px 0;
+    background-clip: content-box;
+    border-radius: 0;
   }
 
   &.-disabled- {
@@ -65,6 +73,13 @@
     &.-focus- {
       background: map_get($bg, selectedHover);
     }
+  }
+
+  &.-range-from- {
+    border-radius: $datepickerBorderRadius 0 0 $datepickerBorderRadius;
+  }
+  &.-range-to- {
+    border-radius:  0 $datepickerBorderRadius $datepickerBorderRadius 0;
   }
 }
 

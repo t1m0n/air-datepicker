@@ -44,6 +44,7 @@ var Datepicker;
 
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
+            range: true,
 
             todayButton: false,
             clearButton: false,
@@ -117,6 +118,8 @@ var Datepicker;
         this.selectedDates = [];
         this.views = {};
         this.keys = [];
+        this.minRange = '';
+        this.maxRange = '';
 
         this.init()
     };
@@ -149,6 +152,9 @@ var Datepicker;
             this.views[this.currentView].show();
             this.nav = new Datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
+
+            this.$datepicker.on('mouseenter', '.datepicker--cell', this._onMouseEnterCell.bind(this));
+            this.$datepicker.on('mouseleave', '.datepicker--cell', this._onMouseLeaveCell.bind(this));
 
             this.inited = true;
         },
@@ -329,6 +335,8 @@ var Datepicker;
 
         selectDate: function (date) {
             var d = this.parsedDate,
+                selectedDates = this.selectedDates,
+                len = selectedDates.length,
                 newDate = '';
 
             if (!(date instanceof Date)) return;
@@ -336,7 +344,6 @@ var Datepicker;
             if (this.view == 'days') {
                 if (date.getMonth() != d.month && this.opts.moveToOtherMonthsOnSelect) {
                     newDate = new Date(date.getFullYear(), date.getMonth(), 1);
-
                 }
             }
 
@@ -354,12 +361,24 @@ var Datepicker;
             }
 
             if (this.opts.multipleDates) {
-                if (this.selectedDates.length === this.opts.multipleDates) return;
+                if (len === this.opts.multipleDates) return;
                 if (!this._isSelected(date)) {
                     this.selectedDates.push(date);
                 }
+            } else if (this.opts.range) {
+                if (len == 2) {
+                    this.selectedDates = [date]
+                } else if (len == 1) {
+                    if (Datepicker.less(this.selectedDates[0], date, this.cellType)) {
+                        this.selectedDates = [date]
+                    } else {
+                        this.selectedDates.push(date);
+                    }
+                } else {
+                    this.selectedDates = [date]
+                }
             } else {
-                this.selectedDates = [date];
+               this. selectedDates = [date];
             }
 
             this._setInputValue();
@@ -514,6 +533,15 @@ var Datepicker;
                 left: offset.left,
                 top: offset.top
             }
+        },
+
+        _getDateFromCell: function (cell) {
+            var curDate = this.parsedDate,
+                year = cell.data('year') || curDate.year,
+                month = cell.data('month') == undefined ? curDate.month : cell.data('month'),
+                date = cell.data('date') || 1;
+
+            return new Date(year, month, date);
         },
 
         _setPositionClasses: function (pos) {
@@ -835,9 +863,9 @@ var Datepicker;
         },
 
         _onBlur: function () {
-            if (!this.inFocus && this.visible) {
-                this.hide();
-            }
+            //if (!this.inFocus && this.visible) {
+            //    this.hide();
+            //}
         },
 
         _onMouseDownDatepicker: function (e) {
@@ -907,7 +935,31 @@ var Datepicker;
             this._handleHotKey(hotKey);
         },
 
+        _onMouseEnterCell: function (e) {
+            var $cell = $(e.target).closest('.datepicker--cell'),
+                date = this._getDateFromCell($cell);
 
+            // Prevent from unnecessary rendering and setting new currentDate
+            this.silent = true;
+
+            if (this.focused) {
+                this.focused = ''
+            }
+
+            $cell.addClass('-focus-');
+
+            this.focused = date;
+            this.silent = false;
+        },
+
+        _onMouseLeaveCell: function (e) {
+            var $cell = $(e.target).closest('.datepicker--cell'),
+                date = this._getDateFromCell($cell);
+            $cell.removeClass('-focus-');
+            this.silent = true;
+            this.focused = '';
+            this.silent = false;
+        },
 
         set focused(val) {
             if (!val && this.focused) {
@@ -918,6 +970,7 @@ var Datepicker;
                 }
             }
             this._focused = val;
+            if (this.silent) return;
             this.date = val;
         },
 
@@ -941,7 +994,6 @@ var Datepicker;
                     this.setPosition();
                 }
             }
-
             return val;
         },
 
@@ -1035,6 +1087,7 @@ var Datepicker;
     };
 
     Datepicker.isSame = function (date1, date2, type) {
+        if (!date1 || !date2) return false;
         var d1 = Datepicker.getParsedDate(date1),
             d2 = Datepicker.getParsedDate(date2),
             _type = type ? type : 'day',
@@ -1046,6 +1099,14 @@ var Datepicker;
             };
 
         return conditions[_type];
+    };
+
+    Datepicker.less = function (dateCompareTo, date, type) {
+        return date.getTime() < dateCompareTo.getTime();
+    };
+
+    Datepicker.bigger = function (dateCompareTo, date, type) {
+        return date.getTime() > dateCompareTo.getTime();
     };
 
     Datepicker.language = {
@@ -1189,6 +1250,21 @@ var Datepicker;
                 classes += render.classes ? ' ' + render.classes : '';
             }
 
+            if (this.opts.range) {
+                if (D.isSame(this.d.selectedDates[0], date)) classes += ' -range-from-';
+                if (D.isSame(this.d.selectedDates[1], date)) classes += ' -range-to-';
+
+                if (this.d.selectedDates.length == 1 && this.d.focused) {
+                    if (Datepicker.bigger(this.d.selectedDates[0], date) && D.less(this.d.focused, date)) {
+                        classes += ' -in-range-'
+                    }
+                } else if (this.d.selectedDates.length == 2) {
+                    if (D.bigger(this.d.selectedDates[0], date) && D.less(this.d.selectedDates[1], date)) {
+                        classes += ' -in-range-'
+                    }
+                }
+            }
+
             if (D.isSame(currentDate, date, type)) classes += ' -current-';
             if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';
             if (this.d._isSelected(date, type)) classes += ' -selected-';
@@ -1305,6 +1381,7 @@ var Datepicker;
         },
 
         _render: function () {
+            console.log('render');
             this._renderTypes[this.type].bind(this)();
         },
 
@@ -1400,7 +1477,6 @@ var Datepicker;
         _render: function () {
             var title = this._getTitle(this.d.currentDate),
                 html = Datepicker.template(template, $.extend({title: title}, this.opts));
-
             this.d.$nav.html(html);
             if (this.d.view == 'years') {
                 $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
