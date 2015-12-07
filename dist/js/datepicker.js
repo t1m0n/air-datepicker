@@ -1142,6 +1142,64 @@ var Datepicker;
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
 
+        _getCellContents: function (date, type) {
+            var classes = "datepicker--cell datepicker--cell-" + type,
+                currentDate = new Date(),
+                datepicker = this.d,
+                d = D.getParsedDate(date),
+                render = {},
+                html = d.date;
+
+            if (this.opts.onRenderCell) {
+                render = this.opts.onRenderCell(date, type) || {};
+                html = render.html ? render.html : html;
+                classes += render.classes ? ' ' + render.classes : '';
+            }
+
+            switch (type) {
+                case 'day':
+                    if (this.d.isWeekend(d.day)) classes += " -weekend-";
+                    if (d.month != this.d.parsedDate.month) {
+                        classes += " -other-month-";
+                        if (!this.opts.selectOtherMonths) {
+                            classes += " -disabled-";
+                        }
+                        if (!this.opts.showOtherMonths) html = '';
+                    }
+                    break;
+                case 'month':
+                    html = datepicker.loc[datepicker.opts.monthsFiled][d.month];
+                    break;
+                case 'year':
+                    var decade = datepicker.curDecade;
+                    if (d.year < decade[0] || d.year > decade[1]) {
+                        classes += ' -other-decade-';
+                        if (!this.opts.selectOtherYears) {
+                            classes += " -disabled-";
+                        }
+                        if (!this.opts.showOtherYears) html = '';
+                    }
+                    html = d.year;
+                    break;
+            }
+
+            if (this.opts.onRenderCell) {
+                render = this.opts.onRenderCell(date, type) || {};
+                html = render.html ? render.html : html;
+                classes += render.classes ? ' ' + render.classes : '';
+            }
+
+            if (D.isSame(currentDate, date, type)) classes += ' -current-';
+            if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';
+            if (this.d._isSelected(date, type)) classes += ' -selected-';
+            if (!this.d._isInRange(date, type) || render.disabled) classes += ' -disabled-';
+
+            return {
+                html: html,
+                classes: classes
+            }
+        },
+
         /**
          * Calculates days number to render. Generates days html and returns it.
          * @param {object} date - Date object
@@ -1173,37 +1231,12 @@ var Datepicker;
         },
 
         _getDayHtml: function (date) {
-            var _class = "datepicker--cell datepicker--cell-day",
-                currentDate = new Date(),
-                d = D.getParsedDate(date),
-                render = {},
-                html = d.date;
+           var content = this._getCellContents(date, 'day');
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, 'day') || {};
-                html = render.html ? render.html : html;
-                _class += render.classes ? ' ' + render.classes : '';
-            }
-
-            if (this.d.isWeekend(d.day)) _class += " -weekend-";
-            if (D.isSame(currentDate, date)) _class += ' -current-';
-            if (this.d.focused && D.isSame(date, this.d.focused)) _class += ' -focus-';
-            if (this.d._isSelected(date, 'day')) _class += ' -selected-';
-            if (!this.d._isInRange(date) || render.disabled) _class += ' -disabled-';
-            if (d.month != this.d.parsedDate.month) {
-                _class += " -other-month-";
-
-                if (!this.opts.selectOtherMonths) {
-                    _class += " -disabled-";
-                }
-
-                if (!this.opts.showOtherMonths) html = '';
-            }
-
-            return '<div class="' + _class + '" ' +
+            return '<div class="' + content.classes + '" ' +
                 'data-date="' + date.getDate() + '" ' +
                 'data-month="' + date.getMonth() + '" ' +
-                'data-year="' + date.getFullYear() + '">' + html + '</div>';
+                'data-year="' + date.getFullYear() + '">' + content.html + '</div>';
         },
 
         /**
@@ -1226,25 +1259,9 @@ var Datepicker;
         },
 
         _getMonthHtml: function (date) {
-            var _class = "datepicker--cell datepicker--cell-month",
-                d = D.getParsedDate(date),
-                currentDate = new Date(),
-                loc = this.d.loc,
-                html = loc[this.opts.monthsFiled][d.month],
-                render = {};
+            var content = this._getCellContents(date, 'month');
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, 'month') || {};
-                html = render.html ? render.html : html;
-                _class += render.classes ? ' ' + render.classes : '';
-            }
-
-            if (D.isSame(currentDate, date, 'month')) _class += ' -current-';
-            if (this.d._isSelected(date, 'month')) _class += ' -selected-';
-            if (this.d.focused && D.isSame(date, this.d.focused, 'month')) _class += ' -focus-';
-            if (!this.d._isInRange(date, 'month') || render.disabled) _class += ' -disabled-';
-
-            return '<div class="' + _class + '" data-month="' + d.month + '">' + html + '</div>'
+            return '<div class="' + content.classes + '" data-month="' + date.getMonth() + '">' + content.html + '</div>'
         },
 
         _getYearsHtml: function (date) {
@@ -1262,35 +1279,9 @@ var Datepicker;
         },
 
         _getYearHtml: function (date) {
-            var _class = "datepicker--cell datepicker--cell-year",
-                decade = D.getDecade(this.d.date),
-                currentDate = new Date(),
-                d = D.getParsedDate(date),
-                html = d.year,
-                render = {};
+            var content = this._getCellContents(date, 'year');
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, 'year') || {};
-                html = render.html ? render.html : html;
-                _class += render.classes ? ' ' + render.classes : '';
-            }
-
-            if (d.year < decade[0] || d.year > decade[1]) {
-                _class += ' -other-decade-';
-
-                if (!this.opts.selectOtherYears) {
-                    _class += " -disabled-";
-                }
-
-                if (!this.opts.showOtherYears) html = '';
-            }
-
-            if (D.isSame(currentDate, date, 'year')) _class += ' -current-';
-            if (this.d._isSelected(date, 'year')) _class += ' -selected-';
-            if (this.d.focused && D.isSame(date, this.d.focused, 'year')) _class += ' -focus-';
-            if (!this.d._isInRange(date, 'year') || render.disabled) _class += ' -disabled-';
-
-            return '<div class="' + _class + '" data-year="' + d.year + '">' + html + '</div>'
+            return '<div class="' + content.classes + '" data-year="' + date.getFullYear() + '">' + content.html + '</div>'
         },
 
         _renderTypes: {
