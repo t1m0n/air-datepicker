@@ -33,7 +33,7 @@
         },
 
         _bindEvents: function () {
-            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
@@ -233,8 +233,21 @@
         },
 
         _render: function () {
-            console.log('render');
             this._renderTypes[this.type].bind(this)();
+        },
+
+        _update: function () {
+            var $cells = $('.datepicker--cell', this.$cells),
+                _this = this,
+                classes,
+                $cell,
+                date;
+            $cells.each(function (cell, i) {
+                $cell = $(this);
+                date = _this.d._getDateFromCell($(this));
+                classes = _this._getCellContents(date, _this.d.cellType);
+                $cell.attr('class',classes.classes)
+            });
         },
 
         show: function () {
@@ -260,7 +273,6 @@
                 this.d.down(new Date(year, month, date));
                 return;
             }
-
             // Select date if min view is reached
             var selectedDate = new Date(year, month, date),
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);

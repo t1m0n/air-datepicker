@@ -7,6 +7,13 @@
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
     background: #a2ddf6; }
+    .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
+      background: #8ad5f4; }
+  .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
+    background-color: #effaff;
+    color: #cccccc; }
+    .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
+      background-color: #e5f7ff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }
@@ -45,15 +52,16 @@
     .datepicker--cell.-current-.-focus- {
       color: #4a4a4a; }
   .datepicker--cell.-in-range- {
-    background: #a2ddf6;
-    color: #fff;
+    background: #E0F6FF;
+    color: #4a4a4a;
     padding: 2px 0;
     background-clip: content-box;
     border-radius: 0; }
+    .datepicker--cell.-in-range-.-focus- {
+      background-color: #c6efff; }
   .datepicker--cell.-disabled- {
     cursor: default;
-    color: #aeaeae;
-    background: none; }
+    color: #aeaeae; }
     .datepicker--cell.-disabled-.-focus- {
       color: #aeaeae;
       background: #f0f0f0; }
@@ -71,6 +79,8 @@
     border-radius: 4px 0 0 4px; }
   .datepicker--cell.-range-to- {
     border-radius: 0 4px 4px 0; }
+  .datepicker--cell.-range-from-.-range-to- {
+    border-radius: 4px; }
 
 .datepicker--days-names {
   display: -webkit-flex;
@@ -128,6 +138,13 @@
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
     background: #a2ddf6; }
+    .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
+      background: #8ad5f4; }
+  .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
+    background-color: #effaff;
+    color: #cccccc; }
+    .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
+      background-color: #e5f7ff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }
@@ -245,6 +262,13 @@
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
     background: #a2ddf6; }
+    .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
+      background: #8ad5f4; }
+  .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
+    background-color: #effaff;
+    color: #cccccc; }
+    .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
+      background-color: #e5f7ff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }
@@ -345,6 +369,13 @@
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
     background: #a2ddf6; }
+    .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
+      background: #8ad5f4; }
+  .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
+    background-color: #effaff;
+    color: #cccccc; }
+    .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
+      background-color: #e5f7ff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }

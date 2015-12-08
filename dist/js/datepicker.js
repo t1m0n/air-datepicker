@@ -378,7 +378,7 @@ var Datepicker;
                     this.selectedDates = [date]
                 }
             } else {
-               this. selectedDates = [date];
+               this.selectedDates = [date];
             }
 
             this._setInputValue();
@@ -950,12 +950,18 @@ var Datepicker;
 
             this.focused = date;
             this.silent = false;
+
+            if (this.opts.range && this.selectedDates.length == 1) {
+                this.views[this.currentView]._update();
+            }
         },
 
         _onMouseLeaveCell: function (e) {
             var $cell = $(e.target).closest('.datepicker--cell'),
                 date = this._getDateFromCell($cell);
+
             $cell.removeClass('-focus-');
+
             this.silent = true;
             this.focused = '';
             this.silent = false;
@@ -985,6 +991,7 @@ var Datepicker;
         set date (val) {
             if (!(val instanceof Date)) return;
 
+            this.prevDate = this.currentDate;
             this.currentDate = val;
 
             if (this.inited && !this.silent) {
@@ -1181,7 +1188,7 @@ var Datepicker;
         },
 
         _bindEvents: function () {
-            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
@@ -1381,8 +1388,21 @@ var Datepicker;
         },
 
         _render: function () {
-            console.log('render');
             this._renderTypes[this.type].bind(this)();
+        },
+
+        _update: function () {
+            var $cells = $('.datepicker--cell', this.$cells),
+                _this = this,
+                classes,
+                $cell,
+                date;
+            $cells.each(function (cell, i) {
+                $cell = $(this);
+                date = _this.d._getDateFromCell($(this));
+                classes = _this._getCellContents(date, _this.d.cellType);
+                $cell.attr('class',classes.classes)
+            });
         },
 
         show: function () {
@@ -1408,7 +1428,6 @@ var Datepicker;
                 this.d.down(new Date(year, month, date));
                 return;
             }
-
             // Select date if min view is reached
             var selectedDate = new Date(year, month, date),
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);

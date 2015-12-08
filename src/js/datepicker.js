@@ -378,7 +378,7 @@ var Datepicker;
                     this.selectedDates = [date]
                 }
             } else {
-               this. selectedDates = [date];
+               this.selectedDates = [date];
             }
 
             this._setInputValue();
@@ -950,12 +950,18 @@ var Datepicker;
 
             this.focused = date;
             this.silent = false;
+
+            if (this.opts.range && this.selectedDates.length == 1) {
+                this.views[this.currentView]._update();
+            }
         },
 
         _onMouseLeaveCell: function (e) {
             var $cell = $(e.target).closest('.datepicker--cell'),
                 date = this._getDateFromCell($cell);
+
             $cell.removeClass('-focus-');
+
             this.silent = true;
             this.focused = '';
             this.silent = false;
@@ -985,6 +991,7 @@ var Datepicker;
         set date (val) {
             if (!(val instanceof Date)) return;
 
+            this.prevDate = this.currentDate;
             this.currentDate = val;
 
             if (this.inited && !this.silent) {

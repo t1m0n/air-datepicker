@@ -38,16 +38,19 @@
 
   &.-in-range- {
     background: map_get($bg, inRange);
-    color: #fff;
+    color: map_get($textColor, common);
     padding: 2px 0;
     background-clip: content-box;
     border-radius: 0;
+
+    &.-focus- {
+      background-color: map_get($bg, inRangeHover);
+    }
   }
 
   &.-disabled- {
     cursor: default;
     color: map_get($textColor, disabled);
-    background: none;
 
     &.-focus- {
       color: map_get($textColor, disabled);
@@ -80,6 +83,10 @@
   }
   &.-range-to- {
     border-radius:  0 $datepickerBorderRadius $datepickerBorderRadius 0;
+  }
+
+  &.-range-from-.-range-to- {
+    border-radius: $datepickerBorderRadius;
   }
 }
 

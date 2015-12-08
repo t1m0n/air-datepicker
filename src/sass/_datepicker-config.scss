@@ -13,6 +13,7 @@ $yearsPerRow: 4;
 $textColor: (
   button: #5cc4ef,
   otherMonth: #dedede,
+  otherMonthInRange: #ccc,
   disabled: #aeaeae,
   currentDate: #4EB5E6,
   common: #4a4a4a,
@@ -23,7 +24,10 @@ $textColor: (
 $bg: (
   selected: #5cc4ef,
   selectedHover: darken(#5cc4ef, 5),
-  inRange: lighten(#5cc4ef, 15),
+  inRange: #E0F6FF,
+  inRangeHover: darken(#E0F6FF, 5),
+  inRangeOtherMonth: lighten(#E0F6FF, 3),
+  inRangeOtherMonthHover: lighten(#E0F6FF, 1),
   hover: #f0f0f0
 );
 
@@ -61,6 +65,18 @@ $transitionOffset: 8px;
   &.-selected- {
     color: #fff;
     background: lighten(map_get($bg, selected), 15);
+    &.-focus- {
+      background: lighten(map_get($bg, selected), 10);
+    }
+  }
+  
+  &.-in-range- {
+    background-color: map_get($bg, inRangeOtherMonth);
+    color: darken(map_get($textColor, otherMonth), 7);
+
+    &.-focus- {
+      background-color: map_get($bg, inRangeOtherMonthHover);
+    }
   }
 
   &:empty {
