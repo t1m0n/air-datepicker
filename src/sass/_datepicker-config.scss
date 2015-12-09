@@ -24,7 +24,7 @@ $textColor: (
 $bg: (
   selected: #5cc4ef,
   selectedHover: darken(#5cc4ef, 5),
-  inRange: #EAF9FF,
+  inRange: rgba(#5cc4ef, .1),
   hover: #f0f0f0
 );
 
@@ -72,7 +72,7 @@ $transitionOffset: 8px;
     color: darken(map_get($textColor, otherMonth), 7);
 
     &.-focus- {
-      background-color: lighten(map_get($bg, inRange), 1);
+      background-color: rgba(map_get($bg, inRange), .2);
     }
   }
 

@@ -44,7 +44,7 @@ var Datepicker;
 
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
-            range: true,
+            range: false,
 
             todayButton: false,
             clearButton: false,
@@ -84,7 +84,8 @@ var Datepicker;
             'altLeft': [18, 37],
             'altDown': [18, 40],
             'ctrlShiftUp': [16, 17, 38]
-        };
+        },
+        datepicker;
 
     Datepicker  = function (el, options) {
         this.el = el;
@@ -124,8 +125,9 @@ var Datepicker;
         this.init()
     };
 
+    datepicker = Datepicker;
 
-    Datepicker.prototype = {
+    datepicker.prototype = {
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
@@ -236,7 +238,7 @@ var Datepicker;
             }
 
             var selectedDates = this.selectedDates,
-                parsedSelected = Datepicker.getParsedDate(selectedDates[0]),
+                parsedSelected = datepicker.getParsedDate(selectedDates[0]),
                 formattedDates,
                 _this = this,
                 dates = new Date(parsedSelected.year, parsedSelected.month, parsedSelected.date);
@@ -248,7 +250,7 @@ var Datepicker;
             // Create new dates array, to separate it from original selectedDates
             if (this.opts.multipleDates) {
                 dates = selectedDates.map(function(date) {
-                    var parsedDate = Datepicker.getParsedDate(date);
+                    var parsedDate = datepicker.getParsedDate(date);
                     return new Date(parsedDate.year, parsedDate.month, parsedDate.date)
                 })
             }
@@ -298,8 +300,8 @@ var Datepicker;
             date = date || this.date;
             var result = string,
                 locale = this.loc,
-                decade = Datepicker.getDecade(date),
-                d = Datepicker.getParsedDate(date);
+                decade = datepicker.getDecade(date),
+                d = datepicker.getParsedDate(date);
 
             switch (true) {
                 case /@/.test(result):
@@ -407,7 +409,7 @@ var Datepicker;
             if (!(date instanceof Date)) return;
 
             return selected.some(function (curDate, i) {
-                if (Datepicker.isSame(curDate, date)) {
+                if (datepicker.isSame(curDate, date)) {
                     selected.splice(i, 1);
                     _this.views[_this.currentView]._render();
                     _this._setInputValue();
@@ -431,6 +433,7 @@ var Datepicker;
             this.minRange = '';
             this.maxRange = '';
             this.views[this.currentView]._render();
+            this._setInputValue();
             if (this.opts.onSelect) {
                 this._triggerOnChange()
             }
@@ -485,7 +488,7 @@ var Datepicker;
 
         _isSelected: function (checkDate, cellType) {
             return this.selectedDates.some(function (date) {
-                return Datepicker.isSame(date, checkDate, cellType)
+                return datepicker.isSame(date, checkDate, cellType)
             })
         },
 
@@ -502,6 +505,7 @@ var Datepicker;
                 altValues = this.selectedDates.map(function (date) {
                     return _this.formatDate(altFormat, date)
                 });
+                altValues = altValues.join(this.opts.multipleDatesSeparator);
                 this.$altField.val(altValues);
             }
 
@@ -519,9 +523,9 @@ var Datepicker;
          */
         _isInRange: function (date, type) {
             var time = date.getTime(),
-                d = Datepicker.getParsedDate(date),
-                min = Datepicker.getParsedDate(this.minDate),
-                max = Datepicker.getParsedDate(this.maxDate),
+                d = datepicker.getParsedDate(date),
+                min = datepicker.getParsedDate(this.minDate),
+                max = datepicker.getParsedDate(this.maxDate),
                 dMinTime = new Date(d.year, d.month, min.date).getTime(),
                 dMaxTime = new Date(d.year, d.month, max.date).getTime(),
                 types = {
@@ -663,7 +667,7 @@ var Datepicker;
         },
 
         _handleHotKey: function (key) {
-            var date = Datepicker.getParsedDate(this._getFocusedDate()),
+            var date = datepicker.getParsedDate(this._getFocusedDate()),
                 focusedParsed,
                 o = this.opts,
                 newDate,
@@ -711,7 +715,7 @@ var Datepicker;
                     break;
             }
 
-            totalDaysInNextMonth = Datepicker.getDaysCount(new Date(y,m));
+            totalDaysInNextMonth = datepicker.getDaysCount(new Date(y,m));
             newDate = new Date(y,m,d);
 
             // If next month has less days than current, set date to total days in that month
@@ -726,7 +730,7 @@ var Datepicker;
 
             this.focused = newDate;
 
-            focusedParsed = Datepicker.getParsedDate(newDate);
+            focusedParsed = datepicker.getParsedDate(newDate);
             if (monthChanged && o.onChangeMonth) {
                 o.onChangeMonth(focusedParsed.month, focusedParsed.year)
             }
@@ -780,7 +784,7 @@ var Datepicker;
         _focusNextCell: function (keyCode, type) {
             type = type || this.cellType;
 
-            var date = Datepicker.getParsedDate(this._getFocusedDate()),
+            var date = datepicker.getParsedDate(this._getFocusedDate()),
                 y = date.year,
                 m = date.month,
                 d = date.date;
@@ -847,7 +851,7 @@ var Datepicker;
         _getCell: function (date, type) {
             type = type || this.cellType;
 
-            var d = Datepicker.getParsedDate(date),
+            var d = datepicker.getParsedDate(date),
                 selector = '.datepicker--cell[data-year="' + d.year + '"]',
                 $cell;
 
@@ -962,7 +966,7 @@ var Datepicker;
             if (this.opts.range && this.selectedDates.length == 1) {
                 this.minRange = this.selectedDates[0];
                 this.maxRange = '';
-                if (Datepicker.less(this.minRange, this.focused)) {
+                if (datepicker.less(this.minRange, this.focused)) {
                     this.maxRange = this.minRange;
                     this.minRange = '';
                 }
@@ -993,7 +997,7 @@ var Datepicker;
             if (this.opts.range && this.selectedDates.length == 1) {
                 this.minRange = this.selectedDates[0];
                 this.maxRange = '';
-                if (Datepicker.less(this.minRange, this._focused)) {
+                if (datepicker.less(this.minRange, this._focused)) {
                     this.maxRange = this.minRange;
                     this.minRange = '';
                 }
@@ -1007,7 +1011,7 @@ var Datepicker;
         },
 
         get parsedDate() {
-            return Datepicker.getParsedDate(this.date);
+            return datepicker.getParsedDate(this.date);
         },
 
         set date (val) {
@@ -1069,28 +1073,28 @@ var Datepicker;
         },
 
         get minTime() {
-            var min = Datepicker.getParsedDate(this.minDate);
+            var min = datepicker.getParsedDate(this.minDate);
             return new Date(min.year, min.month, min.date).getTime()
         },
 
         get maxTime() {
-            var max = Datepicker.getParsedDate(this.maxDate);
+            var max = datepicker.getParsedDate(this.maxDate);
             return new Date(max.year, max.month, max.date).getTime()
         },
 
         get curDecade() {
-            return Datepicker.getDecade(this.date)
+            return datepicker.getDecade(this.date)
         }
     };
 
     //  Utils
     // -------------------------------------------------
 
-    Datepicker.getDaysCount = function (date) {
+    datepicker.getDaysCount = function (date) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     };
 
-    Datepicker.getParsedDate = function (date) {
+    datepicker.getParsedDate = function (date) {
         return {
             year: date.getFullYear(),
             month: date.getMonth(),
@@ -1101,13 +1105,13 @@ var Datepicker;
         }
     };
 
-    Datepicker.getDecade = function (date) {
+    datepicker.getDecade = function (date) {
         var firstYear = Math.floor(date.getFullYear() / 10) * 10;
 
         return [firstYear, firstYear + 9];
     };
 
-    Datepicker.template = function (str, data) {
+    datepicker.template = function (str, data) {
         return str.replace(/#\{([\w]+)\}/g, function (source, match) {
             if (data[match] || data[match] === 0) {
                 return data[match]
@@ -1115,10 +1119,10 @@ var Datepicker;
         });
     };
 
-    Datepicker.isSame = function (date1, date2, type) {
+    datepicker.isSame = function (date1, date2, type) {
         if (!date1 || !date2) return false;
-        var d1 = Datepicker.getParsedDate(date1),
-            d2 = Datepicker.getParsedDate(date2),
+        var d1 = datepicker.getParsedDate(date1),
+            d2 = datepicker.getParsedDate(date2),
             _type = type ? type : 'day',
 
             conditions = {
@@ -1130,12 +1134,12 @@ var Datepicker;
         return conditions[_type];
     };
 
-    Datepicker.less = function (dateCompareTo, date, type) {
+    datepicker.less = function (dateCompareTo, date, type) {
         if (!dateCompareTo || !date) return false;
         return date.getTime() < dateCompareTo.getTime();
     };
 
-    Datepicker.bigger = function (dateCompareTo, date, type) {
+    datepicker.bigger = function (dateCompareTo, date, type) {
         if (!dateCompareTo || !date) return false;
         return date.getTime() > dateCompareTo.getTime();
     };
@@ -1155,8 +1159,8 @@ var Datepicker;
     };
 
     $.fn[pluginName] = function ( options ) {
-        if (Datepicker.prototype[options]) {
-            Datepicker.prototype[options].apply(this.data(pluginName), Array.prototype.slice.call(arguments, 1));
+        if (datepicker.prototype[options]) {
+            datepicker.prototype[options].apply(this.data(pluginName), Array.prototype.slice.call(arguments, 1));
         } else {
             return this.each(function () {
                 if (!$.data(this, pluginName)) {

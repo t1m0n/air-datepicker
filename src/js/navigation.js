@@ -66,6 +66,7 @@
                 },
                 html = Datepicker.template(button, data);
 
+            if ($('[data-action=' + type + ']', this.$buttonsContainer).length) return;
             this.$buttonsContainer.append(html);
         },
 
