@@ -2,7 +2,7 @@
   color: #dedede; }
   .datepicker--cell-day.-other-month-:hover, .datepicker--cell-year.-other-decade-:hover {
     color: #c5c5c5; }
-  .-disabled-.datepicker--cell-day.-other-month-:hover, .-disabled-.datepicker--cell-year.-other-decade-:hover {
+  .-disabled-.-focus-.datepicker--cell-day.-other-month-, .-disabled-.-focus-.datepicker--cell-year.-other-decade- {
     color: #dedede; }
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
@@ -10,10 +10,10 @@
     .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
       background: #8ad5f4; }
   .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
-    background-color: #effaff;
+    background-color: #EAF9FF;
     color: #cccccc; }
     .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
-      background-color: #e5f7ff; }
+      background-color: #effaff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }
@@ -52,13 +52,13 @@
     .datepicker--cell.-current-.-focus- {
       color: #4a4a4a; }
   .datepicker--cell.-in-range- {
-    background: #E0F6FF;
+    background: #EAF9FF;
     color: #4a4a4a;
-    padding: 2px 0;
+    padding: 0;
     background-clip: content-box;
     border-radius: 0; }
     .datepicker--cell.-in-range-.-focus- {
-      background-color: #c6efff; }
+      background-color: #d0f2ff; }
   .datepicker--cell.-disabled- {
     cursor: default;
     color: #aeaeae; }
@@ -67,6 +67,12 @@
       background: #f0f0f0; }
     .datepicker--cell.-disabled-.-current-:hover {
       color: #aeaeae; }
+  .datepicker--cell.-range-from- {
+    border-radius: 4px 0 0 4px; }
+  .datepicker--cell.-range-to- {
+    border-radius: 0 4px 4px 0; }
+  .datepicker--cell.-range-from-.-range-to- {
+    border-radius: 4px; }
   .datepicker--cell.-selected- {
     color: #fff;
     background: #5cc4ef; }
@@ -75,12 +81,6 @@
       background: #5cc4ef; }
     .datepicker--cell.-selected-.-focus- {
       background: #45bced; }
-  .datepicker--cell.-range-from- {
-    border-radius: 4px 0 0 4px; }
-  .datepicker--cell.-range-to- {
-    border-radius: 0 4px 4px 0; }
-  .datepicker--cell.-range-from-.-range-to- {
-    border-radius: 4px; }
 
 .datepicker--days-names {
   display: -webkit-flex;
@@ -133,7 +133,7 @@
   color: #dedede; }
   .datepicker--cell-day.-other-month-:hover, .datepicker--cell-year.-other-decade-:hover {
     color: #c5c5c5; }
-  .-disabled-.datepicker--cell-day.-other-month-:hover, .-disabled-.datepicker--cell-year.-other-decade-:hover {
+  .-disabled-.-focus-.datepicker--cell-day.-other-month-, .-disabled-.-focus-.datepicker--cell-year.-other-decade- {
     color: #dedede; }
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
@@ -141,10 +141,10 @@
     .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
       background: #8ad5f4; }
   .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
-    background-color: #effaff;
+    background-color: #EAF9FF;
     color: #cccccc; }
     .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
-      background-color: #e5f7ff; }
+      background-color: #effaff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }
@@ -257,7 +257,7 @@
   color: #dedede; }
   .datepicker--cell-day.-other-month-:hover, .datepicker--cell-year.-other-decade-:hover {
     color: #c5c5c5; }
-  .-disabled-.datepicker--cell-day.-other-month-:hover, .-disabled-.datepicker--cell-year.-other-decade-:hover {
+  .-disabled-.-focus-.datepicker--cell-day.-other-month-, .-disabled-.-focus-.datepicker--cell-year.-other-decade- {
     color: #dedede; }
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
@@ -265,10 +265,10 @@
     .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
       background: #8ad5f4; }
   .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
-    background-color: #effaff;
+    background-color: #EAF9FF;
     color: #cccccc; }
     .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
-      background-color: #e5f7ff; }
+      background-color: #effaff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }
@@ -364,7 +364,7 @@
   color: #dedede; }
   .datepicker--cell-day.-other-month-:hover, .datepicker--cell-year.-other-decade-:hover {
     color: #c5c5c5; }
-  .-disabled-.datepicker--cell-day.-other-month-:hover, .-disabled-.datepicker--cell-year.-other-decade-:hover {
+  .-disabled-.-focus-.datepicker--cell-day.-other-month-, .-disabled-.-focus-.datepicker--cell-year.-other-decade- {
     color: #dedede; }
   .-selected-.datepicker--cell-day.-other-month-, .-selected-.datepicker--cell-year.-other-decade- {
     color: #fff;
@@ -372,10 +372,10 @@
     .-selected-.-focus-.datepicker--cell-day.-other-month-, .-selected-.-focus-.datepicker--cell-year.-other-decade- {
       background: #8ad5f4; }
   .-in-range-.datepicker--cell-day.-other-month-, .-in-range-.datepicker--cell-year.-other-decade- {
-    background-color: #effaff;
+    background-color: #EAF9FF;
     color: #cccccc; }
     .-in-range-.-focus-.datepicker--cell-day.-other-month-, .-in-range-.-focus-.datepicker--cell-year.-other-decade- {
-      background-color: #e5f7ff; }
+      background-color: #effaff; }
   .datepicker--cell-day.-other-month-:empty, .datepicker--cell-year.-other-decade-:empty {
     background: none;
     border: none; }

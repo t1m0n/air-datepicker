@@ -367,15 +367,21 @@ var Datepicker;
                 }
             } else if (this.opts.range) {
                 if (len == 2) {
-                    this.selectedDates = [date]
+                    this.selectedDates = [date];
+                    this.minRange = date;
+                    this.maxRange = '';
                 } else if (len == 1) {
-                    if (Datepicker.less(this.selectedDates[0], date, this.cellType)) {
-                        this.selectedDates = [date]
+                    this.selectedDates.push(date);
+                    if (!this.maxRange){
+                        this.maxRange = date;
                     } else {
-                        this.selectedDates.push(date);
+                        this.minRange = date;
                     }
+                    this.selectedDates = [this.minRange, this.maxRange]
+
                 } else {
-                    this.selectedDates = [date]
+                    this.selectedDates = [date];
+                    this.minRange = date;
                 }
             } else {
                this.selectedDates = [date];
@@ -422,6 +428,8 @@ var Datepicker;
 
         clear: function () {
             this.selectedDates = [];
+            this.minRange = '';
+            this.maxRange = '';
             this.views[this.currentView]._render();
             if (this.opts.onSelect) {
                 this._triggerOnChange()
@@ -952,6 +960,12 @@ var Datepicker;
             this.silent = false;
 
             if (this.opts.range && this.selectedDates.length == 1) {
+                this.minRange = this.selectedDates[0];
+                this.maxRange = '';
+                if (Datepicker.less(this.minRange, this.focused)) {
+                    this.maxRange = this.minRange;
+                    this.minRange = '';
+                }
                 this.views[this.currentView]._update();
             }
         },
@@ -976,6 +990,14 @@ var Datepicker;
                 }
             }
             this._focused = val;
+            if (this.opts.range && this.selectedDates.length == 1) {
+                this.minRange = this.selectedDates[0];
+                this.maxRange = '';
+                if (Datepicker.less(this.minRange, this._focused)) {
+                    this.maxRange = this.minRange;
+                    this.minRange = '';
+                }
+            }
             if (this.silent) return;
             this.date = val;
         },
@@ -1109,10 +1131,12 @@ var Datepicker;
     };
 
     Datepicker.less = function (dateCompareTo, date, type) {
+        if (!dateCompareTo || !date) return false;
         return date.getTime() < dateCompareTo.getTime();
     };
 
     Datepicker.bigger = function (dateCompareTo, date, type) {
+        if (!dateCompareTo || !date) return false;
         return date.getTime() > dateCompareTo.getTime();
     };
 
@@ -1258,19 +1282,31 @@ var Datepicker;
             }
 
             if (this.opts.range) {
-                if (D.isSame(this.d.selectedDates[0], date)) classes += ' -range-from-';
-                if (D.isSame(this.d.selectedDates[1], date)) classes += ' -range-to-';
+                if (D.isSame(this.d.minRange, date, type)) classes += ' -range-from-';
+                if (D.isSame(this.d.maxRange, date, type)) classes += ' -range-to-';
 
                 if (this.d.selectedDates.length == 1 && this.d.focused) {
-                    if (Datepicker.bigger(this.d.selectedDates[0], date) && D.less(this.d.focused, date)) {
+                    if (
+                        (Datepicker.bigger(this.d.minRange, date) && D.less(this.d.focused, date)) ||
+                        (Datepicker.less(this.d.maxRange, date) && D.bigger(this.d.focused, date)))
+                    {
                         classes += ' -in-range-'
                     }
+
+                    if (Datepicker.less(this.d.maxRange, date) && D.isSame(this.d.focused, date)) {
+                        classes += ' -range-from-'
+                    }
+                    if (Datepicker.bigger(this.d.minRange, date) && D.isSame(this.d.focused, date)) {
+                        classes += ' -range-to-'
+                    }
+
                 } else if (this.d.selectedDates.length == 2) {
-                    if (D.bigger(this.d.selectedDates[0], date) && D.less(this.d.selectedDates[1], date)) {
+                    if (D.bigger(this.d.minRange, date) && D.less(this.d.maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }
             }
+
 
             if (D.isSame(currentDate, date, type)) classes += ' -current-';
             if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';

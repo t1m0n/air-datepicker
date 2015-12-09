@@ -39,12 +39,12 @@
   &.-in-range- {
     background: map_get($bg, inRange);
     color: map_get($textColor, common);
-    padding: 2px 0;
+    padding: 0;
     background-clip: content-box;
     border-radius: 0;
 
     &.-focus- {
-      background-color: map_get($bg, inRangeHover);
+      background-color: darken(map_get($bg, inRange), 5);
     }
   }
 
@@ -64,6 +64,19 @@
     }
   }
 
+  &.-range-from- {
+    //background: darken(map_get($bg, hover), 3);
+    border-radius: $datepickerBorderRadius 0 0 $datepickerBorderRadius;
+  }
+  &.-range-to- {
+    //background: darken(map_get($bg, hover), 3);
+    border-radius:  0 $datepickerBorderRadius $datepickerBorderRadius 0;
+  }
+
+  &.-range-from-.-range-to- {
+    border-radius: $datepickerBorderRadius;
+  }
+
   &.-selected- {
     color: #fff;
     background: map_get($bg, selected);
@@ -76,17 +89,6 @@
     &.-focus- {
       background: map_get($bg, selectedHover);
     }
-  }
-
-  &.-range-from- {
-    border-radius: $datepickerBorderRadius 0 0 $datepickerBorderRadius;
-  }
-  &.-range-to- {
-    border-radius:  0 $datepickerBorderRadius $datepickerBorderRadius 0;
-  }
-
-  &.-range-from-.-range-to- {
-    border-radius: $datepickerBorderRadius;
   }
 }
 

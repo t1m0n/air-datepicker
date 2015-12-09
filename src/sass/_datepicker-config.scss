@@ -24,10 +24,7 @@ $textColor: (
 $bg: (
   selected: #5cc4ef,
   selectedHover: darken(#5cc4ef, 5),
-  inRange: #E0F6FF,
-  inRangeHover: darken(#E0F6FF, 5),
-  inRangeOtherMonth: lighten(#E0F6FF, 3),
-  inRangeOtherMonthHover: lighten(#E0F6FF, 1),
+  inRange: #EAF9FF,
   hover: #f0f0f0
 );
 
@@ -57,7 +54,7 @@ $transitionOffset: 8px;
   }
 
   &.-disabled- {
-    &:hover {
+    &.-focus- {
       color: map_get($textColor, otherMonth);
     }
   }
@@ -71,13 +68,14 @@ $transitionOffset: 8px;
   }
   
   &.-in-range- {
-    background-color: map_get($bg, inRangeOtherMonth);
+    background-color: map_get($bg, inRange);
     color: darken(map_get($textColor, otherMonth), 7);
 
     &.-focus- {
-      background-color: map_get($bg, inRangeOtherMonthHover);
+      background-color: lighten(map_get($bg, inRange), 1);
     }
   }
+
 
   &:empty {
     background: none;

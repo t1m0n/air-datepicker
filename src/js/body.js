@@ -103,19 +103,31 @@
             }
 
             if (this.opts.range) {
-                if (D.isSame(this.d.selectedDates[0], date)) classes += ' -range-from-';
-                if (D.isSame(this.d.selectedDates[1], date)) classes += ' -range-to-';
+                if (D.isSame(this.d.minRange, date, type)) classes += ' -range-from-';
+                if (D.isSame(this.d.maxRange, date, type)) classes += ' -range-to-';
 
                 if (this.d.selectedDates.length == 1 && this.d.focused) {
-                    if (Datepicker.bigger(this.d.selectedDates[0], date) && D.less(this.d.focused, date)) {
+                    if (
+                        (Datepicker.bigger(this.d.minRange, date) && D.less(this.d.focused, date)) ||
+                        (Datepicker.less(this.d.maxRange, date) && D.bigger(this.d.focused, date)))
+                    {
                         classes += ' -in-range-'
                     }
+
+                    if (Datepicker.less(this.d.maxRange, date) && D.isSame(this.d.focused, date)) {
+                        classes += ' -range-from-'
+                    }
+                    if (Datepicker.bigger(this.d.minRange, date) && D.isSame(this.d.focused, date)) {
+                        classes += ' -range-to-'
+                    }
+
                 } else if (this.d.selectedDates.length == 2) {
-                    if (D.bigger(this.d.selectedDates[0], date) && D.less(this.d.selectedDates[1], date)) {
+                    if (D.bigger(this.d.minRange, date) && D.less(this.d.maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }
             }
+
 
             if (D.isSame(currentDate, date, type)) classes += ' -current-';
             if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';
