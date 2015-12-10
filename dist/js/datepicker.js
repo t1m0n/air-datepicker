@@ -420,11 +420,19 @@ var Datepicker;
             return selected.some(function (curDate, i) {
                 if (datepicker.isSame(curDate, date)) {
                     selected.splice(i, 1);
+
+                    if (!_this.selectedDates.length) {
+                        _this.minRange = '';
+                        _this.maxRange = '';
+                    }
+
                     _this.views[_this.currentView]._render();
                     _this._setInputValue();
+
                     if (_this.opts.onSelect) {
                         _this._triggerOnChange();
                     }
+
                     return true
                 }
             })
