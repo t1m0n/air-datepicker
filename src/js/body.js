@@ -33,7 +33,7 @@
         },
 
         _bindEvents: function () {
-            this.$el.on('mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
@@ -58,71 +58,72 @@
         _getCellContents: function (date, type) {
             var classes = "datepicker--cell datepicker--cell-" + type,
                 currentDate = new Date(),
-                datepicker = this.d,
+                parent = this.d,
+                opts = parent.opts,
                 d = D.getParsedDate(date),
                 render = {},
                 html = d.date;
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, type) || {};
+            if (opts.onRenderCell) {
+                render = opts.onRenderCell(date, type) || {};
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
 
             switch (type) {
                 case 'day':
-                    if (this.d.isWeekend(d.day)) classes += " -weekend-";
+                    if (parent.isWeekend(d.day)) classes += " -weekend-";
                     if (d.month != this.d.parsedDate.month) {
                         classes += " -other-month-";
-                        if (!this.opts.selectOtherMonths) {
+                        if (!opts.selectOtherMonths) {
                             classes += " -disabled-";
                         }
-                        if (!this.opts.showOtherMonths) html = '';
+                        if (!opts.showOtherMonths) html = '';
                     }
                     break;
                 case 'month':
-                    html = datepicker.loc[datepicker.opts.monthsFiled][d.month];
+                    html = parent.loc[parent.opts.monthsFiled][d.month];
                     break;
                 case 'year':
-                    var decade = datepicker.curDecade;
+                    var decade = parent.curDecade;
                     if (d.year < decade[0] || d.year > decade[1]) {
                         classes += ' -other-decade-';
-                        if (!this.opts.selectOtherYears) {
+                        if (!opts.selectOtherYears) {
                             classes += " -disabled-";
                         }
-                        if (!this.opts.showOtherYears) html = '';
+                        if (!opts.showOtherYears) html = '';
                     }
                     html = d.year;
                     break;
             }
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, type) || {};
+            if (opts.onRenderCell) {
+                render = opts.onRenderCell(date, type) || {};
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
 
-            if (this.opts.range) {
-                if (D.isSame(this.d.minRange, date, type)) classes += ' -range-from-';
-                if (D.isSame(this.d.maxRange, date, type)) classes += ' -range-to-';
+            if (opts.range) {
+                if (D.isSame(parent.minRange, date, type)) classes += ' -range-from-';
+                if (D.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
 
-                if (this.d.selectedDates.length == 1 && this.d.focused) {
+                if (parent.selectedDates.length == 1 && parent.focused) {
                     if (
-                        (Datepicker.bigger(this.d.minRange, date) && D.less(this.d.focused, date)) ||
-                        (Datepicker.less(this.d.maxRange, date) && D.bigger(this.d.focused, date)))
+                        (D.bigger(parent.minRange, date) && D.less(parent.focused, date)) ||
+                        (D.less(parent.maxRange, date) && D.bigger(parent.focused, date)))
                     {
                         classes += ' -in-range-'
                     }
 
-                    if (Datepicker.less(this.d.maxRange, date) && D.isSame(this.d.focused, date)) {
+                    if (D.less(parent.maxRange, date) && D.isSame(parent.focused, date)) {
                         classes += ' -range-from-'
                     }
-                    if (Datepicker.bigger(this.d.minRange, date) && D.isSame(this.d.focused, date)) {
+                    if (D.bigger(parent.minRange, date) && D.isSame(parent.focused, date)) {
                         classes += ' -range-to-'
                     }
 
-                } else if (this.d.selectedDates.length == 2) {
-                    if (D.bigger(this.d.minRange, date) && D.less(this.d.maxRange, date)) {
+                } else if (parent.selectedDates.length == 2) {
+                    if (D.bigger(parent.minRange, date) && D.less(parent.maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }
@@ -130,9 +131,9 @@
 
 
             if (D.isSame(currentDate, date, type)) classes += ' -current-';
-            if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';
-            if (this.d._isSelected(date, type)) classes += ' -selected-';
-            if (!this.d._isInRange(date, type) || render.disabled) classes += ' -disabled-';
+            if (parent.focused && D.isSame(date, parent.focused, type)) classes += ' -focus-';
+            if (parent._isSelected(date, type)) classes += ' -selected-';
+            if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
             return {
                 html: html,
@@ -279,7 +280,6 @@
             var date = el.data('date') || 1,
                 month = el.data('month') || 0,
                 year = el.data('year') || this.d.parsedDate.year;
-
             // Change view if min view does not reach yet
             if (this.d.view != this.opts.minView) {
                 this.d.down(new Date(year, month, date));

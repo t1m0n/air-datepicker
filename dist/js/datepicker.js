@@ -144,6 +144,11 @@ var Datepicker;
                     this._setPositionClasses(this.opts.position);
                     this._bindEvents()
                 }
+                if (this.opts.keyboardNav) {
+                    this._bindKeyboardEvents();
+                }
+                this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
+                this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
             }
 
             if (this.opts.classes) {
@@ -170,15 +175,13 @@ var Datepicker;
             this.$el.on(this.opts.showEvent, this._onShowEvent.bind(this));
             this.$el.on('blur', this._onBlur.bind(this));
             this.$el.on('input', this._onInput.bind(this));
-            this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
-            this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
             $(window).on('resize', this._onResize.bind(this));
+        },
 
-            if (this.opts.keyboardNav) {
-                this.$el.on('keydown', this._onKeyDown.bind(this));
-                this.$el.on('keyup', this._onKeyUp.bind(this));
-                this.$el.on('hotKey', this._onHotKey.bind(this));
-            }
+        _bindKeyboardEvents: function () {
+            this.$el.on('keydown', this._onKeyDown.bind(this));
+            this.$el.on('keyup', this._onKeyUp.bind(this));
+            this.$el.on('hotKey', this._onHotKey.bind(this));
         },
 
         isWeekend: function (day) {
@@ -336,70 +339,76 @@ var Datepicker;
         },
 
         selectDate: function (date) {
-            var d = this.parsedDate,
-                selectedDates = this.selectedDates,
+            var _this = this,
+                opts = _this.opts,
+                d = _this.parsedDate,
+                selectedDates = _this.selectedDates,
                 len = selectedDates.length,
                 newDate = '';
 
             if (!(date instanceof Date)) return;
 
-            if (this.view == 'days') {
-                if (date.getMonth() != d.month && this.opts.moveToOtherMonthsOnSelect) {
+            if (_this.view == 'days') {
+                if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
                     newDate = new Date(date.getFullYear(), date.getMonth(), 1);
                 }
             }
 
-            if (this.view == 'years') {
-                if (date.getFullYear() != d.year && this.opts.moveToOtherYearsOnSelect) {
+            if (_this.view == 'years') {
+                if (date.getFullYear() != d.year && opts.moveToOtherYearsOnSelect) {
                     newDate = new Date(date.getFullYear(), 0, 1);
                 }
             }
 
             if (newDate) {
-                this.silent = true;
-                this.date = newDate;
-                this.silent = false;
-                this.nav._render()
+                _this.silent = true;
+                _this.date = newDate;
+                _this.silent = false;
+                _this.nav._render()
             }
 
-            if (this.opts.multipleDates) {
-                if (len === this.opts.multipleDates) return;
-                if (!this._isSelected(date)) {
-                    this.selectedDates.push(date);
+            if (opts.multipleDates) {
+                if (len === opts.multipleDates) return;
+                if (!_this._isSelected(date)) {
+                    _this.selectedDates.push(date);
                 }
-            } else if (this.opts.range) {
+            } else if (opts.range) {
                 if (len == 2) {
-                    this.selectedDates = [date];
-                    this.minRange = date;
-                    this.maxRange = '';
+                    _this.selectedDates = [date];
+                    _this.minRange = date;
+                    _this.maxRange = '';
                 } else if (len == 1) {
-                    this.selectedDates.push(date);
-                    if (!this.maxRange){
-                        this.maxRange = date;
+                    _this.selectedDates.push(date);
+                    if (!_this.maxRange){
+                        _this.maxRange = date;
                     } else {
-                        this.minRange = date;
+                        _this.minRange = date;
                     }
-                    this.selectedDates = [this.minRange, this.maxRange]
+                    _this.selectedDates = [_this.minRange, _this.maxRange]
 
                 } else {
-                    this.selectedDates = [date];
-                    this.minRange = date;
+                    _this.selectedDates = [date];
+                    _this.minRange = date;
                 }
             } else {
-               this.selectedDates = [date];
+                _this.selectedDates = [date];
             }
 
-            this._setInputValue();
+            _this._setInputValue();
 
-            if (this.opts.onSelect) {
-                this._triggerOnChange();
+            if (opts.onSelect) {
+                _this._triggerOnChange();
             }
 
-            if (this.opts.autoClose) {
-                this.hide();
+            if (opts.autoClose) {
+                if (!opts.multipleDates && !opts.range) {
+                    _this.hide();
+                } else if (opts.range && _this.selectedDates.length == 2) {
+                    _this.hide();
+                }
             }
 
-            this.views[this.currentView]._render()
+            _this.views[this.currentView]._render()
         },
 
         removeDate: function (date) {
@@ -875,9 +884,9 @@ var Datepicker;
         },
 
         _onBlur: function () {
-            //if (!this.inFocus && this.visible) {
-            //    this.hide();
-            //}
+            if (!this.inFocus && this.visible) {
+                this.hide();
+            }
         },
 
         _onMouseDownDatepicker: function (e) {
@@ -975,8 +984,7 @@ var Datepicker;
         },
 
         _onMouseLeaveCell: function (e) {
-            var $cell = $(e.target).closest('.datepicker--cell'),
-                date = this._getDateFromCell($cell);
+            var $cell = $(e.target).closest('.datepicker--cell');
 
             $cell.removeClass('-focus-');
 
@@ -1017,7 +1025,6 @@ var Datepicker;
         set date (val) {
             if (!(val instanceof Date)) return;
 
-            this.prevDate = this.currentDate;
             this.currentDate = val;
 
             if (this.inited && !this.silent) {
@@ -1159,21 +1166,17 @@ var Datepicker;
     };
 
     $.fn[pluginName] = function ( options ) {
-        if (datepicker.prototype[options]) {
-            datepicker.prototype[options].apply(this.data(pluginName), Array.prototype.slice.call(arguments, 1));
-        } else {
-            return this.each(function () {
-                if (!$.data(this, pluginName)) {
-                    $.data(this,  pluginName,
-                        new Datepicker( this, options ));
-                } else {
-                    var _this = $.data(this, pluginName);
+        return this.each(function () {
+            if (!$.data(this, pluginName)) {
+                $.data(this,  pluginName,
+                    new Datepicker( this, options ));
+            } else {
+                var _this = $.data(this, pluginName);
 
-                    _this.opts = $.extend(true, _this.opts, options);
-                    _this.update();
-                }
-            });
-        }
+                _this.opts = $.extend(true, _this.opts, options);
+                _this.update();
+            }
+        });
     };
 
     $(function () {
@@ -1216,7 +1219,7 @@ var Datepicker;
         },
 
         _bindEvents: function () {
-            this.$el.on('mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
@@ -1241,71 +1244,72 @@ var Datepicker;
         _getCellContents: function (date, type) {
             var classes = "datepicker--cell datepicker--cell-" + type,
                 currentDate = new Date(),
-                datepicker = this.d,
+                parent = this.d,
+                opts = parent.opts,
                 d = D.getParsedDate(date),
                 render = {},
                 html = d.date;
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, type) || {};
+            if (opts.onRenderCell) {
+                render = opts.onRenderCell(date, type) || {};
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
 
             switch (type) {
                 case 'day':
-                    if (this.d.isWeekend(d.day)) classes += " -weekend-";
+                    if (parent.isWeekend(d.day)) classes += " -weekend-";
                     if (d.month != this.d.parsedDate.month) {
                         classes += " -other-month-";
-                        if (!this.opts.selectOtherMonths) {
+                        if (!opts.selectOtherMonths) {
                             classes += " -disabled-";
                         }
-                        if (!this.opts.showOtherMonths) html = '';
+                        if (!opts.showOtherMonths) html = '';
                     }
                     break;
                 case 'month':
-                    html = datepicker.loc[datepicker.opts.monthsFiled][d.month];
+                    html = parent.loc[parent.opts.monthsFiled][d.month];
                     break;
                 case 'year':
-                    var decade = datepicker.curDecade;
+                    var decade = parent.curDecade;
                     if (d.year < decade[0] || d.year > decade[1]) {
                         classes += ' -other-decade-';
-                        if (!this.opts.selectOtherYears) {
+                        if (!opts.selectOtherYears) {
                             classes += " -disabled-";
                         }
-                        if (!this.opts.showOtherYears) html = '';
+                        if (!opts.showOtherYears) html = '';
                     }
                     html = d.year;
                     break;
             }
 
-            if (this.opts.onRenderCell) {
-                render = this.opts.onRenderCell(date, type) || {};
+            if (opts.onRenderCell) {
+                render = opts.onRenderCell(date, type) || {};
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
 
-            if (this.opts.range) {
-                if (D.isSame(this.d.minRange, date, type)) classes += ' -range-from-';
-                if (D.isSame(this.d.maxRange, date, type)) classes += ' -range-to-';
+            if (opts.range) {
+                if (D.isSame(parent.minRange, date, type)) classes += ' -range-from-';
+                if (D.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
 
-                if (this.d.selectedDates.length == 1 && this.d.focused) {
+                if (parent.selectedDates.length == 1 && parent.focused) {
                     if (
-                        (Datepicker.bigger(this.d.minRange, date) && D.less(this.d.focused, date)) ||
-                        (Datepicker.less(this.d.maxRange, date) && D.bigger(this.d.focused, date)))
+                        (D.bigger(parent.minRange, date) && D.less(parent.focused, date)) ||
+                        (D.less(parent.maxRange, date) && D.bigger(parent.focused, date)))
                     {
                         classes += ' -in-range-'
                     }
 
-                    if (Datepicker.less(this.d.maxRange, date) && D.isSame(this.d.focused, date)) {
+                    if (D.less(parent.maxRange, date) && D.isSame(parent.focused, date)) {
                         classes += ' -range-from-'
                     }
-                    if (Datepicker.bigger(this.d.minRange, date) && D.isSame(this.d.focused, date)) {
+                    if (D.bigger(parent.minRange, date) && D.isSame(parent.focused, date)) {
                         classes += ' -range-to-'
                     }
 
-                } else if (this.d.selectedDates.length == 2) {
-                    if (D.bigger(this.d.minRange, date) && D.less(this.d.maxRange, date)) {
+                } else if (parent.selectedDates.length == 2) {
+                    if (D.bigger(parent.minRange, date) && D.less(parent.maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }
@@ -1313,9 +1317,9 @@ var Datepicker;
 
 
             if (D.isSame(currentDate, date, type)) classes += ' -current-';
-            if (this.d.focused && D.isSame(date, this.d.focused, type)) classes += ' -focus-';
-            if (this.d._isSelected(date, type)) classes += ' -selected-';
-            if (!this.d._isInRange(date, type) || render.disabled) classes += ' -disabled-';
+            if (parent.focused && D.isSame(date, parent.focused, type)) classes += ' -focus-';
+            if (parent._isSelected(date, type)) classes += ' -selected-';
+            if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
             return {
                 html: html,
@@ -1462,7 +1466,6 @@ var Datepicker;
             var date = el.data('date') || 1,
                 month = el.data('month') || 0,
                 year = el.data('year') || this.d.parsedDate.year;
-
             // Change view if min view does not reach yet
             if (this.d.view != this.opts.minView) {
                 this.d.down(new Date(year, month, date));
