@@ -136,52 +136,147 @@ block content
 					minDate: new Date()
 				})
 
-		h3 Диапозон дат
-		p.
-			По умолчанию в плагине нет встроенного механизма выбора диапозона дат.
-			Тем не менее это можно с легкостью сделать вручную.
+		h3#example-range Диапозон дат
+		p Используйте парамтер
+			+example-inline('{range: true}')
+			| для выбора диапазона. В качестве разделителя дат будет использован
+			+example-inline('multipleDatesSeparator')
+
+
 		+example
 			+example-content
-				div.range-example
-					input(type='text' placeholder='Начало')#start
-					span &ndash;
-					input(type='text' placeholder='Конец')#end
+				input(type='text' data-range='true' data-multiple-dates-separator=' - ').datepicker-here
+
+			+example-code('html')
+				:code
+					<input type="text" data-range="true" data-multiple-dates-separator=" - " class="datepicker-here"/>
+
+		h3#example-disabled-days Неактивные дни недели
+		p Для того, чтобы сделать невозмножным выбрать конкретные дни недели, можно воспользоваться методом
+			+example-inline('onRenderCell')
+			| .
+		+example
+			+example-content
+				input(type='text' id='disabled-days')
 
 				script.
-					var $start = $('#start'),
-							$end = $('#end');
+					var disabledDays = [0, 6]; // Сделаем неактивными субботу и воскресенье
 
-					$start.datepicker({
-						onSelect: function (fd, date) {
-							$end.data('datepicker')
-									.update('minDate', date)
+					$('#disabled-days').datepicker({
+						onRenderCell: function (date, cellType) {
+							if (cellType == 'day') {
+								var day = date.getDay(),
+									isDisabled = disabledDays.indexOf(day) != -1;
+
+								return {
+									disabled: isDisabled
+								}
+							}
 						}
 					})
-
-					$end.datepicker({
-						onSelect: function (fd, date) {
-							$start.data('datepicker')
-									.update('maxDate', date)
-						}
-					})
-
 			+example-code('js').
-				var $start = $('#start'),
-					$end = $('#end');
+				// Сделаем неактивными воскресенье и субботу
+				var disabledDays = [0, 6];
 
-					$start.datepicker({
-						onSelect: function (fd, date) {
-							$end.data('datepicker')
-								.update('minDate', date)
+				$('#disabled-days').datepicker({
+					onRenderCell: function (date, cellType) {
+						if (cellType == 'day') {
+							var day = date.getDay(),
+								isDisabled = disabledDays.indexOf(day) != -1;
+
+							return {
+								disabled: isDisabled
+							}
+						}
+					}
+				})
+
+		h3 Кастомное содержимое ячеек
+		p Air Datepicker позволяет менять содержимое ячеек как угодно. Для этого можно также воспользоваться методом
+			+example-inline('onRenderCell')
+			| .
+			| Давайте добавим вспомогательные элементы к нескольким датам и покажем случайный текст при выборе этих дат:
+
+		+example
+			+example-content
+				.list-inline
+					div
+						div#custom-cells
+					div#custom-cells-events
+						strong
+						p
+
+				script.
+					var eventDates = [1, 10, 12, 22],
+						$picker = $('#custom-cells'),
+						$content = $('#custom-cells-events'),
+						sentences = [
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita prorsus, inquam; Si enim ad populum me vocas, eum. Ita prorsus, inquam; Nonne igitur tibi videntur, inquit, mala? Hunc vos beatum; Idemne, quod iucunde? ',
+								'Ratio quidem vestra sic cogit. Illi enim inter se dissentiunt. Tu vero, inquam, ducas licet, si sequetur; Non semper, inquam; ',
+								'Duo Reges: constructio interrete. A mene tu? Ea possunt paria non esse. Est, ut dicis, inquam. Scaevolam M. Quid iudicant sensus? ',
+								'Poterat autem inpune; Qui est in parvis malis. Prave, nequiter, turpiter cenabat; Ita credo. '
+							]
+
+					$picker.datepicker({
+						onRenderCell: function (date, cellType) {
+							var currentDate = date.getDate();
+
+							if (cellType == 'day' && eventDates.indexOf(currentDate) != -1) {
+								return {
+									html: currentDate + '<span class="dp-note"></span>'
+								}
+							}
+						},
+						onSelect: function onSelect(fd, date) {
+							var title = '', content = ''
+							if (date && eventDates.indexOf(date.getDate()) != -1) {
+								title = fd;
+								content = sentences[Math.floor(Math.random() * eventDates.length)];
+							}
+							$('strong', $content).html(title)
+							$('p', $content).html(content)
 						}
 					})
 
-					$end.datepicker({
-						onSelect: function (fd, date) {
-							$start.data('datepicker')
-								.update('maxDate', date)
+					var currentDate = new Date();
+					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
+
+			+example-code('js')
+				:code
+					var eventDates = [1, 10, 12, 22],
+						$picker = $('#custom-cells'),
+						$content = $('#custom-cells-events'),
+						sentences = [ &hellip; ];
+
+					$picker.datepicker({
+						onRenderCell: function (date, cellType) {
+							var currentDate = date.getDate();
+
+							// Добавляем вспомогательный элемент, если число содержится в `eventDates`
+							if (cellType == 'day' && eventDates.indexOf(currentDate) != -1) {
+								return {
+									html: currentDate + '<span class="dp-note"></span>'
+								}
+							}
+						},
+						onSelect: function onSelect(fd, date) {
+							var title = '', content = ''
+
+							// Если выбрана дата с событием, то отображаем его
+							if (date && eventDates.indexOf(date.getDate()) != -1) {
+								title = fd;
+								content = sentences[Math.floor(Math.random() * eventDates.length)];
+							}
+
+							$('strong', $content).html(title)
+							$('p', $content).html(content)
 						}
 					})
+
+					// Сразу выберем какую-ниудь дату из `eventDates`
+					var currentDate = currentDate = new Date();
+					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
+
 
 	article
 		h2#localization Локализация
@@ -310,7 +405,7 @@ block content
 			+param-header('altField', 'string|jQuery', '""')
 			p Альтернативное поле воода в значение которого будут попадать выбранные даты с форматом
 				+example-inline('altFieldDateFormat')
-				|.
+				| .
 
 		.param
 			+param-header('altFieldDateFormat', 'string', '"@"')
@@ -427,7 +522,10 @@ block content
 		.param
 			+param-header('multipleDatesSeparator', 'string', '","')
 			p Разделитель дат, который будет использован при объеденения нескольких дат в одну строку.
-
+		.param
+			+param-header('range', 'boolean', 'false')
+			p Если true, то будет включен режим выбора диапазона дат. В качестве разделителя будет использован
+				+example-inline('multipleDatesSeparator')
 		.param
 			+param-header('todayButton', 'boolean', 'false')
 			p Если true, то будет отображена кнопка "Сегодня".

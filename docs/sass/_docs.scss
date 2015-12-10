@@ -95,6 +95,14 @@ article {
   }
 }
 
+.list-inline {
+  display: flex;
+  margin: -8px -8px 0;
+  > * {
+    margin: 8px 8px 0;
+  }
+}
+
 .buttons {
   position: absolute;
   top: 19px;
@@ -408,5 +416,26 @@ a {
     &:hover {
       color: #ff767e;
     }
+  }
+}
+
+
+//  Cell note
+// -------------------------
+
+.dp-note {
+  position: absolute;
+  background: #cccccc;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  left: 50%;
+  bottom: 1px;
+  transform: translateX(-50%);
+
+  .-selected- & {
+    bottom: 2px;
+    background: #fff;
+    opacity: .5;
   }
 }

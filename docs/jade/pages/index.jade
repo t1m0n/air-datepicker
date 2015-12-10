@@ -39,6 +39,9 @@ block content
 					<head>
 						<link href="dist/css/datepicker.min.css" rel="stylesheet" type="text/css">
 						<script src="dist/js/datepicker.min.js"></script>
+
+						<!-- Include English language -->
+						<script src="dist/js/i18n/datepicker.en.js"></script>
 					</head>
 				</html>
 		p
@@ -64,7 +67,7 @@ block content
 				input(type='text', data-language='en').datepicker-here
 			+example-code('html')
 				:code
-					<input type='text' class='datepicker-here', data-language='en' />
+					<input type='text' class='datepicker-here' data-language='en' />
 		h3 Selecting multiple dates
 		p
 			| Pass parameter
@@ -128,49 +131,145 @@ block content
 					language: 'en',
 					minDate: new Date() // Now can select only dates, which goes after today
 				})
-		h3 Range
-		p.
-			By default there is no functionality to select dates range, but it can be easily achieved manually.
+
+		h3#example-range Range of dates
+		p Use
+			+example-inline('{range: true}')
+			| for choosing range of dates. As dates separator
+			+example-inline('multipleDatesSeparator')
+			| will be used.
 		+example
 			+example-content
-				div.range-example
-					input(type='text' placeholder='Start')#start
-					span &ndash;
-					input(type='text' placeholder='End')#end
+				input(type='text' data-range='true' data-multiple-dates-separator=' - ' data-language='en').datepicker-here
+			+example-code('html')
+				:code
+					<input type="text"
+						data-range="true"
+						data-multiple-dates-separator=" - "
+						data-language="en"
+						class="datepicker-here"/>
+
+
+		h3#example-disabled-days Disable days of week
+		p For disabling days, use
+			+example-inline('onRenderCell')
+			| .
+		+example
+			+example-content
+				input(type='text' id='disabled-days')
 				script.
-					var $start = $('#start'),
-							$end = $('#end');
-					$start.datepicker({
+					// Make Sunday and Saturday disabled
+					var disabledDays = [0, 6];
+
+					$('#disabled-days').datepicker({
 						language: 'en',
-						onSelect: function (fd, date) {
-							$end.data('datepicker')
-									.update('minDate', date)
-						}
-					})
-					$end.datepicker({
-						language: 'en',
-						onSelect: function (fd, date) {
-							$start.data('datepicker')
-									.update('maxDate', date)
+						onRenderCell: function (date, cellType) {
+							if (cellType == 'day') {
+								var day = date.getDay(),
+									isDisabled = disabledDays.indexOf(day) != -1;
+								return {
+									disabled: isDisabled
+								}
+							}
 						}
 					})
 			+example-code('js').
-				var $start = $('#start'),
-					$end = $('#end');
-					$start.datepicker({
+				// Make Sunday and Saturday disabled
+				var disabledDays = [0, 6];
+
+				$('#disabled-days').datepicker({
+					language: 'en',
+					onRenderCell: function (date, cellType) {
+						if (cellType == 'day') {
+							var day = date.getDay(),
+								isDisabled = disabledDays.indexOf(day) != -1;
+
+							return {
+								disabled: isDisabled
+							}
+						}
+					}
+				})
+
+		h3 Custom cells content
+		p Air Datepicker allows you to change contents of cells like you want. You could use
+			+example-inline('onRenderCell')
+			| for this purpose.
+			| Lets add extra elements to several dates, and show `lorem` text when selecting them.
+		+example
+			+example-content
+				.list-inline
+					div
+						div#custom-cells
+					div#custom-cells-events
+						strong
+						p
+				script.
+					var eventDates = [1, 10, 12, 22],
+							$picker = $('#custom-cells'),
+							$content = $('#custom-cells-events'),
+							sentences = [
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita prorsus, inquam; Si enim ad populum me vocas, eum. Ita prorsus, inquam; Nonne igitur tibi videntur, inquit, mala? Hunc vos beatum; Idemne, quod iucunde? ',
+								'Ratio quidem vestra sic cogit. Illi enim inter se dissentiunt. Tu vero, inquam, ducas licet, si sequetur; Non semper, inquam; ',
+								'Duo Reges: constructio interrete. A mene tu? Ea possunt paria non esse. Est, ut dicis, inquam. Scaevolam M. Quid iudicant sensus? ',
+								'Poterat autem inpune; Qui est in parvis malis. Prave, nequiter, turpiter cenabat; Ita credo. '
+							]
+					$picker.datepicker({
 						language: 'en',
-						onSelect: function (fd, date) {
-							$end.data('datepicker')
-								.update('minDate', date)
+						onRenderCell: function (date, cellType) {
+							var currentDate = date.getDate();
+							if (cellType == 'day' && eventDates.indexOf(currentDate) != -1) {
+								return {
+									html: currentDate + '<span class="dp-note"></span>'
+								}
+							}
+						},
+						onSelect: function onSelect(fd, date) {
+							var title = '', content = ''
+							if (date && eventDates.indexOf(date.getDate()) != -1) {
+								title = fd;
+								content = sentences[Math.floor(Math.random() * eventDates.length)];
+							}
+							$('strong', $content).html(title)
+							$('p', $content).html(content)
 						}
 					})
-					$end.datepicker({
+					var currentDate = new Date();
+					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
+			+example-code('js')
+				:code
+					var eventDates = [1, 10, 12, 22],
+						$picker = $('#custom-cells'),
+						$content = $('#custom-cells-events'),
+						sentences = [ &hellip; ];
+
+					$picker.datepicker({
 						language: 'en',
-						onSelect: function (fd, date) {
-							$start.data('datepicker')
-								.update('maxDate', date)
+						onRenderCell: function (date, cellType) {
+							var currentDate = date.getDate();
+							// Add extra element, if `eventDates` contains `currentDate`
+							if (cellType == 'day' && eventDates.indexOf(currentDate) != -1) {
+								return {
+									html: currentDate + '<span class="dp-note"></span>'
+								}
+							}
+						},
+						onSelect: function onSelect(fd, date) {
+							var title = '', content = ''
+							// If date with event is selected, show it
+							if (date && eventDates.indexOf(date.getDate()) != -1) {
+								title = fd;
+								content = sentences[Math.floor(Math.random() * eventDates.length)];
+							}
+							$('strong', $content).html(title)
+							$('p', $content).html(content)
 						}
 					})
+
+					// Select initial date from `eventDates`
+					var currentDate = currentDate = new Date();
+					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
+
 	article
 		h2#localization Localization
 		p
@@ -394,6 +493,11 @@ block content
 		.param
 			+param-header('multipleDatesSeparator', 'string', '","')
 			p Dates separator, which will be used when concatenating dates to string.
+		.param
+			+param-header('range', 'boolean', 'false')
+			p For selecting dates range, turn this option to true.
+				+example-inline('multipleDatesSeparator')
+				| will be used as dates separator.
 		.param
 			+param-header('todayButton', 'boolean', 'false')
 			p If true, then button "Today" will be visible.
