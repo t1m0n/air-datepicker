@@ -1,6 +1,7 @@
 # Air Datepicker
 
-Lightweight cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern browsers.
+Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern browsers.
+![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/develop/docs/img/promo-img.png)
 
 ## Install
 ```
@@ -18,7 +19,11 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
-### v.1.1.0
+### v1.2.0
+* add `range` feature
+* improve keyboard navigation (fixed two focused cells)
+
+### v1.1.0
 * add keyboard navigation
 * add `classes` option to add custom classes
 * add `altField` option
