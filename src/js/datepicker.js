@@ -205,7 +205,7 @@ var Datepicker;
                 this.loc.dateFormat = this.opts.dateFormat
             }
 
-            if (this.opts.firstDay) {
+            if (this.opts.firstDay != undefined) {
                 this.loc.firstDay = this.opts.firstDay
             }
         },
