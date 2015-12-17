@@ -172,16 +172,16 @@ var Datepicker;
         },
 
         _bindEvents : function () {
-            this.$el.on(this.opts.showEvent, this._onShowEvent.bind(this));
-            this.$el.on('blur', this._onBlur.bind(this));
-            this.$el.on('input', this._onInput.bind(this));
-            $(window).on('resize', this._onResize.bind(this));
+            this.$el.on(this.opts.showEvent + '.adp', this._onShowEvent.bind(this));
+            this.$el.on('blur.adp', this._onBlur.bind(this));
+            this.$el.on('input.adp', this._onInput.bind(this));
+            $(window).on('resize.adp', this._onResize.bind(this));
         },
 
         _bindKeyboardEvents: function () {
-            this.$el.on('keydown', this._onKeyDown.bind(this));
-            this.$el.on('keyup', this._onKeyUp.bind(this));
-            this.$el.on('hotKey', this._onHotKey.bind(this));
+            this.$el.on('keydown.adp', this._onKeyDown.bind(this));
+            this.$el.on('keyup.adp', this._onKeyUp.bind(this));
+            this.$el.on('hotKey.adp', this._onHotKey.bind(this));
         },
 
         isWeekend: function (day) {
@@ -205,7 +205,7 @@ var Datepicker;
                 this.loc.dateFormat = this.opts.dateFormat
             }
 
-            if (this.opts.firstDay != undefined) {
+            if (this.opts.firstDay !== '') {
                 this.loc.firstDay = this.opts.firstDay
             }
         },
@@ -511,14 +511,15 @@ var Datepicker;
 
         _setInputValue: function () {
             var _this = this,
-                format = this.loc.dateFormat,
-                altFormat = this.opts.altFieldDateFormat,
-                value = this.selectedDates.map(function (date) {
+                opts = _this.opts,
+                format = _this.loc.dateFormat,
+                altFormat = opts.altFieldDateFormat,
+                value = _this.selectedDates.map(function (date) {
                     return _this.formatDate(format, date)
                 }),
                 altValues;
 
-            if (this.$altField) {
+            if (opts.altField && _this.$altField.length) {
                 altValues = this.selectedDates.map(function (date) {
                     return _this.formatDate(altFormat, date)
                 });
@@ -885,6 +886,26 @@ var Datepicker;
             return $cell.length ? $cell : '';
         },
 
+        destroy: function () {
+            var _this = this;
+            _this.$el
+                .off('.adp')
+                .data('datepicker', '');
+
+            _this.selectedDates = [];
+            _this.focused = '';
+            _this.views = {};
+            _this.keys = [];
+            _this.minRange = '';
+            _this.maxRange = '';
+
+            if (_this.opts.inline || !_this.elIsInput) {
+                _this.$datepicker.closest('.datepicker-inline').remove();
+            } else {
+                _this.$datepicker.remove();
+            }
+        },
+
         _onShowEvent: function () {
             if (!this.visible) {
                 this.show();
@@ -922,7 +943,6 @@ var Datepicker;
 
         _onKeyDown: function (e) {
             var code = e.which;
-
             this._registerKey(code);
 
             // Arrows
