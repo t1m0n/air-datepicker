@@ -97,12 +97,12 @@ describe('Datepicker', function () {
         })
     })
 
-    describe('less(date2, date1)', function () {
+    describe('less(date1, date2)', function () {
         it('should return true if date2 less then date1', function () {
             assert(Datepicker.less(new Date(2015, 11, 14), new Date(2015, 11, 13)))
         })
     })
-    describe('bigger(date2, date1)', function () {
+    describe('bigger(date1, date2)', function () {
         it('should return true if date2 bigger then date1', function () {
             assert(Datepicker.bigger(new Date(2015, 11, 14), new Date(2015, 11, 15)))
         })

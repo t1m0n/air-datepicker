@@ -1,19 +1,22 @@
 var assert = chai.assert,
     expect = chai.expect,
+    destroy = true,
+    $altInput,
     $input, dp;
 
 
 describe('Options', function () {
     before(function () {
         $input = $('<input>').appendTo('#container');
+        $altInput = $('<input class="alt-field">').appendTo('#container');
     });
 
     afterEach(function () {
-        if (dp) {
-            dp.$datepicker.remove();
-            dp = '';
-            $input.data('datepicker', '')
+        if (dp && destroy) {
+            dp.destroy();
         }
+
+        destroy = true;
     });
 
     describe('classes', function () {
@@ -143,6 +146,148 @@ describe('Options', function () {
                 })
             }(format))
         }
+    });
+
+    describe('altField', function () {
+        it('should define `$altField` if selector or jQuery object is passed', function () {
+            dp = $input.datepicker({
+                altField: '.alt-field'
+            }).data('datepicker');
+
+            assert(dp.$altField.length);
+        })
     })
 
+    describe('altFieldFormat', function () {
+        it('should define date format for alternative field', function () {
+            var date = new Date(2015, 11, 17);
+
+            dp = $input.datepicker({
+                altField: '.alt-field',
+                altFieldDateFormat: 'dd-mm-yyyy'
+            }).data('datepicker');
+
+            dp.selectDate(date);
+
+            assert.equal(dp.$altField.val(), '17-12-2015');
+        })
+    });
+
+    describe('toggleSelected', function () {
+        it('when true, click on selected cells should remove selection', function () {
+            var date = new Date(2015, 11, 17);
+
+            dp = $input.datepicker().data('datepicker');
+
+            dp.selectDate(date);
+            dp._getCell(date, 'day').click();
+
+            expect(dp.selectedDates).to.have.length(0)
+        });
+
+        it('when false, click on selected cell must do nothing', function () {
+            var date = new Date(2015, 11, 17);
+
+            dp = $input.datepicker({
+                toggleSelected: false
+            }).data('datepicker');
+
+            dp.selectDate(date);
+            dp._getCell(date, 'day').click();
+
+            expect(dp.selectedDates).to.have.length(1)
+        })
+    })
+
+    describe('keyboardNav', function () {
+        var year = 2015,
+            month = 10,
+            day = 18,
+            date = new Date(year, month, day),
+            cases = [
+                {
+                    it: '→: should focus next cell',
+                    keys: [39],
+                    validDate: new Date(year, month, day + 1)
+                },
+                {
+                    it: '←: should focus previous cell',
+                    keys: [37],
+                    validDate: new Date(year, month, day - 1)
+                },
+                {
+                    it: '↑: should focus +7 day cell',
+                    keys: [40],
+                    validDate: new Date(year, month, day + 7)
+                },
+                {
+                    it: '↓: should focus -7 day cell',
+                    keys: [38],
+                    validDate: new Date(year, month, day - 7)
+                },
+                {
+                    it: 'Ctrl + →: should focus next month',
+                    keys: [17, 39],
+                    validDate: new Date(year, month + 1, day)
+                },
+                {
+                    it: 'Ctrl + ←: should focus previous month',
+                    keys: [17, 37],
+                    validDate: new Date(year, month - 1, day)
+                },
+                {
+                    it: 'Shift + →: should focus next year',
+                    keys: [16, 39],
+                    validDate: new Date(year + 1, month, day)
+                },
+                {
+                    it: 'Shift + ←: should focus previous year',
+                    keys: [16, 37],
+                    validDate: new Date(year - 1, month, day)
+                },
+                {
+                    it: 'Alt + →: should focus on +10 year cell',
+                    keys: [18, 39],
+                    validDate: new Date(year + 10, month, day)
+                },
+                {
+                    it: 'Alt + ←: should focus on -10 year cell',
+                    keys: [18, 37],
+                    validDate: new Date(year - 10, month, day)
+                },
+                {
+                    it: 'Ctrl + Shift + ↑: should change view to months',
+                    keys: [16, 17, 38],
+                    view: 'months'
+                }
+            ];
+
+        cases.forEach(function (currentCase) {
+            var keys = currentCase.keys,
+                valid = currentCase.validDate;
+
+            it(currentCase.it, function () {
+                dp = $input.datepicker().data('datepicker');
+                dp.selectDate(date);
+
+                keys.forEach(function (key) {
+                    $input.trigger($.Event('keydown', {which: key}));
+                });
+
+                var focused = dp.focused;
+
+
+                if (currentCase.validDate) {
+                    assert.equal(valid.getFullYear(), focused.getFullYear());
+                    assert.equal(valid.getMonth(), focused.getMonth());
+                    assert.equal(valid.getDate(), focused.getDate());
+                }
+
+                if (currentCase.view) {
+                    assert.equal(currentCase.view, dp.view)
+                }
+            })
+
+        });
+    })
 });
