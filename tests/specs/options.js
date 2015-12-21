@@ -289,5 +289,62 @@ describe('Options', function () {
             })
 
         });
+    });
+
+    describe('position', function () {
+        var iDims, dpDims,
+            offset;
+
+        function prepare (position) {
+            dp = $input.datepicker({position: position}).data('datepicker');
+            $input.focus();
+
+            iDims = {
+                width: $input.outerWidth(),
+                height: $input.outerHeight(),
+                left: $input.offset().left,
+                top: $input.offset().top
+            };
+
+            dpDims = {
+                width: dp.$datepicker.outerWidth(),
+                height: dp.$datepicker.outerHeight(),
+                left: dp.$datepicker.offset().left,
+                top: dp.$datepicker.offset().top
+            };
+
+            offset = dp.opts.offset;
+        }
+
+        it('should set `bottom left` position', function () {
+            prepare('bottom left');
+
+            assert.equal(iDims.top + iDims.height + offset, dpDims.top);
+            assert.equal(iDims.left, dpDims.left);
+        });
+        it('should set `top right` position', function () {
+            prepare('top right');
+
+            assert.equal(iDims.top, dpDims.top + dpDims.height + offset);
+            assert.equal(iDims.left + iDims.width, dpDims.left + dpDims.width);
+        });
+        it('should set `right bottom` position', function () {
+            prepare('right bottom');
+
+            assert.equal(iDims.left + iDims.width + offset, dpDims.left);
+            assert.equal(iDims.top + iDims.height, dpDims.top + dpDims.height);
+        });
+        it('should set `left center` position', function () {
+            prepare('left center');
+
+            assert.equal(iDims.left - offset, dpDims.left + dpDims.width);
+            assert.equal(iDims.top + iDims.height/2, dpDims.top + dpDims.height/2);
+        });
+        it('should set `bottom center` position', function () {
+            prepare('bottom center');
+
+            assert.equal(iDims.top + iDims.height + offset, dpDims.top);
+            assert.equal(iDims.left + iDims.width/2, dpDims.left + dpDims.width/2);
+        })
     })
 });
