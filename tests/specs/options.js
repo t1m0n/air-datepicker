@@ -346,5 +346,138 @@ describe('Options', function () {
             assert.equal(iDims.top + iDims.height + offset, dpDims.top);
             assert.equal(iDims.left + iDims.width/2, dpDims.left + dpDims.width/2);
         })
+    });
+
+    describe('offset', function () {
+        var iDims, dpDims,
+            offset;
+
+        var i = 0;
+        while(i < 5) {
+            offset = Math.round(Math.random() * 50);
+            
+            (function (offset) {
+                it('should set offset ' + offset + ' from main axis', function () {
+                    dp = $input.datepicker({
+                        offset: offset
+                    }).data('datepicker');
+                    $input.focus();
+
+                    iDims = {
+                        width: $input.outerWidth(),
+                        height: $input.outerHeight(),
+                        left: $input.offset().left,
+                        top: $input.offset().top
+                    };
+
+                    dpDims = {
+                        width: dp.$datepicker.outerWidth(),
+                        height: dp.$datepicker.outerHeight(),
+                        left: dp.$datepicker.offset().left,
+                        top: dp.$datepicker.offset().top
+                    };
+
+                    assert.equal(iDims.top + iDims.height + offset, dpDims.top);
+                });
+            })(offset);
+            
+            i++;
+        }
+    });
+
+    describe('view', function () {
+        it('should set initial datepicker view to `months`', function () {
+            dp = $input.datepicker({view: 'months'}).data('datepicker');
+            assert.equal('months', dp.view)
+        });
+        it('should set initial datepicker view to `years`', function () {
+            dp = $input.datepicker({view: 'years'}).data('datepicker');
+            assert.equal('years', dp.view)
+        })
+    });
+
+    describe('minView', function () {
+        it('should set minimum possible view', function () {
+            dp = $input.datepicker({
+                view: 'months',
+                minView: 'months'
+            }).data('datepicker');
+
+            $('.datepicker--cell-month', dp.$datepicker).eq(0).click();
+            assert.equal('months', dp.view)
+        });
+
+    });
+
+    describe('showOtherMonths', function () {
+        var date = new Date(2015, 11, 22);
+
+        it('if `true` should show days from other months', function () {
+            dp = $input.datepicker().data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day.-other-month-', dp.$datepicker).eq(0);
+
+            assert($cell.text(), 'must have text')
+        });
+
+        it('if `false` should hide days from other months', function () {
+            dp = $input.datepicker({showOtherMonths: false}).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day.-other-month-', dp.$datepicker).eq(0);
+
+            expect($cell.text()).to.be.empty;
+        });
+
+    });
+
+    describe('selectOtherMonths', function () {
+        var date = new Date(2015, 11, 22);
+
+        it('if `true` you can select cells from other months', function () {
+            dp = $input.datepicker().data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day.-other-month-', dp.$datepicker).eq(0);
+            $cell.click();
+            expect(dp.selectedDates).to.have.length(1)
+        });
+
+        it('if `false` you can not select cells from other months ', function () {
+            dp = $input.datepicker({selectOtherMonths: false}).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day.-other-month-', dp.$datepicker).eq(0);
+            $cell.click();
+            expect(dp.selectedDates).to.have.length(0)
+        });
+
+    })
+
+    describe('moveToOtherMonthsOnSelect', function () {
+        var date = new Date(2015, 11, 22);
+
+        it('if `true` datepicker will translate to other month if date from other month is selected', function () {
+            dp = $input.datepicker().data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day.-other-month-', dp.$datepicker).eq(0);
+            $cell.click();
+
+            assert.equal(dp.date.getMonth(), 10)
+
+        });
+
+        it('if `false` datepicker will stay on same month when selecting dates from other month', function () {
+            dp = $input.datepicker({moveToOtherMonthsOnSelect: false}).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day.-other-month-', dp.$datepicker).eq(0);
+            $cell.click();
+
+            assert.equal(dp.date.getMonth(), 11)
+        });
+
     })
 });
