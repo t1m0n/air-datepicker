@@ -88,6 +88,8 @@
       background: #5cc4ef; }
     .datepicker--cell.-selected-.-focus- {
       background: #45bced; }
+  .datepicker--cell:empty {
+    cursor: default; }
 
 .datepicker--days-names {
   display: -webkit-flex;

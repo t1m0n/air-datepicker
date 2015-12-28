@@ -1300,6 +1300,7 @@ var Datepicker;
                     break;
                 case 'year':
                     var decade = parent.curDecade;
+                    html = d.year;
                     if (d.year < decade[0] || d.year > decade[1]) {
                         classes += ' -other-decade-';
                         if (!opts.selectOtherYears) {
@@ -1307,7 +1308,6 @@ var Datepicker;
                         }
                         if (!opts.showOtherYears) html = '';
                     }
-                    html = d.year;
                     break;
             }
 

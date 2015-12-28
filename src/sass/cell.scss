@@ -96,6 +96,10 @@
       background: map_get($bg, selectedHover);
     }
   }
+
+  &:empty {
+    cursor: default;
+  }
 }
 
 //  Day names
