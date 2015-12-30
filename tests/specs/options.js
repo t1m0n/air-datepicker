@@ -453,7 +453,7 @@ describe('Options', function () {
             expect(dp.selectedDates).to.have.length(0)
         });
 
-    })
+    });
 
     describe('moveToOtherMonthsOnSelect', function () {
         var date = new Date(2015, 11, 22);
@@ -479,5 +479,147 @@ describe('Options', function () {
             assert.equal(dp.date.getMonth(), 11)
         });
 
+    });
+
+    describe('showOtherYears', function () {
+        var date = new Date(2015, 11, 22);
+        it('if `true` should show years from other decades', function () {
+            dp = $input.datepicker({
+                view: 'years'
+            }).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-year.-other-decade-', dp.$datepicker).eq(0);
+
+            assert($cell.text(), 'must have text')
+        });
+
+        it('if `false` should hide years from other decades', function () {
+            destroy = false;
+            dp = $input.datepicker({
+                view: 'years',
+                showOtherYears: false
+            }).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-year.-other-decade-', dp.$datepicker).eq(0);
+
+            expect($cell.text()).to.be.empty;
+        });
+
+    });
+
+    describe('selectOtherYears', function () {
+        var date = new Date(2015, 11, 22);
+
+        it('if `true` you can select cells from other decades', function () {
+            dp = $input.datepicker({
+                view: 'years',
+                minView: 'years',
+                selectOtherYears: true
+            }).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-year.-other-decade-', dp.$datepicker).eq(0);
+            $cell.click();
+            expect(dp.selectedDates).to.have.length(1)
+        });
+
+        it('if `false` you can not select cells from other months ', function () {
+            dp = $input.datepicker({
+                view: 'years',
+                minView: 'years',
+                selectOtherYears: false
+            }).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-year.-other-decade-', dp.$datepicker).eq(0);
+            $cell.click();
+            expect(dp.selectedDates).to.have.length(0)
+        });
+
+    });
+
+    describe('moveToOtherYearsOnSelect', function () {
+        var date = new Date(2015, 11, 22);
+
+        it('if `true` datepicker will translate to other decade if date from other decade is selected', function () {
+            dp = $input.datepicker({
+                view: 'years',
+                minView: 'years',
+                moveToOtherYearsOnSelect: true
+            }).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-year.-other-decade-', dp.$datepicker).eq(0);
+            $cell.click();
+
+            assert.equal(dp.date.getFullYear(), 2009)
+
+        });
+
+        it('if `false` datepicker will stay on same decade when selecting dates from other decade', function () {
+            dp = $input.datepicker({
+                view: 'years',
+                minView: 'years',
+                moveToOtherYearsOnSelect: false
+            }).data('datepicker');
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-year.-other-decade-', dp.$datepicker).eq(0);
+            $cell.click();
+
+            assert.equal(dp.date.getFullYear(), 2015)
+        });
+    });
+
+    describe('minDate', function () {
+        it('should set minimum possible date to choose', function () {
+            var date = new Date(2015, 11, 30);
+
+            dp = $input.datepicker({
+                minDate: date
+            }).data('datepicker');
+
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day[data-year="2015"][data-month="11"][data-date="30"]', dp.$datepicker);
+
+            expect($cell.prev().attr('class')).to.have.string('-disabled-')
+        })
+    });
+
+    describe('maxDate', function () {
+        it('should set maximum possible date to choose', function () {
+            var date = new Date(2015, 11, 30);
+
+            dp = $input.datepicker({
+                maxDate: date
+            }).data('datepicker');
+
+            dp.date = date;
+
+            var $cell = $('.datepicker--cell-day[data-year="2015"][data-month="11"][data-date="30"]', dp.$datepicker);
+
+            expect($cell.next().attr('class')).to.have.string('-disabled-')
+        })
+    });
+
+    describe('disableNavWhenOutOfRange', function () {
+        it('if `true` then navigation buttons will be disabled if there is no more possible dates to select to in next or prev month', function () {
+            var date = new Date(2015, 11, 30);
+
+            destroy = false;
+            dp = $input.datepicker({
+                minDate: date,
+                inline: true
+            }).data('datepicker');
+
+            dp.date = date;
+
+            var $prev = $('.datepicker--nav-action[data-action="prev"]', dp.$datepicker);
+
+            expect($prev.attr('class')).to.have.string('-disabled-')
+        })
     })
 });
