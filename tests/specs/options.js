@@ -609,7 +609,6 @@ describe('Options', function () {
         it('if `true` then navigation buttons will be disabled if there is no more possible dates to select to in next or prev month', function () {
             var date = new Date(2015, 11, 30);
 
-            destroy = false;
             dp = $input.datepicker({
                 minDate: date,
                 inline: true
@@ -620,6 +619,34 @@ describe('Options', function () {
             var $prev = $('.datepicker--nav-action[data-action="prev"]', dp.$datepicker);
 
             expect($prev.attr('class')).to.have.string('-disabled-')
+        })
+    });
+
+    describe('multipleDates', function () {
+        it('if `true` then one can select multiple dates', function () {
+            dp = $input.datepicker({
+                multipleDates: true
+            }).data('datepicker');
+
+            dp.selectDate(new Date(2016, 0, 7));
+            dp.selectDate(new Date(2016, 0, 8));
+            dp.selectDate(new Date(2016, 0, 9));
+
+            expect(dp.selectedDates).to.have.length(3)
+        });
+
+        it('if `number` should limit length of selected dates by its value', function () {
+            dp = $input.datepicker({
+                multipleDates: 3
+            }).data('datepicker');
+
+            dp.selectDate(new Date(2016, 0, 7));
+            dp.selectDate(new Date(2016, 0, 8));
+            dp.selectDate(new Date(2016, 0, 9));
+            dp.selectDate(new Date(2016, 0, 10));
+            dp.selectDate(new Date(2016, 0, 11));
+
+            expect(dp.selectedDates).to.have.length(3)
         })
     })
 });

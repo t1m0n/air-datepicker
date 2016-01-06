@@ -34,7 +34,7 @@ describe('Datepicker', function () {
         });
         describe('.fullMonth', function () {
             it('`fullMonth` must be equal to current month + 1 with leading zero', function () {
-                assert.equal(currentDate.getMonth() < 10 ? '0' + (currentDate.getMonth()) + 1 : currentDate.getMonth() + 1 , date.fullMonth);
+                assert.equal(currentDate.getMonth() < 10 ? '0' + (currentDate.getMonth() + 1) : currentDate.getMonth() + 1 , date.fullMonth);
             })
         });
         describe('.date', function () {
