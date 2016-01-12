@@ -648,5 +648,126 @@ describe('Options', function () {
 
             expect(dp.selectedDates).to.have.length(3)
         })
-    })
+    });
+
+    describe('multipleDatesSeparator', function () {
+        it('defines multiple dates separator sign', function () {
+            dp = $input.datepicker({
+                multipleDates: true,
+                multipleDatesSeparator: ' separator '
+            }).data('datepicker');
+
+            dp.selectDate(new Date(2016, 0, 12));
+            dp.selectDate(new Date(2016, 0, 13))
+
+            expect($input.val()).to.have.string(' separator ')
+        })
+    });
+
+    describe('todayButton', function () {
+        it('should add "today" button if true', function () {
+
+            dp = $input.datepicker({
+                todayButton: true
+            }).data('datepicker');
+
+            var $button = $('.datepicker--button', dp.$datepicker);
+
+            expect($button.length).to.be.equal(1);
+            expect($button.data('action')).to.be.equal('today');
+
+        })
+    });
+
+    describe('clearButton', function () {
+        it('should add "clear" button if true', function () {
+
+            dp = $input.datepicker({
+                clearButton: true
+            }).data('datepicker');
+
+            var $button = $('.datepicker--button', dp.$datepicker);
+
+            expect($button.length).to.be.equal(1);
+            expect($button.data('action')).to.be.equal('clear');
+
+        })
+    });
+
+    describe('showEvent', function () {
+        it('should define event type on which datepicker will be shown', function () {
+            dp = $input.datepicker({
+                showEvent: 'click'
+            }).data('datepicker');
+
+            $input.click();
+
+            expect(dp.visible).to.be.equal(true)
+
+        })
+    });
+
+
+    describe('autoClose', function () {
+        it('if true, when datepicker will close after date was selected', function () {
+            dp = $input.datepicker({
+                autoClose: true
+            }).data('datepicker');
+
+            dp.show();
+            dp.selectDate(new Date());
+
+            expect(dp.visible).to.be.equal(false)
+
+        });
+
+        it('if false, when datepicker will not close after date was selected', function () {
+            dp = $input.datepicker({
+                autoClose: false
+            }).data('datepicker');
+
+            dp.show();
+            dp.selectDate(new Date());
+
+            expect(dp.visible).to.be.equal(true)
+
+        })
+    });
+
+    describe('monthsField', function () {
+        it('defines which field from localization must be used as source for months name in "months view"', function () {
+            dp = $input.datepicker({
+                monthsFiled: 'months',
+                view: 'months'
+            }).data('datepicker');
+
+            var $cell = $('.datepicker--cell-month').eq(0);
+
+            expect($cell.text()).to.be.equal('Январь');
+        });
+    });
+
+    describe('prevHtml', function () {
+        it('defines html which should be used in "previous" button', function () {
+            dp = $input.datepicker({
+                prevHtml: 'previous'
+            }).data('datepicker');
+
+            var $prev = $('[data-action="prev"]', dp.$datepicker);
+
+            expect($prev.html()).to.be.equal('previous');
+        });
+    });
+
+    describe('nextHtml', function () {
+        it('defines html which should be used in "next" button', function () {
+            dp = $input.datepicker({
+                nextHtml: 'next'
+            }).data('datepicker');
+
+            var $next = $('[data-action="next"]', dp.$datepicker);
+
+            expect($next.html()).to.be.equal('next');
+        });
+    });
 });
