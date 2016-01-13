@@ -1,11 +1,11 @@
-var assert = chai.assert,
-    expect = chai.expect,
-    destroy = true,
-    $altInput,
-    $input, dp;
-
-
 describe('Options', function () {
+
+    var assert = chai.assert,
+        expect = chai.expect,
+        destroy = true,
+        $altInput,
+        $input, dp;
+
     before(function () {
         $input = $('<input>').appendTo('#container');
         $altInput = $('<input class="alt-field">').appendTo('#container');
@@ -768,6 +768,30 @@ describe('Options', function () {
             var $next = $('[data-action="next"]', dp.$datepicker);
 
             expect($next.html()).to.be.equal('next');
+        });
+    });
+
+    describe('navTitles', function () {
+        it('defines datepicker titles', function () {
+            dp = $input.datepicker({
+                navTitles: {
+                    days: 'Days',
+                    months: 'Months',
+                    years: 'Years'
+                }
+            }).data('datepicker');
+
+            var $title = $('.datepicker--nav-title', dp.$datepicker);
+            expect($title.html()).to.have.string('Days');
+
+            dp.view = 'months';
+            $title = $('.datepicker--nav-title', dp.$datepicker);
+            expect($title.html()).to.have.string('Months');
+
+            dp.view = 'years';
+            $title = $('.datepicker--nav-title', dp.$datepicker);
+            expect($title.html()).to.have.string('Years');
+
         });
     });
 });
