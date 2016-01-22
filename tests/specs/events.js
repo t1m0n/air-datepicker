@@ -34,6 +34,42 @@ var assert = chai.assert,
 
             dp.selectDate(date);
 
+        });
+
+        it('should receive array of dates when "multipleDates" set to true', function () {
+            var date = new Date(2016,0,22),
+                date2 = new Date(2016,0,23),
+                dates = [];
+
+            dp = $input.datepicker({
+                multipleDates: true,
+                onSelect: function (fd, d, inst) {
+                    dates = d;
+                }
+            }).data('datepicker');
+
+            dp.selectDate(date);
+            dp.selectDate(date2);
+
+            expect(dates).to.have.length(2)
+
+        })
+        it('should receive array of dates when "range" set to true', function () {
+            var date = new Date(2016,0,22),
+                date2 = new Date(2016,0,23),
+                dates = [];
+
+            dp = $input.datepicker({
+                range: true,
+                onSelect: function (fd, d, inst) {
+                    dates = d;
+                }
+            }).data('datepicker');
+
+            dp.selectDate(date);
+            dp.selectDate(date2);
+
+            expect(dates).to.have.length(2)
         })
     });
 
