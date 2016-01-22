@@ -251,7 +251,7 @@ var Datepicker;
                 }).join(this.opts.multipleDatesSeparator);
 
             // Create new dates array, to separate it from original selectedDates
-            if (this.opts.multipleDates) {
+            if (this.opts.multipleDates || this.opts.range) {
                 dates = selectedDates.map(function(date) {
                     var parsedDate = datepicker.getParsedDate(date);
                     return new Date(parsedDate.year, parsedDate.month, parsedDate.date)
