@@ -11,6 +11,7 @@
 
 .datepicker--cell {
   border-radius: $datepickerBorderRadius;
+  box-sizing: border-box;
   cursor: pointer;
   display: flex;
   position: relative;
@@ -38,8 +39,6 @@
   &.-in-range- {
     background: map_get($bg, inRange);
     color: map_get($textColor, common);
-    padding: 0;
-    background-clip: content-box;
     border-radius: 0;
 
     &.-focus- {
