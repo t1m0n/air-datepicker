@@ -367,7 +367,7 @@ var Datepicker;
                 _this.nav._render()
             }
 
-            if (opts.multipleDates) {
+            if (opts.multipleDates && !opts.range) { // Set priority to range functionality
                 if (len === opts.multipleDates) return;
                 if (!_this._isSelected(date)) {
                     _this.selectedDates.push(date);
