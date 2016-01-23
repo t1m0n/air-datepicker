@@ -19,6 +19,11 @@ describe('Options', function () {
         destroy = true;
     });
 
+    after(function () {
+        $input.remove();
+        $altInput.remove();
+    });
+
     describe('classes', function () {
         it('should add extra classes to datepicker', function () {
             dp = $input.datepicker({

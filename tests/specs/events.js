@@ -20,6 +20,12 @@ var assert = chai.assert,
         destroy = true;
     });
 
+    after(function () {
+        $input.remove();
+        $span.remove();
+        $altInput.remove();
+    });
+
     describe('onSelect', function () {
         it('should add callback when user selects date', function () {
             var date = new Date(2016,0,13);
@@ -75,14 +81,84 @@ var assert = chai.assert,
 
     describe('onRenderCell', function () {
         it('should add callback when cell is rendered', function () {
-
             dp = $input.datepicker({
                 onRenderCell: function (d, type) {
                     expect(d).to.be.instanceOf(Date);
                     expect(type).to.be.equal('day');
                 }
             }).data('datepicker');
+        })
+    });
 
+    describe('onChangeView', function () {
+        it('should add callback when view is changed', function () {
+            var _view;
+
+            dp = $input.datepicker({
+                onChangeView: function (view) {
+                    _view = view;
+                }
+            }).data('datepicker');
+
+            dp.view = 'months';
+            expect(_view).to.be.equal('months')
+        })
+    });
+
+    describe('onChangeMonth', function () {
+        it('should add callback when month is changed', function () {
+            var _month, _year;
+
+            dp = $input.datepicker({
+                startDate: new Date(2016, 0, 22),
+                onChangeMonth: function (month, year) {
+                    _month = month;
+                    _year = year;
+                }
+            }).data('datepicker');
+
+            $('.datepicker--nav-action[data-action="next"]',dp.$datepicker).click();
+
+            expect(_month).to.be.equal(1);
+            expect(_year).to.be.equal(2016)
+        })
+    });
+
+    describe('onChangeYear', function () {
+        it('should add callback when year is changed', function () {
+            var _year;
+
+            dp = $input.datepicker({
+                startDate: new Date(2016, 0, 22),
+                view: 'months',
+                onChangeYear: function (year) {
+                    _year = year;
+                }
+            }).data('datepicker');
+
+            $('.datepicker--nav-action[data-action="next"]',dp.$datepicker).click();
+
+            expect(_year).to.be.equal(2017)
+        })
+    });
+
+    describe('onChangeDecade', function () {
+        it('should add callback when decade is changed', function () {
+            var _decade;
+
+            dp = $input.datepicker({
+                startDate: new Date(2016, 0, 22),
+                view: 'years',
+                onChangeDecade: function (decade) {
+                    _decade = decade;
+                }
+            }).data('datepicker');
+
+            $('.datepicker--nav-action[data-action="next"]',dp.$datepicker).click();
+
+            expect(_decade).to.have.length(2);
+            expect(_decade[0]).to.be.equal(2020);
+            expect(_decade[1]).to.be.equal(2029);
         })
     });
 

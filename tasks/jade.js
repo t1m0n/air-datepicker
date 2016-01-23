@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
-    _jade =  require('gulp-jade/node_modules/jade'),
+    _jade =  require('jade'),
     jade = require('gulp-jade');
 
 _jade.filters.code = function( block ) {
