@@ -62,6 +62,10 @@ var Datepicker;
                 years: 'yyyy1 - yyyy2'
             },
 
+            // timepicker
+            timepicker: false,
+            timeFormat: 'hh:ii',
+
             // events
             onSelect: '',
             onChangeMonth: '',
@@ -160,6 +164,11 @@ var Datepicker;
             this.nav = new Datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
+            if (this.opts.timepicker) {
+                this.timepicker = new Datepicker.Timepicker(this, this.opts);
+                this._bindTimepickerEvents();
+            }
+
             this.$datepicker.on('mouseenter', '.datepicker--cell', this._onMouseEnterCell.bind(this));
             this.$datepicker.on('mouseleave', '.datepicker--cell', this._onMouseLeaveCell.bind(this));
 
@@ -182,6 +191,10 @@ var Datepicker;
             this.$el.on('keydown.adp', this._onKeyDown.bind(this));
             this.$el.on('keyup.adp', this._onKeyUp.bind(this));
             this.$el.on('hotKey.adp', this._onHotKey.bind(this));
+        },
+
+        _bindTimepickerEvents: function () {
+            this.$el.on('timeChange.adp', this._onTimeChange.bind(this));
         },
 
         isWeekend: function (day) {
@@ -325,6 +338,14 @@ var Datepicker;
                     result = result.replace(/\bMM\b/, this.loc.months[d.month]);
                 case /M/.test(result):
                     result = result.replace(/\bM\b/, locale.monthsShort[d.month]);
+                case /ii/.test(result):
+                    result = result.replace(/\bii\b/, d.fullMinutes);
+                case /i/.test(result):
+                    result = result.replace(/\bi(?!>)\b/, d.minutes);
+                case /hh/.test(result):
+                    result = result.replace(/\bhh\b/, d.fullHours);
+                case /h/.test(result):
+                    result = result.replace(/\bh\b/, d.hours);
                 case /yyyy/.test(result):
                     result = result.replace(/\byyyy\b/, d.year);
                 case /yyyy1/.test(result):
@@ -347,6 +368,11 @@ var Datepicker;
                 newDate = '';
 
             if (!(date instanceof Date)) return;
+
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes);
+            }
 
             if (_this.view == 'days') {
                 if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
@@ -1021,6 +1047,19 @@ var Datepicker;
             this.silent = false;
         },
 
+        _onTimeChange: function (e, h, m) {
+            var date = new Date();
+
+            if (this.selectedDates.length) {
+                date = this.selectedDates[this.selectedDates.length - 1]
+            }
+
+            date.setHours(h);
+            date.setMinutes(m);
+
+            this.selectDate(date);
+        },
+
         set focused(val) {
             if (!val && this.focused) {
                 var $cell = this._getCell(this.focused);
@@ -1136,7 +1175,11 @@ var Datepicker;
             fullMonth: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1, // One based
             date: date.getDate(),
             fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-            day: date.getDay()
+            day: date.getDay(),
+            hours: date.getHours(),
+            fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
+            minutes: date.getMinutes(),
+            fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
         }
     };
 

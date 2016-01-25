@@ -1,0 +1,28 @@
+@import "datepicker-config";
+
+/* -------------------------------------------------
+    Timepicker
+   ------------------------------------------------- */
+
+.datepicker--time {
+  padding: $datepickerPadding;
+}
+
+.datepicker--time-label {
+  display: block;
+  font-size: 12px;
+}
+
+.datepicker--time-row {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+
+  input[type='range'] {
+    flex: 1;
+  }
+
+  span {
+    padding: 0 12px;
+  }
+}
