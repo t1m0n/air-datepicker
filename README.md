@@ -21,10 +21,11 @@ $('.my-datepicker').datepicker([options])
 
 ### v1.2.1
 * tests added
-* fixed if '0' is passed to 'firstDay'
-* fixed 'showOtherYears' option
-* fixed 'onSelect' event, when 'range' is true
-* fixed case when 'range' and 'multipleDates' both set to true
+* added Chinese language (thanks to [think2011](https://github.com/think2011))
+* fixed if '0' is passed to `firstDay`
+* fixed `showOtherYears` option
+* fixed `onSelect` event, when `range` is true
+* fixed case when `range` and `multipleDates` both set to true
 
 ### v1.2.0
 * add `range` feature
