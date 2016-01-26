@@ -392,11 +392,17 @@
     Timepicker
    ------------------------------------------------- */
 .datepicker--time {
-  padding: 4px; }
+  padding: 4px;
+  position: relative; }
 
 .datepicker--time-label {
   display: block;
   font-size: 12px; }
+
+.datepicker--time-current {
+  font-size: 12px;
+  position: absolute;
+  right: 4px; }
 
 .datepicker--time-row {
   display: -webkit-flex;

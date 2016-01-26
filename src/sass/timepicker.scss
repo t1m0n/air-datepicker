@@ -6,11 +6,18 @@
 
 .datepicker--time {
   padding: $datepickerPadding;
+  position: relative;
 }
 
 .datepicker--time-label {
   display: block;
   font-size: 12px;
+}
+
+.datepicker--time-current {
+  font-size: 12px;
+  position: absolute;
+  right: $datepickerPadding;
 }
 
 .datepicker--time-row {

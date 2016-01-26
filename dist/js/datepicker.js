@@ -1717,7 +1717,8 @@ var Datepicker;
 
 (function (window, $, datepicker) {
     var template = '<div class="datepicker--time">' +
-    '   <label class="datepicker--time-label">#{hourLabel}</label>' +
+        '<div class="datepicker--time-current">#{hourValue}:#{minValue}</div>' +
+        '<label class="datepicker--time-label">#{hourLabel}</label>' +
         '<div class="datepicker--time-row">' +
         '   <input type="range" name="hours" value="#{hourValue}" min="#{hourMin}" max="#{hourMax}" step="#{hourStep}"/>' +
         '</div>' +
@@ -1767,9 +1768,18 @@ var Datepicker;
 
             this.$timepicker = $(_template).appendTo(this.d.$datepicker);
             this.$ranges = $('[type="range"]', this.$timepicker);
+            this.$currentTime = $('.datepicker--time-current', this.$timepicker);
         },
 
         _render: function () {
+
+        },
+
+        _updateTime: function () {
+            var h = this.hours < 10 ? '0'+this.hours : this.hours,
+                m = this.minutes < 10 ? '0' + this.minutes : this.minutes,
+                html =  h + ':' + m;
+            this.$currentTime.html(html);
         },
 
         _onChangeRange: function (e) {
@@ -1778,6 +1788,7 @@ var Datepicker;
                 name = $target.attr('name');
 
             this[name] = value;
+            this._updateTime();
             this.d._trigger('timeChange', [this.hours, this.minutes])
         }
     };
