@@ -10,19 +10,19 @@ $('#my-element').datepicker([options])
 
 // Доступ к экземпляру объекта
 $('#my-element').data('datepicker')
-</code></pre></article><article><h2 id="examples">Примеры</h2><h3>Инициализация с опциями по умолчанию</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type='text' class='datepicker-here' /&gt;
-</code></pre></div><h3>Выбор нескольких дат</h3><p>Передайте параметр<span class="example-inline"><code class="js">{multipleDates: true}</code></span>для выбора нескольких дат. Если требуется ограничить количество выбранных дат, то передайте необходимое число<span class="example-inline"><code class="js">{multipleDates: 3}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-multiple-dates="3" data-multiple-dates-separator=", " data-position="top left" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
+</code></pre></article><article><h2 id="examples">Примеры</h2><h3 id="example-default">Инициализация с опциями по умолчанию</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type='text' class='datepicker-here' /&gt;
+</code></pre></div><h3 id="example-multiple">Выбор нескольких дат</h3><p>Передайте параметр<span class="example-inline"><code class="js">{multipleDates: true}</code></span>для выбора нескольких дат. Если требуется ограничить количество выбранных дат, то передайте необходимое число<span class="example-inline"><code class="js">{multipleDates: 3}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-multiple-dates="3" data-multiple-dates-separator=", " data-position="top left" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
 	class=&quot;datepicker-here&quot;
 	data-multiple-dates=&quot;3&quot;
 	data-multiple-dates-separator=&quot;, &quot;
 	data-position='right top'/&gt;
-</code></pre></div><h3>Постоянно видимый календарь</h3><p>Проинициализируйте плагин на элементе, который не является текстовым полем, например на<span class="example-inline"><code class="html">&lt;div&gt; …  &lt;/div&gt;</code></span>, либо передайте параметр<span class="example-inline"><code class="js">{inline: true}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><div class="datepicker-here"></div></div><pre class="example-code"><code class="html">&lt;div class=&quot;datepicker-here&quot;&gt;&lt;/div&gt;
-</code></pre></div><h3>Выбор месяца</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-min-view="months" data-view="months" data-date-format="MM yyyy" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
+</code></pre></div><h3 id="example-inline">Постоянно видимый календарь</h3><p>Проинициализируйте плагин на элементе, который не является текстовым полем, например на<span class="example-inline"><code class="html">&lt;div&gt; …  &lt;/div&gt;</code></span>, либо передайте параметр<span class="example-inline"><code class="js">{inline: true}</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><div class="datepicker-here"></div></div><pre class="example-code"><code class="html">&lt;div class=&quot;datepicker-here&quot;&gt;&lt;/div&gt;
+</code></pre></div><h3 id="example-months">Выбор месяца</h3><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-min-view="months" data-view="months" data-date-format="MM yyyy" class="datepicker-here"></div><pre class="example-code"><code class="html">&lt;input type=&quot;text&quot;
 	class=&quot;datepicker-here&quot;
 	data-min-view=&quot;months&quot;
 	data-view=&quot;months&quot;
 	data-date-format=&quot;MM yyyy&quot; /&gt;
-</code></pre></div><h3>Минимальная и максимальные даты</h3><p>Чтобы ограничить выбор даты, используйте<span class="example-inline"><code class="js">minDate</code></span>и<span class="example-inline"><code class="js">maxDate</code></span>, которым нужно передать объект даты.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input id="minMaxExample" type="text"><script>$('#minMaxExample').datepicker({
+</code></pre></div><h3 id="example-min-max">Минимальная и максимальные даты</h3><p>Чтобы ограничить выбор даты, используйте<span class="example-inline"><code class="js">minDate</code></span>и<span class="example-inline"><code class="js">maxDate</code></span>, которым нужно передать объект даты.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input id="minMaxExample" type="text"><script>$('#minMaxExample').datepicker({
 	// Можно выбрать тольо даты, идущие за сегодняшним днем, включая сегодня.
 	minDate: new Date()
 })</script></div><pre class="example-code"><code class="js">$('#minMaxExample').datepicker({
@@ -58,7 +58,7 @@ $('#disabled-days').datepicker({
 		}
 	}
 })
-</code></pre></div><h3>Кастомное содержимое ячеек</h3><p>Air Datepicker позволяет менять содержимое ячеек как угодно. Для этого можно также воспользоваться методом<span class="example-inline"><code>onRenderCell</code></span>.
+</code></pre></div><h3 id="example-custom-content">Кастомное содержимое ячеек</h3><p>Air Datepicker позволяет менять содержимое ячеек как угодно. Для этого можно также воспользоваться методом<span class="example-inline"><code>onRenderCell</code></span>.
 Давайте добавим вспомогательные элементы к нескольким датам и покажем случайный текст при выборе этих дат:</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><div class="list-inline"><div><div id="custom-cells"></div></div><div id="custom-cells-events"><strong></strong><p></p></div></div><script>var eventDates = [1, 10, 12, 22],
 	$picker = $('#custom-cells'),
 	$content = $('#custom-cells-events'),
@@ -125,7 +125,6 @@ $picker.datepicker({
 // Сразу выберем какую-ниудь дату из `eventDates`
 var currentDate = currentDate = new Date();
 $picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
-
 </code></pre></div></article><article><h2 id="localization">Локализация</h2><p>Вы можете добавить свою локализацию в объект<span class="example-inline"><code class="js">Datepicker.language[&quot;my-lang&quot;]</code></span>и при вызове календаря передать название языка в параметр<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">Datepicker.language['my-lang'] = {...}
 
 $('.my-datepicker').datepicker({

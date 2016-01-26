@@ -22,9 +22,14 @@
 
     datepicker.Timepicker.prototype = {
         init: function () {
+            var input = 'input';
             this._buildHTML();
 
-            this.$ranges.on('input', this._onChangeRange.bind(this));
+            if (navigator.userAgent.match(/trident/gi)) {
+                input = 'change';
+            }
+
+            this.$ranges.on(input, this._onChangeRange.bind(this));
         },
 
         _buildHTML: function () {
@@ -48,7 +53,6 @@
         },
 
         _render: function () {
-
         },
 
         _onChangeRange: function (e) {

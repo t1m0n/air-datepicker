@@ -954,6 +954,7 @@ var Datepicker;
         },
 
         _onInput: function () {
+            console.log(234);
             var val = this.$el.val();
 
             if (!val) {
@@ -1048,16 +1049,25 @@ var Datepicker;
         },
 
         _onTimeChange: function (e, h, m) {
-            var date = new Date();
+            var date = new Date(),
+                selectedDates = this.selectedDates,
+                selected = false;
 
-            if (this.selectedDates.length) {
+            if (selectedDates.length) {
+                selected = true;
                 date = this.selectedDates[this.selectedDates.length - 1]
             }
 
             date.setHours(h);
             date.setMinutes(m);
 
-            this.selectDate(date);
+            if (!selected) {
+                this.selectDate(date);
+            } else {
+                this.selectedDates[selectedDates.length - 1] = date;
+                this._setInputValue();
+                this._triggerOnChange();
+            }
         },
 
         set focused(val) {
@@ -1729,9 +1739,14 @@ var Datepicker;
 
     datepicker.Timepicker.prototype = {
         init: function () {
+            var input = 'input';
             this._buildHTML();
 
-            this.$ranges.on('input', this._onChangeRange.bind(this));
+            if (navigator.userAgent.match(/trident/gi)) {
+                input = 'change';
+            }
+
+            this.$ranges.on(input, this._onChangeRange.bind(this));
         },
 
         _buildHTML: function () {
@@ -1755,7 +1770,6 @@ var Datepicker;
         },
 
         _render: function () {
-
         },
 
         _onChangeRange: function (e) {
