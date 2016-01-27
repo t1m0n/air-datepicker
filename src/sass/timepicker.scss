@@ -4,21 +4,35 @@
     Timepicker
    ------------------------------------------------- */
 
-$rangeTrackHeight: 2px;
+$rangeTrackHeight: 1px;
 $rangeTrackBg: #dedede;
-$rangeThumbSize: 10px;
-$rangeThumbBg: #5cc4ef;
+$rangeThumbSize: 12px;
+$rangeThumbBg: #dedede;
+
+@mixin thumb {
+  box-sizing: border-box;
+  height: $rangeThumbSize;
+  width: $rangeThumbSize;
+  border-radius: 3px;
+  border: 1px solid $rangeTrackBg;
+  background: #fff;
+  margin-top: -$rangeThumbSize/2;
+  cursor: pointer;
+
+  transition: background .2s;
+}
 
 .datepicker--time {
   display: flex;
   align-items: center;
 
-  padding: $datepickerPadding;
+  padding: 0 $datepickerPadding $datepickerPadding;
   position: relative;
 }
 
 .datepicker--time-sliders {
   flex: 0 1 138px;
+  order: 2;
 }
 
 .datepicker--time-label {
@@ -37,10 +51,11 @@ $rangeThumbBg: #5cc4ef;
   align-items: center;
   font-size: 11px;
   height: 24px;
-  background: linear-gradient(to right,#dedede,#dedede) left 50%/100% 2px no-repeat;
+  background: linear-gradient(to right,$rangeTrackBg, $rangeTrackBg) left 50%/100% $rangeTrackHeight no-repeat;
 
   input[type='range'] {
     background: none;
+    cursor: pointer;
     flex: 1;
     height: 100%;
     padding: 0;
@@ -55,38 +70,34 @@ $rangeThumbBg: #5cc4ef;
       display: none;
     }
 
+    &:hover {
+      &::-webkit-slider-thumb {
+        border-color: darken($rangeTrackBg, 15);
+      }
+    }
+
     &:focus {
       outline: none;
+
+      &::-webkit-slider-thumb {
+        background: map_get($bg, selected);
+        border-color: map_get($bg, selected);
+      }
     }
 
     //  Thumb
     // -------------------------------------------------
 
     &::-webkit-slider-thumb {
-      height: $rangeThumbSize;
-      width: $rangeThumbSize;
-      border-radius: 50%;
-      background: $rangeThumbBg;
-      margin-top: -$rangeThumbSize/2;
-      cursor: pointer;
+      @include thumb;
     }
 
     &::-moz-range-thumb {
-      height: $rangeThumbSize;
-      width: $rangeThumbSize;
-      border-radius: 50%;
-      border: none;
-      background: $rangeThumbBg;
-      cursor: pointer;
+      @include thumb;
     }
 
     &::-ms-thumb {
-      height: $rangeThumbSize;
-      width: $rangeThumbSize;
-      border: none;
-      border-radius: 50%;
-      background: $rangeThumbBg;
-      cursor: pointer;
+      @include thumb;
     }
 
     //  Track
