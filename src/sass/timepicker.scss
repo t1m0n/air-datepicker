@@ -4,31 +4,126 @@
     Timepicker
    ------------------------------------------------- */
 
+$rangeTrackHeight: 2px;
+$rangeTrackBg: #dedede;
+$rangeThumbSize: 10px;
+$rangeThumbBg: #5cc4ef;
+
 .datepicker--time {
+  display: flex;
+  align-items: center;
+
   padding: $datepickerPadding;
   position: relative;
 }
 
+.datepicker--time-sliders {
+  flex: 0 1 138px;
+}
+
 .datepicker--time-label {
-  display: block;
+  display: none;
   font-size: 12px;
 }
 
 .datepicker--time-current {
-  font-size: 12px;
-  position: absolute;
-  right: $datepickerPadding;
+  font-size: 16px;
+  flex: 1;
+  text-align: center;
 }
 
 .datepicker--time-row {
   display: flex;
   align-items: center;
   font-size: 11px;
+  height: 24px;
+  background: linear-gradient(to right,#dedede,#dedede) left 50%/100% 2px no-repeat;
 
   input[type='range'] {
+    background: none;
     flex: 1;
-  }
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
 
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+
+    &::-ms-tooltip {
+      display: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    //  Thumb
+    // -------------------------------------------------
+
+    &::-webkit-slider-thumb {
+      height: $rangeThumbSize;
+      width: $rangeThumbSize;
+      border-radius: 50%;
+      background: $rangeThumbBg;
+      margin-top: -$rangeThumbSize/2;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      height: $rangeThumbSize;
+      width: $rangeThumbSize;
+      border-radius: 50%;
+      border: none;
+      background: $rangeThumbBg;
+      cursor: pointer;
+    }
+
+    &::-ms-thumb {
+      height: $rangeThumbSize;
+      width: $rangeThumbSize;
+      border: none;
+      border-radius: 50%;
+      background: $rangeThumbBg;
+      cursor: pointer;
+    }
+
+    //  Track
+    // -------------------------------------------------
+    &::-webkit-slider-runnable-track {
+      height: $rangeTrackHeight;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    &::-moz-range-track {
+      height: $rangeTrackHeight;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    &::-ms-track {
+      border: none;
+      height: $rangeThumbSize;
+      cursor: pointer;
+      color: transparent;
+      background: transparent;
+    }
+
+    &::-ms-fill-lower {
+      background: transparent;
+    }
+    &:focus::-ms-fill-lower {
+
+    }
+    &::-ms-fill-upper {
+      background: transparent;
+    }
+    &:focus::-ms-fill-upper {
+
+    }
+  }
   span {
     padding: 0 12px;
   }

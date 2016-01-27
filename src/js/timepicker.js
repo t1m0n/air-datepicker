@@ -1,14 +1,16 @@
 (function (window, $, datepicker) {
     var template = '<div class="datepicker--time">' +
+        '<div class="datepicker--time-sliders">' +
+        '   <label class="datepicker--time-label">#{hourLabel}</label>' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="hours" value="#{hourValue}" min="#{hourMin}" max="#{hourMax}" step="#{hourStep}"/>' +
+        '   </div>' +
+        '   <label class="datepicker--time-label">#{minLabel}</label>' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
+        '   </div>' +
+        '</div>' +
         '<div class="datepicker--time-current">#{hourValue}:#{minValue}</div>' +
-        '<label class="datepicker--time-label">#{hourLabel}</label>' +
-        '<div class="datepicker--time-row">' +
-        '   <input type="range" name="hours" value="#{hourValue}" min="#{hourMin}" max="#{hourMax}" step="#{hourStep}"/>' +
-        '</div>' +
-    '   <label class="datepicker--time-label">#{minLabel}</label>' +
-        '<div class="datepicker--time-row">' +
-        '   <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
-        '</div>' +
         '</div>';
     datepicker.Timepicker = function (inst, opts) {
         this.d = inst;
