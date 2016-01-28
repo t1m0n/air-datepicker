@@ -41,9 +41,28 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-current {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 16px;
   flex: 1;
   text-align: center;
+
+  input[type='text'] {
+    box-sizing: content-box;
+    border: none;
+    padding: 0 3px;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+    font-size: 16px;
+    width: 18px;
+    height: 23px;
+  }
+
+  > {
+    flex: 1;
+  }
 }
 
 .datepicker--time-row {

@@ -182,9 +182,11 @@ var Datepicker;
 
         _bindEvents : function () {
             this.$el.on(this.opts.showEvent + '.adp', this._onShowEvent.bind(this));
+            this.$el.on('mouseup.adp', this._onMouseUpEl.bind(this));
             this.$el.on('blur.adp', this._onBlur.bind(this));
             this.$el.on('input.adp', this._onInput.bind(this));
             $(window).on('resize.adp', this._onResize.bind(this));
+            $('body').on('mouseup.adp', this._onMouseUpBody.bind(this));
         },
 
         _bindKeyboardEvents: function () {
@@ -950,11 +952,11 @@ var Datepicker;
 
         _onMouseUpDatepicker: function (e) {
             this.inFocus = false;
-            this.$el.focus()
+            e.originalEvent.inFocus = true;
+            if (!e.originalEvent.timepickerFocus) this.$el.focus();
         },
 
         _onInput: function () {
-            console.log(234);
             var val = this.$el.val();
 
             if (!val) {
@@ -966,6 +968,18 @@ var Datepicker;
             if (this.visible) {
                 this.setPosition();
             }
+        },
+
+        _onMouseUpBody: function (e) {
+            if (e.originalEvent.inFocus) return;
+
+            if (this.visible && !this.inFocus) {
+                this.hide();
+            }
+        },
+
+        _onMouseUpEl: function (e) {
+            e.originalEvent.inFocus = true;
         },
 
         _onKeyDown: function (e) {
