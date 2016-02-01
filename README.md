@@ -19,6 +19,10 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v1.2.2
+* fixed typo in `monthsField`
+* added German language (thanks to [Ichag](https://github.com/Ichag))
+
 ### v1.2.1
 * tests added
 * added Chinese language (thanks to [think2011](https://github.com/think2011))
