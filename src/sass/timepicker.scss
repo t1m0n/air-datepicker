@@ -22,16 +22,26 @@ $rangeThumbBg: #dedede;
   transition: background .2s;
 }
 
+@mixin track {
+  border: none;
+  height: $rangeTrackHeight;
+  cursor: pointer;
+  color: transparent;
+  background: transparent;
+}
+
 .datepicker--time {
+  border-top: 1px solid map_get($borderColor, nav);
   display: flex;
   align-items: center;
 
-  padding: 0 $datepickerPadding $datepickerPadding;
+  padding: $datepickerPadding;
   position: relative;
 }
 
 .datepicker--time-sliders {
   flex: 0 1 138px;
+  margin-right: 10px;
   order: 2;
 }
 
@@ -43,10 +53,10 @@ $rangeThumbBg: #dedede;
 .datepicker--time-current {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
   flex: 1;
+  font-size: 16px;
   text-align: center;
+  margin: 0 0 0 10px;
 
   input[type='text'] {
     box-sizing: content-box;
@@ -60,8 +70,9 @@ $rangeThumbBg: #dedede;
     height: 23px;
   }
 
-  > {
-    flex: 1;
+  span {
+    line-height: 1;
+    margin: 0 -2px;
   }
 }
 
@@ -122,23 +133,15 @@ $rangeThumbBg: #dedede;
     //  Track
     // -------------------------------------------------
     &::-webkit-slider-runnable-track {
-      height: $rangeTrackHeight;
-      cursor: pointer;
-      background: transparent;
+      @include track;
     }
 
     &::-moz-range-track {
-      height: $rangeTrackHeight;
-      cursor: pointer;
-      background: transparent;
+      @include track;
     }
 
     &::-ms-track {
-      border: none;
-      height: $rangeThumbSize;
-      cursor: pointer;
-      color: transparent;
-      background: transparent;
+      @include track;
     }
 
     &::-ms-fill-lower {
@@ -156,5 +159,37 @@ $rangeThumbBg: #dedede;
   }
   span {
     padding: 0 12px;
+  }
+}
+
+.datepicker--time-icon {
+  color: #777;
+  border: 1px solid;
+  border-radius: 50%;
+  font-size: 16px;
+  position: relative;
+  margin: 0 5px -1px 0;
+  width: 1em;
+  height: 1em;
+
+  &:after, &:before {
+    content: '';
+    background: currentColor;
+    position: absolute;
+  }
+
+  &:after {
+    height: .4em;
+    width: 1px;
+    left: calc(50% - 1px);
+    top: calc(50% + 1px);
+    transform: translateY(-100%);
+  }
+
+  &:before {
+    width: .4em;
+    height: 1px;
+    top: calc(50% + 1px);
+    left: calc(50% - 1px);
   }
 }

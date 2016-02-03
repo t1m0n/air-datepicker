@@ -1742,9 +1742,11 @@ var Datepicker;
         '   </div>' +
         '</div>' +
         '<div class="datepicker--time-current">' +
+        '   <i class="datepicker--time-icon"></i>' +
         '   <input type="text" value="#{hourValue}" placeholder="#{hourValue}" data-field="hours" name="hours-current" maxlength="2" data-max="#{hourMax}" data-action="next"/>' +
         '   <span>:</span>' +
-        '   <input type="text" value="#{minValue}" placeholder="#{minValue}" data-field="minutes" name="minutes-current" maxlength="2" data-max="59" data-action="prev"/></div>' +
+        '   <input type="text" value="#{minValue}" placeholder="#{minValue}" data-field="minutes" name="minutes-current" maxlength="2" data-max="59" data-action="prev"/>' +
+        '</div>' +
         '</div>',
         inputTimeout = 10;
 
