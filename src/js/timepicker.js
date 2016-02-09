@@ -1,4 +1,9 @@
 (function (window, $, datepicker) {
+    //TODO включить время в минимальную и максимальную дату
+    //TODO возможность задания минимальных и максимальных минут/часов
+    //TODO возможность задания шага для часов минут
+    //TODO возоможность задавать определенные часы и минуты
+
     var template = '<div class="datepicker--time">' +
         '<div class="datepicker--time-sliders">' +
         '   <label class="datepicker--time-label">#{hourLabel}</label>' +

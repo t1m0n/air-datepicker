@@ -54,7 +54,7 @@ $rangeThumbBg: #dedede;
   display: flex;
   align-items: center;
   flex: 1;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   margin: 0 0 0 10px;
 
@@ -65,7 +65,7 @@ $rangeThumbBg: #dedede;
     margin: 0;
     outline: none;
     box-shadow: none;
-    font-size: 16px;
+    font-size: 14px;
     width: 18px;
     height: 23px;
   }
@@ -80,7 +80,7 @@ $rangeThumbBg: #dedede;
   display: flex;
   align-items: center;
   font-size: 11px;
-  height: 24px;
+  height: 18px;
   background: linear-gradient(to right,$rangeTrackBg, $rangeTrackBg) left 50%/100% $rangeTrackHeight no-repeat;
 
   input[type='range'] {
@@ -163,7 +163,7 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-icon {
-  color: #777;
+  color: map_get($textColor, navArrows);
   border: 1px solid;
   border-radius: 50%;
   font-size: 16px;
