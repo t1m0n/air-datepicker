@@ -742,7 +742,7 @@ describe('Options', function () {
     describe('monthsField', function () {
         it('defines which field from localization must be used as source for months name in "months view"', function () {
             dp = $input.datepicker({
-                monthsFiled: 'months',
+                monthsField: 'months',
                 view: 'months'
             }).data('datepicker');
 

@@ -53,7 +53,7 @@ var Datepicker;
             autoClose: false,
 
             // navigation
-            monthsFiled: 'monthsShort',
+            monthsField: 'monthsShort',
             prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
             nextHtml: '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>',
             navTitles: {
