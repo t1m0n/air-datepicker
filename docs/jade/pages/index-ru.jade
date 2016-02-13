@@ -63,7 +63,7 @@ block content
 
 	article
 		h2#examples Примеры
-		h3 Инициализация с опциями по умолчанию
+		h3#example-default Инициализация с опциями по умолчанию
 		+example
 			+example-content
 				input(type='text').datepicker-here
@@ -71,7 +71,7 @@ block content
 				:code
 					<input type='text' class='datepicker-here' />
 
-		h3 Выбор нескольких дат
+		h3#example-multiple Выбор нескольких дат
 		p
 			| Передайте параметр
 			+example-inline('{multipleDates: true}','js')
@@ -89,7 +89,7 @@ block content
 						data-multiple-dates-separator=", "
 						data-position='right top'/>
 
-		h3 Постоянно видимый календарь
+		h3#example-inline Постоянно видимый календарь
 		p
 			| Проинициализируйте плагин на элементе, который не является текстовым полем, например на
 			+example-inline('<div> …  </div>', 'html')
@@ -103,7 +103,7 @@ block content
 				:code
 					<div class="datepicker-here"></div>
 
-		h3 Выбор месяца
+		h3#example-months Выбор месяца
 		+example
 			+example-content
 				input.datepicker-here(type='text' data-min-view='months' data-view='months' data-date-format='MM yyyy')
@@ -115,7 +115,7 @@ block content
 						data-view="months"
 						data-date-format="MM yyyy" />
 
-		h3 Минимальная и максимальные даты
+		h3#example-min-max Минимальная и максимальные даты
 		p
 			| Чтобы ограничить выбор даты, используйте
 			+example-inline('minDate', 'js')
@@ -137,7 +137,7 @@ block content
 				})
 
 		h3#example-range Диапозон дат
-		p Используйте параметр
+		p Используйте парамтер
 			+example-inline('{range: true}')
 			| для выбора диапазона. В качестве разделителя дат будет использован
 			+example-inline('multipleDatesSeparator')
@@ -191,7 +191,7 @@ block content
 					}
 				})
 
-		h3 Кастомное содержимое ячеек
+		h3#example-custom-content Кастомное содержимое ячеек
 		p Air Datepicker позволяет менять содержимое ячеек как угодно. Для этого можно также воспользоваться методом
 			+example-inline('onRenderCell')
 			| .
@@ -276,7 +276,6 @@ block content
 					// Сразу выберем какую-ниудь дату из `eventDates`
 					var currentDate = currentDate = new Date();
 					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
-
 
 	article
 		h2#localization Локализация

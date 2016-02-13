@@ -61,14 +61,14 @@ block content
 			$('#my-element').data('datepicker')
 	article
 		h2#examples Examples
-		h3 Initialization with default options
+		h3#example-default Initialization with default options
 		+example
 			+example-content
 				input(type='text', data-language='en').datepicker-here
 			+example-code('html')
 				:code
 					<input type='text' class='datepicker-here' data-language='en' />
-		h3 Selecting multiple dates
+		h3#example-multiple Selecting multiple dates
 		p
 			| Pass parameter
 			+example-inline('{multipleDates: true}','js')
@@ -86,7 +86,7 @@ block content
 						   data-multiple-dates="3"
 						   data-multiple-dates-separator=", "
 						   data-position='top left'/>
-		h3 Permanently visible calendar
+		h3#example-inline Permanently visible calendar
 		p
 			| Initialize plugin on non text input element, such as
 			+example-inline('<div> …  </div>', 'html')
@@ -99,7 +99,7 @@ block content
 			+example-code('html')
 				:code
 					<div class="datepicker-here" data-language='en'></div>
-		h3 Month selection
+		h3#example-months Month selection
 		+example
 			+example-content
 				input.datepicker-here(type='text' data-min-view='months' data-view='months' data-date-format='MM yyyy' data-language='en')
@@ -111,7 +111,7 @@ block content
 						   data-min-view="months"
 						   data-view="months"
 						   data-date-format="MM yyyy" />
-		h3 Minimum and maximum dates
+		h3#example-min-max Minimum and maximum dates
 		p
 			| To limit date selection, use
 			+example-inline('minDate', 'js')
@@ -191,7 +191,7 @@ block content
 					}
 				})
 
-		h3 Custom cells content
+		h3#example-custom-content Custom cells content
 		p Air Datepicker allows you to change contents of cells like you want. You could use
 			+example-inline('onRenderCell')
 			| for this purpose.
