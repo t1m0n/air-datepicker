@@ -136,7 +136,6 @@ describe('Options', function () {
                 'yy': 15,
                 'yyyy1': 2010,
                 'yyyy2': 2019
-
             };
 
         for (var format in formats) {
@@ -151,6 +150,15 @@ describe('Options', function () {
                 })
             }(format))
         }
+
+        it('should work with special characters', function () {
+            dp = $input.datepicker({
+                language: 'de',
+                dateFormat: 'Month is MM'
+            }).data('datepicker');
+            dp.selectDate(new Date(2016, 2, 1));
+            expect(dp.$el.val()).to.be.equal('Month is März');
+        })
     });
 
     describe('altField', function () {
