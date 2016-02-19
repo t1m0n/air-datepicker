@@ -28,18 +28,13 @@
         this.d = inst;
         this.opts = opts;
 
-        var date = this.d.parsedDate;
-        this.minutes = date.minutes;
-        this.hours = date.hours;
-        this._minutes = date.minutes;
-        this._hours = date.hours;
-
         this.init();
     };
 
     datepicker.Timepicker.prototype = {
         init: function () {
             var input = 'input';
+            this._setValidTimes(this.d.date);
             this._buildHTML();
 
             if (navigator.userAgent.match(/trident/gi)) {
@@ -54,19 +49,30 @@
             this.$currentInputs.on('paste', this._onPasteInput.bind(this));
         },
 
+        _setValidTimes: function (date) {
+            var _date = datepicker.getParsedDate(date),
+                maxHours = 23;
+
+            this.minHours = this.opts.minHours;
+            this.minMinutes = this.opts.minMinutes;
+            this.maxHours = this.opts.maxHours > maxHours ? maxHours : this.opts.maxHours;
+            this.maxMinutes = this.opts.maxMinutes > 59 ? 59 : this.opts.maxMinutes;
+            this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
+            this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
+        },
+
         _buildHTML: function () {
             var date = this.d.parsedDate,
+                lz = datepicker.getLeadingZeroNum,
                 data = {
-                    hourMin: '00',
-                    hourMax: '23',
-                    hourStep: '1',
-                    hourValue: date.fullHours,
-                    hourLabel: 'Часы',
-                    minMin: '00',
-                    minMax: '59',
-                    minStep: '1',
-                    minValue: date.fullMinutes,
-                    minLabel: 'Минуты'
+                    hourMin: this.minHours,
+                    hourMax: lz(this.maxHours),
+                    hourStep: this.opts.hoursStep,
+                    hourValue: lz(this.hours),
+                    minMin: this.minMinutes,
+                    minMax: lz(this.maxMinutes),
+                    minStep: this.opts.minutesStep,
+                    minValue: lz(this.minutes)
                 },
                 _template = datepicker.template(template, data);
 
@@ -90,6 +96,10 @@
             this.$hoursText.val(h);
             this.$minutesText.val(m)
         },
+
+
+        //  Events
+        // -------------------------------------------------
 
         _onChangeRange: function (e) {
             var $target = $(e.target),

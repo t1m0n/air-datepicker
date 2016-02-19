@@ -64,7 +64,12 @@ var Datepicker;
 
             // timepicker
             timepicker: false,
-            timeFormat: 'hh:ii',
+            minHours: 0,
+            minMinutes: 0,
+            maxHours: 24,
+            maxMinutes: 59,
+            hoursStep: 1,
+            minutesStep: 1,
 
             // events
             onSelect: '',
@@ -317,6 +322,7 @@ var Datepicker;
         formatDate: function (string, date) {
             date = date || this.date;
             var result = string,
+                boundary = this._getWordBoundaryRegExp,
                 locale = this.loc,
                 decade = datepicker.getDecade(date),
                 d = datepicker.getParsedDate(date);
@@ -325,21 +331,21 @@ var Datepicker;
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
                 case /dd/.test(result):
-                    result = result.replace(/\bdd\b/, d.fullDate);
+                    result = result.replace(boundary('dd'), d.fullDate);
                 case /d/.test(result):
-                    result = result.replace(/\bd\b/, d.date);
+                    result = result.replace(boundary('d'), d.date);
                 case /DD/.test(result):
-                    result = result.replace(/\bDD\b/, locale.days[d.day]);
+                    result = result.replace(boundary('DD'), locale.days[d.day]);
                 case /D/.test(result):
-                    result = result.replace(/\bD\b/, locale.daysShort[d.day]);
+                    result = result.replace(boundary('D'), locale.daysShort[d.day]);
                 case /mm/.test(result):
-                    result = result.replace(/\bmm\b/, d.fullMonth);
+                    result = result.replace(boundary('mm'), d.fullMonth);
                 case /m/.test(result):
-                    result = result.replace(/\bm\b/, d.month + 1);
+                    result = result.replace(boundary('m'), d.month + 1);
                 case /MM/.test(result):
-                    result = result.replace(/\bMM\b/, this.loc.months[d.month]);
+                    result = result.replace(boundary('MM'), this.loc.months[d.month]);
                 case /M/.test(result):
-                    result = result.replace(/\bM\b/, locale.monthsShort[d.month]);
+                    result = result.replace(boundary('M'), locale.monthsShort[d.month]);
                 case /ii/.test(result):
                     result = result.replace(/\bii\b/, d.fullMinutes);
                 case /i/.test(result):
@@ -349,16 +355,20 @@ var Datepicker;
                 case /h/.test(result):
                     result = result.replace(/\bh\b/, d.hours);
                 case /yyyy/.test(result):
-                    result = result.replace(/\byyyy\b/, d.year);
+                    result = result.replace(boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
-                    result = result.replace(/\byyyy1\b/, decade[0]);
+                    result = result.replace(boundary('yyyy1'), decade[0]);
                 case /yyyy2/.test(result):
-                    result = result.replace(/\byyyy2\b/, decade[1]);
+                    result = result.replace(boundary('yyyy2'), decade[1]);
                 case /yy/.test(result):
-                    result = result.replace(/\byy\b/, d.year.toString().slice(-2));
+                    result = result.replace(boundary('yy'), d.year.toString().slice(-2));
             }
 
             return result;
+        },
+
+        _getWordBoundaryRegExp: function (sign) {
+            return new RegExp('\\b(?=[a-zA-Z0-9äöüßÄÖÜ<])' + sign + '(?![>a-zA-Z0-9äöüßÄÖÜ])');
         },
 
         selectDate: function (date) {
@@ -1246,6 +1256,10 @@ var Datepicker;
         return date.getTime() > dateCompareTo.getTime();
     };
 
+    datepicker.getLeadingZeroNum = function (num) {
+        return parseInt(num) < 0 ? '0' + num : num;
+    };
+
     Datepicker.language = {
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
@@ -1730,6 +1744,11 @@ var Datepicker;
 })();
 
 (function (window, $, datepicker) {
+    //TODO включить время в минимальную и максимальную дату
+    //TODO возможность задания минимальных и максимальных минут/часов
+    //TODO возможность задания шага для часов минут
+    //TODO возоможность задавать определенные часы и минуты
+
     var template = '<div class="datepicker--time">' +
         '<div class="datepicker--time-sliders">' +
         '   <label class="datepicker--time-label">#{hourLabel}</label>' +
@@ -1754,18 +1773,13 @@ var Datepicker;
         this.d = inst;
         this.opts = opts;
 
-        var date = this.d.parsedDate;
-        this.minutes = date.minutes;
-        this.hours = date.hours;
-        this._minutes = date.minutes;
-        this._hours = date.hours;
-
         this.init();
     };
 
     datepicker.Timepicker.prototype = {
         init: function () {
             var input = 'input';
+            this._setValidTimes(this.d.date);
             this._buildHTML();
 
             if (navigator.userAgent.match(/trident/gi)) {
@@ -1780,19 +1794,30 @@ var Datepicker;
             this.$currentInputs.on('paste', this._onPasteInput.bind(this));
         },
 
+        _setValidTimes: function (date) {
+            var _date = datepicker.getParsedDate(date),
+                maxHours = 23;
+
+            this.minHours = this.opts.minHours;
+            this.minMinutes = this.opts.minMinutes;
+            this.maxHours = this.opts.maxHours > maxHours ? maxHours : this.opts.maxHours;
+            this.maxMinutes = this.opts.maxMinutes > 59 ? 59 : this.opts.maxMinutes;
+            this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
+            this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
+        },
+
         _buildHTML: function () {
             var date = this.d.parsedDate,
+                lz = datepicker.getLeadingZeroNum,
                 data = {
-                    hourMin: '00',
-                    hourMax: '23',
-                    hourStep: '1',
-                    hourValue: date.fullHours,
-                    hourLabel: 'Часы',
-                    minMin: '00',
-                    minMax: '59',
-                    minStep: '1',
-                    minValue: date.fullMinutes,
-                    minLabel: 'Минуты'
+                    hourMin: this.minHours,
+                    hourMax: lz(this.maxHours),
+                    hourStep: this.opts.hoursStep,
+                    hourValue: lz(this.hours),
+                    minMin: this.minMinutes,
+                    minMax: lz(this.maxMinutes),
+                    minStep: this.opts.minutesStep,
+                    minValue: lz(this.minutes)
                 },
                 _template = datepicker.template(template, data);
 
@@ -1816,6 +1841,10 @@ var Datepicker;
             this.$hoursText.val(h);
             this.$minutesText.val(m)
         },
+
+
+        //  Events
+        // -------------------------------------------------
 
         _onChangeRange: function (e) {
             var $target = $(e.target),

@@ -64,7 +64,12 @@ var Datepicker;
 
             // timepicker
             timepicker: false,
-            timeFormat: 'hh:ii',
+            minHours: 0,
+            minMinutes: 0,
+            maxHours: 24,
+            maxMinutes: 59,
+            hoursStep: 1,
+            minutesStep: 1,
 
             // events
             onSelect: '',
@@ -1249,6 +1254,10 @@ var Datepicker;
     datepicker.bigger = function (dateCompareTo, date, type) {
         if (!dateCompareTo || !date) return false;
         return date.getTime() > dateCompareTo.getTime();
+    };
+
+    datepicker.getLeadingZeroNum = function (num) {
+        return parseInt(num) < 0 ? '0' + num : num;
     };
 
     Datepicker.language = {
