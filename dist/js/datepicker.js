@@ -1257,7 +1257,7 @@ var Datepicker;
     };
 
     datepicker.getLeadingZeroNum = function (num) {
-        return parseInt(num) < 0 ? '0' + num : num;
+        return parseInt(num) < 10 ? '0' + num : num;
     };
 
     Datepicker.language = {
@@ -1762,9 +1762,9 @@ var Datepicker;
         '</div>' +
         '<div class="datepicker--time-current">' +
         '   <i class="datepicker--time-icon"></i>' +
-        '   <input type="text" value="#{hourValue}" placeholder="#{hourValue}" data-field="hours" name="hours-current" maxlength="2" data-max="#{hourMax}" data-action="next"/>' +
-        '   <span>:</span>' +
-        '   <input type="text" value="#{minValue}" placeholder="#{minValue}" data-field="minutes" name="minutes-current" maxlength="2" data-max="59" data-action="prev"/>' +
+        '   <span data-max="#{hourMax}" class="datepicker--time-current-hours">#{hourValue}</span>' +
+        '   <span class="datepicker--time-current-colon">:</span>' +
+        '   <span data-max="#{hourMax}" class="datepicker--time-current-minutes">#{minValue}</span>' +
         '</div>' +
         '</div>',
         inputTimeout = 10;
@@ -1787,11 +1787,6 @@ var Datepicker;
             }
 
             this.$ranges.on(input, this._onChangeRange.bind(this));
-            this.$currentInputs.on('mouseup', this._onMouseUpInput.bind(this));
-            this.$currentInputs.on('keydown', this._onKeyPressInput.bind(this));
-            this.$currentInputs.on('input', this._onInputInput.bind(this));
-            this.$currentInputs.on('blur', this._onBlurInput.bind(this));
-            this.$currentInputs.on('paste', this._onPasteInput.bind(this));
         },
 
         _setValidTimes: function (date) {
@@ -1807,8 +1802,7 @@ var Datepicker;
         },
 
         _buildHTML: function () {
-            var date = this.d.parsedDate,
-                lz = datepicker.getLeadingZeroNum,
+            var lz = datepicker.getLeadingZeroNum,
                 data = {
                     hourMin: this.minHours,
                     hourMax: lz(this.maxHours),
@@ -1823,10 +1817,9 @@ var Datepicker;
 
             this.$timepicker = $(_template).appendTo(this.d.$datepicker);
             this.$ranges = $('[type="range"]', this.$timepicker);
-            this.$currentTime = $('.datepicker--time-current', this.$timepicker);
             this.$currentInputs = $('input[type="text"]', this.$timepicker);
-            this.$hoursText = $('[name="hours-current"]', this.$timepicker);
-            this.$minutesText = $('[name="minutes-current"]', this.$timepicker);
+            this.$hoursText = $('.datepicker--time-current-hours', this.$timepicker);
+            this.$minutesText = $('.datepicker--time-current-minutes', this.$timepicker);
         },
 
         _render: function () {
@@ -1835,11 +1828,10 @@ var Datepicker;
 
         _updateTime: function () {
             var h = this.hours < 10 ? '0'+this.hours : this.hours,
-                m = this.minutes < 10 ? '0' + this.minutes : this.minutes,
-                html =  h + ':' + m;
+                m = this.minutes < 10 ? '0' + this.minutes : this.minutes;
 
-            this.$hoursText.val(h);
-            this.$minutesText.val(m)
+            this.$hoursText.html(h);
+            this.$minutesText.html(m)
         },
 
 
@@ -1854,103 +1846,7 @@ var Datepicker;
             this[name] = value;
             this._updateTime();
             this.d._trigger('timeChange', [this.hours, this.minutes])
-        },
-
-        _onMouseUpInput: function (e) {
-            e.originalEvent.inFocus = true;
-            e.originalEvent.timepickerFocus = true;
-        },
-
-        _onKeyPressInput: function (e) {
-            var $el = $(e.target),
-                field = $el.data('field'),
-                max = $el.data('max'),
-                _this = this,
-                charCode = e.which,
-                action = $el.data('action'),
-                parsedVal,
-                initialValue = $el.val(),
-                val = $el.val();
-
-            setTimeout(function () {
-                val = $el.val();
-                parsedVal = parseInt(val);
-
-                if (parsedVal > max) {
-                    $el.val(initialValue);
-                    return;
-                }
-
-                if (val.length == 2) {
-                    if (action == 'next' && charCode >= 48 && charCode <= 57) {
-                        _this.$minutesText.focus().select();
-                    }
-                }
-
-                if (!val.length) {
-                    if (action == 'prev' && charCode == 8) {
-                        _this.$hoursText.focus();
-
-                        _this.$hoursText[0].selectionStart = 2;
-                        _this.$hoursText[0].selectionEnd = 2;
-                    }
-                }
-
-
-            }, inputTimeout);
-
-            return charCode >= 48 && charCode <= 57
-            || (charCode >= 37 && charCode <= 40)
-            || (charCode >= 96 && charCode <= 105)
-            || charCode == 17
-            || charCode == 13
-            || charCode == 46
-            || charCode == 8
-            || charCode == 9;
-        },
-
-        _onInputInput: function (e) {
-            var $el = $(e.target),
-                _this = this,
-                field = $el.data('field'),
-                max = $el.data('max'),
-                val = parseInt($el.val());
-
-            setTimeout(function () {
-                val = parseInt($el.val());
-
-                if (val > max) {
-                    val = max;
-                    $el.val(val);
-                } else if (!val) {
-                    val = _this['_' + field]
-                }
-
-                _this[field] = val;
-                $('[name="' + field + '"]').val(val);
-                _this.d._trigger('timeChange',[_this.hours, _this.minutes])
-            }, inputTimeout)
-        },
-
-        _onBlurInput: function (e) {
-            var $el = $(e.target),
-                val = $el.val();
-
-            if (val.length == 1) {
-                val = '0' + val;
-                $el.val(val);
-            }
-        },
-
-        _onPasteInput: function (e) {
-            var $el = $(e.target),
-                val = $el.val(),
-                _this = this;
-
-            setTimeout(function () {
-                val = $el.val().replace(/\D/gi, '');
-                $el.val(val);
-            }, inputTimeout)
         }
+
     };
 })(window, jQuery, Datepicker);

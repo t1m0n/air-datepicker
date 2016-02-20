@@ -428,19 +428,9 @@
   font-size: 14px;
   text-align: center;
   margin: 0 0 0 10px; }
-  .datepicker--time-current input[type='text'] {
-    box-sizing: content-box;
-    border: none;
-    padding: 0 3px;
-    margin: 0;
-    outline: none;
-    box-shadow: none;
-    font-size: 14px;
-    width: 18px;
-    height: 23px; }
-  .datepicker--time-current span {
-    line-height: 1;
-    margin: 0 -2px; }
+
+.datepicker--time-current-colon {
+  margin: 0 1px; }
 
 .datepicker--time-row {
   display: -webkit-flex;

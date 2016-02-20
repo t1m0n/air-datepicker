@@ -1257,7 +1257,7 @@ var Datepicker;
     };
 
     datepicker.getLeadingZeroNum = function (num) {
-        return parseInt(num) < 0 ? '0' + num : num;
+        return parseInt(num) < 10 ? '0' + num : num;
     };
 
     Datepicker.language = {
