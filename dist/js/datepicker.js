@@ -381,6 +381,9 @@ var Datepicker;
 
             if (!(date instanceof Date)) return;
 
+            _this._trigger('selectDate', date);
+
+            //TODO стоит убрать в timepicker.js
             if (this.timepicker) {
                 date.setHours(this.timepicker.hours);
                 date.setMinutes(this.timepicker.minutes);
@@ -1779,26 +1782,61 @@ var Datepicker;
     datepicker.Timepicker.prototype = {
         init: function () {
             var input = 'input';
-            this._setValidTimes(this.d.date);
+            this._setInitialTime(this.d.date);
             this._buildHTML();
 
             if (navigator.userAgent.match(/trident/gi)) {
                 input = 'change';
             }
 
+            this.d.$el.on('selectDate', this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
         },
 
-        _setValidTimes: function (date) {
-            var _date = datepicker.getParsedDate(date),
-                maxHours = 23;
+        _setInitialTime: function (date, parse) {
+            var _date = datepicker.getParsedDate(date);
+
+            this._handleDate(date);
+            this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
+            this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
+        },
+
+        _setMinTimeFromDate: function (date) {
+            this.minHours = date.getHours();
+            this.minMinutes = date.getMinutes();
+        },
+
+        _setMaxTimeFromDate: function (date) {
+            this.maxHours = date.getHours();
+            this.maxMinutes = date.getMinutes();
+        },
+
+        _setDefaultMinMaxTime: function () {
+            var maxHours = 23;
 
             this.minHours = this.opts.minHours;
             this.minMinutes = this.opts.minMinutes;
             this.maxHours = this.opts.maxHours > maxHours ? maxHours : this.opts.maxHours;
             this.maxMinutes = this.opts.maxMinutes > 59 ? 59 : this.opts.maxMinutes;
-            this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
-            this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
+        },
+
+        /**
+         * Looks for min/max hours/minutes and if current values
+         * are out of range sets valid values.
+         * @private
+         */
+        _validateHoursMinutes: function () {
+            if (this.hours < this.minHours) {
+                this.hours = this.minHours;
+            } else if (this.hours > this.maxHours) {
+                this.hours = this.maxHours;
+            }
+
+            if (this.minutes < this.minMinutes) {
+                this.minutes = this.minMinutes;
+            } else if (this.minutes > this.maxMinutes) {
+                this.minutes = this.maxMinutes;
+            }
         },
 
         _buildHTML: function () {
@@ -1817,7 +1855,8 @@ var Datepicker;
 
             this.$timepicker = $(_template).appendTo(this.d.$datepicker);
             this.$ranges = $('[type="range"]', this.$timepicker);
-            this.$currentInputs = $('input[type="text"]', this.$timepicker);
+            this.$hours = $('[name="hours"]', this.$timepicker);
+            this.$minutes = $('[name="minutes"]', this.$timepicker);
             this.$hoursText = $('.datepicker--time-current-hours', this.$timepicker);
             this.$minutesText = $('.datepicker--time-current-minutes', this.$timepicker);
         },
@@ -1826,12 +1865,38 @@ var Datepicker;
 
         },
 
-        _updateTime: function () {
-            var h = this.hours < 10 ? '0'+this.hours : this.hours,
+        _updateCurrentTime: function () {
+            var h = this.hours < 10 ? '0' + this.hours : this.hours,
                 m = this.minutes < 10 ? '0' + this.minutes : this.minutes;
 
             this.$hoursText.html(h);
             this.$minutesText.html(m)
+        },
+
+        _updateRanges: function () {
+            this.$hours.attr({
+                min: this.minHours,
+                max: this.maxHours,
+                value: this.hours
+            }).change();
+
+            this.$minutes.attr({
+                min: this.minMinutes,
+                max: this.maxMinutes,
+                value: this.minutes
+            }).change();
+        },
+
+        _handleDate: function (date) {
+            if (datepicker.isSame(date, this.d.opts.minDate)) {
+                this._setMinTimeFromDate(this.d.opts.minDate);
+            } else if (datepicker.isSame(date, this.d.opts.maxDate)) {
+                this._setMaxTimeFromDate(this.d.opts.maxDate);
+            } else {
+                this._setDefaultMinMaxTime();
+            }
+
+            this._validateHoursMinutes();
         },
 
 
@@ -1840,12 +1905,17 @@ var Datepicker;
 
         _onChangeRange: function (e) {
             var $target = $(e.target),
-                value = $target.val(),
                 name = $target.attr('name');
 
-            this[name] = value;
-            this._updateTime();
+            this[name] = $target.val();
+            this._updateCurrentTime();
             this.d._trigger('timeChange', [this.hours, this.minutes])
+        },
+
+        _onSelectDate: function (e, data) {
+            this._handleDate(data);
+            this._updateRanges();
+            this._updateCurrentTime();
         }
 
     };

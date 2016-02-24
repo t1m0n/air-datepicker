@@ -381,6 +381,9 @@ var Datepicker;
 
             if (!(date instanceof Date)) return;
 
+            _this._trigger('selectDate', date);
+
+            //TODO стоит убрать в timepicker.js
             if (this.timepicker) {
                 date.setHours(this.timepicker.hours);
                 date.setMinutes(this.timepicker.minutes);
