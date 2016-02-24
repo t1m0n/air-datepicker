@@ -29,6 +29,7 @@ var Datepicker;
 
             view: 'days',
             minView: 'days',
+            maxView: 'years',
 
             showOtherMonths: true,
             selectOtherMonths: true,
