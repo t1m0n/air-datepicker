@@ -381,6 +381,8 @@ var Datepicker;
 
             if (!(date instanceof Date)) return;
 
+            this.lastSelectedDate = date;
+
             _this._trigger('selectDate', date);
 
             //TODO стоит убрать в timepicker.js
@@ -465,6 +467,9 @@ var Datepicker;
                     if (!_this.selectedDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
+                        _this.lastSelectedDate = '';
+                    } else {
+                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -526,6 +531,12 @@ var Datepicker;
 
             if (this.opts.classes) {
                 this.$datepicker.addClass(this.opts.classes)
+            }
+
+            if (this.opts.timepicker) {
+                this.timepicker._handleDate(this.lastSelectedDate);
+                this.timepicker._updateRanges();
+                this.timepicker._updateCurrentTime()
             }
 
             return this;
@@ -1082,7 +1093,7 @@ var Datepicker;
 
             if (selectedDates.length) {
                 selected = true;
-                date = this.selectedDates[this.selectedDates.length - 1]
+                date = this.lastSelectedDate;
             }
 
             date.setHours(h);
@@ -1091,7 +1102,6 @@ var Datepicker;
             if (!selected) {
                 this.selectDate(date);
             } else {
-                this.selectedDates[selectedDates.length - 1] = date;
                 this._setInputValue();
                 this._triggerOnChange();
             }

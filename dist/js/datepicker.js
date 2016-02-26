@@ -381,6 +381,8 @@ var Datepicker;
 
             if (!(date instanceof Date)) return;
 
+            this.lastSelectedDate = date;
+
             _this._trigger('selectDate', date);
 
             //TODO стоит убрать в timepicker.js
@@ -465,6 +467,9 @@ var Datepicker;
                     if (!_this.selectedDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
+                        _this.lastSelectedDate = '';
+                    } else {
+                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -526,6 +531,12 @@ var Datepicker;
 
             if (this.opts.classes) {
                 this.$datepicker.addClass(this.opts.classes)
+            }
+
+            if (this.opts.timepicker) {
+                this.timepicker._handleDate(this.lastSelectedDate);
+                this.timepicker._updateRanges();
+                this.timepicker._updateCurrentTime()
             }
 
             return this;
@@ -1082,7 +1093,7 @@ var Datepicker;
 
             if (selectedDates.length) {
                 selected = true;
-                date = this.selectedDates[this.selectedDates.length - 1]
+                date = this.lastSelectedDate;
             }
 
             date.setHours(h);
@@ -1091,7 +1102,6 @@ var Datepicker;
             if (!selected) {
                 this.selectDate(date);
             } else {
-                this.selectedDates[selectedDates.length - 1] = date;
                 this._setInputValue();
                 this._triggerOnChange();
             }
@@ -1812,12 +1822,13 @@ var Datepicker;
         },
 
         _setDefaultMinMaxTime: function () {
-            var maxHours = 23;
+            var maxHours = 23,
+                opts = this.opts;
 
-            this.minHours = this.opts.minHours;
-            this.minMinutes = this.opts.minMinutes;
-            this.maxHours = this.opts.maxHours > maxHours ? maxHours : this.opts.maxHours;
-            this.maxMinutes = this.opts.maxMinutes > 59 ? 59 : this.opts.maxMinutes;
+            this.minHours = opts.minHours < 0 || opts.minHours > maxHours ? 0 : opts.minHours;
+            this.minMinutes = opts.minMinutes < 0 || opts.minMinutes > 59 ? 0 : opts.minMinutes;
+            this.maxHours = opts.maxHours < 0 || opts.maxHours > maxHours ? maxHours : opts.maxHours;
+            this.maxMinutes = opts.maxMinutes < 0 || opts.maxMinutes > 59 ? 59 : opts.maxMinutes;
         },
 
         /**
@@ -1887,18 +1898,25 @@ var Datepicker;
             }).change();
         },
 
+        /**
+         * Sets minHours, minMinutes etc. from date. If date is not passed, than sets
+         * values from options
+         * @param [date] {object} - Date object, to get values from
+         * @private
+         */
         _handleDate: function (date) {
-            if (datepicker.isSame(date, this.d.opts.minDate)) {
-                this._setMinTimeFromDate(this.d.opts.minDate);
-            } else if (datepicker.isSame(date, this.d.opts.maxDate)) {
-                this._setMaxTimeFromDate(this.d.opts.maxDate);
-            } else {
-                this._setDefaultMinMaxTime();
+            this._setDefaultMinMaxTime();
+
+            if (date) {
+                if (datepicker.isSame(date, this.d.opts.minDate)) {
+                    this._setMinTimeFromDate(this.d.opts.minDate);
+                } else if (datepicker.isSame(date, this.d.opts.maxDate)) {
+                    this._setMaxTimeFromDate(this.d.opts.maxDate);
+                }
             }
 
             this._validateHoursMinutes();
         },
-
 
         //  Events
         // -------------------------------------------------
@@ -1917,6 +1935,5 @@ var Datepicker;
             this._updateRanges();
             this._updateCurrentTime();
         }
-
     };
 })(window, jQuery, Datepicker);

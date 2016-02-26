@@ -64,12 +64,13 @@
         },
 
         _setDefaultMinMaxTime: function () {
-            var maxHours = 23;
+            var maxHours = 23,
+                opts = this.opts;
 
-            this.minHours = this.opts.minHours;
-            this.minMinutes = this.opts.minMinutes;
-            this.maxHours = this.opts.maxHours > maxHours ? maxHours : this.opts.maxHours;
-            this.maxMinutes = this.opts.maxMinutes > 59 ? 59 : this.opts.maxMinutes;
+            this.minHours = opts.minHours < 0 || opts.minHours > maxHours ? 0 : opts.minHours;
+            this.minMinutes = opts.minMinutes < 0 || opts.minMinutes > 59 ? 0 : opts.minMinutes;
+            this.maxHours = opts.maxHours < 0 || opts.maxHours > maxHours ? maxHours : opts.maxHours;
+            this.maxMinutes = opts.maxMinutes < 0 || opts.maxMinutes > 59 ? 59 : opts.maxMinutes;
         },
 
         /**
@@ -139,18 +140,25 @@
             }).change();
         },
 
+        /**
+         * Sets minHours, minMinutes etc. from date. If date is not passed, than sets
+         * values from options
+         * @param [date] {object} - Date object, to get values from
+         * @private
+         */
         _handleDate: function (date) {
-            if (datepicker.isSame(date, this.d.opts.minDate)) {
-                this._setMinTimeFromDate(this.d.opts.minDate);
-            } else if (datepicker.isSame(date, this.d.opts.maxDate)) {
-                this._setMaxTimeFromDate(this.d.opts.maxDate);
-            } else {
-                this._setDefaultMinMaxTime();
+            this._setDefaultMinMaxTime();
+
+            if (date) {
+                if (datepicker.isSame(date, this.d.opts.minDate)) {
+                    this._setMinTimeFromDate(this.d.opts.minDate);
+                } else if (datepicker.isSame(date, this.d.opts.maxDate)) {
+                    this._setMaxTimeFromDate(this.d.opts.maxDate);
+                }
             }
 
             this._validateHoursMinutes();
         },
-
 
         //  Events
         // -------------------------------------------------
@@ -169,6 +177,5 @@
             this._updateRanges();
             this._updateCurrentTime();
         }
-
     };
 })(window, jQuery, Datepicker);
