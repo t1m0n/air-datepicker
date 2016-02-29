@@ -64,6 +64,8 @@ var Datepicker;
 
             // timepicker
             timepicker: false,
+            dateTimeSeparator: ' ',
+            timeFormat: '',
             minHours: 0,
             minMinutes: 0,
             maxHours: 24,
@@ -225,8 +227,20 @@ var Datepicker;
                 this.loc.dateFormat = this.opts.dateFormat
             }
 
+            if (this.opts.timeFormat) {
+                this.loc.timeFormat = this.opts.timeFormat
+            }
+
             if (this.opts.firstDay !== '') {
                 this.loc.firstDay = this.opts.firstDay
+            }
+
+            if (this.opts.timepicker) {
+                this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
+            }
+
+            if (this.loc.timeFormat.match(this._getWordBoundaryRegExp('a'))) {
+               this.ampm = true;
             }
         },
 
@@ -324,12 +338,26 @@ var Datepicker;
             var result = string,
                 boundary = this._getWordBoundaryRegExp,
                 locale = this.loc,
+                leadingZero = datepicker.getLeadingZeroNum,
                 decade = datepicker.getDecade(date),
-                d = datepicker.getParsedDate(date);
+                d = datepicker.getParsedDate(date),
+                fullHours = d.fullHours,
+                hours = d.hours,
+                dayPeriod = 'am',
+                validHours;
+
+            if (this.opts.timepicker && this.timepicker && this.ampm) {
+                validHours = this.timepicker._getValidHoursFromDate(date);
+                fullHours = leadingZero(validHours.hours);
+                hours = validHours.hours;
+                dayPeriod = validHours.dayPeriod;
+            }
 
             switch (true) {
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
+                case /a/.test(result):
+                    result = result.replace(boundary('a'), dayPeriod);
                 case /dd/.test(result):
                     result = result.replace(boundary('dd'), d.fullDate);
                 case /d/.test(result):
@@ -351,9 +379,9 @@ var Datepicker;
                 case /i/.test(result):
                     result = result.replace(/\bi(?!>)\b/, d.minutes);
                 case /hh/.test(result):
-                    result = result.replace(/\bhh\b/, d.fullHours);
+                    result = result.replace(/\bhh\b/, fullHours);
                 case /h/.test(result):
-                    result = result.replace(/\bh\b/, d.hours);
+                    result = result.replace(/\bh\b/, hours);
                 case /yyyy/.test(result):
                     result = result.replace(boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
@@ -1283,6 +1311,7 @@ var Datepicker;
             today: 'Сегодня',
             clear: 'Очистить',
             dateFormat: 'dd.mm.yyyy',
+            timeFormat: 'hh:ii',
             firstDay: 1
         }
     };
@@ -1877,8 +1906,8 @@ var Datepicker;
         },
 
         _updateCurrentTime: function () {
-            var h = this.hours < 10 ? '0' + this.hours : this.hours,
-                m = this.minutes < 10 ? '0' + this.minutes : this.minutes;
+            var h =  datepicker.getLeadingZeroNum(this.displayHours),
+                m = datepicker.getLeadingZeroNum(this.minutes);
 
             this.$hoursText.html(h);
             this.$minutesText.html(m)
@@ -1918,6 +1947,47 @@ var Datepicker;
             this._validateHoursMinutes();
         },
 
+        /**
+         * Calculates valid hour value to display in text input and datepicker's body.
+         * @param date {Date|Number} - date or hours
+         * @returns {{hours: *, dayPeriod: string}}
+         * @private
+         */
+        _getValidHoursFromDate: function (date) {
+            var d = date,
+                hours = date;
+
+            if (date instanceof Date) {
+                d = datepicker.getParsedDate(date);
+                hours = d.hours;
+            }
+
+            var ampm = this.d.ampm,
+                dayPeriod = 'am';
+
+            if (ampm) {
+                switch(true) {
+                    case hours == 0:
+                        hours = 12;
+                        break;
+                    case hours == 12:
+                        dayPeriod = 'pm';
+                        break;
+                    case hours > 11:
+                        hours = hours - 12;
+                        dayPeriod = 'pm';
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return {
+                hours: hours,
+                dayPeriod: dayPeriod
+            }
+        },
+
         //  Events
         // -------------------------------------------------
 
@@ -1934,6 +2004,19 @@ var Datepicker;
             this._handleDate(data);
             this._updateRanges();
             this._updateCurrentTime();
+        },
+
+        set hours (val) {
+            this._hours = val;
+
+            var displayHours = this._getValidHoursFromDate(val);
+
+            this.displayHours = displayHours.hours;
+            this.dayPeriod = displayHours.dayPeriod;
+        },
+
+        get hours() {
+            return this._hours;
         }
     };
 })(window, jQuery, Datepicker);

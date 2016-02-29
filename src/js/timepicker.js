@@ -119,8 +119,8 @@
         },
 
         _updateCurrentTime: function () {
-            var h = this.hours < 10 ? '0' + this.hours : this.hours,
-                m = this.minutes < 10 ? '0' + this.minutes : this.minutes;
+            var h =  datepicker.getLeadingZeroNum(this.displayHours),
+                m = datepicker.getLeadingZeroNum(this.minutes);
 
             this.$hoursText.html(h);
             this.$minutesText.html(m)
@@ -160,6 +160,47 @@
             this._validateHoursMinutes();
         },
 
+        /**
+         * Calculates valid hour value to display in text input and datepicker's body.
+         * @param date {Date|Number} - date or hours
+         * @returns {{hours: *, dayPeriod: string}}
+         * @private
+         */
+        _getValidHoursFromDate: function (date) {
+            var d = date,
+                hours = date;
+
+            if (date instanceof Date) {
+                d = datepicker.getParsedDate(date);
+                hours = d.hours;
+            }
+
+            var ampm = this.d.ampm,
+                dayPeriod = 'am';
+
+            if (ampm) {
+                switch(true) {
+                    case hours == 0:
+                        hours = 12;
+                        break;
+                    case hours == 12:
+                        dayPeriod = 'pm';
+                        break;
+                    case hours > 11:
+                        hours = hours - 12;
+                        dayPeriod = 'pm';
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return {
+                hours: hours,
+                dayPeriod: dayPeriod
+            }
+        },
+
         //  Events
         // -------------------------------------------------
 
@@ -176,6 +217,19 @@
             this._handleDate(data);
             this._updateRanges();
             this._updateCurrentTime();
+        },
+
+        set hours (val) {
+            this._hours = val;
+
+            var displayHours = this._getValidHoursFromDate(val);
+
+            this.displayHours = displayHours.hours;
+            this.dayPeriod = displayHours.dayPeriod;
+        },
+
+        get hours() {
+            return this._hours;
         }
     };
 })(window, jQuery, Datepicker);

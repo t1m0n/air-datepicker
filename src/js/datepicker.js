@@ -64,6 +64,8 @@ var Datepicker;
 
             // timepicker
             timepicker: false,
+            dateTimeSeparator: ' ',
+            timeFormat: '',
             minHours: 0,
             minMinutes: 0,
             maxHours: 24,
@@ -225,8 +227,20 @@ var Datepicker;
                 this.loc.dateFormat = this.opts.dateFormat
             }
 
+            if (this.opts.timeFormat) {
+                this.loc.timeFormat = this.opts.timeFormat
+            }
+
             if (this.opts.firstDay !== '') {
                 this.loc.firstDay = this.opts.firstDay
+            }
+
+            if (this.opts.timepicker) {
+                this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
+            }
+
+            if (this.loc.timeFormat.match(this._getWordBoundaryRegExp('a'))) {
+               this.ampm = true;
             }
         },
 
@@ -324,12 +338,26 @@ var Datepicker;
             var result = string,
                 boundary = this._getWordBoundaryRegExp,
                 locale = this.loc,
+                leadingZero = datepicker.getLeadingZeroNum,
                 decade = datepicker.getDecade(date),
-                d = datepicker.getParsedDate(date);
+                d = datepicker.getParsedDate(date),
+                fullHours = d.fullHours,
+                hours = d.hours,
+                dayPeriod = 'am',
+                validHours;
+
+            if (this.opts.timepicker && this.timepicker && this.ampm) {
+                validHours = this.timepicker._getValidHoursFromDate(date);
+                fullHours = leadingZero(validHours.hours);
+                hours = validHours.hours;
+                dayPeriod = validHours.dayPeriod;
+            }
 
             switch (true) {
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
+                case /a/.test(result):
+                    result = result.replace(boundary('a'), dayPeriod);
                 case /dd/.test(result):
                     result = result.replace(boundary('dd'), d.fullDate);
                 case /d/.test(result):
@@ -351,9 +379,9 @@ var Datepicker;
                 case /i/.test(result):
                     result = result.replace(/\bi(?!>)\b/, d.minutes);
                 case /hh/.test(result):
-                    result = result.replace(/\bhh\b/, d.fullHours);
+                    result = result.replace(/\bhh\b/, fullHours);
                 case /h/.test(result):
-                    result = result.replace(/\bh\b/, d.hours);
+                    result = result.replace(/\bh\b/, hours);
                 case /yyyy/.test(result):
                     result = result.replace(boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
@@ -1283,6 +1311,7 @@ var Datepicker;
             today: 'Сегодня',
             clear: 'Очистить',
             dateFormat: 'dd.mm.yyyy',
+            timeFormat: 'hh:ii',
             firstDay: 1
         }
     };
