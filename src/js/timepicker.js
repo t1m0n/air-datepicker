@@ -112,6 +112,11 @@
             this.$minutes = $('[name="minutes"]', this.$timepicker);
             this.$hoursText = $('.datepicker--time-current-hours', this.$timepicker);
             this.$minutesText = $('.datepicker--time-current-minutes', this.$timepicker);
+
+            if (this.d.ampm) {
+                this.$ampm = $('<span class="datepicker--time-current-ampm">')
+                    .appendTo($('.datepicker--time-current', this.$timepicker));
+            }
         },
 
         _render: function () {
@@ -123,7 +128,11 @@
                 m = datepicker.getLeadingZeroNum(this.minutes);
 
             this.$hoursText.html(h);
-            this.$minutesText.html(m)
+            this.$minutesText.html(m);
+
+            if (this.d.ampm) {
+                this.$ampm.html(this.dayPeriod);
+            }
         },
 
         _updateRanges: function () {

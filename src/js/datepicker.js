@@ -239,7 +239,10 @@ var Datepicker;
                 this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
             }
 
-            if (this.loc.timeFormat.match(this._getWordBoundaryRegExp('a'))) {
+            var boundary = this._getWordBoundaryRegExp;
+            if (this.loc.timeFormat.match(boundary('aa')) ||
+                this.loc.timeFormat.match(boundary('AA'))
+            ) {
                this.ampm = true;
             }
         },
@@ -356,8 +359,10 @@ var Datepicker;
             switch (true) {
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
-                case /a/.test(result):
-                    result = result.replace(boundary('a'), dayPeriod);
+                case /aa/.test(result):
+                    result = result.replace(boundary('aa'), dayPeriod);
+                case /AA/.test(result):
+                    result = result.replace(boundary('AA'), dayPeriod.toUpperCase());
                 case /dd/.test(result):
                     result = result.replace(boundary('dd'), d.fullDate);
                 case /d/.test(result):
@@ -375,13 +380,13 @@ var Datepicker;
                 case /M/.test(result):
                     result = result.replace(boundary('M'), locale.monthsShort[d.month]);
                 case /ii/.test(result):
-                    result = result.replace(/\bii\b/, d.fullMinutes);
+                    result = result.replace(boundary('ii'), d.fullMinutes);
                 case /i/.test(result):
-                    result = result.replace(/\bi(?!>)\b/, d.minutes);
+                    result = result.replace(boundary('i'), d.minutes);
                 case /hh/.test(result):
-                    result = result.replace(/\bhh\b/, fullHours);
+                    result = result.replace(boundary('hh'), fullHours);
                 case /h/.test(result):
-                    result = result.replace(/\bh\b/, hours);
+                    result = result.replace(boundary('h'), hours);
                 case /yyyy/.test(result):
                     result = result.replace(boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
