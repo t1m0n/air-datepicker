@@ -60,12 +60,24 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-current-colon {
-  margin: 0 1px;
+  margin: 0 1px 3px;
+  line-height: 1;
 }
 
 .datepicker--time-current-hours,
 .datepicker--time-current-minutes {
+  line-height: 1;
+  font-size: 19px;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
 
+.datepicker--time-current-ampm {
+  text-transform: uppercase;
+  align-self: flex-end;
+  color: map_get($textColor, navArrows);
+  margin-left: 6px;
+  font-size: 11px;
+  margin-bottom: 1px;
 }
 
 .datepicker--time-row {
@@ -185,3 +197,4 @@ $rangeThumbBg: #dedede;
     left: calc(50% - 1px);
   }
 }
+

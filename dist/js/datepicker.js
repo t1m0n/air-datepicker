@@ -1808,13 +1808,11 @@ var Datepicker;
         '   </div>' +
         '</div>' +
         '<div class="datepicker--time-current">' +
-        '   <i class="datepicker--time-icon"></i>' +
-        '   <span data-max="#{hourMax}" class="datepicker--time-current-hours">#{hourValue}</span>' +
+        '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
         '   <span class="datepicker--time-current-colon">:</span>' +
-        '   <span data-max="#{hourMax}" class="datepicker--time-current-minutes">#{minValue}</span>' +
+        '   <span class="datepicker--time-current-minutes">#{minValue}</span>' +
         '</div>' +
-        '</div>',
-        inputTimeout = 10;
+        '</div>';
 
     datepicker.Timepicker = function (inst, opts) {
         this.d = inst;
