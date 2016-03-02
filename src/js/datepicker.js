@@ -1132,7 +1132,7 @@ var Datepicker;
             date.setHours(h);
             date.setMinutes(m);
 
-            if (!selected) {
+            if (!selected && !this._getCell(date).hasClass('-disabled-')) {
                 this.selectDate(date);
             } else {
                 this._setInputValue();

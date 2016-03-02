@@ -457,8 +457,10 @@
       -ms-flex-align: center;
           align-items: center;
   font-size: 11px;
-  height: 18px;
+  height: 17px;
   background: linear-gradient(to right, #dedede, #dedede) left 50%/100% 1px no-repeat; }
+  .datepicker--time-row:first-child {
+    margin-bottom: 4px; }
   .datepicker--time-row input[type='range'] {
     background: none;
     cursor: pointer;

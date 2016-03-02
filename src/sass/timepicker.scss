@@ -84,8 +84,12 @@ $rangeThumbBg: #dedede;
   display: flex;
   align-items: center;
   font-size: 11px;
-  height: 18px;
+  height: 17px;
   background: linear-gradient(to right,$rangeTrackBg, $rangeTrackBg) left 50%/100% $rangeTrackHeight no-repeat;
+
+  &:first-child {
+    margin-bottom: 4px;
+  }
 
   input[type='range'] {
     background: none;

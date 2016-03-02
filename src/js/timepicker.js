@@ -1,24 +1,17 @@
 (function (window, $, datepicker) {
-    //TODO включить время в минимальную и максимальную дату
-    //TODO возможность задания минимальных и максимальных минут/часов
-    //TODO возможность задания шага для часов минут
-    //TODO возоможность задавать определенные часы и минуты
-
     var template = '<div class="datepicker--time">' +
-        '<div class="datepicker--time-sliders">' +
-        '   <label class="datepicker--time-label">#{hourLabel}</label>' +
-        '   <div class="datepicker--time-row">' +
-        '      <input type="range" name="hours" value="#{hourValue}" min="#{hourMin}" max="#{hourMax}" step="#{hourStep}"/>' +
-        '   </div>' +
-        '   <label class="datepicker--time-label">#{minLabel}</label>' +
-        '   <div class="datepicker--time-row">' +
-        '      <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
-        '   </div>' +
-        '</div>' +
         '<div class="datepicker--time-current">' +
         '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
         '   <span class="datepicker--time-current-colon">:</span>' +
         '   <span class="datepicker--time-current-minutes">#{minValue}</span>' +
+        '</div>' +
+        '<div class="datepicker--time-sliders">' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="hours" value="#{hourValue}" min="#{hourMin}" max="#{hourMax}" step="#{hourStep}"/>' +
+        '   </div>' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
+        '   </div>' +
         '</div>' +
         '</div>';
 
@@ -63,12 +56,13 @@
 
         _setDefaultMinMaxTime: function () {
             var maxHours = 23,
+                maxMinutes = 59,
                 opts = this.opts;
 
             this.minHours = opts.minHours < 0 || opts.minHours > maxHours ? 0 : opts.minHours;
-            this.minMinutes = opts.minMinutes < 0 || opts.minMinutes > 59 ? 0 : opts.minMinutes;
+            this.minMinutes = opts.minMinutes < 0 || opts.minMinutes > maxMinutes ? 0 : opts.minMinutes;
             this.maxHours = opts.maxHours < 0 || opts.maxHours > maxHours ? maxHours : opts.maxHours;
-            this.maxMinutes = opts.maxMinutes < 0 || opts.maxMinutes > 59 ? 59 : opts.maxMinutes;
+            this.maxMinutes = opts.maxMinutes < 0 || opts.maxMinutes > maxMinutes ? maxMinutes : opts.maxMinutes;
         },
 
         /**
@@ -115,10 +109,6 @@
                 this.$ampm = $('<span class="datepicker--time-current-ampm">')
                     .appendTo($('.datepicker--time-current', this.$timepicker));
             }
-        },
-
-        _render: function () {
-
         },
 
         _updateCurrentTime: function () {
