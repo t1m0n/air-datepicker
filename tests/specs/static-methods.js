@@ -19,7 +19,7 @@ describe('Datepicker', function () {
             date = Datepicker.getParsedDate(currentDate);
 
         it('should return object with detailed date fields', function () {
-            expect(date).to.have.all.keys(['year','month','fullMonth','date', 'fullDate', 'day']);
+            expect(date).to.have.all.keys(['year','month','fullMonth','date', 'fullDate', 'day','hours', 'fullHours', 'minutes', 'fullMinutes']);
         });
 
         describe('.year', function () {
@@ -51,8 +51,28 @@ describe('Datepicker', function () {
             it('`day` must be equal to current day', function () {
                 assert.equal(currentDate.getDay(), date.day);
             })
+        });
+        describe('.hours', function () {
+            it('`hours` must be equal to current hours', function () {
+                assert.equal(currentDate.getHours(), date.hours);
+            })
+        });
+        describe('.fullHours', function () {
+            it('`fullHours` must be equal to current hours with leading zero', function () {
+                assert.equal(currentDate.getHours() < 10 ? '0' + currentDate.getHours() : currentDate.getHours(), date.hours);
+            })
+        });
+        describe('.minutes', function () {
+            it('`minutes` must be equal to current minutes', function () {
+                assert.equal(currentDate.getMinutes(), date.minutes);
+            })
+        });
+        describe('.fullMinutes', function () {
+            it('`fullMinutes` must be equal to current hours with leading zero', function () {
+                assert.equal(currentDate.getMinutes() < 10 ? '0' + currentDate.getMinutes() : currentDate.getMinutes(), date.fullMinutes);
+            })
         })
-    })
+    });
 
     describe('getDecade', function () {
         it('should return array with first and last years in decade', function () {

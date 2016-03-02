@@ -121,9 +121,15 @@ describe('Options', function () {
     });
 
     describe('dateFormat', function () {
-        var date = new Date(2015, 6, 4),
+        var date = new Date(2015, 6, 4, 11, 5),
             formats = {
                 '@': date.getTime(),
+                'aa': 'am',
+                'AA': 'AM',
+                'h': 11,
+                'hh': 11,
+                'i': 5,
+                'ii': '05',
                 'dd': '04',
                 'd': 4,
                 'DD': 'Суббота',
@@ -807,4 +813,16 @@ describe('Options', function () {
 
         });
     });
+
+    describe('timepicker', function () {
+        it('should add timepicker to calendar', function () {
+            dp = $input.datepicker({
+                timepicker: true
+            }).data('datepicker');
+
+            var $time = $('.datepicker--time', dp.$datepicker);
+            expect($time).to.have.length(1)
+
+        })
+    })
 });
