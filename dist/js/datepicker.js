@@ -160,6 +160,7 @@ var Datepicker;
                 }
                 this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
                 this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
+                this.$el.on('clickCell.adp', this._onClickCell.bind(this));
             }
 
             if (this.opts.classes) {
@@ -416,12 +417,21 @@ var Datepicker;
 
             this.lastSelectedDate = date;
 
+            // Set new time values from Date
+            if (this.timepicker) {
+                this.timepicker.hours = date.getHours();
+                this.timepicker.minutes = date.getMinutes();
+            }
+
+            // On this step timepicker will set valid values in it's instance
             _this._trigger('selectDate', date);
 
-            //TODO стоит убрать в timepicker.js
+            // Set correct time values after timepicker's validation
+            // Prevent from setting hours or minutes which values are lesser then `min` value or
+            // greater then `max` value
             if (this.timepicker) {
-                date.setHours(this.timepicker.hours);
-                date.setMinutes(this.timepicker.minutes);
+                date.setHours(this.timepicker.hours)
+                date.setMinutes(this.timepicker.minutes)
             }
 
             if (_this.view == 'days') {
@@ -1140,6 +1150,14 @@ var Datepicker;
             }
         },
 
+        _onClickCell: function (e, date) {
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes);
+            }
+            this.selectDate(date);
+        },
+
         set focused(val) {
             if (!val && this.focused) {
                 var $cell = this._getCell(this.focused);
@@ -1632,7 +1650,7 @@ var Datepicker;
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
-                this.d.selectDate(selectedDate);
+                this.d._trigger('clickCell', selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
             }
@@ -1862,7 +1880,7 @@ var Datepicker;
          * are out of range sets valid values.
          * @private
          */
-        _validateHoursMinutes: function () {
+        _validateHoursMinutes: function (date) {
             if (this.hours < this.minHours) {
                 this.hours = this.minHours;
             } else if (this.hours > this.maxHours) {
@@ -1946,7 +1964,12 @@ var Datepicker;
                 }
             }
 
-            this._validateHoursMinutes();
+            this._validateHoursMinutes(date);
+        },
+
+        update: function () {
+            this._updateRanges();
+            this._updateCurrentTime();
         },
 
         /**
@@ -2004,8 +2027,7 @@ var Datepicker;
 
         _onSelectDate: function (e, data) {
             this._handleDate(data);
-            this._updateRanges();
-            this._updateCurrentTime();
+            this.update();
         },
 
         set hours (val) {

@@ -70,7 +70,7 @@
          * are out of range sets valid values.
          * @private
          */
-        _validateHoursMinutes: function () {
+        _validateHoursMinutes: function (date) {
             if (this.hours < this.minHours) {
                 this.hours = this.minHours;
             } else if (this.hours > this.maxHours) {
@@ -154,7 +154,12 @@
                 }
             }
 
-            this._validateHoursMinutes();
+            this._validateHoursMinutes(date);
+        },
+
+        update: function () {
+            this._updateRanges();
+            this._updateCurrentTime();
         },
 
         /**
@@ -212,8 +217,7 @@
 
         _onSelectDate: function (e, data) {
             this._handleDate(data);
-            this._updateRanges();
-            this._updateCurrentTime();
+            this.update();
         },
 
         set hours (val) {

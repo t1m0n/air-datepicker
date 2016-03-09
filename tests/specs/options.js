@@ -824,5 +824,37 @@ describe('Options', function () {
             expect($time).to.have.length(1)
 
         })
+    });
+
+    describe('dateTimeSeparator', function () {
+        it('should define separator between date string and time', function () {
+            var date = new Date(2016,2,9,11,24);
+            dp = $input.datepicker({
+                timepicker: true,
+                onSelect: function (fd, d) {
+                    expect(fd).to.be.equal('09.03.2016 time separator 11:24')
+                },
+                dateTimeSeparator: ' time separator '
+            }).data('datepicker');
+
+            dp.selectDate(date);
+
+        })
+    });
+
+    describe('timeFormat', function () {
+        it('should define time format', function () {
+            var date = new Date(2016,2,9,9,4);
+            dp = $input.datepicker({
+                timepicker: true,
+                timeFormat: 'h - ii',
+                onSelect: function (fd, d) {
+                    expect(fd).to.be.equal('09.03.2016 9 - 04')
+                }
+            }).data('datepicker');
+
+            dp.selectDate(date);
+
+        })
     })
 });

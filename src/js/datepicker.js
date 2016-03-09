@@ -160,6 +160,7 @@ var Datepicker;
                 }
                 this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
                 this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
+                this.$el.on('clickCell.adp', this._onClickCell.bind(this));
             }
 
             if (this.opts.classes) {
@@ -416,12 +417,21 @@ var Datepicker;
 
             this.lastSelectedDate = date;
 
+            // Set new time values from Date
+            if (this.timepicker) {
+                this.timepicker.hours = date.getHours();
+                this.timepicker.minutes = date.getMinutes();
+            }
+
+            // On this step timepicker will set valid values in it's instance
             _this._trigger('selectDate', date);
 
-            //TODO стоит убрать в timepicker.js
+            // Set correct time values after timepicker's validation
+            // Prevent from setting hours or minutes which values are lesser then `min` value or
+            // greater then `max` value
             if (this.timepicker) {
-                date.setHours(this.timepicker.hours);
-                date.setMinutes(this.timepicker.minutes);
+                date.setHours(this.timepicker.hours)
+                date.setMinutes(this.timepicker.minutes)
             }
 
             if (_this.view == 'days') {
@@ -1138,6 +1148,14 @@ var Datepicker;
                 this._setInputValue();
                 this._triggerOnChange();
             }
+        },
+
+        _onClickCell: function (e, date) {
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes);
+            }
+            this.selectDate(date);
         },
 
         set focused(val) {
