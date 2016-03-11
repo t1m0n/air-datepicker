@@ -282,7 +282,13 @@ var Datepicker;
                 parsedSelected = datepicker.getParsedDate(selectedDates[0]),
                 formattedDates,
                 _this = this,
-                dates = new Date(parsedSelected.year, parsedSelected.month, parsedSelected.date);
+                dates = new Date(
+                    parsedSelected.year,
+                    parsedSelected.month,
+                    parsedSelected.date,
+                    parsedSelected.hours,
+                    parsedSelected.minutes
+                );
 
                 formattedDates = selectedDates.map(function (date) {
                     return _this.formatDate(_this.loc.dateFormat, date)
@@ -292,7 +298,13 @@ var Datepicker;
             if (this.opts.multipleDates || this.opts.range) {
                 dates = selectedDates.map(function(date) {
                     var parsedDate = datepicker.getParsedDate(date);
-                    return new Date(parsedDate.year, parsedDate.month, parsedDate.date)
+                    return new Date(
+                        parsedSelected.year,
+                        parsedSelected.month,
+                        parsedSelected.date,
+                        parsedSelected.hours,
+                        parsedSelected.minutes
+                    );
                 })
             }
 

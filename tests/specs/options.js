@@ -854,7 +854,70 @@ describe('Options', function () {
             }).data('datepicker');
 
             dp.selectDate(date);
+        })
+    });
 
+    describe('minHours', function () {
+        it('should set minimum hours value', function () {
+            var date = new Date();
+            date.setHours(9);
+            dp = $input.datepicker({
+                timepicker: true,
+                minHours: 10,
+                onSelect: function (fd, d) {
+                    var hours = d.getHours();
+                    expect(hours).to.be.equal(10)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    });
+
+    describe('minMinutes', function () {
+        it('should set minimum minutes value', function () {
+            var date = new Date();
+            date.setMinutes(20);
+            dp = $input.datepicker({
+                timepicker: true,
+                minMinutes: 30,
+                onSelect: function (fd, d) {
+                    var minutes = d.getMinutes();
+                    expect(minutes).to.be.equal(30)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    });
+
+    describe('maxHours', function () {
+        it('should set maximum hours value', function () {
+            var date = new Date();
+            date.setHours(20);
+            dp = $input.datepicker({
+                timepicker: true,
+                maxHours: 18,
+                onSelect: function (fd, d) {
+                    var hours = d.getHours();
+                    expect(hours).to.be.equal(18)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    });
+
+    describe('maxMinutes', function () {
+        it('should set maximum minutes value', function () {
+            var date = new Date();
+            date.setMinutes(50);
+            dp = $input.datepicker({
+                timepicker: true,
+                maxMinutes: 30,
+                onSelect: function (fd, d) {
+                    var minutes = d.getMinutes();
+                    expect(minutes).to.be.equal(30)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
         })
     })
 });
