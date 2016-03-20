@@ -90,7 +90,7 @@
                     hourMin: this.minHours,
                     hourMax: lz(this.maxHours),
                     hourStep: this.opts.hoursStep,
-                    hourValue: lz(this.hours),
+                    hourValue: lz(this.displayHours),
                     minMin: this.minMinutes,
                     minMax: lz(this.maxMinutes),
                     minStep: this.opts.minutesStep,
@@ -107,7 +107,8 @@
 
             if (this.d.ampm) {
                 this.$ampm = $('<span class="datepicker--time-current-ampm">')
-                    .appendTo($('.datepicker--time-current', this.$timepicker));
+                    .appendTo($('.datepicker--time-current', this.$timepicker))
+                    .html(this.dayPeriod)
             }
         },
 

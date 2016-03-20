@@ -160,11 +160,15 @@ var Datepicker;
                 }
                 this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
                 this.$datepicker.on('mouseup', this._onMouseUpDatepicker.bind(this));
-                this.$el.on('clickCell.adp', this._onClickCell.bind(this));
             }
 
             if (this.opts.classes) {
                 this.$datepicker.addClass(this.opts.classes)
+            }
+
+            if (this.opts.timepicker) {
+                this.timepicker = new Datepicker.Timepicker(this, this.opts);
+                this._bindTimepickerEvents();
             }
 
             this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
@@ -172,11 +176,7 @@ var Datepicker;
             this.nav = new Datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
-            if (this.opts.timepicker) {
-                this.timepicker = new Datepicker.Timepicker(this, this.opts);
-                this._bindTimepickerEvents();
-            }
-
+            this.$el.on('clickCell.adp', this._onClickCell.bind(this));
             this.$datepicker.on('mouseenter', '.datepicker--cell', this._onMouseEnterCell.bind(this));
             this.$datepicker.on('mouseleave', '.datepicker--cell', this._onMouseLeaveCell.bind(this));
 
@@ -564,6 +564,7 @@ var Datepicker;
          */
         update: function (param, value) {
             var len = arguments.length;
+
             if (len == 2) {
                 this.opts[param] = value;
             } else if (len == 1 && typeof param == 'object') {
@@ -591,8 +592,15 @@ var Datepicker;
             if (this.opts.timepicker) {
                 this.timepicker._handleDate(this.lastSelectedDate);
                 this.timepicker._updateRanges();
-                this.timepicker._updateCurrentTime()
+                this.timepicker._updateCurrentTime();
+                // Change hours and minutes if it's values have been changed through min/max hours/minutes
+                if (this.lastSelectedDate) {
+                    this.lastSelectedDate.setHours(this.timepicker.hours);
+                    this.lastSelectedDate.setMinutes(this.timepicker.minutes);
+                }
             }
+
+            this._setInputValue();
 
             return this;
         },
@@ -1158,7 +1166,9 @@ var Datepicker;
                 this.selectDate(date);
             } else {
                 this._setInputValue();
-                this._triggerOnChange();
+                if (this.opts.onSelect) {
+                    this._triggerOnChange();
+                }
             }
         },
 
@@ -1912,7 +1922,7 @@ var Datepicker;
                     hourMin: this.minHours,
                     hourMax: lz(this.maxHours),
                     hourStep: this.opts.hoursStep,
-                    hourValue: lz(this.hours),
+                    hourValue: lz(this.displayHours),
                     minMin: this.minMinutes,
                     minMax: lz(this.maxMinutes),
                     minStep: this.opts.minutesStep,
@@ -1929,7 +1939,8 @@ var Datepicker;
 
             if (this.d.ampm) {
                 this.$ampm = $('<span class="datepicker--time-current-ampm">')
-                    .appendTo($('.datepicker--time-current', this.$timepicker));
+                    .appendTo($('.datepicker--time-current', this.$timepicker))
+                    .html(this.dayPeriod)
             }
         },
 
