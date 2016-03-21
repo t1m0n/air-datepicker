@@ -1217,7 +1217,7 @@ var Datepicker;
     })
 
 })(window, jQuery);
-;(function () {
+;(function ($) {
     var templates = {
         days:'' +
         '<div class="datepicker--days datepicker--body">' +
@@ -1524,9 +1524,9 @@ var Datepicker;
             this._handleClick.bind(this)($el);
         }
     };
-})();
+})(jQuery);
 
-;(function () {
+;(function ($) {
     var template = '' +
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
@@ -1665,4 +1665,4 @@ var Datepicker;
         }
     }
 
-})();
+})(jQuery);
