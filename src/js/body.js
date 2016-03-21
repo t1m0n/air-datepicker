@@ -1,4 +1,4 @@
-;(function () {
+;(function ($) {
     var templates = {
         days:'' +
         '<div class="datepicker--days datepicker--body">' +
@@ -305,4 +305,4 @@
             this._handleClick.bind(this)($el);
         }
     };
-})();
+})(jQuery);
