@@ -1,6 +1,6 @@
-var Datepicker;
+;(function (window, $, undefined) { window.Datepicker = '';
 
-(function (window, $, undefined) {
+(function () {
     var pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
@@ -1216,7 +1216,7 @@ var Datepicker;
         $(autoInitSelector).datepicker();
     })
 
-})(window, jQuery);
+})();
 ;(function () {
     var templates = {
         days:'' +
@@ -1666,3 +1666,4 @@ var Datepicker;
     }
 
 })();
+ })(window, jQuery);
