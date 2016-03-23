@@ -271,6 +271,148 @@ block content
 					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
 
 	article
+		h2#timepicker Timepicker
+		p To enable timepicker use option
+			+example-inline('{timepicker: true}', 'js')
+			| - it will add current time and a couple of range sliders by which one can pick time.
+		p By default current user time will be set. This value can be changed by
+			+example-inline('startDate', 'js')
+			| parameter.
+
+		+example
+			+example-content
+				div.datepicker-here(data-timepicker='true', data-language='en')
+			+example-code
+				:code
+					<div class="datepicker-here" data-timepicker="true" data-language='en'></div>
+		p
+			i More detailed info about timepicker parameters you can find in <a href='#opts-timepicker' class='nav-link'>Options</a>.
+
+
+		h3#timepicker-format Time format
+		p Time format is defined in localization object or in
+			+example-inline('timeFormat', 'js')
+			| parameter. By default (in Russian language) 24 hours format is used. For enabling 12 hours mode you must add
+			+example-inline('aa', 'js')
+			| or
+			+example-inline('AA', 'js')
+			| symbol in
+			+example-inline('timeFormat', 'js')
+			|. After what 'AM' and 'PM' sings will appear in timepicker widget.
+
+		p Lets use 12 hours mode in Russian language:
+
+		+example
+			+example-content
+				input.datepicker-here(type='text' data-timepicker='true', data-time-format='hh:ii aa')
+			+example-code
+				:code
+					<div class="datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'></div>
+
+		h3#timeformat-actions Действия со временем
+		p Для задания максимально/минимально возможных значений часов или минут используйте параметры
+			+example-inline('maxHours','js')
+			| ,
+			+example-inline('minHours','js')
+			| ,
+			+example-inline('maxMinutes','js')
+			| ,
+			+example-inline('minMinutes','js')
+			| . Также время можно указывать в парамтерах
+			+example-inline('minDate','js')
+			| и
+			+example-inline('maxDate','js')
+		p Давайте создадим календарь, где пользователь может выбрать время с 09:00 до 18:00, а в субботу и воскресенье с 10:00 до 16:00.
+
+		+example
+			+example-content
+				input(type='text')#timepicker-actions-exmpl
+				script.
+					// Зададим стартовую дату
+					var start = new Date(),
+							startHours = 9;
+
+					// 09:00
+					start.setHours(9);
+					start.setMinutes(0);
+
+					// Если сегодня суббота или воскресенье - 10:00
+					if ([6, 0].indexOf(start.getDay()) != -1) {
+						start.setHours(10);
+						startHours = 10
+					}
+
+					$('#timepicker-actions-exmpl').datepicker({
+						timepicker: true,
+						startDate: start,
+						minHours: startHours,
+						maxHours: 18,
+						onSelect: function (fd, d, picker) {
+							// Ничего не делаем если выделение было снято
+							if (!d) return;
+
+							var day = d.getDay();
+							// Если выбранный день суббота или воскресенье, то устанавливаем
+							// часы для выходных, в противном случае восстанавливаем начальные значения
+							if (day == 6 || day == 0) {
+								picker.update({
+									minHours: 10,
+									maxHours: 16
+								})
+							} else {
+								picker.update({
+									minHours: 9,
+									maxHours: 18
+								})
+							}
+						}
+					})
+			+example-code
+				:code
+					<input type='text' id='timepicker-actions-exmpl' />
+					<script>
+						// Зададим стартовую дату
+						var start = new Date(),
+							startHours = 9;
+
+						// 09:00
+						start.setHours(9);
+						start.setMinutes(0);
+
+						// Если сегодня суббота или воскресенье - 10:00
+						if ([6,0].indexOf(start.getDay()) != -1) {
+							start.setHours(10);
+							startHours = 10
+						}
+
+						$('#timepicker-actions-exmpl').datepicker({
+							timepicker: true,
+							startDate: start,
+							minHours: startHours,
+							maxHours: 18,
+							onSelect: function(fd, d, picker) {
+								// Ничего не делаем если выделение было снято
+								if (!d) return;
+
+								var day = d.getDay();
+								// Если выбранный день суббота или воскресенье, то устанавливаем
+								// часы для выходных, в противном случае восстанавливаем начальные значения
+								if (day == 6 || day == 0) {
+									picker.update({
+										minHours: 10,
+										maxHours: 16
+									})
+								} else {
+									picker.update({
+										minHours: 9,
+										maxHours: 18
+									})
+								}
+							}
+						})
+					</script>
+
+	article
 		h2#localization Localization
 		p
 			| You can add your localization to object
@@ -306,7 +448,8 @@ block content
 				monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 				today: 'Today',
 				clear: 'Clear',
-				dateFormat: 'mm/dd/yy',
+				dateFormat: 'mm/dd/yyyy',
+				timeFormat: 'hh:ii aa'
 				firstDay: 0
 			};
 		p Available localizations located in
