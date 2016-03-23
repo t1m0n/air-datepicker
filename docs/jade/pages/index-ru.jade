@@ -282,6 +282,10 @@ block content
 		p Для выбора времени используйте опцию
 			+example-inline('{timepicker: true}', 'js')
 			| - она добавит время и пару ползунков, с помощью которых можно уставноить часы и минуты.
+		p По умолчанию будет установлено текущее время на компьюетере пользователя, это значение можно изменять параметром
+			+example-inline('startDate', 'js')
+			|.
+
 		+example
 			+example-content
 				div.datepicker-here(data-timepicker='true')
@@ -305,7 +309,7 @@ block content
 
 		+example
 			+example-content
-				input(type='text').datepicker-here(data-timepicker='true', data-time-format='hh:ii aa')
+				input.datepicker-here(type='text' data-timepicker='true', data-time-format='hh:ii aa')
 			+example-code
 				:code
 					<div class="datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'></div>
@@ -501,24 +505,6 @@ block content
 				li
 					+param('@')
 					| - время в миллесекундах
-				li
-					+param('h')
-					| - часы
-				li
-					+param('hh')
-					| - часы, с лидирующим нулем
-				li
-					+param('i')
-					| - минуты
-				li
-					+param('ii')
-					| - минуты, с лидирующим нулем
-				li
-					+param('aa')
-					| - период дня - 'am' или 'pm'
-				li
-					+param('AA')
-					| - период дня заглавными буквами
 				li
 					+param('d')
 					| - дата
@@ -736,6 +722,58 @@ block content
 			p Если
 				+example-inline('true')
 				| , то будет добавлена возомжность выбора времени.
+
+		.param
+			+param-header('dateTimeSeparator', 'string', '" "', 'opts-dateTimeSeparator')
+			p Разделитель между датой и временем
+
+		.param
+			+param-header('timeFormat', 'string', 'null', 'opts-timeFormat')
+			p Формат времени. По умолчанию берется из локализации. Если передать значение сюда, то оно будет иметь больший приоритет. Возможные варианты:
+			ul
+				li
+					+param('h')
+					| - часы
+				li
+					+param('hh')
+					| - часы, с лидирующим нулем
+				li
+					+param('i')
+					| - минуты
+				li
+					+param('ii')
+					| - минуты, с лидирующим нулем
+				li
+					+param('aa')
+					| - период дня - 'am' или 'pm'
+				li
+					+param('AA')
+					| - период дня заглавными буквами
+
+		.param
+			+param-header('minHours', 'number', '0', 'opts-minHours')
+			p Минимальное значение часов от 0 до 23. Нельзя выбрать час меньше, чем переданное значение.
+
+		.param
+			+param-header('maxHours', 'number', '23', 'opts-maxHours')
+			p Максимальное значение часов от 0 до 23. Нельзя выбрать час больше, чем переданное значение.
+
+		.param
+			+param-header('minMinutes', 'number', '0', 'opts-minMinutes')
+			p Минимальное значение часов от 0 до 59. Нельзя вустановить значение минут меньше, чем переданное значение.
+
+		.param
+			+param-header('maxMinutes', 'number', '59', 'opts-maxMinutes')
+			p Максимальное значение минут от 0 до 59. Нельзя вустановить значение минут больше, чем переданное значение.
+
+		.param
+			+param-header('hoursStep', 'number', '1', 'opts-hoursStep')
+			p Шаг выбора часов.
+
+		.param
+			+param-header('minutesStep', 'number', '1', 'opts-minutesStep')
+			p Шаг выбора минут.
+
 
 	article
 		h2#events События
