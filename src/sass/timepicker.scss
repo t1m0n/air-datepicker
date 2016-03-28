@@ -9,6 +9,34 @@ $rangeTrackBg: #dedede;
 $rangeThumbSize: 12px;
 $rangeThumbBg: #dedede;
 
+@mixin trackSelector {
+  &::-webkit-slider-runnable-track {
+    @content;
+  }
+
+  &::-moz-range-track {
+    @content;
+  }
+
+  &::-ms-track {
+    @content;
+  }
+}
+
+@mixin thumbSelector {
+  &::-webkit-slider-thumb {
+    @content;
+  }
+
+  &::-moz-range-thumb {
+    @content;
+  }
+
+  &::-ms-thumb {
+    @content;
+  }
+}
+
 @mixin thumb {
   box-sizing: border-box;
   height: $rangeThumbSize;
@@ -37,12 +65,19 @@ $rangeThumbBg: #dedede;
 
   padding: $datepickerPadding;
   position: relative;
+
+  &.-am-pm- {
+    .datepicker--time-sliders {
+      flex: 0 1 138px;
+      max-width: 138px;
+    }
+  }
 }
 
 .datepicker--time-sliders {
-  flex: 0 1 138px;
+  flex: 0 1 153px;
   margin-right: 10px;
-  order: 2;
+  max-width: 153px;
 }
 
 .datepicker--time-label {
@@ -60,7 +95,7 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-current-colon {
-  margin: 0 1px 3px;
+  margin: 0 2px 3px;
   line-height: 1;
 }
 
@@ -69,6 +104,27 @@ $rangeThumbBg: #dedede;
   line-height: 1;
   font-size: 19px;
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  position: relative;
+  z-index: 1;
+
+  &:after {
+    content: '';
+    background: map_get($bg, hover);
+    border-radius: $datepickerBorderRadius;
+    position: absolute;
+    left: -2px;
+    top: -3px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  &.active {
+    &:after {
+      opacity: 1;
+    }
+  }
 }
 
 .datepicker--time-current-ampm {
@@ -109,7 +165,7 @@ $rangeThumbBg: #dedede;
     }
 
     &:hover {
-      &::-webkit-slider-thumb {
+      @include thumbSelector() {
         border-color: darken($rangeTrackBg, 15);
       }
     }
@@ -117,7 +173,7 @@ $rangeThumbBg: #dedede;
     &:focus {
       outline: none;
 
-      &::-webkit-slider-thumb {
+      @include thumbSelector() {
         background: map_get($bg, selected);
         border-color: map_get($bg, selected);
       }
@@ -126,29 +182,13 @@ $rangeThumbBg: #dedede;
     //  Thumb
     // -------------------------------------------------
 
-    &::-webkit-slider-thumb {
-      @include thumb;
-    }
-
-    &::-moz-range-thumb {
-      @include thumb;
-    }
-
-    &::-ms-thumb {
+    @include thumbSelector() {
       @include thumb;
     }
 
     //  Track
     // -------------------------------------------------
-    &::-webkit-slider-runnable-track {
-      @include track;
-    }
-
-    &::-moz-range-track {
-      @include track;
-    }
-
-    &::-ms-track {
+    @include trackSelector() {
       @include track;
     }
 

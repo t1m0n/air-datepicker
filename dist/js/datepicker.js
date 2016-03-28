@@ -1866,6 +1866,8 @@ var Datepicker;
 
             this.d.$el.on('selectDate', this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
+            this.$ranges.on('mouseenter', this._onMouseEnterRange.bind(this));
+            this.$ranges.on('mouseout', this._onMouseOutRange.bind(this));
         },
 
         _setInitialTime: function (date, parse) {
@@ -1940,7 +1942,9 @@ var Datepicker;
             if (this.d.ampm) {
                 this.$ampm = $('<span class="datepicker--time-current-ampm">')
                     .appendTo($('.datepicker--time-current', this.$timepicker))
-                    .html(this.dayPeriod)
+                    .html(this.dayPeriod);
+
+                this.$timepicker.addClass('-am-pm-');
             }
         },
 
@@ -2036,6 +2040,19 @@ var Datepicker;
             }
         },
 
+        set hours (val) {
+            this._hours = val;
+
+            var displayHours = this._getValidHoursFromDate(val);
+
+            this.displayHours = displayHours.hours;
+            this.dayPeriod = displayHours.dayPeriod;
+        },
+
+        get hours() {
+            return this._hours;
+        },
+
         //  Events
         // -------------------------------------------------
 
@@ -2053,17 +2070,14 @@ var Datepicker;
             this.update();
         },
 
-        set hours (val) {
-            this._hours = val;
-
-            var displayHours = this._getValidHoursFromDate(val);
-
-            this.displayHours = displayHours.hours;
-            this.dayPeriod = displayHours.dayPeriod;
+        _onMouseEnterRange: function (e) {
+            var name = $(e.target).attr('name');
+            $('.datepicker--time-current-' + name, this.$timepicker).addClass('active');
         },
 
-        get hours() {
-            return this._hours;
+        _onMouseOutRange: function (e) {
+            var name = $(e.target).attr('name');
+            $('.datepicker--time-current-' + name, this.$timepicker).removeClass('active');
         }
     };
 })(window, jQuery, Datepicker);

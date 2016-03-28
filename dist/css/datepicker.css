@@ -401,15 +401,18 @@
           align-items: center;
   padding: 4px;
   position: relative; }
+  .datepicker--time.-am-pm- .datepicker--time-sliders {
+    -webkit-flex: 0 1 138px;
+        -ms-flex: 0 1 138px;
+            flex: 0 1 138px;
+    max-width: 138px; }
 
 .datepicker--time-sliders {
-  -webkit-flex: 0 1 138px;
-      -ms-flex: 0 1 138px;
-          flex: 0 1 138px;
+  -webkit-flex: 0 1 153px;
+      -ms-flex: 0 1 153px;
+          flex: 0 1 153px;
   margin-right: 10px;
-  -webkit-order: 2;
-      -ms-flex-order: 2;
-          order: 2; }
+  max-width: 153px; }
 
 .datepicker--time-label {
   display: none;
@@ -430,14 +433,31 @@
   margin: 0 0 0 10px; }
 
 .datepicker--time-current-colon {
-  margin: 0 1px 3px;
+  margin: 0 2px 3px;
   line-height: 1; }
 
 .datepicker--time-current-hours,
 .datepicker--time-current-minutes {
   line-height: 1;
   font-size: 19px;
-  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif; }
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  position: relative;
+  z-index: 1; }
+  .datepicker--time-current-hours:after,
+  .datepicker--time-current-minutes:after {
+    content: '';
+    background: #f0f0f0;
+    border-radius: 4px;
+    position: absolute;
+    left: -2px;
+    top: -3px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    opacity: 0; }
+  .datepicker--time-current-hours.active:after,
+  .datepicker--time-current-minutes.active:after {
+    opacity: 1; }
 
 .datepicker--time-current-ampm {
   text-transform: uppercase;
@@ -477,9 +497,19 @@
       display: none; }
     .datepicker--time-row input[type='range']:hover::-webkit-slider-thumb {
       border-color: #b8b8b8; }
+    .datepicker--time-row input[type='range']:hover::-moz-range-thumb {
+      border-color: #b8b8b8; }
+    .datepicker--time-row input[type='range']:hover::-ms-thumb {
+      border-color: #b8b8b8; }
     .datepicker--time-row input[type='range']:focus {
       outline: none; }
       .datepicker--time-row input[type='range']:focus::-webkit-slider-thumb {
+        background: #5cc4ef;
+        border-color: #5cc4ef; }
+      .datepicker--time-row input[type='range']:focus::-moz-range-thumb {
+        background: #5cc4ef;
+        border-color: #5cc4ef; }
+      .datepicker--time-row input[type='range']:focus::-ms-thumb {
         background: #5cc4ef;
         border-color: #5cc4ef; }
     .datepicker--time-row input[type='range']::-webkit-slider-thumb {
