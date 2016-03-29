@@ -133,13 +133,13 @@
                 min: this.minHours,
                 max: this.maxHours,
                 value: this.hours
-            }).change();
+            });
 
             this.$minutes.attr({
                 min: this.minMinutes,
                 max: this.maxMinutes,
                 value: this.minutes
-            }).change();
+            });
         },
 
         /**

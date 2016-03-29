@@ -44,7 +44,6 @@ $rangeThumbBg: #dedede;
   border-radius: 3px;
   border: 1px solid $rangeTrackBg;
   background: #fff;
-  margin-top: -$rangeThumbSize/2;
   cursor: pointer;
 
   transition: background .2s;
@@ -184,6 +183,10 @@ $rangeThumbBg: #dedede;
 
     @include thumbSelector() {
       @include thumb;
+    }
+
+    &::-webkit-slider-thumb {
+      margin-top: -$rangeThumbSize/2;
     }
 
     //  Track

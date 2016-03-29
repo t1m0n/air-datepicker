@@ -519,7 +519,6 @@
       border-radius: 3px;
       border: 1px solid #dedede;
       background: #fff;
-      margin-top: -6px;
       cursor: pointer;
       transition: background .2s; }
     .datepicker--time-row input[type='range']::-moz-range-thumb {
@@ -529,7 +528,6 @@
       border-radius: 3px;
       border: 1px solid #dedede;
       background: #fff;
-      margin-top: -6px;
       cursor: pointer;
       transition: background .2s; }
     .datepicker--time-row input[type='range']::-ms-thumb {
@@ -539,9 +537,10 @@
       border-radius: 3px;
       border: 1px solid #dedede;
       background: #fff;
-      margin-top: -6px;
       cursor: pointer;
       transition: background .2s; }
+    .datepicker--time-row input[type='range']::-webkit-slider-thumb {
+      margin-top: -6px; }
     .datepicker--time-row input[type='range']::-webkit-slider-runnable-track {
       border: none;
       height: 1px;
