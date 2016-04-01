@@ -35,7 +35,7 @@
             this.d.$el.on('selectDate', this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
             this.$ranges.on('mouseenter', this._onMouseEnterRange.bind(this));
-            this.$ranges.on('mouseout', this._onMouseOutRange.bind(this));
+            this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
         },
 
         _setInitialTime: function (date, parse) {
@@ -240,12 +240,14 @@
 
         _onMouseEnterRange: function (e) {
             var name = $(e.target).attr('name');
-            $('.datepicker--time-current-' + name, this.$timepicker).addClass('active');
+            this.rangInFocus = name;
+            $('.datepicker--time-current-' + name, this.$timepicker).addClass('-focus-');
         },
 
         _onMouseOutRange: function (e) {
             var name = $(e.target).attr('name');
-            $('.datepicker--time-current-' + name, this.$timepicker).removeClass('active');
+            if (this.d.inFocus) return; // Prevent removing focus when mouse out of range slider
+            $('.datepicker--time-current-' + name, this.$timepicker).removeClass('-focus-');
         }
     };
 })(window, jQuery, Datepicker);

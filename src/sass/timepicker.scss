@@ -119,7 +119,7 @@ $rangeThumbBg: #dedede;
     opacity: 0;
   }
 
-  &.active {
+  &.-focus- {
     &:after {
       opacity: 1;
     }
