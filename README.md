@@ -19,6 +19,9 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v1.2.4
+* fixed '$ is not defined' problem. 
+
 ### v1.2.3
 * fixed `dateFormat` method.
 * fixed typo in Russian docs, add ids in docs headers.
