@@ -240,7 +240,6 @@
 
         _onMouseEnterRange: function (e) {
             var name = $(e.target).attr('name');
-            this.rangInFocus = name;
             $('.datepicker--time-current-' + name, this.$timepicker).addClass('-focus-');
         },
 
