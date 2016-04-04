@@ -1,4 +1,4 @@
-(function (window, $, datepicker) {
+;(function () {
     var template = '<div class="datepicker--time">' +
         '<div class="datepicker--time-current">' +
         '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
@@ -13,7 +13,8 @@
         '      <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
         '   </div>' +
         '</div>' +
-        '</div>';
+        '</div>',
+        datepicker = Datepicker;
 
     datepicker.Timepicker = function (inst, opts) {
         this.d = inst;
@@ -249,4 +250,4 @@
             $('.datepicker--time-current-' + name, this.$timepicker).removeClass('-focus-');
         }
     };
-})(window, jQuery, Datepicker);
+})()
