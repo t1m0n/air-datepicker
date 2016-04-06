@@ -14,7 +14,8 @@
         '   </div>' +
         '</div>' +
         '</div>',
-        datepicker = Datepicker;
+        datepicker = $.fn.datepicker,
+        dp = datepicker.Constructor;
 
     datepicker.Timepicker = function (inst, opts) {
         this.d = inst;
@@ -40,7 +41,7 @@
         },
 
         _setInitialTime: function (date, parse) {
-            var _date = datepicker.getParsedDate(date);
+            var _date = dp.getParsedDate(date);
 
             this._handleDate(date);
             this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
@@ -88,7 +89,7 @@
         },
 
         _buildHTML: function () {
-            var lz = datepicker.getLeadingZeroNum,
+            var lz = dp.getLeadingZeroNum,
                 data = {
                     hourMin: this.minHours,
                     hourMax: lz(this.maxHours),
@@ -99,7 +100,7 @@
                     minStep: this.opts.minutesStep,
                     minValue: lz(this.minutes)
                 },
-                _template = datepicker.template(template, data);
+                _template = dp.template(template, data);
 
             this.$timepicker = $(_template).appendTo(this.d.$datepicker);
             this.$ranges = $('[type="range"]', this.$timepicker);
@@ -118,8 +119,8 @@
         },
 
         _updateCurrentTime: function () {
-            var h =  datepicker.getLeadingZeroNum(this.displayHours),
-                m = datepicker.getLeadingZeroNum(this.minutes);
+            var h =  dp.getLeadingZeroNum(this.displayHours),
+                m = dp.getLeadingZeroNum(this.minutes);
 
             this.$hoursText.html(h);
             this.$minutesText.html(m);
@@ -153,9 +154,9 @@
             this._setDefaultMinMaxTime();
 
             if (date) {
-                if (datepicker.isSame(date, this.d.opts.minDate)) {
+                if (dp.isSame(date, this.d.opts.minDate)) {
                     this._setMinTimeFromDate(this.d.opts.minDate);
-                } else if (datepicker.isSame(date, this.d.opts.maxDate)) {
+                } else if (dp.isSame(date, this.d.opts.maxDate)) {
                     this._setMaxTimeFromDate(this.d.opts.maxDate);
                 }
             }
@@ -179,7 +180,7 @@
                 hours = date;
 
             if (date instanceof Date) {
-                d = datepicker.getParsedDate(date);
+                d = dp.getParsedDate(date);
                 hours = d.hours;
             }
 

@@ -4,9 +4,11 @@
         '<div class="datepicker--nav-title">#{title}</div>' +
         '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
         buttonsContainerTemplate = '<div class="datepicker--buttons"></div>',
-        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>';
+        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>',
+        datepicker = $.fn.datepicker,
+        dp = datepicker.Constructor;
 
-    Datepicker.Navigation = function (d, opts) {
+    datepicker.Navigation = function (d, opts) {
         this.d = d;
         this.opts = opts;
 
@@ -15,7 +17,7 @@
         this.init();
     };
 
-    Datepicker.Navigation.prototype = {
+    datepicker.Navigation.prototype = {
         init: function () {
             this._buildBaseHtml();
             this._bindEvents();
@@ -43,7 +45,7 @@
 
         _render: function () {
             var title = this._getTitle(this.d.currentDate),
-                html = Datepicker.template(template, $.extend({title: title}, this.opts));
+                html = dp.template(template, $.extend({title: title}, this.opts));
             this.d.$nav.html(html);
             if (this.d.view == 'years') {
                 $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
@@ -64,7 +66,7 @@
                     action: type,
                     label: this.d.loc[type]
                 },
-                html = Datepicker.template(button, data);
+                html = dp.template(button, data);
 
             if ($('[data-action=' + type + ']', this.$buttonsContainer).length) return;
             this.$buttonsContainer.append(html);

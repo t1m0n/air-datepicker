@@ -1,6 +1,4 @@
-window.Datepicker = '';
-
-(function () {
+;(function () {
     var pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
@@ -98,7 +96,7 @@ window.Datepicker = '';
         },
         datepicker;
 
-    Datepicker  = function (el, options) {
+    var Datepicker  = function (el, options) {
         this.el = el;
         this.$el = $(el);
 
@@ -167,13 +165,13 @@ window.Datepicker = '';
             }
 
             if (this.opts.timepicker) {
-                this.timepicker = new Datepicker.Timepicker(this, this.opts);
+                this.timepicker = new $.fn.datepicker.Timepicker(this, this.opts);
                 this._bindTimepickerEvents();
             }
 
-            this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
+            this.views[this.currentView] = new $.fn.datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
-            this.nav = new Datepicker.Navigation(this, this.opts);
+            this.nav = new $.fn.datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
             this.$el.on('clickCell.adp', this._onClickCell.bind(this));
@@ -213,15 +211,15 @@ window.Datepicker = '';
 
         _defineLocale: function (lang) {
             if (typeof lang == 'string') {
-                this.loc = Datepicker.language[lang];
+                this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
                     console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, Datepicker.language.ru)
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
                 }
 
-                this.loc = $.extend(true, {}, Datepicker.language.ru, Datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, Datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
             }
 
             if (this.opts.dateFormat) {
@@ -1240,7 +1238,7 @@ window.Datepicker = '';
 
             if (this.inited) {
                 if (!this.views[val]) {
-                    this.views[val] = new Datepicker.Body(this, val, this.opts)
+                    this.views[val] = new  $.fn.datepicker.Body(this, val, this.opts)
                 } else {
                     this.views[val]._render();
                 }
@@ -1346,7 +1344,23 @@ window.Datepicker = '';
         return parseInt(num) < 10 ? '0' + num : num;
     };
 
-    Datepicker.language = {
+    $.fn.datepicker = function ( options ) {
+        return this.each(function () {
+            if (!$.data(this, pluginName)) {
+                $.data(this,  pluginName,
+                    new Datepicker( this, options ));
+            } else {
+                var _this = $.data(this, pluginName);
+
+                _this.opts = $.extend(true, _this.opts, options);
+                _this.update();
+            }
+        });
+    };
+
+    $.fn.datepicker.Constructor = Datepicker;
+
+    $.fn.datepicker.language = {
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
             daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
@@ -1359,20 +1373,6 @@ window.Datepicker = '';
             timeFormat: 'hh:ii',
             firstDay: 1
         }
-    };
-
-    $.fn[pluginName] = function ( options ) {
-        return this.each(function () {
-            if (!$.data(this, pluginName)) {
-                $.data(this,  pluginName,
-                    new Datepicker( this, options ));
-            } else {
-                var _this = $.data(this, pluginName);
-
-                _this.opts = $.extend(true, _this.opts, options);
-                _this.update();
-            }
-        });
     };
 
     $(function () {

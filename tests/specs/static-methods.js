@@ -1,22 +1,24 @@
 var assert = chai.assert,
-    expect = chai.expect;
+    expect = chai.expect,
+    plugin = $.fn.datepicker.Constructor;
 
 describe('Datepicker', function () {
     describe('getDaysCount', function () {
         it('should return 31 days in December', function () {
-            assert.equal(Datepicker.getDaysCount(new Date(2015, 11)), 31)
+            console.log(plugin.getDaysCount);
+            assert.equal(plugin.getDaysCount(new Date(2015, 11)), 31)
         });
         it('should return 30 days in September', function () {
-            assert.equal(Datepicker.getDaysCount(new Date(2015, 8)), 30)
+            assert.equal(plugin.getDaysCount(new Date(2015, 8)), 30)
         });
         it('should return 28 days in February', function () {
-            assert.equal(Datepicker.getDaysCount(new Date(2015, 1)), 28)
+            assert.equal(plugin.getDaysCount(new Date(2015, 1)), 28)
         })
     });
 
     describe('getParsedDate', function () {
         var currentDate = new Date(),
-            date = Datepicker.getParsedDate(currentDate);
+            date = plugin.getParsedDate(currentDate);
 
         it('should return object with detailed date fields', function () {
             expect(date).to.have.all.keys(['year','month','fullMonth','date', 'fullDate', 'day','hours', 'fullHours', 'minutes', 'fullMinutes']);
@@ -76,7 +78,7 @@ describe('Datepicker', function () {
 
     describe('getDecade', function () {
         it('should return array with first and last years in decade', function () {
-            var decade = Datepicker.getDecade(new Date(2015, 1));
+            var decade = plugin.getDecade(new Date(2015, 1));
 
             expect(decade).to.be.an('array');
             assert.equal(decade[0], 2010)
@@ -87,7 +89,7 @@ describe('Datepicker', function () {
     describe('template', function () {
         it('should return string with replaced #{} signs', function () {
             var template = 'Hello #{who}';
-            assert.equal(Datepicker.template(template, {who:'World!'}), 'Hello World!')
+            assert.equal(plugin.template(template, {who:'World!'}), 'Hello World!')
         })
     })
 
@@ -98,33 +100,33 @@ describe('Datepicker', function () {
             date4 = new Date(2016, 11, 14);
 
         it('should return true if dates are equal', function () {
-            assert(Datepicker.isSame(date1,date2))
+            assert(plugin.isSame(date1,date2))
         })
         it('should return false when checking dates with different months', function () {
-            assert.isFalse(Datepicker.isSame(date1,date3))
+            assert.isFalse(plugin.isSame(date1,date3))
         })
         it('should return false when checking dates with different years', function () {
-            assert.isFalse(Datepicker.isSame(date1,date4))
+            assert.isFalse(plugin.isSame(date1,date4))
         })
         it('should return true when comparing months', function () {
-            assert(Datepicker.isSame(date1, date2,'month'))
+            assert(plugin.isSame(date1, date2,'month'))
         })
         it('should return false when comparing months from different years', function () {
-            assert.isFalse(Datepicker.isSame(date1, date4, 'month'))
+            assert.isFalse(plugin.isSame(date1, date4, 'month'))
         })
         it('should return true when comparing years', function () {
-            assert(Datepicker.isSame(date1, date2, 'year'))
+            assert(plugin.isSame(date1, date2, 'year'))
         })
     })
 
     describe('less(date1, date2)', function () {
         it('should return true if date2 less then date1', function () {
-            assert(Datepicker.less(new Date(2015, 11, 14), new Date(2015, 11, 13)))
+            assert(plugin.less(new Date(2015, 11, 14), new Date(2015, 11, 13)))
         })
     })
     describe('bigger(date1, date2)', function () {
         it('should return true if date2 bigger then date1', function () {
-            assert(Datepicker.bigger(new Date(2015, 11, 14), new Date(2015, 11, 15)))
+            assert(plugin.bigger(new Date(2015, 11, 14), new Date(2015, 11, 15)))
         })
     })
 });

@@ -58,7 +58,7 @@ describe('Options', function () {
                 language: 'en'
             }).data('datepicker');
 
-            expect(dp.loc.days).to.eql(Datepicker.language.en.days);
+            expect(dp.loc.days).to.eql($.fn.datepicker.language.en.days);
         });
         it('should change language to custom if object is passed', function () {
             var daysMin = ['В','П','В','С','Ч','П','С'];
@@ -69,7 +69,7 @@ describe('Options', function () {
             }).data('datepicker');
 
             expect(dp.loc.daysMin).to.eql(daysMin);
-            expect(dp.loc.days).to.eql(Datepicker.language.ru.days);
+            expect(dp.loc.days).to.eql($.fn.datepicker.language.ru.days);
         })
     });
 
