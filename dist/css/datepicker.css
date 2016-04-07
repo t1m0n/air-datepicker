@@ -164,6 +164,9 @@
   position: absolute;
   left: 0;
   top: 0; }
+  @media print {
+    .datepickers-container {
+      display: none; } }
 
 .datepicker {
   background: #fff;
