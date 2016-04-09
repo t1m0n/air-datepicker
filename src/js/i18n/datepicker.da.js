@@ -7,5 +7,5 @@ Datepicker.language['da'] = {
     today: 'I dag',
     clear: 'Nulstil',
     dateFormat: 'dd/mm/yyyy',
-    firstDay: 0
+    firstDay: 1
 };
