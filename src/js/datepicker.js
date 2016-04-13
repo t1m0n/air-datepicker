@@ -130,6 +130,7 @@
         this.keys = [];
         this.minRange = '';
         this.maxRange = '';
+        this._prevOnSelectValue = '';
 
         this.init()
     };
@@ -273,6 +274,9 @@
 
         _triggerOnChange: function () {
             if (!this.selectedDates.length) {
+                // Prevent from triggering multiple onSelect callback with same argument (empty string) in IE10-11
+                if (this._prevOnSelectValue === '') return;
+                this._prevOnSelectValue = '';
                 return this.opts.onSelect('', '', this);
             }
 
@@ -306,6 +310,7 @@
                 })
             }
 
+            this._prevOnSelectValue = formattedDates;
             this.opts.onSelect(formattedDates, dates, this);
         },
 

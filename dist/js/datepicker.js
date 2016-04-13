@@ -130,6 +130,7 @@
         this.keys = [];
         this.minRange = '';
         this.maxRange = '';
+        this._prevOnSelectValue = '';
 
         this.init()
     };
@@ -273,6 +274,9 @@
 
         _triggerOnChange: function () {
             if (!this.selectedDates.length) {
+                // Prevent from triggering multiple onSelect callback with same argument (empty string) in IE10-11
+                if (this._prevOnSelectValue === '') return;
+                this._prevOnSelectValue = '';
                 return this.opts.onSelect('', '', this);
             }
 
@@ -306,6 +310,7 @@
                 })
             }
 
+            this._prevOnSelectValue = formattedDates;
             this.opts.onSelect(formattedDates, dates, this);
         },
 
@@ -1417,7 +1422,10 @@
         },
 
         _bindEvents: function () {
-            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            // Use 'mouseup' and 'click' events instead of 'click' because of IE 10-11 bug, which triggers 'input' event
+            // when placeholder value is changed (e.g. when user just focus input). It causes calling clear() method,
+            // which clears input value and prevents from selecting cell. (issue #36)
+            this.$el.on('click mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {

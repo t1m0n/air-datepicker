@@ -34,7 +34,10 @@
         },
 
         _bindEvents: function () {
-            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            // Use 'mouseup' and 'click' events instead of 'click' because of IE 10-11 bug, which triggers 'input' event
+            // when placeholder value is changed (e.g. when user just focus input). It causes calling clear() method,
+            // which clears input value and prevents from selecting cell. (issue #36)
+            this.$el.on('click mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
