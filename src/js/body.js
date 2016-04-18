@@ -293,6 +293,8 @@
                 this.d.selectDate(selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
+            } else if (this.opts.autoClose && !this.opts.toggleSelected) {
+                this.d.hide();
             }
 
         },
