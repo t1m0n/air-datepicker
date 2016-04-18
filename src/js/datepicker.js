@@ -969,6 +969,8 @@ window.Datepicker = '';
                             this.selectDate(this.focused);
                         } else if (alreadySelected && this.opts.toggleSelected){
                             this.removeDate(this.focused);
+                        } else if (this.opts.autoClose && !this.opts.toggleSelected) {
+                            this.hide();
                         }
                     }
                 }
