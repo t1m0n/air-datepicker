@@ -191,7 +191,7 @@
             this.$el.on(this.opts.showEvent + '.adp', this._onShowEvent.bind(this));
             this.$el.on('mouseup.adp', this._onMouseUpEl.bind(this));
             this.$el.on('blur.adp', this._onBlur.bind(this));
-            this.$el.on('input.adp', this._onInput.bind(this));
+            this.$el.on('keyup.adp', this._onKeyUpGeneral.bind(this));
             $(window).on('resize.adp', this._onResize.bind(this));
             $('body').on('mouseup.adp', this._onMouseUpBody.bind(this));
         },
@@ -501,7 +501,7 @@
                 _this._triggerOnChange();
             }
 
-            if (opts.autoClose) {
+            if (opts.autoClose && !this.timepickerIsActive) {
                 if (!opts.multipleDates && !opts.range) {
                     _this.hide();
                 } else if (opts.range && _this.selectedDates.length == 2) {
@@ -1028,7 +1028,8 @@
             }
         },
 
-        _onShowEvent: function () {
+        _onShowEvent: function (e) {
+            console.log(e.type);
             if (!this.visible) {
                 this.show();
             }
@@ -1050,7 +1051,7 @@
             if (!e.originalEvent.timepickerFocus) this.$el.focus();
         },
 
-        _onInput: function () {
+        _onKeyUpGeneral: function (e) {
             var val = this.$el.val();
 
             if (!val) {
@@ -1074,6 +1075,7 @@
 
         _onMouseUpEl: function (e) {
             e.originalEvent.inFocus = true;
+            setTimeout(this._onKeyUpGeneral.bind(this),4);
         },
 
         _onKeyDown: function (e) {

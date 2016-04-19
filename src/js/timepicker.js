@@ -36,7 +36,8 @@
 
             this.d.$el.on('selectDate', this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
-            this.$ranges.on('mouseenter', this._onMouseEnterRange.bind(this));
+            this.$ranges.on('mouseup', this._onMouseUpRange.bind(this));
+            this.$ranges.on('mouseenter focus ', this._onMouseEnterRange.bind(this));
             this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
         },
 
@@ -229,6 +230,8 @@
         _onChangeRange: function (e) {
             var $target = $(e.target),
                 name = $target.attr('name');
+            
+            this.d.timepickerIsActive = true;
 
             this[name] = $target.val();
             this._updateCurrentTime();
@@ -249,6 +252,10 @@
             var name = $(e.target).attr('name');
             if (this.d.inFocus) return; // Prevent removing focus when mouse out of range slider
             $('.datepicker--time-current-' + name, this.$timepicker).removeClass('-focus-');
+        },
+
+        _onMouseUpRange: function (e) {
+            this.d.timepickerIsActive = false;
         }
     };
-})()
+})();

@@ -191,7 +191,7 @@
             this.$el.on(this.opts.showEvent + '.adp', this._onShowEvent.bind(this));
             this.$el.on('mouseup.adp', this._onMouseUpEl.bind(this));
             this.$el.on('blur.adp', this._onBlur.bind(this));
-            this.$el.on('input.adp', this._onInput.bind(this));
+            this.$el.on('keyup.adp', this._onKeyUpGeneral.bind(this));
             $(window).on('resize.adp', this._onResize.bind(this));
             $('body').on('mouseup.adp', this._onMouseUpBody.bind(this));
         },
@@ -501,7 +501,7 @@
                 _this._triggerOnChange();
             }
 
-            if (opts.autoClose) {
+            if (opts.autoClose && !this.timepickerIsActive) {
                 if (!opts.multipleDates && !opts.range) {
                     _this.hide();
                 } else if (opts.range && _this.selectedDates.length == 2) {
@@ -1028,7 +1028,8 @@
             }
         },
 
-        _onShowEvent: function () {
+        _onShowEvent: function (e) {
+            console.log(e.type);
             if (!this.visible) {
                 this.show();
             }
@@ -1050,7 +1051,7 @@
             if (!e.originalEvent.timepickerFocus) this.$el.focus();
         },
 
-        _onInput: function () {
+        _onKeyUpGeneral: function (e) {
             var val = this.$el.val();
 
             if (!val) {
@@ -1074,6 +1075,7 @@
 
         _onMouseUpEl: function (e) {
             e.originalEvent.inFocus = true;
+            setTimeout(this._onKeyUpGeneral.bind(this),4);
         },
 
         _onKeyDown: function (e) {
@@ -1426,10 +1428,7 @@
         },
 
         _bindEvents: function () {
-            // Use 'mouseup' and 'click' events instead of 'click' because of IE 10-11 bug, which triggers 'input' event
-            // when placeholder value is changed (e.g. when user just focus input). It causes calling clear() method,
-            // which clears input value and prevents from selecting cell. (issue #36)
-            this.$el.on('click mouseup', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
@@ -1884,7 +1883,8 @@
 
             this.d.$el.on('selectDate', this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
-            this.$ranges.on('mouseenter', this._onMouseEnterRange.bind(this));
+            this.$ranges.on('mouseup', this._onMouseUpRange.bind(this));
+            this.$ranges.on('mouseenter focus ', this._onMouseEnterRange.bind(this));
             this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
         },
 
@@ -2077,6 +2077,8 @@
         _onChangeRange: function (e) {
             var $target = $(e.target),
                 name = $target.attr('name');
+            
+            this.d.timepickerIsActive = true;
 
             this[name] = $target.val();
             this._updateCurrentTime();
@@ -2097,7 +2099,11 @@
             var name = $(e.target).attr('name');
             if (this.d.inFocus) return; // Prevent removing focus when mouse out of range slider
             $('.datepicker--time-current-' + name, this.$timepicker).removeClass('-focus-');
+        },
+
+        _onMouseUpRange: function (e) {
+            this.d.timepickerIsActive = false;
         }
     };
-})()
+})();
  })(window, jQuery);
