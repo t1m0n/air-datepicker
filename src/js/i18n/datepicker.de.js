@@ -7,5 +7,6 @@ $.fn.datepicker.language['de'] = {
     today: 'Heute',
     clear: 'Aufräumen',
     dateFormat: 'dd.mm.yyyy',
+    timeFormat: 'hh:ii',
     firstDay: 1
 };

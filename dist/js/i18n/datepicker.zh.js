@@ -7,5 +7,6 @@ $.fn.datepicker.language['zh'] = {
     today: '今天',
     clear: '清除',
     dateFormat: 'yyyy-mm-dd',
+    timeFormat: 'hh:ii',
     firstDay: 1
 };
