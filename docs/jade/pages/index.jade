@@ -645,8 +645,13 @@ block content
 				+example-inline('multipleDatesSeparator')
 				| will be used as dates separator.
 		.param
-			+param-header('todayButton', 'boolean', 'false')
-			p If true, then button "Today" will be visible.
+			+param-header('todayButton', 'boolean|Date', 'false')
+			p If true, then button "Today" will be visible. If Date is passed then click event will also select passed date.
+			+example-code('js').
+				// Select today
+				$('.datepicker').datepicker({
+					todayButton: new Date()
+				})
 		.param
 			+param-header('clearButton', 'boolean', 'false')
 			p If true, then button "Clear" will be visible.

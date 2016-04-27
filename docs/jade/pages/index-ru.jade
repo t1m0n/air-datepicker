@@ -668,8 +668,13 @@ block content
 			p Если true, то будет включен режим выбора диапазона дат. В качестве разделителя будет использован
 				+example-inline('multipleDatesSeparator')
 		.param
-			+param-header('todayButton', 'boolean', 'false')
-			p Если true, то будет отображена кнопка "Сегодня".
+			+param-header('todayButton', 'boolean|Date', 'false')
+			p Если true, то будет отображена кнопка "Сегодня". Если передать объект даты, то при клике по кнопке будет осуществлен переход и последующий выбор этой даты.
+			+example-code('js').
+				// Выбор сегодняшнего дня
+				$('.datepicker').datepicker({
+					todayButton: new Date()
+				})
 
 		.param
 			+param-header('clearButton', 'boolean', 'false')
