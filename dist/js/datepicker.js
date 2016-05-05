@@ -1029,7 +1029,6 @@
         },
 
         _onShowEvent: function (e) {
-            console.log(e.type);
             if (!this.visible) {
                 this.show();
             }
@@ -1884,7 +1883,7 @@
             this.d.$el.on('selectDate', this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
             this.$ranges.on('mouseup', this._onMouseUpRange.bind(this));
-            this.$ranges.on('mouseenter focus ', this._onMouseEnterRange.bind(this));
+            this.$ranges.on('mousemove focus ', this._onMouseEnterRange.bind(this));
             this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
         },
 

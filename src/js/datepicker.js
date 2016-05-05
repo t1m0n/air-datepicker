@@ -1029,7 +1029,6 @@
         },
 
         _onShowEvent: function (e) {
-            console.log(e.type);
             if (!this.visible) {
                 this.show();
             }

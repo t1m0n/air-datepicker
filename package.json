@@ -19,6 +19,7 @@
     "gulp-watch": "^4.3.5",
     "gulp-wrap": "^0.11.0",
     "jade": "^1.11.0",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "node-static": "^0.7.7"
   }
 }
