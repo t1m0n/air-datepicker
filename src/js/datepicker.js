@@ -1097,6 +1097,10 @@
                         var alreadySelected = this._isSelected(this.focused, this.cellType);
 
                         if (!alreadySelected) {
+                            if (this.timepicker) {
+                                this.focused.setHours(this.timepicker.hours);
+                                this.focused.setMinutes(this.timepicker.minutes);
+                            }
                             this.selectDate(this.focused);
                         } else if (alreadySelected && this.opts.toggleSelected){
                             this.removeDate(this.focused);
