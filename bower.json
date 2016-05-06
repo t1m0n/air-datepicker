@@ -4,15 +4,17 @@
   "authors": [
     "t1m0n <t1m0n.tr@gmail.com>"
   ],
-  "description": "A lightweight jQuery datepicker",
+  "description": "A lightweight, customizable, powerful jQuery datepicker",
   "main": [
     "dist/js/datepicker.min.js",
     "dist/css/datepicker.min.css"
   ],
   "keywords": [
     "datepicker",
-    "calendar",
-    "lightweight"
+    "timepicker",
+    "plugin",
+    "customizable",
+    "powerful"
   ],
   "license": "MIT",
   "ignore": [

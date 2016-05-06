@@ -42,12 +42,12 @@
     "timepicker",
     "plugin",
     "customizable",
-    "powerfull"
+    "powerful"
   ],
   "author": "t1m0n <t1m0n.tr@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/t1m0n/air-datepicker/issues"
   },
-  "homepage": "https://github.com/t1m0n/air-datepicker#readme"
+  "homepage": "http://t1m0n.name/air-datepicker/docs/"
 }
