@@ -76,6 +76,20 @@
                         <div class="datepicker-here" data-timepicker="true"></div>
                     </div>
                     <div class="vt-tile">
+                        <h2>{onChange: ..., toggleSelected: false, range: true}</h2>
+                        <input id="dp-5" class="datepicker-here" data-timepicker="true" />
+                        <script type="text/javascript">
+                            $('#dp-5').datepicker({
+                                toggleSelected: false,
+                                inline: true,
+                                range: true,
+                                onSelect: function (fd) {
+                                    log(fd)
+                                }
+                            })
+                        </script>
+                    </div>
+                    <div class="vt-tile">
                         <h2>{timepicker: true}</h2>
                         <input class="datepicker-here" data-timepicker="true" />
                     </div>

@@ -27,7 +27,7 @@
     datepicker.Timepicker.prototype = {
         init: function () {
             var input = 'input';
-            this._setInitialTime(this.d.date);
+            this._setTime(this.d.date);
             this._buildHTML();
 
             if (navigator.userAgent.match(/trident/gi)) {
@@ -41,7 +41,7 @@
             this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
         },
 
-        _setInitialTime: function (date, parse) {
+        _setTime: function (date) {
             var _date = dp.getParsedDate(date);
 
             this._handleDate(date);
@@ -134,15 +134,13 @@
         _updateRanges: function () {
             this.$hours.attr({
                 min: this.minHours,
-                max: this.maxHours,
-                value: this.hours
-            });
+                max: this.maxHours
+            }).val(this.hours);
 
             this.$minutes.attr({
                 min: this.minMinutes,
-                max: this.maxMinutes,
-                value: this.minutes
-            });
+                max: this.maxMinutes
+            }).val(this.minutes)
         },
 
         /**

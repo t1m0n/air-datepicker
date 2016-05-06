@@ -294,6 +294,12 @@
                 this.d._trigger('clickCell', selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
+            } else if (alreadySelected && !this.opts.toggleSelected) {
+                this.d.lastSelectedDate = alreadySelected;
+                if (this.d.opts.timepicker) {
+                    this.d.timepicker._setTime(alreadySelected);
+                    this.d.timepicker.update();
+                }
             }
 
         },

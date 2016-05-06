@@ -434,8 +434,7 @@
 
             // Set new time values from Date
             if (this.timepicker) {
-                this.timepicker.hours = date.getHours();
-                this.timepicker.minutes = date.getMinutes();
+                this.timepicker._setTime(date);
             }
 
             // On this step timepicker will set valid values in it's instance
@@ -445,7 +444,7 @@
             // Prevent from setting hours or minutes which values are lesser then `min` value or
             // greater then `max` value
             if (this.timepicker) {
-                date.setHours(this.timepicker.hours)
+                date.setHours(this.timepicker.hours);
                 date.setMinutes(this.timepicker.minutes)
             }
 
@@ -626,9 +625,14 @@
         },
 
         _isSelected: function (checkDate, cellType) {
-            return this.selectedDates.some(function (date) {
-                return datepicker.isSame(date, checkDate, cellType)
-            })
+            var res = false;
+            this.selectedDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
         },
 
         _setInputValue: function () {
@@ -1691,6 +1695,12 @@
                 this.d._trigger('clickCell', selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
+            } else if (alreadySelected && !this.opts.toggleSelected) {
+                this.d.lastSelectedDate = alreadySelected;
+                if (this.d.opts.timepicker) {
+                    this.d.timepicker._setTime(alreadySelected);
+                    this.d.timepicker.update();
+                }
             }
 
         },
@@ -1877,7 +1887,7 @@
     datepicker.Timepicker.prototype = {
         init: function () {
             var input = 'input';
-            this._setInitialTime(this.d.date);
+            this._setTime(this.d.date);
             this._buildHTML();
 
             if (navigator.userAgent.match(/trident/gi)) {
@@ -1891,7 +1901,7 @@
             this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
         },
 
-        _setInitialTime: function (date, parse) {
+        _setTime: function (date) {
             var _date = dp.getParsedDate(date);
 
             this._handleDate(date);
@@ -1984,15 +1994,13 @@
         _updateRanges: function () {
             this.$hours.attr({
                 min: this.minHours,
-                max: this.maxHours,
-                value: this.hours
-            });
+                max: this.maxHours
+            }).val(this.hours);
 
             this.$minutes.attr({
                 min: this.minMinutes,
-                max: this.maxMinutes,
-                value: this.minutes
-            });
+                max: this.maxMinutes
+            }).val(this.minutes)
         },
 
         /**

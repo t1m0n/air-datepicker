@@ -434,8 +434,7 @@
 
             // Set new time values from Date
             if (this.timepicker) {
-                this.timepicker.hours = date.getHours();
-                this.timepicker.minutes = date.getMinutes();
+                this.timepicker._setTime(date);
             }
 
             // On this step timepicker will set valid values in it's instance
@@ -445,7 +444,7 @@
             // Prevent from setting hours or minutes which values are lesser then `min` value or
             // greater then `max` value
             if (this.timepicker) {
-                date.setHours(this.timepicker.hours)
+                date.setHours(this.timepicker.hours);
                 date.setMinutes(this.timepicker.minutes)
             }
 
@@ -626,9 +625,14 @@
         },
 
         _isSelected: function (checkDate, cellType) {
-            return this.selectedDates.some(function (date) {
-                return datepicker.isSame(date, checkDate, cellType)
-            })
+            var res = false;
+            this.selectedDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
         },
 
         _setInputValue: function () {
