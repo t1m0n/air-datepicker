@@ -1,3 +1,7 @@
+.idea
+tests
+docs
+bower_components
 bower.json
 static-server.js
-docs
+visual-tests.html
