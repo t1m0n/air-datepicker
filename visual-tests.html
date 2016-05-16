@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Air datepicker visual tests</title>
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="dist/js/datepicker.js"></script>
+        <link rel="stylesheet" href="dist/css/datepicker.css"/>
+        <link rel="stylesheet" href="docs/css/style.css"/>
+        <script type="text/javascript">
+            var log;
+            function logger (el) {
+                var $el = $(el);
+
+                return function(text) {
+                    var count = $('p', $el).length;
+                    $el.append('<p><span>' + count++ + '.</span> ' + text + '</p>').scrollTop(100000)
+                }
+            }
+
+            $(function () {
+                log = logger('#v-log');
+            })
+        </script>
+    </head>
+    <body>
+        <div class="v-log" id="v-log"></div>
+        <div class="visual-tests">
+            <article>
+                <h1>Basic</h1>
+                <div class="row">
+                    <div class="vt-tile">
+                        <h2>Default</h2>
+                        <div class="datepicker-here"></div>
+                    </div>
+                </div>
+            </article>
+
+            <article>
+                <h1>Range</h1>
+                <div class="row">
+                    <div class="vt-tile">
+                        <h2>{range: true}</h2>
+                        <div class="datepicker-here" data-range="true"></div>
+                    </div>
+                    <div class="vt-tile">
+                        <h2>{range: true, onSelect: ...}</h2>
+                        <div class="datepicker-here" id="dp-3" data-range="true"></div>
+                        <script type="text/javascript">
+                            $('#dp-3').datepicker({
+                                onSelect: function (fd) {
+                                    log(fd)
+                                }
+                            })
+                        </script>
+                    </div>
+                    <div class="vt-tile">
+                        <h2>{range: true, onSelect: ...}</h2>
+                        <input class="datepicker-here" id="dp-4" data-range="true"/>
+                        <script type="text/javascript">
+                            $('#dp-4').datepicker({
+                                onSelect: function (fd) {
+                                    log(fd)
+                                }
+                            })
+                        </script>
+                    </div>
+                </div>
+            </article>
+
+            <article>
+                <h1>Timepicker</h1>
+                <div class="row">
+                    <div class="vt-tile">
+                        <h2>{timepicker: true}</h2>
+                        <div class="datepicker-here" data-timepicker="true"></div>
+                    </div>
+                    <div class="vt-tile">
+                        <h2>{onChange: ..., toggleSelected: false, range: true}</h2>
+                        <input id="dp-5" class="datepicker-here" data-timepicker="true" />
+                        <script type="text/javascript">
+                            $('#dp-5').datepicker({
+                                toggleSelected: false,
+                                inline: true,
+                                range: true,
+                                onSelect: function (fd) {
+                                    log(fd)
+                                }
+                            })
+                        </script>
+                    </div>
+                    <div class="vt-tile">
+                        <h2>{timepicker: true}</h2>
+                        <input class="datepicker-here" data-timepicker="true" />
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </body>
+</html>

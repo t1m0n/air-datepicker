@@ -1,6 +1,4 @@
-window.Datepicker = '';
-
-(function () {
+;(function () {
     var pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
@@ -62,6 +60,17 @@ window.Datepicker = '';
                 years: 'yyyy1 - yyyy2'
             },
 
+            // timepicker
+            timepicker: false,
+            dateTimeSeparator: ' ',
+            timeFormat: '',
+            minHours: 0,
+            maxHours: 24,
+            minMinutes: 0,
+            maxMinutes: 59,
+            hoursStep: 1,
+            minutesStep: 1,
+
             // events
             onSelect: '',
             onChangeMonth: '',
@@ -87,7 +96,7 @@ window.Datepicker = '';
         },
         datepicker;
 
-    Datepicker  = function (el, options) {
+    var Datepicker  = function (el, options) {
         this.el = el;
         this.$el = $(el);
 
@@ -121,6 +130,7 @@ window.Datepicker = '';
         this.keys = [];
         this.minRange = '';
         this.maxRange = '';
+        this._prevOnSelectValue = '';
 
         this.init()
     };
@@ -155,11 +165,17 @@ window.Datepicker = '';
                 this.$datepicker.addClass(this.opts.classes)
             }
 
-            this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
+            if (this.opts.timepicker) {
+                this.timepicker = new $.fn.datepicker.Timepicker(this, this.opts);
+                this._bindTimepickerEvents();
+            }
+
+            this.views[this.currentView] = new $.fn.datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
-            this.nav = new Datepicker.Navigation(this, this.opts);
+            this.nav = new $.fn.datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
+            this.$el.on('clickCell.adp', this._onClickCell.bind(this));
             this.$datepicker.on('mouseenter', '.datepicker--cell', this._onMouseEnterCell.bind(this));
             this.$datepicker.on('mouseleave', '.datepicker--cell', this._onMouseLeaveCell.bind(this));
 
@@ -173,9 +189,11 @@ window.Datepicker = '';
 
         _bindEvents : function () {
             this.$el.on(this.opts.showEvent + '.adp', this._onShowEvent.bind(this));
+            this.$el.on('mouseup.adp', this._onMouseUpEl.bind(this));
             this.$el.on('blur.adp', this._onBlur.bind(this));
-            this.$el.on('input.adp', this._onInput.bind(this));
+            this.$el.on('keyup.adp', this._onKeyUpGeneral.bind(this));
             $(window).on('resize.adp', this._onResize.bind(this));
+            $('body').on('mouseup.adp', this._onMouseUpBody.bind(this));
         },
 
         _bindKeyboardEvents: function () {
@@ -184,29 +202,48 @@ window.Datepicker = '';
             this.$el.on('hotKey.adp', this._onHotKey.bind(this));
         },
 
+        _bindTimepickerEvents: function () {
+            this.$el.on('timeChange.adp', this._onTimeChange.bind(this));
+        },
+
         isWeekend: function (day) {
             return this.opts.weekends.indexOf(day) !== -1;
         },
 
         _defineLocale: function (lang) {
             if (typeof lang == 'string') {
-                this.loc = Datepicker.language[lang];
+                this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
                     console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, Datepicker.language.ru)
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
                 }
 
-                this.loc = $.extend(true, {}, Datepicker.language.ru, Datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, Datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
             }
 
             if (this.opts.dateFormat) {
                 this.loc.dateFormat = this.opts.dateFormat
             }
 
+            if (this.opts.timeFormat) {
+                this.loc.timeFormat = this.opts.timeFormat
+            }
+
             if (this.opts.firstDay !== '') {
                 this.loc.firstDay = this.opts.firstDay
+            }
+
+            if (this.opts.timepicker) {
+                this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
+            }
+
+            var boundary = this._getWordBoundaryRegExp;
+            if (this.loc.timeFormat.match(boundary('aa')) ||
+                this.loc.timeFormat.match(boundary('AA'))
+            ) {
+               this.ampm = true;
             }
         },
 
@@ -237,6 +274,9 @@ window.Datepicker = '';
 
         _triggerOnChange: function () {
             if (!this.selectedDates.length) {
+                // Prevent from triggering multiple onSelect callback with same argument (empty string) in IE10-11
+                if (this._prevOnSelectValue === '') return;
+                this._prevOnSelectValue = '';
                 return this.opts.onSelect('', '', this);
             }
 
@@ -244,7 +284,13 @@ window.Datepicker = '';
                 parsedSelected = datepicker.getParsedDate(selectedDates[0]),
                 formattedDates,
                 _this = this,
-                dates = new Date(parsedSelected.year, parsedSelected.month, parsedSelected.date);
+                dates = new Date(
+                    parsedSelected.year,
+                    parsedSelected.month,
+                    parsedSelected.date,
+                    parsedSelected.hours,
+                    parsedSelected.minutes
+                );
 
                 formattedDates = selectedDates.map(function (date) {
                     return _this.formatDate(_this.loc.dateFormat, date)
@@ -254,10 +300,17 @@ window.Datepicker = '';
             if (this.opts.multipleDates || this.opts.range) {
                 dates = selectedDates.map(function(date) {
                     var parsedDate = datepicker.getParsedDate(date);
-                    return new Date(parsedDate.year, parsedDate.month, parsedDate.date)
+                    return new Date(
+                        parsedSelected.year,
+                        parsedSelected.month,
+                        parsedSelected.date,
+                        parsedSelected.hours,
+                        parsedSelected.minutes
+                    );
                 })
             }
 
+            this._prevOnSelectValue = formattedDates;
             this.opts.onSelect(formattedDates, dates, this);
         },
 
@@ -304,12 +357,28 @@ window.Datepicker = '';
             var result = string,
                 boundary = this._getWordBoundaryRegExp,
                 locale = this.loc,
+                leadingZero = datepicker.getLeadingZeroNum,
                 decade = datepicker.getDecade(date),
-                d = datepicker.getParsedDate(date);
+                d = datepicker.getParsedDate(date),
+                fullHours = d.fullHours,
+                hours = d.hours,
+                dayPeriod = 'am',
+                validHours;
+
+            if (this.opts.timepicker && this.timepicker && this.ampm) {
+                validHours = this.timepicker._getValidHoursFromDate(date);
+                fullHours = leadingZero(validHours.hours);
+                hours = validHours.hours;
+                dayPeriod = validHours.dayPeriod;
+            }
 
             switch (true) {
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
+                case /aa/.test(result):
+                    result = result.replace(boundary('aa'), dayPeriod);
+                case /AA/.test(result):
+                    result = result.replace(boundary('AA'), dayPeriod.toUpperCase());
                 case /dd/.test(result):
                     result = result.replace(boundary('dd'), d.fullDate);
                 case /d/.test(result):
@@ -326,6 +395,14 @@ window.Datepicker = '';
                     result = result.replace(boundary('MM'), this.loc.months[d.month]);
                 case /M/.test(result):
                     result = result.replace(boundary('M'), locale.monthsShort[d.month]);
+                case /ii/.test(result):
+                    result = result.replace(boundary('ii'), d.fullMinutes);
+                case /i/.test(result):
+                    result = result.replace(boundary('i'), d.minutes);
+                case /hh/.test(result):
+                    result = result.replace(boundary('hh'), fullHours);
+                case /h/.test(result):
+                    result = result.replace(boundary('h'), hours);
                 case /yyyy/.test(result):
                     result = result.replace(boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
@@ -351,7 +428,32 @@ window.Datepicker = '';
                 len = selectedDates.length,
                 newDate = '';
 
+            if (Array.isArray(date)) {
+                date.forEach(function (d) {
+                    _this.selectDate(d)
+                });
+                return;
+            }
+
             if (!(date instanceof Date)) return;
+
+            this.lastSelectedDate = date;
+
+            // Set new time values from Date
+            if (this.timepicker) {
+                this.timepicker._setTime(date);
+            }
+
+            // On this step timepicker will set valid values in it's instance
+            _this._trigger('selectDate', date);
+
+            // Set correct time values after timepicker's validation
+            // Prevent from setting hours or minutes which values are lesser then `min` value or
+            // greater then `max` value
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes)
+            }
 
             if (_this.view == 'days') {
                 if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
@@ -389,6 +491,11 @@ window.Datepicker = '';
                     } else {
                         _this.minRange = date;
                     }
+                    // Swap dates if they were selected via dp.selectDate() and second date was smaller then first
+                    if (datepicker.bigger(_this.maxRange, _this.minRange)) {
+                        _this.maxRange = _this.minRange;
+                        _this.minRange = date;
+                    }
                     _this.selectedDates = [_this.minRange, _this.maxRange]
 
                 } else {
@@ -405,7 +512,7 @@ window.Datepicker = '';
                 _this._triggerOnChange();
             }
 
-            if (opts.autoClose) {
+            if (opts.autoClose && !this.timepickerIsActive) {
                 if (!opts.multipleDates && !opts.range) {
                     _this.hide();
                 } else if (opts.range && _this.selectedDates.length == 2) {
@@ -429,6 +536,9 @@ window.Datepicker = '';
                     if (!_this.selectedDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
+                        _this.lastSelectedDate = '';
+                    } else {
+                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -448,6 +558,10 @@ window.Datepicker = '';
             this.view = this.opts.minView;
             this.silent = false;
             this.date = new Date();
+
+            if (this.opts.todayButton instanceof Date) {
+                this.selectDate(this.opts.todayButton)
+            }
         },
 
         clear: function () {
@@ -468,6 +582,7 @@ window.Datepicker = '';
          */
         update: function (param, value) {
             var len = arguments.length;
+
             if (len == 2) {
                 this.opts[param] = value;
             } else if (len == 1 && typeof param == 'object') {
@@ -492,6 +607,19 @@ window.Datepicker = '';
                 this.$datepicker.addClass(this.opts.classes)
             }
 
+            if (this.opts.timepicker) {
+                this.timepicker._handleDate(this.lastSelectedDate);
+                this.timepicker._updateRanges();
+                this.timepicker._updateCurrentTime();
+                // Change hours and minutes if it's values have been changed through min/max hours/minutes
+                if (this.lastSelectedDate) {
+                    this.lastSelectedDate.setHours(this.timepicker.hours);
+                    this.lastSelectedDate.setMinutes(this.timepicker.minutes);
+                }
+            }
+
+            this._setInputValue();
+
             return this;
         },
 
@@ -509,9 +637,14 @@ window.Datepicker = '';
         },
 
         _isSelected: function (checkDate, cellType) {
-            return this.selectedDates.some(function (date) {
-                return datepicker.isSame(date, checkDate, cellType)
-            })
+            var res = false;
+            this.selectedDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
         },
 
         _setInputValue: function () {
@@ -911,7 +1044,7 @@ window.Datepicker = '';
             }
         },
 
-        _onShowEvent: function () {
+        _onShowEvent: function (e) {
             if (!this.visible) {
                 this.show();
             }
@@ -929,10 +1062,11 @@ window.Datepicker = '';
 
         _onMouseUpDatepicker: function (e) {
             this.inFocus = false;
-            this.$el.focus()
+            e.originalEvent.inFocus = true;
+            if (!e.originalEvent.timepickerFocus) this.$el.focus();
         },
 
-        _onInput: function () {
+        _onKeyUpGeneral: function (e) {
             var val = this.$el.val();
 
             if (!val) {
@@ -944,6 +1078,19 @@ window.Datepicker = '';
             if (this.visible) {
                 this.setPosition();
             }
+        },
+
+        _onMouseUpBody: function (e) {
+            if (e.originalEvent.inFocus) return;
+
+            if (this.visible && !this.inFocus) {
+                this.hide();
+            }
+        },
+
+        _onMouseUpEl: function (e) {
+            e.originalEvent.inFocus = true;
+            setTimeout(this._onKeyUpGeneral.bind(this),4);
         },
 
         _onKeyDown: function (e) {
@@ -966,6 +1113,10 @@ window.Datepicker = '';
                         var alreadySelected = this._isSelected(this.focused, this.cellType);
 
                         if (!alreadySelected) {
+                            if (this.timepicker) {
+                                this.focused.setHours(this.timepicker.hours);
+                                this.focused.setMinutes(this.timepicker.minutes);
+                            }
                             this.selectDate(this.focused);
                         } else if (alreadySelected && this.opts.toggleSelected){
                             this.removeDate(this.focused);
@@ -1024,6 +1175,37 @@ window.Datepicker = '';
             this.silent = true;
             this.focused = '';
             this.silent = false;
+        },
+
+        _onTimeChange: function (e, h, m) {
+            var date = new Date(),
+                selectedDates = this.selectedDates,
+                selected = false;
+
+            if (selectedDates.length) {
+                selected = true;
+                date = this.lastSelectedDate;
+            }
+
+            date.setHours(h);
+            date.setMinutes(m);
+
+            if (!selected && !this._getCell(date).hasClass('-disabled-')) {
+                this.selectDate(date);
+            } else {
+                this._setInputValue();
+                if (this.opts.onSelect) {
+                    this._triggerOnChange();
+                }
+            }
+        },
+
+        _onClickCell: function (e, date) {
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes);
+            }
+            this.selectDate(date);
         },
 
         set focused(val) {
@@ -1086,7 +1268,7 @@ window.Datepicker = '';
 
             if (this.inited) {
                 if (!this.views[val]) {
-                    this.views[val] = new Datepicker.Body(this, val, this.opts)
+                    this.views[val] = new  $.fn.datepicker.Body(this, val, this.opts)
                 } else {
                     this.views[val]._render();
                 }
@@ -1141,7 +1323,11 @@ window.Datepicker = '';
             fullMonth: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1, // One based
             date: date.getDate(),
             fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-            day: date.getDay()
+            day: date.getDay(),
+            hours: date.getHours(),
+            fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
+            minutes: date.getMinutes(),
+            fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
         }
     };
 
@@ -1184,21 +1370,11 @@ window.Datepicker = '';
         return date.getTime() > dateCompareTo.getTime();
     };
 
-    Datepicker.language = {
-        ru: {
-            days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-            daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
-            daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
-            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-            today: 'Сегодня',
-            clear: 'Очистить',
-            dateFormat: 'dd.mm.yyyy',
-            firstDay: 1
-        }
+    datepicker.getLeadingZeroNum = function (num) {
+        return parseInt(num) < 10 ? '0' + num : num;
     };
 
-    $.fn[pluginName] = function ( options ) {
+    $.fn.datepicker = function ( options ) {
         return this.each(function () {
             if (!$.data(this, pluginName)) {
                 $.data(this,  pluginName,
@@ -1210,6 +1386,23 @@ window.Datepicker = '';
                 _this.update();
             }
         });
+    };
+
+    $.fn.datepicker.Constructor = Datepicker;
+
+    $.fn.datepicker.language = {
+        ru: {
+            days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+            daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
+            daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            today: 'Сегодня',
+            clear: 'Очистить',
+            dateFormat: 'dd.mm.yyyy',
+            timeFormat: 'hh:ii',
+            firstDay: 1
+        }
     };
 
     $(function () {

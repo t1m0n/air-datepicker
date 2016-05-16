@@ -14,9 +14,10 @@
         '<div class="datepicker--cells datepicker--cells-years"></div>' +
         '</div>'
         },
-        D = Datepicker;
+        datepicker = $.fn.datepicker,
+        dp = datepicker.Constructor;
 
-    D.Body = function (d, type, opts) {
+    datepicker.Body = function (d, type, opts) {
         this.d = d;
         this.type = type;
         this.opts = opts;
@@ -24,7 +25,7 @@
         this.init();
     };
 
-    D.Body.prototype = {
+    datepicker.Body.prototype = {
         init: function () {
             this._buildBaseHtml();
             this._render();
@@ -60,7 +61,7 @@
                 currentDate = new Date(),
                 parent = this.d,
                 opts = parent.opts,
-                d = D.getParsedDate(date),
+                d = dp.getParsedDate(date),
                 render = {},
                 html = d.date;
 
@@ -104,34 +105,34 @@
             }
 
             if (opts.range) {
-                if (D.isSame(parent.minRange, date, type)) classes += ' -range-from-';
-                if (D.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
+                if (dp.isSame(parent.minRange, date, type)) classes += ' -range-from-';
+                if (dp.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
 
                 if (parent.selectedDates.length == 1 && parent.focused) {
                     if (
-                        (D.bigger(parent.minRange, date) && D.less(parent.focused, date)) ||
-                        (D.less(parent.maxRange, date) && D.bigger(parent.focused, date)))
+                        (dp.bigger(parent.minRange, date) && dp.less(parent.focused, date)) ||
+                        (dp.less(parent.maxRange, date) && dp.bigger(parent.focused, date)))
                     {
                         classes += ' -in-range-'
                     }
 
-                    if (D.less(parent.maxRange, date) && D.isSame(parent.focused, date)) {
+                    if (dp.less(parent.maxRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-from-'
                     }
-                    if (D.bigger(parent.minRange, date) && D.isSame(parent.focused, date)) {
+                    if (dp.bigger(parent.minRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-to-'
                     }
 
                 } else if (parent.selectedDates.length == 2) {
-                    if (D.bigger(parent.minRange, date) && D.less(parent.maxRange, date)) {
+                    if (dp.bigger(parent.minRange, date) && dp.less(parent.maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }
             }
 
 
-            if (D.isSame(currentDate, date, type)) classes += ' -current-';
-            if (parent.focused && D.isSame(date, parent.focused, type)) classes += ' -focus-';
+            if (dp.isSame(currentDate, date, type)) classes += ' -current-';
+            if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
             if (parent._isSelected(date, type)) classes += ' -selected-';
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
@@ -148,7 +149,7 @@
          * @private
          */
         _getDaysHtml: function (date) {
-            var totalMonthDays = D.getDaysCount(date),
+            var totalMonthDays = dp.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
                 daysFromPevMonth = firstMonthDay - this.d.loc.firstDay,
@@ -188,7 +189,7 @@
          */
         _getMonthsHtml: function (date) {
             var html = '',
-                d = D.getParsedDate(date),
+                d = dp.getParsedDate(date),
                 i = 0;
 
             while(i < 12) {
@@ -206,8 +207,8 @@
         },
 
         _getYearsHtml: function (date) {
-            var d = D.getParsedDate(date),
-                decade = D.getDecade(date),
+            var d = dp.getParsedDate(date),
+                decade = dp.getDecade(date),
                 firstYear = decade[0] - 1,
                 html = '',
                 i = firstYear;
@@ -290,9 +291,15 @@
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
-                this.d.selectDate(selectedDate);
+                this.d._trigger('clickCell', selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
+            } else if (alreadySelected && !this.opts.toggleSelected) {
+                this.d.lastSelectedDate = alreadySelected;
+                if (this.d.opts.timepicker) {
+                    this.d.timepicker._setTime(alreadySelected);
+                    this.d.timepicker.update();
+                }
             }
 
         },

@@ -1,4 +1,4 @@
-Datepicker.language['zh'] = {
+$.fn.datepicker.language['zh'] = {
     days: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
     daysShort: ['日', '一', '二', '三', '四', '五', '六'],
     daysMin: ['日', '一', '二', '三', '四', '五', '六'],
@@ -7,5 +7,6 @@ Datepicker.language['zh'] = {
     today: '今天',
     clear: '清除',
     dateFormat: 'yyyy-mm-dd',
+    timeFormat: 'hh:ii',
     firstDay: 1
 };

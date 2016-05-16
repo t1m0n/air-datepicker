@@ -9,7 +9,8 @@ module.exports = function () {
     var stream = gulp.src([
         'src/js/datepicker.js',
         'src/js/body.js',
-        'src/js/navigation.js'
+        'src/js/navigation.js',
+        'src/js/timepicker.js'
     ])
         .pipe(concat('datepicker.js'))
         .pipe(wrap(';(function (window, $, undefined) { <%=contents%> })(window, jQuery);'));

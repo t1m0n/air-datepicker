@@ -60,7 +60,6 @@ var navigation;
         var id,
             title,
             subTitles,
-            subId,
             $subTitle,
             $current;
 
@@ -80,8 +79,13 @@ var navigation;
                 cache[id].subSections = {};
 
                 subTitles.each(function () {
-                    subId = idPrefix + idCounter++;
-                    $subTitle = $(this).attr('id', subId);
+                     var $subTitle = $(this),
+                         subId = $(this).attr('id');
+
+                    if (!subId) {
+                        subId = idPrefix + idCounter++;
+                        $subTitle.attr('id', subId);
+                    }
 
                     cache[id].subSections[subId] = {
                         title: $subTitle.text(),

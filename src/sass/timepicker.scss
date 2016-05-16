@@ -1,0 +1,247 @@
+@import "datepicker-config";
+
+/* -------------------------------------------------
+    Timepicker
+   ------------------------------------------------- */
+
+$rangeTrackHeight: 1px;
+$rangeTrackBg: #dedede;
+$rangeThumbSize: 12px;
+$rangeThumbBg: #dedede;
+
+@mixin trackSelector {
+  &::-webkit-slider-runnable-track {
+    @content;
+  }
+
+  &::-moz-range-track {
+    @content;
+  }
+
+  &::-ms-track {
+    @content;
+  }
+}
+
+@mixin thumbSelector {
+  &::-webkit-slider-thumb {
+    @content;
+  }
+
+  &::-moz-range-thumb {
+    @content;
+  }
+
+  &::-ms-thumb {
+    @content;
+  }
+}
+
+@mixin thumb {
+  box-sizing: border-box;
+  height: $rangeThumbSize;
+  width: $rangeThumbSize;
+  border-radius: 3px;
+  border: 1px solid $rangeTrackBg;
+  background: #fff;
+  cursor: pointer;
+
+  transition: background .2s;
+}
+
+@mixin track {
+  border: none;
+  height: $rangeTrackHeight;
+  cursor: pointer;
+  color: transparent;
+  background: transparent;
+}
+
+.datepicker--time {
+  border-top: 1px solid map_get($borderColor, nav);
+  display: flex;
+  align-items: center;
+
+  padding: $datepickerPadding;
+  position: relative;
+
+  &.-am-pm- {
+    .datepicker--time-sliders {
+      flex: 0 1 138px;
+      max-width: 138px;
+    }
+  }
+}
+
+.datepicker--time-sliders {
+  flex: 0 1 153px;
+  margin-right: 10px;
+  max-width: 153px;
+}
+
+.datepicker--time-label {
+  display: none;
+  font-size: 12px;
+}
+
+.datepicker--time-current {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-size: 14px;
+  text-align: center;
+  margin: 0 0 0 10px;
+}
+
+.datepicker--time-current-colon {
+  margin: 0 2px 3px;
+  line-height: 1;
+}
+
+.datepicker--time-current-hours,
+.datepicker--time-current-minutes {
+  line-height: 1;
+  font-size: 19px;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  position: relative;
+  z-index: 1;
+
+  &:after {
+    content: '';
+    background: map_get($bg, hover);
+    border-radius: $datepickerBorderRadius;
+    position: absolute;
+    left: -2px;
+    top: -3px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  &.-focus- {
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
+.datepicker--time-current-ampm {
+  text-transform: uppercase;
+  align-self: flex-end;
+  color: map_get($textColor, navArrows);
+  margin-left: 6px;
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+
+.datepicker--time-row {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  height: 17px;
+  background: linear-gradient(to right,$rangeTrackBg, $rangeTrackBg) left 50%/100% $rangeTrackHeight no-repeat;
+
+  &:first-child {
+    margin-bottom: 4px;
+  }
+
+  input[type='range'] {
+    background: none;
+    cursor: pointer;
+    flex: 1;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+
+    &::-ms-tooltip {
+      display: none;
+    }
+
+    &:hover {
+      @include thumbSelector() {
+        border-color: darken($rangeTrackBg, 15);
+      }
+    }
+
+    &:focus {
+      outline: none;
+
+      @include thumbSelector() {
+        background: map_get($bg, selected);
+        border-color: map_get($bg, selected);
+      }
+    }
+
+    //  Thumb
+    // -------------------------------------------------
+
+    @include thumbSelector() {
+      @include thumb;
+    }
+
+    &::-webkit-slider-thumb {
+      margin-top: -$rangeThumbSize/2;
+    }
+
+    //  Track
+    // -------------------------------------------------
+    @include trackSelector() {
+      @include track;
+    }
+
+    &::-ms-fill-lower {
+      background: transparent;
+    }
+    &:focus::-ms-fill-lower {
+
+    }
+    &::-ms-fill-upper {
+      background: transparent;
+    }
+    &:focus::-ms-fill-upper {
+
+    }
+  }
+  span {
+    padding: 0 12px;
+  }
+}
+
+.datepicker--time-icon {
+  color: map_get($textColor, navArrows);
+  border: 1px solid;
+  border-radius: 50%;
+  font-size: 16px;
+  position: relative;
+  margin: 0 5px -1px 0;
+  width: 1em;
+  height: 1em;
+
+  &:after, &:before {
+    content: '';
+    background: currentColor;
+    position: absolute;
+  }
+
+  &:after {
+    height: .4em;
+    width: 1px;
+    left: calc(50% - 1px);
+    top: calc(50% + 1px);
+    transform: translateY(-100%);
+  }
+
+  &:before {
+    width: .4em;
+    height: 1px;
+    top: calc(50% + 1px);
+    left: calc(50% - 1px);
+  }
+}
+

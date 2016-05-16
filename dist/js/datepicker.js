@@ -1,6 +1,4 @@
-;(function (window, $, undefined) { window.Datepicker = '';
-
-(function () {
+;(function (window, $, undefined) { ;(function () {
     var pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
@@ -62,6 +60,17 @@
                 years: 'yyyy1 - yyyy2'
             },
 
+            // timepicker
+            timepicker: false,
+            dateTimeSeparator: ' ',
+            timeFormat: '',
+            minHours: 0,
+            maxHours: 24,
+            minMinutes: 0,
+            maxMinutes: 59,
+            hoursStep: 1,
+            minutesStep: 1,
+
             // events
             onSelect: '',
             onChangeMonth: '',
@@ -87,7 +96,7 @@
         },
         datepicker;
 
-    Datepicker  = function (el, options) {
+    var Datepicker  = function (el, options) {
         this.el = el;
         this.$el = $(el);
 
@@ -121,6 +130,7 @@
         this.keys = [];
         this.minRange = '';
         this.maxRange = '';
+        this._prevOnSelectValue = '';
 
         this.init()
     };
@@ -155,11 +165,17 @@
                 this.$datepicker.addClass(this.opts.classes)
             }
 
-            this.views[this.currentView] = new Datepicker.Body(this, this.currentView, this.opts);
+            if (this.opts.timepicker) {
+                this.timepicker = new $.fn.datepicker.Timepicker(this, this.opts);
+                this._bindTimepickerEvents();
+            }
+
+            this.views[this.currentView] = new $.fn.datepicker.Body(this, this.currentView, this.opts);
             this.views[this.currentView].show();
-            this.nav = new Datepicker.Navigation(this, this.opts);
+            this.nav = new $.fn.datepicker.Navigation(this, this.opts);
             this.view = this.currentView;
 
+            this.$el.on('clickCell.adp', this._onClickCell.bind(this));
             this.$datepicker.on('mouseenter', '.datepicker--cell', this._onMouseEnterCell.bind(this));
             this.$datepicker.on('mouseleave', '.datepicker--cell', this._onMouseLeaveCell.bind(this));
 
@@ -173,9 +189,11 @@
 
         _bindEvents : function () {
             this.$el.on(this.opts.showEvent + '.adp', this._onShowEvent.bind(this));
+            this.$el.on('mouseup.adp', this._onMouseUpEl.bind(this));
             this.$el.on('blur.adp', this._onBlur.bind(this));
-            this.$el.on('input.adp', this._onInput.bind(this));
+            this.$el.on('keyup.adp', this._onKeyUpGeneral.bind(this));
             $(window).on('resize.adp', this._onResize.bind(this));
+            $('body').on('mouseup.adp', this._onMouseUpBody.bind(this));
         },
 
         _bindKeyboardEvents: function () {
@@ -184,29 +202,48 @@
             this.$el.on('hotKey.adp', this._onHotKey.bind(this));
         },
 
+        _bindTimepickerEvents: function () {
+            this.$el.on('timeChange.adp', this._onTimeChange.bind(this));
+        },
+
         isWeekend: function (day) {
             return this.opts.weekends.indexOf(day) !== -1;
         },
 
         _defineLocale: function (lang) {
             if (typeof lang == 'string') {
-                this.loc = Datepicker.language[lang];
+                this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
                     console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, Datepicker.language.ru)
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
                 }
 
-                this.loc = $.extend(true, {}, Datepicker.language.ru, Datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, Datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
             }
 
             if (this.opts.dateFormat) {
                 this.loc.dateFormat = this.opts.dateFormat
             }
 
+            if (this.opts.timeFormat) {
+                this.loc.timeFormat = this.opts.timeFormat
+            }
+
             if (this.opts.firstDay !== '') {
                 this.loc.firstDay = this.opts.firstDay
+            }
+
+            if (this.opts.timepicker) {
+                this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
+            }
+
+            var boundary = this._getWordBoundaryRegExp;
+            if (this.loc.timeFormat.match(boundary('aa')) ||
+                this.loc.timeFormat.match(boundary('AA'))
+            ) {
+               this.ampm = true;
             }
         },
 
@@ -237,6 +274,9 @@
 
         _triggerOnChange: function () {
             if (!this.selectedDates.length) {
+                // Prevent from triggering multiple onSelect callback with same argument (empty string) in IE10-11
+                if (this._prevOnSelectValue === '') return;
+                this._prevOnSelectValue = '';
                 return this.opts.onSelect('', '', this);
             }
 
@@ -244,7 +284,13 @@
                 parsedSelected = datepicker.getParsedDate(selectedDates[0]),
                 formattedDates,
                 _this = this,
-                dates = new Date(parsedSelected.year, parsedSelected.month, parsedSelected.date);
+                dates = new Date(
+                    parsedSelected.year,
+                    parsedSelected.month,
+                    parsedSelected.date,
+                    parsedSelected.hours,
+                    parsedSelected.minutes
+                );
 
                 formattedDates = selectedDates.map(function (date) {
                     return _this.formatDate(_this.loc.dateFormat, date)
@@ -254,10 +300,17 @@
             if (this.opts.multipleDates || this.opts.range) {
                 dates = selectedDates.map(function(date) {
                     var parsedDate = datepicker.getParsedDate(date);
-                    return new Date(parsedDate.year, parsedDate.month, parsedDate.date)
+                    return new Date(
+                        parsedSelected.year,
+                        parsedSelected.month,
+                        parsedSelected.date,
+                        parsedSelected.hours,
+                        parsedSelected.minutes
+                    );
                 })
             }
 
+            this._prevOnSelectValue = formattedDates;
             this.opts.onSelect(formattedDates, dates, this);
         },
 
@@ -304,12 +357,28 @@
             var result = string,
                 boundary = this._getWordBoundaryRegExp,
                 locale = this.loc,
+                leadingZero = datepicker.getLeadingZeroNum,
                 decade = datepicker.getDecade(date),
-                d = datepicker.getParsedDate(date);
+                d = datepicker.getParsedDate(date),
+                fullHours = d.fullHours,
+                hours = d.hours,
+                dayPeriod = 'am',
+                validHours;
+
+            if (this.opts.timepicker && this.timepicker && this.ampm) {
+                validHours = this.timepicker._getValidHoursFromDate(date);
+                fullHours = leadingZero(validHours.hours);
+                hours = validHours.hours;
+                dayPeriod = validHours.dayPeriod;
+            }
 
             switch (true) {
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
+                case /aa/.test(result):
+                    result = result.replace(boundary('aa'), dayPeriod);
+                case /AA/.test(result):
+                    result = result.replace(boundary('AA'), dayPeriod.toUpperCase());
                 case /dd/.test(result):
                     result = result.replace(boundary('dd'), d.fullDate);
                 case /d/.test(result):
@@ -326,6 +395,14 @@
                     result = result.replace(boundary('MM'), this.loc.months[d.month]);
                 case /M/.test(result):
                     result = result.replace(boundary('M'), locale.monthsShort[d.month]);
+                case /ii/.test(result):
+                    result = result.replace(boundary('ii'), d.fullMinutes);
+                case /i/.test(result):
+                    result = result.replace(boundary('i'), d.minutes);
+                case /hh/.test(result):
+                    result = result.replace(boundary('hh'), fullHours);
+                case /h/.test(result):
+                    result = result.replace(boundary('h'), hours);
                 case /yyyy/.test(result):
                     result = result.replace(boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
@@ -351,7 +428,32 @@
                 len = selectedDates.length,
                 newDate = '';
 
+            if (Array.isArray(date)) {
+                date.forEach(function (d) {
+                    _this.selectDate(d)
+                });
+                return;
+            }
+
             if (!(date instanceof Date)) return;
+
+            this.lastSelectedDate = date;
+
+            // Set new time values from Date
+            if (this.timepicker) {
+                this.timepicker._setTime(date);
+            }
+
+            // On this step timepicker will set valid values in it's instance
+            _this._trigger('selectDate', date);
+
+            // Set correct time values after timepicker's validation
+            // Prevent from setting hours or minutes which values are lesser then `min` value or
+            // greater then `max` value
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes)
+            }
 
             if (_this.view == 'days') {
                 if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
@@ -389,6 +491,11 @@
                     } else {
                         _this.minRange = date;
                     }
+                    // Swap dates if they were selected via dp.selectDate() and second date was smaller then first
+                    if (datepicker.bigger(_this.maxRange, _this.minRange)) {
+                        _this.maxRange = _this.minRange;
+                        _this.minRange = date;
+                    }
                     _this.selectedDates = [_this.minRange, _this.maxRange]
 
                 } else {
@@ -405,7 +512,7 @@
                 _this._triggerOnChange();
             }
 
-            if (opts.autoClose) {
+            if (opts.autoClose && !this.timepickerIsActive) {
                 if (!opts.multipleDates && !opts.range) {
                     _this.hide();
                 } else if (opts.range && _this.selectedDates.length == 2) {
@@ -429,6 +536,9 @@
                     if (!_this.selectedDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
+                        _this.lastSelectedDate = '';
+                    } else {
+                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -448,6 +558,10 @@
             this.view = this.opts.minView;
             this.silent = false;
             this.date = new Date();
+
+            if (this.opts.todayButton instanceof Date) {
+                this.selectDate(this.opts.todayButton)
+            }
         },
 
         clear: function () {
@@ -468,6 +582,7 @@
          */
         update: function (param, value) {
             var len = arguments.length;
+
             if (len == 2) {
                 this.opts[param] = value;
             } else if (len == 1 && typeof param == 'object') {
@@ -492,6 +607,19 @@
                 this.$datepicker.addClass(this.opts.classes)
             }
 
+            if (this.opts.timepicker) {
+                this.timepicker._handleDate(this.lastSelectedDate);
+                this.timepicker._updateRanges();
+                this.timepicker._updateCurrentTime();
+                // Change hours and minutes if it's values have been changed through min/max hours/minutes
+                if (this.lastSelectedDate) {
+                    this.lastSelectedDate.setHours(this.timepicker.hours);
+                    this.lastSelectedDate.setMinutes(this.timepicker.minutes);
+                }
+            }
+
+            this._setInputValue();
+
             return this;
         },
 
@@ -509,9 +637,14 @@
         },
 
         _isSelected: function (checkDate, cellType) {
-            return this.selectedDates.some(function (date) {
-                return datepicker.isSame(date, checkDate, cellType)
-            })
+            var res = false;
+            this.selectedDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
         },
 
         _setInputValue: function () {
@@ -911,7 +1044,7 @@
             }
         },
 
-        _onShowEvent: function () {
+        _onShowEvent: function (e) {
             if (!this.visible) {
                 this.show();
             }
@@ -929,10 +1062,11 @@
 
         _onMouseUpDatepicker: function (e) {
             this.inFocus = false;
-            this.$el.focus()
+            e.originalEvent.inFocus = true;
+            if (!e.originalEvent.timepickerFocus) this.$el.focus();
         },
 
-        _onInput: function () {
+        _onKeyUpGeneral: function (e) {
             var val = this.$el.val();
 
             if (!val) {
@@ -944,6 +1078,19 @@
             if (this.visible) {
                 this.setPosition();
             }
+        },
+
+        _onMouseUpBody: function (e) {
+            if (e.originalEvent.inFocus) return;
+
+            if (this.visible && !this.inFocus) {
+                this.hide();
+            }
+        },
+
+        _onMouseUpEl: function (e) {
+            e.originalEvent.inFocus = true;
+            setTimeout(this._onKeyUpGeneral.bind(this),4);
         },
 
         _onKeyDown: function (e) {
@@ -966,6 +1113,10 @@
                         var alreadySelected = this._isSelected(this.focused, this.cellType);
 
                         if (!alreadySelected) {
+                            if (this.timepicker) {
+                                this.focused.setHours(this.timepicker.hours);
+                                this.focused.setMinutes(this.timepicker.minutes);
+                            }
                             this.selectDate(this.focused);
                         } else if (alreadySelected && this.opts.toggleSelected){
                             this.removeDate(this.focused);
@@ -1024,6 +1175,37 @@
             this.silent = true;
             this.focused = '';
             this.silent = false;
+        },
+
+        _onTimeChange: function (e, h, m) {
+            var date = new Date(),
+                selectedDates = this.selectedDates,
+                selected = false;
+
+            if (selectedDates.length) {
+                selected = true;
+                date = this.lastSelectedDate;
+            }
+
+            date.setHours(h);
+            date.setMinutes(m);
+
+            if (!selected && !this._getCell(date).hasClass('-disabled-')) {
+                this.selectDate(date);
+            } else {
+                this._setInputValue();
+                if (this.opts.onSelect) {
+                    this._triggerOnChange();
+                }
+            }
+        },
+
+        _onClickCell: function (e, date) {
+            if (this.timepicker) {
+                date.setHours(this.timepicker.hours);
+                date.setMinutes(this.timepicker.minutes);
+            }
+            this.selectDate(date);
         },
 
         set focused(val) {
@@ -1086,7 +1268,7 @@
 
             if (this.inited) {
                 if (!this.views[val]) {
-                    this.views[val] = new Datepicker.Body(this, val, this.opts)
+                    this.views[val] = new  $.fn.datepicker.Body(this, val, this.opts)
                 } else {
                     this.views[val]._render();
                 }
@@ -1141,7 +1323,11 @@
             fullMonth: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1, // One based
             date: date.getDate(),
             fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-            day: date.getDay()
+            day: date.getDay(),
+            hours: date.getHours(),
+            fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
+            minutes: date.getMinutes(),
+            fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
         }
     };
 
@@ -1184,21 +1370,11 @@
         return date.getTime() > dateCompareTo.getTime();
     };
 
-    Datepicker.language = {
-        ru: {
-            days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-            daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
-            daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
-            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-            today: 'Сегодня',
-            clear: 'Очистить',
-            dateFormat: 'dd.mm.yyyy',
-            firstDay: 1
-        }
+    datepicker.getLeadingZeroNum = function (num) {
+        return parseInt(num) < 10 ? '0' + num : num;
     };
 
-    $.fn[pluginName] = function ( options ) {
+    $.fn.datepicker = function ( options ) {
         return this.each(function () {
             if (!$.data(this, pluginName)) {
                 $.data(this,  pluginName,
@@ -1212,11 +1388,29 @@
         });
     };
 
+    $.fn.datepicker.Constructor = Datepicker;
+
+    $.fn.datepicker.language = {
+        ru: {
+            days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+            daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
+            daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            today: 'Сегодня',
+            clear: 'Очистить',
+            dateFormat: 'dd.mm.yyyy',
+            timeFormat: 'hh:ii',
+            firstDay: 1
+        }
+    };
+
     $(function () {
         $(autoInitSelector).datepicker();
     })
 
 })();
+
 ;(function () {
     var templates = {
         days:'' +
@@ -1233,9 +1427,10 @@
         '<div class="datepicker--cells datepicker--cells-years"></div>' +
         '</div>'
         },
-        D = Datepicker;
+        datepicker = $.fn.datepicker,
+        dp = datepicker.Constructor;
 
-    D.Body = function (d, type, opts) {
+    datepicker.Body = function (d, type, opts) {
         this.d = d;
         this.type = type;
         this.opts = opts;
@@ -1243,7 +1438,7 @@
         this.init();
     };
 
-    D.Body.prototype = {
+    datepicker.Body.prototype = {
         init: function () {
             this._buildBaseHtml();
             this._render();
@@ -1279,7 +1474,7 @@
                 currentDate = new Date(),
                 parent = this.d,
                 opts = parent.opts,
-                d = D.getParsedDate(date),
+                d = dp.getParsedDate(date),
                 render = {},
                 html = d.date;
 
@@ -1323,34 +1518,34 @@
             }
 
             if (opts.range) {
-                if (D.isSame(parent.minRange, date, type)) classes += ' -range-from-';
-                if (D.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
+                if (dp.isSame(parent.minRange, date, type)) classes += ' -range-from-';
+                if (dp.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
 
                 if (parent.selectedDates.length == 1 && parent.focused) {
                     if (
-                        (D.bigger(parent.minRange, date) && D.less(parent.focused, date)) ||
-                        (D.less(parent.maxRange, date) && D.bigger(parent.focused, date)))
+                        (dp.bigger(parent.minRange, date) && dp.less(parent.focused, date)) ||
+                        (dp.less(parent.maxRange, date) && dp.bigger(parent.focused, date)))
                     {
                         classes += ' -in-range-'
                     }
 
-                    if (D.less(parent.maxRange, date) && D.isSame(parent.focused, date)) {
+                    if (dp.less(parent.maxRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-from-'
                     }
-                    if (D.bigger(parent.minRange, date) && D.isSame(parent.focused, date)) {
+                    if (dp.bigger(parent.minRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-to-'
                     }
 
                 } else if (parent.selectedDates.length == 2) {
-                    if (D.bigger(parent.minRange, date) && D.less(parent.maxRange, date)) {
+                    if (dp.bigger(parent.minRange, date) && dp.less(parent.maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }
             }
 
 
-            if (D.isSame(currentDate, date, type)) classes += ' -current-';
-            if (parent.focused && D.isSame(date, parent.focused, type)) classes += ' -focus-';
+            if (dp.isSame(currentDate, date, type)) classes += ' -current-';
+            if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
             if (parent._isSelected(date, type)) classes += ' -selected-';
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
@@ -1367,7 +1562,7 @@
          * @private
          */
         _getDaysHtml: function (date) {
-            var totalMonthDays = D.getDaysCount(date),
+            var totalMonthDays = dp.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
                 daysFromPevMonth = firstMonthDay - this.d.loc.firstDay,
@@ -1407,7 +1602,7 @@
          */
         _getMonthsHtml: function (date) {
             var html = '',
-                d = D.getParsedDate(date),
+                d = dp.getParsedDate(date),
                 i = 0;
 
             while(i < 12) {
@@ -1425,8 +1620,8 @@
         },
 
         _getYearsHtml: function (date) {
-            var d = D.getParsedDate(date),
-                decade = D.getDecade(date),
+            var d = dp.getParsedDate(date),
+                decade = dp.getDecade(date),
                 firstYear = decade[0] - 1,
                 html = '',
                 i = firstYear;
@@ -1509,9 +1704,15 @@
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
-                this.d.selectDate(selectedDate);
+                this.d._trigger('clickCell', selectedDate);
             } else if (alreadySelected && this.opts.toggleSelected){
                 this.d.removeDate(selectedDate);
+            } else if (alreadySelected && !this.opts.toggleSelected) {
+                this.d.lastSelectedDate = alreadySelected;
+                if (this.d.opts.timepicker) {
+                    this.d.timepicker._setTime(alreadySelected);
+                    this.d.timepicker.update();
+                }
             }
 
         },
@@ -1532,9 +1733,11 @@
         '<div class="datepicker--nav-title">#{title}</div>' +
         '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
         buttonsContainerTemplate = '<div class="datepicker--buttons"></div>',
-        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>';
+        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>',
+        datepicker = $.fn.datepicker,
+        dp = datepicker.Constructor;
 
-    Datepicker.Navigation = function (d, opts) {
+    datepicker.Navigation = function (d, opts) {
         this.d = d;
         this.opts = opts;
 
@@ -1543,7 +1746,7 @@
         this.init();
     };
 
-    Datepicker.Navigation.prototype = {
+    datepicker.Navigation.prototype = {
         init: function () {
             this._buildBaseHtml();
             this._bindEvents();
@@ -1571,7 +1774,7 @@
 
         _render: function () {
             var title = this._getTitle(this.d.currentDate),
-                html = Datepicker.template(template, $.extend({title: title}, this.opts));
+                html = dp.template(template, $.extend({title: title}, this.opts));
             this.d.$nav.html(html);
             if (this.d.view == 'years') {
                 $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
@@ -1592,7 +1795,7 @@
                     action: type,
                     label: this.d.loc[type]
                 },
-                html = Datepicker.template(button, data);
+                html = dp.template(button, data);
 
             if ($('[data-action=' + type + ']', this.$buttonsContainer).length) return;
             this.$buttonsContainer.append(html);
@@ -1665,5 +1868,265 @@
         }
     }
 
+})();
+
+;(function () {
+    var template = '<div class="datepicker--time">' +
+        '<div class="datepicker--time-current">' +
+        '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
+        '   <span class="datepicker--time-current-colon">:</span>' +
+        '   <span class="datepicker--time-current-minutes">#{minValue}</span>' +
+        '</div>' +
+        '<div class="datepicker--time-sliders">' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="hours" value="#{hourValue}" min="#{hourMin}" max="#{hourMax}" step="#{hourStep}"/>' +
+        '   </div>' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
+        '   </div>' +
+        '</div>' +
+        '</div>',
+        datepicker = $.fn.datepicker,
+        dp = datepicker.Constructor;
+
+    datepicker.Timepicker = function (inst, opts) {
+        this.d = inst;
+        this.opts = opts;
+
+        this.init();
+    };
+
+    datepicker.Timepicker.prototype = {
+        init: function () {
+            var input = 'input';
+            this._setTime(this.d.date);
+            this._buildHTML();
+
+            if (navigator.userAgent.match(/trident/gi)) {
+                input = 'change';
+            }
+
+            this.d.$el.on('selectDate', this._onSelectDate.bind(this));
+            this.$ranges.on(input, this._onChangeRange.bind(this));
+            this.$ranges.on('mouseup', this._onMouseUpRange.bind(this));
+            this.$ranges.on('mousemove focus ', this._onMouseEnterRange.bind(this));
+            this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
+        },
+
+        _setTime: function (date) {
+            var _date = dp.getParsedDate(date);
+
+            this._handleDate(date);
+            this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
+            this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
+        },
+
+        _setMinTimeFromDate: function (date) {
+            this.minHours = date.getHours();
+            this.minMinutes = date.getMinutes();
+        },
+
+        _setMaxTimeFromDate: function (date) {
+            this.maxHours = date.getHours();
+            this.maxMinutes = date.getMinutes();
+        },
+
+        _setDefaultMinMaxTime: function () {
+            var maxHours = 23,
+                maxMinutes = 59,
+                opts = this.opts;
+
+            this.minHours = opts.minHours < 0 || opts.minHours > maxHours ? 0 : opts.minHours;
+            this.minMinutes = opts.minMinutes < 0 || opts.minMinutes > maxMinutes ? 0 : opts.minMinutes;
+            this.maxHours = opts.maxHours < 0 || opts.maxHours > maxHours ? maxHours : opts.maxHours;
+            this.maxMinutes = opts.maxMinutes < 0 || opts.maxMinutes > maxMinutes ? maxMinutes : opts.maxMinutes;
+        },
+
+        /**
+         * Looks for min/max hours/minutes and if current values
+         * are out of range sets valid values.
+         * @private
+         */
+        _validateHoursMinutes: function (date) {
+            if (this.hours < this.minHours) {
+                this.hours = this.minHours;
+            } else if (this.hours > this.maxHours) {
+                this.hours = this.maxHours;
+            }
+
+            if (this.minutes < this.minMinutes) {
+                this.minutes = this.minMinutes;
+            } else if (this.minutes > this.maxMinutes) {
+                this.minutes = this.maxMinutes;
+            }
+        },
+
+        _buildHTML: function () {
+            var lz = dp.getLeadingZeroNum,
+                data = {
+                    hourMin: this.minHours,
+                    hourMax: lz(this.maxHours),
+                    hourStep: this.opts.hoursStep,
+                    hourValue: lz(this.displayHours),
+                    minMin: this.minMinutes,
+                    minMax: lz(this.maxMinutes),
+                    minStep: this.opts.minutesStep,
+                    minValue: lz(this.minutes)
+                },
+                _template = dp.template(template, data);
+
+            this.$timepicker = $(_template).appendTo(this.d.$datepicker);
+            this.$ranges = $('[type="range"]', this.$timepicker);
+            this.$hours = $('[name="hours"]', this.$timepicker);
+            this.$minutes = $('[name="minutes"]', this.$timepicker);
+            this.$hoursText = $('.datepicker--time-current-hours', this.$timepicker);
+            this.$minutesText = $('.datepicker--time-current-minutes', this.$timepicker);
+
+            if (this.d.ampm) {
+                this.$ampm = $('<span class="datepicker--time-current-ampm">')
+                    .appendTo($('.datepicker--time-current', this.$timepicker))
+                    .html(this.dayPeriod);
+
+                this.$timepicker.addClass('-am-pm-');
+            }
+        },
+
+        _updateCurrentTime: function () {
+            var h =  dp.getLeadingZeroNum(this.displayHours),
+                m = dp.getLeadingZeroNum(this.minutes);
+
+            this.$hoursText.html(h);
+            this.$minutesText.html(m);
+
+            if (this.d.ampm) {
+                this.$ampm.html(this.dayPeriod);
+            }
+        },
+
+        _updateRanges: function () {
+            this.$hours.attr({
+                min: this.minHours,
+                max: this.maxHours
+            }).val(this.hours);
+
+            this.$minutes.attr({
+                min: this.minMinutes,
+                max: this.maxMinutes
+            }).val(this.minutes)
+        },
+
+        /**
+         * Sets minHours, minMinutes etc. from date. If date is not passed, than sets
+         * values from options
+         * @param [date] {object} - Date object, to get values from
+         * @private
+         */
+        _handleDate: function (date) {
+            this._setDefaultMinMaxTime();
+
+            if (date) {
+                if (dp.isSame(date, this.d.opts.minDate)) {
+                    this._setMinTimeFromDate(this.d.opts.minDate);
+                } else if (dp.isSame(date, this.d.opts.maxDate)) {
+                    this._setMaxTimeFromDate(this.d.opts.maxDate);
+                }
+            }
+
+            this._validateHoursMinutes(date);
+        },
+
+        update: function () {
+            this._updateRanges();
+            this._updateCurrentTime();
+        },
+
+        /**
+         * Calculates valid hour value to display in text input and datepicker's body.
+         * @param date {Date|Number} - date or hours
+         * @returns {{hours: *, dayPeriod: string}}
+         * @private
+         */
+        _getValidHoursFromDate: function (date) {
+            var d = date,
+                hours = date;
+
+            if (date instanceof Date) {
+                d = dp.getParsedDate(date);
+                hours = d.hours;
+            }
+
+            var ampm = this.d.ampm,
+                dayPeriod = 'am';
+
+            if (ampm) {
+                switch(true) {
+                    case hours == 0:
+                        hours = 12;
+                        break;
+                    case hours == 12:
+                        dayPeriod = 'pm';
+                        break;
+                    case hours > 11:
+                        hours = hours - 12;
+                        dayPeriod = 'pm';
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return {
+                hours: hours,
+                dayPeriod: dayPeriod
+            }
+        },
+
+        set hours (val) {
+            this._hours = val;
+
+            var displayHours = this._getValidHoursFromDate(val);
+
+            this.displayHours = displayHours.hours;
+            this.dayPeriod = displayHours.dayPeriod;
+        },
+
+        get hours() {
+            return this._hours;
+        },
+
+        //  Events
+        // -------------------------------------------------
+
+        _onChangeRange: function (e) {
+            var $target = $(e.target),
+                name = $target.attr('name');
+            
+            this.d.timepickerIsActive = true;
+
+            this[name] = $target.val();
+            this._updateCurrentTime();
+            this.d._trigger('timeChange', [this.hours, this.minutes])
+        },
+
+        _onSelectDate: function (e, data) {
+            this._handleDate(data);
+            this.update();
+        },
+
+        _onMouseEnterRange: function (e) {
+            var name = $(e.target).attr('name');
+            $('.datepicker--time-current-' + name, this.$timepicker).addClass('-focus-');
+        },
+
+        _onMouseOutRange: function (e) {
+            var name = $(e.target).attr('name');
+            if (this.d.inFocus) return; // Prevent removing focus when mouse out of range slider
+            $('.datepicker--time-current-' + name, this.$timepicker).removeClass('-focus-');
+        },
+
+        _onMouseUpRange: function (e) {
+            this.d.timepickerIsActive = false;
+        }
+    };
 })();
  })(window, jQuery);

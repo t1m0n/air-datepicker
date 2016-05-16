@@ -34,7 +34,7 @@ var assert = chai.assert,
                 onSelect: function (fd, d, inst) {
                     expect(fd).to.be.equal('13.01.2016');
                     expect(d).to.be.instanceof(Date);
-                    expect(inst).to.be.instanceof(Datepicker);
+                    expect(inst).to.be.instanceof($.fn.datepicker.Constructor);
                 }
             }).data('datepicker');
 

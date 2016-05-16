@@ -58,7 +58,7 @@ describe('Options', function () {
                 language: 'en'
             }).data('datepicker');
 
-            expect(dp.loc.days).to.eql(Datepicker.language.en.days);
+            expect(dp.loc.days).to.eql($.fn.datepicker.language.en.days);
         });
         it('should change language to custom if object is passed', function () {
             var daysMin = ['В','П','В','С','Ч','П','С'];
@@ -69,7 +69,7 @@ describe('Options', function () {
             }).data('datepicker');
 
             expect(dp.loc.daysMin).to.eql(daysMin);
-            expect(dp.loc.days).to.eql(Datepicker.language.ru.days);
+            expect(dp.loc.days).to.eql($.fn.datepicker.language.ru.days);
         })
     });
 
@@ -121,9 +121,15 @@ describe('Options', function () {
     });
 
     describe('dateFormat', function () {
-        var date = new Date(2015, 6, 4),
+        var date = new Date(2015, 6, 4, 11, 5),
             formats = {
                 '@': date.getTime(),
+                'aa': 'am',
+                'AA': 'AM',
+                'h': 11,
+                'hh': 11,
+                'i': 5,
+                'ii': '05',
                 'dd': '04',
                 'd': 4,
                 'DD': 'Суббота',
@@ -807,4 +813,111 @@ describe('Options', function () {
 
         });
     });
+
+    describe('timepicker', function () {
+        it('should add timepicker to calendar', function () {
+            dp = $input.datepicker({
+                timepicker: true
+            }).data('datepicker');
+
+            var $time = $('.datepicker--time', dp.$datepicker);
+            expect($time).to.have.length(1)
+
+        })
+    });
+
+    describe('dateTimeSeparator', function () {
+        it('should define separator between date string and time', function () {
+            var date = new Date(2016,2,9,11,24);
+            dp = $input.datepicker({
+                timepicker: true,
+                onSelect: function (fd, d) {
+                    expect(fd).to.be.equal('09.03.2016 time separator 11:24')
+                },
+                dateTimeSeparator: ' time separator '
+            }).data('datepicker');
+
+            dp.selectDate(date);
+
+        })
+    });
+
+    describe('timeFormat', function () {
+        it('should define time format', function () {
+            var date = new Date(2016,2,9,9,4);
+            dp = $input.datepicker({
+                timepicker: true,
+                timeFormat: 'h - ii',
+                onSelect: function (fd, d) {
+                    expect(fd).to.be.equal('09.03.2016 9 - 04')
+                }
+            }).data('datepicker');
+
+            dp.selectDate(date);
+        })
+    });
+
+    describe('minHours', function () {
+        it('should set minimum hours value', function () {
+            var date = new Date();
+            date.setHours(9);
+            dp = $input.datepicker({
+                timepicker: true,
+                minHours: 10,
+                onSelect: function (fd, d) {
+                    var hours = d.getHours();
+                    expect(hours).to.be.equal(10)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    });
+
+    describe('minMinutes', function () {
+        it('should set minimum minutes value', function () {
+            var date = new Date();
+            date.setMinutes(20);
+            dp = $input.datepicker({
+                timepicker: true,
+                minMinutes: 30,
+                onSelect: function (fd, d) {
+                    var minutes = d.getMinutes();
+                    expect(minutes).to.be.equal(30)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    });
+
+    describe('maxHours', function () {
+        it('should set maximum hours value', function () {
+            var date = new Date();
+            date.setHours(20);
+            dp = $input.datepicker({
+                timepicker: true,
+                maxHours: 18,
+                onSelect: function (fd, d) {
+                    var hours = d.getHours();
+                    expect(hours).to.be.equal(18)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    });
+
+    describe('maxMinutes', function () {
+        it('should set maximum minutes value', function () {
+            var date = new Date();
+            date.setMinutes(50);
+            dp = $input.datepicker({
+                timepicker: true,
+                maxMinutes: 30,
+                onSelect: function (fd, d) {
+                    var minutes = d.getMinutes();
+                    expect(minutes).to.be.equal(30)
+                }
+            }).data('datepicker');
+            dp.selectDate(date);
+        })
+    })
 });

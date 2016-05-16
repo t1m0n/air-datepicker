@@ -1,4 +1,4 @@
-Datepicker.language['de'] = {
+$.fn.datepicker.language['de'] = {
     days: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
     daysShort: ['Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre', 'Sam'],
     daysMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
@@ -7,5 +7,6 @@ Datepicker.language['de'] = {
     today: 'Heute',
     clear: 'Aufräumen',
     dateFormat: 'dd.mm.yyyy',
+    timeFormat: 'hh:ii',
     firstDay: 1
 };

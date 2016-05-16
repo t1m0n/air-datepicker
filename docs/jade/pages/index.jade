@@ -17,7 +17,7 @@ block content
 	article
 		h2#intro Description
 		p
-			| Light (<i><strong>~26kb</strong> minified js file and <strong>~7kb</strong> gziped</i>) customizable cross-browser calendar, built with
+			| Light (<i><strong>~34kb</strong> minified js file and <strong>~9kb</strong> gziped</i>) customizable cross-browser calendar, built with
 			+example-inline('es5')
 			| and
 			+example-inline('css flexbox', 'js')
@@ -271,6 +271,151 @@ block content
 					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
 
 	article
+		h2#timepicker Timepicker
+		p To enable timepicker use option
+			+example-inline('{timepicker: true}', 'js')
+			| - it will add current time and a couple of range sliders by which one can pick time.
+		p By default current user time will be set. This value can be changed by
+			+example-inline('startDate', 'js')
+			| parameter.
+
+		+example
+			+example-content
+				div.datepicker-here(data-timepicker='true', data-language='en')
+			+example-code
+				:code
+					<div class="datepicker-here" data-timepicker="true" data-language='en'></div>
+		p
+			i More detailed info about timepicker parameters you can find in <a href='#opts-timepicker' class='nav-link'>Options</a>.
+
+
+		h3#timepicker-format Time format
+		p Time format is defined in localization object or in
+			+example-inline('timeFormat', 'js')
+			| parameter. By default (in Russian language) 24 hours format is used. For enabling 12 hours mode you must add
+			+example-inline('aa', 'js')
+			| or
+			+example-inline('AA', 'js')
+			| symbol in
+			+example-inline('timeFormat', 'js')
+			|. After what 'AM' and 'PM' sings will appear in timepicker widget.
+
+		p Lets use 12 hours mode in Russian language:
+
+		+example
+			+example-content
+				input.datepicker-here(type='text' data-timepicker='true', data-time-format='hh:ii aa')
+			+example-code
+				:code
+					<div class="datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'></div>
+
+		h3#timeformat-actions Actions with time
+		p For setting max/min hours or minutes values use
+			+example-inline('maxHours','js')
+			| ,
+			+example-inline('minHours','js')
+			| ,
+			+example-inline('maxMinutes','js')
+			| ,
+			+example-inline('minMinutes','js')
+			| . You also could set time in
+			+example-inline('minDate','js')
+			| and
+			+example-inline('maxDate','js')
+			|. For setting hours you must use values between 0 and 23, event if 12 hours mode is on. Plugin will automatically transform given values to 12 hours format.
+		p Lets create calendar where user can choose time between 09:00 am and 06:00 pm on working days and on Saturday and Sunday between from 10:00 am to 04:00 pm.
+
+		+example
+			+example-content
+				input(type='text')#timepicker-actions-exmpl
+				script.
+					// Create start date
+					var start = new Date(),
+						startHours = 9;
+
+					// 09:00 AM
+					start.setHours(9);
+					start.setMinutes(0);
+
+					// If today is Saturday or Sunday set 10:00 AM
+					if ([6, 0].indexOf(start.getDay()) != -1) {
+						start.setHours(10);
+						startHours = 10
+					}
+
+					$('#timepicker-actions-exmpl').datepicker({
+						timepicker: true,
+						language: 'en',
+						startDate: start,
+						minHours: startHours,
+						maxHours: 18,
+						onSelect: function (fd, d, picker) {
+							// Do nothing if selection was cleared
+							if (!d) return;
+
+							var day = d.getDay();
+							// If chosen day is Saturday or Sunday when set
+							// hour value for weekends, else restore defaults
+							if (day == 6 || day == 0) {
+								picker.update({
+									minHours: 10,
+									maxHours: 16
+								})
+							} else {
+								picker.update({
+									minHours: 9,
+									maxHours: 18
+								})
+							}
+						}
+					})
+			+example-code
+				:code
+					<input type='text' id='timepicker-actions-exmpl' />
+					<script>
+						// Create start date
+						var start = new Date(),
+							startHours = 9;
+
+						// 09:00 AM
+						start.setHours(9);
+						start.setMinutes(0);
+
+						// If today is Saturday or Sunday set 10:00 AM
+						if ([6, 0].indexOf(start.getDay()) != -1) {
+							start.setHours(10);
+							startHours = 10
+						}
+
+						$('#timepicker-actions-exmpl').datepicker({
+							timepicker: true,
+							language: 'en',
+							startDate: start,
+							minHours: startHours,
+							maxHours: 18,
+							onSelect: function (fd, d, picker) {
+								// Do nothing if selection was cleared
+								if (!d) return;
+
+								var day = d.getDay();
+								// If chosen day is Saturday or Sunday when set
+								// hour value for weekends, else restore defaults
+								if (day == 6 || day == 0) {
+									picker.update({
+										minHours: 10,
+										maxHours: 16
+									})
+								} else {
+									picker.update({
+										minHours: 9,
+										maxHours: 18
+									})
+								}
+							}
+						})
+					</script>
+
+	article
 		h2#localization Localization
 		p
 			| You can add your localization to object
@@ -306,7 +451,8 @@ block content
 				monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 				today: 'Today',
 				clear: 'Clear',
-				dateFormat: 'mm/dd/yy',
+				dateFormat: 'mm/dd/yyyy',
+				timeFormat: 'hh:ii aa'
 				firstDay: 0
 			};
 		p Available localizations located in
@@ -499,8 +645,13 @@ block content
 				+example-inline('multipleDatesSeparator')
 				| will be used as dates separator.
 		.param
-			+param-header('todayButton', 'boolean', 'false')
-			p If true, then button "Today" will be visible.
+			+param-header('todayButton', 'boolean|Date', 'false')
+			p If true, then button "Today" will be visible. If Date is passed then click event will also select passed date.
+			+example-code('js').
+				// Select today
+				$('.datepicker').datepicker({
+					todayButton: new Date()
+				})
 		.param
 			+param-header('clearButton', 'boolean', 'false')
 			p If true, then button "Clear" will be visible.
@@ -539,6 +690,69 @@ block content
 		.param
 			+param-header('monthsField','string','"monthsShort"')
 			p Field name from localization object which should be used as months names, when view is 'months'.
+
+		.param
+			+param-header('timepicker', 'boolean', 'false', 'opts-timepicker')
+			p If
+				+example-inline('true')
+				| , when timepicker widget will be added.
+
+		.param
+			+param-header('dateTimeSeparator', 'string', '" "', 'opts-dateTimeSeparator')
+			p Separator between date and time
+
+		.param
+			+param-header('timeFormat', 'string', 'null', 'opts-timeFormat')
+			p
+				| Desirable time format. Taken from localization by default. If value passed here, then it will be used instead.
+				| For using 12 hours mode, add "aa" or "AA" to your
+				+example-inline('timeFormat','js')
+				| parameter, e.g.
+				+example-inline('{timeFormat: "hh:ii AA"}','js')
+				| Possible values are:
+			ul
+				li
+					+param('h')
+					| - hours
+				li
+					+param('hh')
+					| - hours with leading zero
+				li
+					+param('i')
+					| - minutes
+				li
+					+param('ii')
+					| - minutes with leading zero
+				li
+					+param('aa')
+					| - day period - 'am' or 'pm'
+				li
+					+param('AA')
+					| - day period capitalized
+
+		.param
+			+param-header('minHours', 'number', '0', 'opts-minHours')
+			p Minimal hours value, must be between 0 and 23. You will not be able to choose value lower than this.
+
+		.param
+			+param-header('maxHours', 'number', '23', 'opts-maxHours')
+			p Maximum hours value, must be between 0 and 23. You will not be able to choose value higher than this.
+
+		.param
+			+param-header('minMinutes', 'number', '0', 'opts-minMinutes')
+			p Minimal minutes value, must be between 0 and 59. You will not be able to choose value lower than this.
+
+		.param
+			+param-header('maxMinutes', 'number', '59', 'opts-maxMinutes')
+			p Maximum minutes value, must be between 0 and 59. You will not be able to choose value higher than this.
+
+		.param
+			+param-header('hoursStep', 'number', '1', 'opts-hoursStep')
+			p Hours step in slider.
+
+		.param
+			+param-header('minutesStep', 'number', '1', 'opts-minutesStep')
+			p Minutes step in slider.
 
 	article
 		h2#events Events

@@ -17,7 +17,7 @@ block content
 	article
 		h2#intro Описание
 		p
-			| Легкий (<i><strong>~26kb</strong> минифицированный js файл и <strong>~7kb</strong> gziped</i>), кастомизируемый, кроссбраузерный календарь, написан с использованием
+			| Легкий (<i><strong>~34kb</strong> минифицированный js файл и <strong>~9kb</strong> gziped</i>), кастомизируемый, кроссбраузерный календарь, написан с использованием
 			+example-inline('es5')
 			| и
 			+example-inline('css flexbox', 'js')
@@ -278,6 +278,147 @@ block content
 					$picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 10))
 
 	article
+		h2#timepicker Выбор времени
+		p Для выбора времени используйте опцию
+			+example-inline('{timepicker: true}', 'js')
+			| - она добавит время и пару ползунков, с помощью которых можно уставноить часы и минуты.
+		p По умолчанию будет установлено текущее время на компьюетере пользователя, это значение можно изменять параметром
+			+example-inline('startDate', 'js')
+			|.
+
+		+example
+			+example-content
+				div.datepicker-here(data-timepicker='true')
+			+example-code
+				:code
+					<div class="datepicker-here" data-timepicker="true"></div>
+		p
+			i Подробнее о параметрах выбора времени можно почитать в <a href='#opts-timepicker' class='nav-link'>Опциях</a>.
+
+
+		h3#timepicker-format Формат времени
+		p Формат времени задается в объекте локализации, либо в парамтре
+			+example-inline('timeFormat', 'js')
+			|. По умолчанию используется 24-х часовой формат. Для выбора 12-ти часового формата в
+			+example-inline('timeFormat', 'js')
+			| нужно добавить символ
+			+example-inline('aa', 'js')
+			| или
+			+example-inline('AA', 'js')
+			| . После чего в виджете появятся обозочения 'AM' или 'PM', в зависимости от выбранного периода времени.
+
+		+example
+			+example-content
+				input.datepicker-here(type='text' data-timepicker='true', data-time-format='hh:ii aa')
+			+example-code
+				:code
+					<div class="datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'></div>
+
+		h3#timeformat-actions Действия со временем
+		p Для задания максимально/минимально возможных значений часов или минут используйте параметры
+			+example-inline('maxHours','js')
+			|,
+			+example-inline('minHours','js')
+			|,
+			+example-inline('maxMinutes','js')
+			|,
+			+example-inline('minMinutes','js')
+			|. Также время можно указывать в парамтерах
+			+example-inline('minDate','js')
+			| и
+			+example-inline('maxDate','js')
+		p Давайте создадим календарь, где пользователь может выбрать время с 09:00 до 18:00, а в субботу и воскресенье с 10:00 до 16:00.
+
+		+example
+			+example-content
+				input(type='text')#timepicker-actions-exmpl
+				script.
+					// Зададим стартовую дату
+					var start = new Date(),
+						startHours = 9;
+
+					// 09:00
+					start.setHours(9);
+					start.setMinutes(0);
+
+					// Если сегодня суббота или воскресенье - 10:00
+					if ([6,0].indexOf(start.getDay()) != -1) {
+						start.setHours(10);
+						startHours = 10
+					}
+
+					$('#timepicker-actions-exmpl').datepicker({
+						timepicker: true,
+						startDate: start,
+						minHours: startHours,
+						maxHours: 18,
+						onSelect: function(fd, d, picker) {
+							// Ничего не делаем если выделение было снято
+							if (!d) return;
+
+							var day = d.getDay();
+							// Если выбранный день суббота или воскресенье, то устанавливаем
+							// часы для выходных, в противном случае восстанавливаем начальные значения
+							if (day == 6 || day == 0) {
+								picker.update({
+									minHours: 10,
+									maxHours: 16
+								})
+							} else {
+								picker.update({
+									minHours: 9,
+									maxHours: 18
+								})
+							}
+						}
+					})
+			+example-code
+				:code
+					<input type='text' id='timepicker-actions-exmpl' />
+					<script>
+						// Зададим стартовую дату
+						var start = new Date(),
+							startHours = 9;
+
+						// 09:00
+						start.setHours(9);
+						start.setMinutes(0);
+
+						// Если сегодня суббота или воскресенье - 10:00
+						if ([6,0].indexOf(start.getDay()) != -1) {
+							start.setHours(10);
+							startHours = 10
+						}
+
+						$('#timepicker-actions-exmpl').datepicker({
+							timepicker: true,
+							startDate: start,
+							minHours: startHours,
+							maxHours: 18,
+							onSelect: function(fd, d, picker) {
+								// Ничего не делаем если выделение было снято
+								if (!d) return;
+
+								var day = d.getDay();
+								// Если выбранный день суббота или воскресенье, то устанавливаем
+								// часы для выходных, в противном случае восстанавливаем начальные значения
+								if (day == 6 || day == 0) {
+									picker.update({
+										minHours: 10,
+										maxHours: 16
+									})
+								} else {
+									picker.update({
+										minHours: 9,
+										maxHours: 18
+									})
+								}
+							}
+						})
+					</script>
+
+
+	article
 		h2#localization Локализация
 		p
 			| Вы можете добавить свою локализацию в объект
@@ -317,6 +458,7 @@ block content
 				today: 'Сегодня',
 				clear: 'Очистить',
 				dateFormat: 'dd.mm.yyyy',
+				timeFormat: 'hh:ii',
 				firstDay: 1
 			};
 
@@ -526,8 +668,13 @@ block content
 			p Если true, то будет включен режим выбора диапазона дат. В качестве разделителя будет использован
 				+example-inline('multipleDatesSeparator')
 		.param
-			+param-header('todayButton', 'boolean', 'false')
-			p Если true, то будет отображена кнопка "Сегодня".
+			+param-header('todayButton', 'boolean|Date', 'false')
+			p Если true, то будет отображена кнопка "Сегодня". Если передать объект даты, то при клике по кнопке будет осуществлен переход и последующий выбор этой даты.
+			+example-code('js').
+				// Выбор сегодняшнего дня
+				$('.datepicker').datepicker({
+					todayButton: new Date()
+				})
 
 		.param
 			+param-header('clearButton', 'boolean', 'false')
@@ -574,6 +721,69 @@ block content
 			p Какое поле из объекта локализации использовать в качестве названий месяцев, когда
 				+example-inline('view = "months"', 'js')
 				| .
+
+		.param
+			+param-header('timepicker', 'boolean', 'false', 'opts-timepicker')
+			p Если
+				+example-inline('true')
+				| , то будет добавлена возомжность выбора времени.
+
+		.param
+			+param-header('dateTimeSeparator', 'string', '" "', 'opts-dateTimeSeparator')
+			p Разделитель между датой и временем.
+
+		.param
+			+param-header('timeFormat', 'string', 'null', 'opts-timeFormat')
+			p Формат времени. По умолчанию берется из локализации. Если передать значение сюда, то оно будет иметь больший приоритет.
+				| Для включения 12-ти часового режима добавьте 'aa' или 'AA' в параметр
+				+example-inline('timeFormat','js')
+				|, например
+				+example-inline('{timeFormat: "hh:ii AA"}','js')
+				| Возможные варианты:
+			ul
+				li
+					+param('h')
+					| - часы
+				li
+					+param('hh')
+					| - часы, с лидирующим нулем
+				li
+					+param('i')
+					| - минуты
+				li
+					+param('ii')
+					| - минуты, с лидирующим нулем
+				li
+					+param('aa')
+					| - период дня - 'am' или 'pm'
+				li
+					+param('AA')
+					| - период дня заглавными буквами
+
+		.param
+			+param-header('minHours', 'number', '0', 'opts-minHours')
+			p Минимальное значение часов от 0 до 23. Нельзя выбрать час меньше, чем переданное значение.
+
+		.param
+			+param-header('maxHours', 'number', '23', 'opts-maxHours')
+			p Максимальное значение часов от 0 до 23. Нельзя выбрать час больше, чем переданное значение.
+
+		.param
+			+param-header('minMinutes', 'number', '0', 'opts-minMinutes')
+			p Минимальное значение часов от 0 до 59. Нельзя вустановить значение минут меньше, чем переданное значение.
+
+		.param
+			+param-header('maxMinutes', 'number', '59', 'opts-maxMinutes')
+			p Максимальное значение минут от 0 до 59. Нельзя вустановить значение минут больше, чем переданное значение.
+
+		.param
+			+param-header('hoursStep', 'number', '1', 'opts-hoursStep')
+			p Шаг выбора часов.
+
+		.param
+			+param-header('minutesStep', 'number', '1', 'opts-minutesStep')
+			p Шаг выбора минут.
+
 
 	article
 		h2#events События

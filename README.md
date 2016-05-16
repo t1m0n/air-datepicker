@@ -1,11 +1,18 @@
 # Air Datepicker
 
-Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested no Android 4.4+ and iOS8+)
+Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested no Android 4.4+ and iOS8+).
+
 ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)
 
 ## Install
+
+### bower
 ```
 bower i --save air-datepicker
+```
+### npm
+```
+npm i --save air-datepicker
 ```
 
 ## Usage
@@ -18,6 +25,21 @@ $('.my-datepicker').datepicker([options])
 * [In Russian](http://t1m0n.name/air-datepicker/docs/index-ru.html)
 
 ## Change log
+
+### v2.0.0
+* added timepicker (see [docs](http://t1m0n.name/air-datepicker/docs#timepicker) for more info)
+* added possibility to set `Date` in `todayButton` 
+* global variable `Datepicker` has been removed, now all placed in `$.fn.datepicker`
+* improved `selectDate` method, now one can pass an array of dates to select
+* added `npm` package
+* fixed issue caused by `placeholder` on `readonly` inputs in IE
+* fixed issue when `range` is true and first selected date is bigger than second
+* added new languages:
+    - `da`  thanks to [bjarnef](https://github.com/bjarnef)
+    - `nl`  thanks to [JaZo](https://github.com/JaZo)
+    - `pt`  thanks to [cmpscabral](https://github.com/cmpscabral)
+    - `pt-BR`  thanks to [dowglaz](https://github.com/dowglaz)
+    - `ro`  thanks to [tourniquet](https://github.com/tourniquet)
 
 ### v1.2.4
 * fixed '$ is not defined' problem. 
