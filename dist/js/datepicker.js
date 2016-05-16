@@ -428,6 +428,13 @@
                 len = selectedDates.length,
                 newDate = '';
 
+            if (Array.isArray(date)) {
+                date.forEach(function (d) {
+                    _this.selectDate(d)
+                });
+                return;
+            }
+
             if (!(date instanceof Date)) return;
 
             this.lastSelectedDate = date;
