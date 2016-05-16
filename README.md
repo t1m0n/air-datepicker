@@ -4,8 +4,14 @@ Lightweight customizable cross-browser jQuery datepicker, built with es5 and css
 ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)
 
 ## Install
+
+### bower
 ```
 bower i --save air-datepicker
+```
+### npm
+```
+npm i --save air-datepicker
 ```
 
 ## Usage
