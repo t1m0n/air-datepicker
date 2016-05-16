@@ -1,13 +1,13 @@
 {
   "name": "air-datepicker",
-  "version": "1.0.0",
+  "version": "1.2.4",
   "authors": [
     "t1m0n <t1m0n.tr@gmail.com>"
   ],
   "description": "A lightweight jQuery datepicker",
   "main": [
-    "dist/js/datepicker.min.js",
-    "dist/css/datepicker.min.css"
+    "dist/js/datepicker.js",
+    "dist/css/datepicker.css"
   ],
   "keywords": [
     "datepicker",
