@@ -1,4 +1,4 @@
-$.fn.datepicker.language['zh'] = {
+;(function ($) { $.fn.datepicker.language['zh'] = {
     days: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
     daysShort: ['日', '一', '二', '三', '四', '五', '六'],
     daysMin: ['日', '一', '二', '三', '四', '五', '六'],
@@ -9,4 +9,4 @@ $.fn.datepicker.language['zh'] = {
     dateFormat: 'yyyy-mm-dd',
     timeFormat: 'hh:ii',
     firstDay: 1
-};
+}; })(jQuery);

@@ -1,4 +1,4 @@
-$.fn.datepicker.language['nl'] = {
+;(function ($) { $.fn.datepicker.language['nl'] = {
     days: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
     daysShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
     daysMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
@@ -9,4 +9,4 @@ $.fn.datepicker.language['nl'] = {
     dateFormat: 'dd-MM-yy',
     timeFormat: 'hh:ii',
     firstDay: 0
-};
+}; })(jQuery);

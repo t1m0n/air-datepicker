@@ -1,4 +1,5 @@
-$.fn.datepicker.language['en'] = {
+;(function ($) { 
+    $.fn.datepicker.language['en'] = {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
@@ -10,3 +11,4 @@ $.fn.datepicker.language['en'] = {
     timeFormat: 'hh:ii aa',
     firstDay: 0
 };
+})(jQuery);

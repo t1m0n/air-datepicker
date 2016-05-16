@@ -1,4 +1,4 @@
-$.fn.datepicker.language['pt-BR'] = {
+;(function ($) { $.fn.datepicker.language['pt-BR'] = {
     days: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
     daysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
     daysMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
@@ -9,4 +9,4 @@ $.fn.datepicker.language['pt-BR'] = {
     dateFormat: 'dd/mm/yyyy',
     timeFormat: 'hh:ii',
     firstDay: 0
-};
+}; })(jQuery);
