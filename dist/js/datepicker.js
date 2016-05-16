@@ -484,6 +484,11 @@
                     } else {
                         _this.minRange = date;
                     }
+                    // Swap dates if they were selected via dp.selectDate() and second date was smaller then first
+                    if (datepicker.bigger(_this.maxRange, _this.minRange)) {
+                        _this.maxRange = _this.minRange;
+                        _this.minRange = date;
+                    }
                     _this.selectedDates = [_this.minRange, _this.maxRange]
 
                 } else {
