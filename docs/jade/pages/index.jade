@@ -331,6 +331,7 @@ block content
 				script.
 					// Create start date
 					var start = new Date(),
+						prevDay,
 						startHours = 9;
 
 					// 09:00 AM
@@ -354,6 +355,10 @@ block content
 							if (!d) return;
 
 							var day = d.getDay();
+							// Trigger only if date is changed
+							if (prevDay != undefined && prevDay == day) return;
+							prevDay = day;
+							console.log('updat')
 							// If chosen day is Saturday or Sunday when set
 							// hour value for weekends, else restore defaults
 							if (day == 6 || day == 0) {
@@ -375,6 +380,7 @@ block content
 					<script>
 						// Create start date
 						var start = new Date(),
+							prevDay,
 							startHours = 9;
 
 						// 09:00 AM
@@ -398,6 +404,11 @@ block content
 								if (!d) return;
 
 								var day = d.getDay();
+
+								// Trigger only if date is changed
+								if (prevDay != undefined && prevDay == day) return;
+								prevDay = day;
+
 								// If chosen day is Saturday or Sunday when set
 								// hour value for weekends, else restore defaults
 								if (day == 6 || day == 0) {
@@ -419,12 +430,12 @@ block content
 		h2#localization Localization
 		p
 			| You can add your localization to object
-			+example-inline('Datepicker.language["my-lang"]', 'js')
+			+example-inline('$.fn.datepicker.language["my-lang"]', 'js')
 			| and pass it name to parameter
 			+example-inline('language', 'js')
 		+example-code('js').
 			// Add custom localization
-			Datepicker.language['my-lang'] = {...}
+			$.fn.datepicker.language['my-lang'] = {...}
 
 			// Initialize datepicker with it
 			$('.my-datepicker').datepicker({
@@ -443,7 +454,7 @@ block content
 		p If some fields are missing, they will be taken from default localization object ('Russian').
 		h3 Example of localization object
 		+example-code('js').
-			Datepicker.language['en'] = {
+			$.fn.datepicker.language['en'] = {
 				days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 				daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 				daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],

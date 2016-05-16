@@ -128,6 +128,7 @@ $picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), curren
 </code></pre></div></article><article><h2 id="timepicker">Выбор времени</h2><p>Для выбора времени используйте опцию<span class="example-inline"><code class="js">{timepicker: true}</code></span>- она добавит время и пару ползунков, с помощью которых можно уставноить часы и минуты.</p><p>По умолчанию будет установлено текущее время на компьюетере пользователя, это значение можно изменять параметром<span class="example-inline"><code class="js">startDate</code></span>.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><div data-timepicker="true" class="datepicker-here"></div></div><pre class="example-code"><code>&lt;div class=&quot;datepicker-here&quot; data-timepicker=&quot;true&quot;&gt;&lt;/div&gt;</code></pre></div><p><i>Подробнее о параметрах выбора времени можно почитать в <a href='#opts-timepicker' class='nav-link'>Опциях</a>.</i></p><h3 id="timepicker-format">Формат времени</h3><p>Формат времени задается в объекте локализации, либо в парамтре<span class="example-inline"><code class="js">timeFormat</code></span>. По умолчанию используется 24-х часовой формат. Для выбора 12-ти часового формата в<span class="example-inline"><code class="js">timeFormat</code></span>нужно добавить символ<span class="example-inline"><code class="js">aa</code></span>или<span class="example-inline"><code class="js">AA</code></span>. После чего в виджете появятся обозочения 'AM' или 'PM', в зависимости от выбранного периода времени.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" data-timepicker="true" data-time-format="hh:ii aa" class="datepicker-here"></div><pre class="example-code"><code>&lt;div class=&quot;datepicker-here&quot; data-timepicker=&quot;true&quot; data-time-format='hh:ii aa'&gt;&lt;/div&gt;
 </code></pre></div><h3 id="timeformat-actions">Действия со временем</h3><p>Для задания максимально/минимально возможных значений часов или минут используйте параметры<span class="example-inline"><code class="js">maxHours</code></span>,<span class="example-inline"><code class="js">minHours</code></span>,<span class="example-inline"><code class="js">maxMinutes</code></span>,<span class="example-inline"><code class="js">minMinutes</code></span>. Также время можно указывать в парамтерах<span class="example-inline"><code class="js">minDate</code></span>и<span class="example-inline"><code class="js">maxDate</code></span></p><p>Давайте создадим календарь, где пользователь может выбрать время с 09:00 до 18:00, а в субботу и воскресенье с 10:00 до 16:00.</p><div class="example"><div class="example--label">Пример</div><div class="example-content"><input type="text" id="timepicker-actions-exmpl"><script>// Зададим стартовую дату
 var start = new Date(),
+	prevDay,
 	startHours = 9;
 
 // 09:00
@@ -150,6 +151,11 @@ $('#timepicker-actions-exmpl').datepicker({
 		if (!d) return;
 
 		var day = d.getDay();
+
+		// Trigger only if date is changed
+		if (prevDay != undefined && prevDay == day) return;
+		prevDay = day;
+
 		// Если выбранный день суббота или воскресенье, то устанавливаем
 		// часы для выходных, в противном случае восстанавливаем начальные значения
 		if (day == 6 || day == 0) {
@@ -168,6 +174,7 @@ $('#timepicker-actions-exmpl').datepicker({
 &lt;script&gt;
 	// Зададим стартовую дату
 	var start = new Date(),
+		prevDay,
 		startHours = 9;
 
 	// 09:00
@@ -190,6 +197,11 @@ $('#timepicker-actions-exmpl').datepicker({
 			if (!d) return;
 
 			var day = d.getDay();
+
+			// Обновляем состояние календаря только если была изменена дата
+			if (prevDay != undefined &amp;&amp; prevDay == day) return;
+			prevDay = day;
+
 			// Если выбранный день суббота или воскресенье, то устанавливаем
 			// часы для выходных, в противном случае восстанавливаем начальные значения
 			if (day == 6 || day == 0) {
@@ -207,7 +219,7 @@ $('#timepicker-actions-exmpl').datepicker({
 	})
 &lt;/script&gt;
 
-</code></pre></div></article><article><h2 id="localization">Локализация</h2><p>Вы можете добавить свою локализацию в объект<span class="example-inline"><code class="js">Datepicker.language[&quot;my-lang&quot;]</code></span>и при вызове календаря передать название языка в параметр<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">Datepicker.language['my-lang'] = {...}
+</code></pre></div></article><article><h2 id="localization">Локализация</h2><p>Вы можете добавить свою локализацию в объект<span class="example-inline"><code class="js">$.fn.datepicker.language[&quot;my-lang&quot;]</code></span>и при вызове календаря передать название языка в параметр<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">$.fn.datepicker.language['my-lang'] = {...}
 
 $('.my-datepicker').datepicker({
 	language: 'my-lang'
@@ -218,7 +230,7 @@ $('.my-datepicker').datepicker({
 		...
 	}
 })
-</code></pre><p>Если в вашей локализации не будет хватать каких-то полей, то они будут взяты из языка по умолчанию (русский язык).</p><h3>Пример объекта локализации</h3><pre class="example-code"><code class="js">Datepicker.language['ru'] =  {
+</code></pre><p>Если в вашей локализации не будет хватать каких-то полей, то они будут взяты из языка по умолчанию (русский язык).</p><h3>Пример объекта локализации</h3><pre class="example-code"><code class="js">$.fn.datepicker.language['ru'] =  {
 	days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
 	daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
 	daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],

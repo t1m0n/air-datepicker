@@ -131,6 +131,7 @@ $picker.data('datepicker').selectDate(new Date(currentDate.getFullYear(), curren
 </code></pre></div></article><article><h2 id="timepicker">Timepicker</h2><p>To enable timepicker use option<span class="example-inline"><code class="js">{timepicker: true}</code></span>- it will add current time and a couple of range sliders by which one can pick time.</p><p>By default current user time will be set. This value can be changed by<span class="example-inline"><code class="js">startDate</code></span>parameter.</p><div class="example"><div class="example--label">Example</div><div class="example-content"><div data-timepicker="true" data-language="en" class="datepicker-here"></div></div><pre class="example-code"><code>&lt;div class=&quot;datepicker-here&quot; data-timepicker=&quot;true&quot; data-language='en'&gt;&lt;/div&gt;</code></pre></div><p><i>More detailed info about timepicker parameters you can find in <a href='#opts-timepicker' class='nav-link'>Options</a>.</i></p><h3 id="timepicker-format">Time format</h3><p>Time format is defined in localization object or in<span class="example-inline"><code class="js">timeFormat</code></span>parameter. By default (in Russian language) 24 hours format is used. For enabling 12 hours mode you must add<span class="example-inline"><code class="js">aa</code></span>or<span class="example-inline"><code class="js">AA</code></span>symbol in<span class="example-inline"><code class="js">timeFormat</code></span>. After what 'AM' and 'PM' sings will appear in timepicker widget.</p><p>Lets use 12 hours mode in Russian language:</p><div class="example"><div class="example--label">Example</div><div class="example-content"><input type="text" data-timepicker="true" data-time-format="hh:ii aa" class="datepicker-here"></div><pre class="example-code"><code>&lt;div class=&quot;datepicker-here&quot; data-timepicker=&quot;true&quot; data-time-format='hh:ii aa'&gt;&lt;/div&gt;
 </code></pre></div><h3 id="timeformat-actions">Actions with time</h3><p>For setting max/min hours or minutes values use<span class="example-inline"><code class="js">maxHours</code></span>,<span class="example-inline"><code class="js">minHours</code></span>,<span class="example-inline"><code class="js">maxMinutes</code></span>,<span class="example-inline"><code class="js">minMinutes</code></span>. You also could set time in<span class="example-inline"><code class="js">minDate</code></span>and<span class="example-inline"><code class="js">maxDate</code></span>. For setting hours you must use values between 0 and 23, event if 12 hours mode is on. Plugin will automatically transform given values to 12 hours format.</p><p>Lets create calendar where user can choose time between 09:00 am and 06:00 pm on working days and on Saturday and Sunday between from 10:00 am to 04:00 pm.</p><div class="example"><div class="example--label">Example</div><div class="example-content"><input type="text" id="timepicker-actions-exmpl"><script>// Create start date
 var start = new Date(),
+	prevDay,
 	startHours = 9;
 
 // 09:00 AM
@@ -154,6 +155,10 @@ $('#timepicker-actions-exmpl').datepicker({
 		if (!d) return;
 
 		var day = d.getDay();
+		// Trigger only if date is changed
+		if (prevDay != undefined && prevDay == day) return;
+		prevDay = day;
+		console.log('updat')
 		// If chosen day is Saturday or Sunday when set
 		// hour value for weekends, else restore defaults
 		if (day == 6 || day == 0) {
@@ -172,6 +177,7 @@ $('#timepicker-actions-exmpl').datepicker({
 &lt;script&gt;
 	// Create start date
 	var start = new Date(),
+		prevDay,
 		startHours = 9;
 
 	// 09:00 AM
@@ -195,6 +201,11 @@ $('#timepicker-actions-exmpl').datepicker({
 			if (!d) return;
 
 			var day = d.getDay();
+
+			// Trigger only if date is changed
+			if (prevDay != undefined &amp;&amp; prevDay == day) return;
+			prevDay = day;
+
 			// If chosen day is Saturday or Sunday when set
 			// hour value for weekends, else restore defaults
 			if (day == 6 || day == 0) {
@@ -211,8 +222,8 @@ $('#timepicker-actions-exmpl').datepicker({
 		}
 	})
 &lt;/script&gt;
-</code></pre></div></article><article><h2 id="localization">Localization</h2><p>You can add your localization to object<span class="example-inline"><code class="js">Datepicker.language[&quot;my-lang&quot;]</code></span>and pass it name to parameter<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">// Add custom localization
-Datepicker.language['my-lang'] = {...}
+</code></pre></div></article><article><h2 id="localization">Localization</h2><p>You can add your localization to object<span class="example-inline"><code class="js">$.fn.datepicker.language[&quot;my-lang&quot;]</code></span>and pass it name to parameter<span class="example-inline"><code class="js">language</code></span></p><pre class="example-code"><code class="js">// Add custom localization
+$.fn.datepicker.language['my-lang'] = {...}
 
 // Initialize datepicker with it
 $('.my-datepicker').datepicker({
@@ -222,7 +233,7 @@ $('.my-datepicker').datepicker({
 		days: [...]
 		...
 	}
-})</code></pre><p>If some fields are missing, they will be taken from default localization object ('Russian').</p><h3>Example of localization object</h3><pre class="example-code"><code class="js">Datepicker.language['en'] = {
+})</code></pre><p>If some fields are missing, they will be taken from default localization object ('Russian').</p><h3>Example of localization object</h3><pre class="example-code"><code class="js">$.fn.datepicker.language['en'] = {
 	days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 	daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],

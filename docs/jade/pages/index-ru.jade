@@ -335,6 +335,7 @@ block content
 				script.
 					// Зададим стартовую дату
 					var start = new Date(),
+						prevDay,
 						startHours = 9;
 
 					// 09:00
@@ -357,6 +358,11 @@ block content
 							if (!d) return;
 
 							var day = d.getDay();
+
+							// Trigger only if date is changed
+							if (prevDay != undefined && prevDay == day) return;
+							prevDay = day;
+
 							// Если выбранный день суббота или воскресенье, то устанавливаем
 							// часы для выходных, в противном случае восстанавливаем начальные значения
 							if (day == 6 || day == 0) {
@@ -378,6 +384,7 @@ block content
 					<script>
 						// Зададим стартовую дату
 						var start = new Date(),
+							prevDay,
 							startHours = 9;
 
 						// 09:00
@@ -400,6 +407,11 @@ block content
 								if (!d) return;
 
 								var day = d.getDay();
+
+								// Обновляем состояние календаря только если была изменена дата
+								if (prevDay != undefined && prevDay == day) return;
+								prevDay = day;
+
 								// Если выбранный день суббота или воскресенье, то устанавливаем
 								// часы для выходных, в противном случае восстанавливаем начальные значения
 								if (day == 6 || day == 0) {
@@ -422,12 +434,12 @@ block content
 		h2#localization Локализация
 		p
 			| Вы можете добавить свою локализацию в объект
-			+example-inline('Datepicker.language["my-lang"]', 'js')
+			+example-inline('$.fn.datepicker.language["my-lang"]', 'js')
 			| и при вызове календаря передать название языка в параметр
 			+example-inline('language', 'js')
 
 		+example-code('js').
-			Datepicker.language['my-lang'] = {...}
+			$.fn.datepicker.language['my-lang'] = {...}
 
 			$('.my-datepicker').datepicker({
 				language: 'my-lang'
@@ -449,7 +461,7 @@ block content
 
 		h3 Пример объекта локализации
 		+example-code('js').
-			Datepicker.language['ru'] =  {
+			$.fn.datepicker.language['ru'] =  {
 				days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
 				daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
 				daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
