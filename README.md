@@ -26,6 +26,9 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.0.2
+* fixed dates array in `onSelect` callback
+
 ### v2.0.1
 * fixed version for npm
 
