@@ -301,11 +301,11 @@
                 dates = selectedDates.map(function(date) {
                     var parsedDate = datepicker.getParsedDate(date);
                     return new Date(
-                        parsedSelected.year,
-                        parsedSelected.month,
-                        parsedSelected.date,
-                        parsedSelected.hours,
-                        parsedSelected.minutes
+                        parsedDate.year,
+                        parsedDate.month,
+                        parsedDate.date,
+                        parsedDate.hours,
+                        parsedDate.minutes
                     );
                 })
             }
