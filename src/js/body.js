@@ -280,10 +280,11 @@
         _handleClick: function (el) {
             var date = el.data('date') || 1,
                 month = el.data('month') || 0,
-                year = el.data('year') || this.d.parsedDate.year;
+                year = el.data('year') || this.d.parsedDate.year,
+                dp = this.d;
             // Change view if min view does not reach yet
-            if (this.d.view != this.opts.minView) {
-                this.d.down(new Date(year, month, date));
+            if (dp.view != this.opts.minView) {
+                dp.down(new Date(year, month, date));
                 return;
             }
             // Select date if min view is reached
@@ -291,17 +292,28 @@
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
-                this.d._trigger('clickCell', selectedDate);
-            } else if (alreadySelected && this.opts.toggleSelected){
-                this.d.removeDate(selectedDate);
-            } else if (alreadySelected && !this.opts.toggleSelected) {
-                this.d.lastSelectedDate = alreadySelected;
-                if (this.d.opts.timepicker) {
-                    this.d.timepicker._setTime(alreadySelected);
-                    this.d.timepicker.update();
-                }
+                dp._trigger('clickCell', selectedDate);
             }
 
+            if (alreadySelected && this.opts.range) {
+                // Add possibility to select same date when range is true
+                if (dp.selectedDates.length != 2 && !this.opts.toggleSelected || this.opts.toggleSelected) {
+                    dp._trigger('clickCell', selectedDate);
+                    // Change last selected date to be able to change time on last date
+                    dp.lastSelectedDate = alreadySelected;
+                }
+            } else if (alreadySelected && this.opts.toggleSelected){
+                dp.removeDate(selectedDate);
+            }
+
+            // Change last selected date to be able to change time when clicking on this cell
+            if (alreadySelected && !this.opts.toggleSelected) {
+                dp.lastSelectedDate = alreadySelected;
+                if (dp.opts.timepicker) {
+                    dp.timepicker._setTime(alreadySelected);
+                    dp.timepicker.update();
+                }
+            }
         },
 
         _onClickCell: function (e) {
