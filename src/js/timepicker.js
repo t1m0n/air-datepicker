@@ -171,10 +171,11 @@
         /**
          * Calculates valid hour value to display in text input and datepicker's body.
          * @param date {Date|Number} - date or hours
+         * @param [ampm] {Boolean} - 12 hours mode
          * @returns {{hours: *, dayPeriod: string}}
          * @private
          */
-        _getValidHoursFromDate: function (date) {
+        _getValidHoursFromDate: function (date, ampm) {
             var d = date,
                 hours = date;
 
@@ -183,10 +184,10 @@
                 hours = d.hours;
             }
 
-            var ampm = this.d.ampm,
+            var _ampm = ampm || this.d.ampm,
                 dayPeriod = 'am';
 
-            if (ampm) {
+            if (_ampm) {
                 switch(true) {
                     case hours == 0:
                         hours = 12;

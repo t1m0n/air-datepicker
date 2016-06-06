@@ -362,11 +362,12 @@
                 d = datepicker.getParsedDate(date),
                 fullHours = d.fullHours,
                 hours = d.hours,
+                ampm = string.match(boundary('aa')) || string.match(boundary('AA')),
                 dayPeriod = 'am',
                 validHours;
 
-            if (this.opts.timepicker && this.timepicker && this.ampm) {
-                validHours = this.timepicker._getValidHoursFromDate(date);
+            if (this.opts.timepicker && this.timepicker && ampm) {
+                validHours = this.timepicker._getValidHoursFromDate(date, ampm);
                 fullHours = leadingZero(validHours.hours);
                 hours = validHours.hours;
                 dayPeriod = validHours.dayPeriod;

@@ -189,6 +189,36 @@ describe('Options', function () {
             dp.selectDate(date);
 
             assert.equal(dp.$altField.val(), '17-12-2015');
+        });
+        
+        it('should support 24 hour mode, even if main date format is in 12', function () {
+            var date = new Date(2015, 11, 17, 22, 47);
+
+            dp = $input.datepicker({
+                timepicker: true,
+                timeFormat: 'hh:ii aa',
+                altField: '.alt-field',
+                altFieldDateFormat: 'dd-mm-yyyy hh:ii'
+            }).data('datepicker');
+
+            dp.selectDate(date);
+
+            assert.equal(dp.$altField.val(), '17-12-2015 22:47');
+        });
+
+        it('should support 12 hour mode', function () {
+            var date = new Date(2015, 11, 17, 22, 47);
+
+            dp = $input.datepicker({
+                timepicker: true,
+                timeFormat: 'hh:ii',
+                altField: '.alt-field',
+                altFieldDateFormat: 'dd-mm-yyyy hh:ii aa'
+            }).data('datepicker');
+
+            dp.selectDate(date);
+
+            assert.equal(dp.$altField.val(), '17-12-2015 10:47 pm');
         })
     });
 
@@ -216,7 +246,7 @@ describe('Options', function () {
 
             expect(dp.selectedDates).to.have.length(1)
         })
-    })
+    });
 
     describe('keyboardNav', function () {
         var year = 2015,
