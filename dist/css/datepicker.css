@@ -168,6 +168,11 @@
     .datepickers-container {
       display: none; } }
 
+.datepicker, 
+.datepicker * {
+    box-sizing: border-box;
+}
+
 .datepicker {
   background: #fff;
   border: 1px solid #dbdbdb;
@@ -405,18 +410,18 @@
   padding: 4px;
   position: relative; }
   .datepicker--time.-am-pm- .datepicker--time-sliders {
-    -webkit-flex: 0 1 138px;
-        -ms-flex: 0 1 138px;
-            flex: 0 1 138px;
-    max-width: 138px; }
+    -webkit-flex: 0 1 120px;
+        -ms-flex: 0 1 120px;
+            flex: 0 1 120px;
+    max-width: 120px; }
 
 .datepicker--time-sliders {
-  -webkit-flex: 0 1 153px;
-      -ms-flex: 0 1 153px;
-          flex: 0 1 153px;
+  -webkit-flex: 0 1 141px;
+      -ms-flex: 0 1 141px;
+          flex: 0 1 141px;
   margin-left: 10px;
   margin-right: 5px;
-  max-width: 153px; }
+  max-width: 141px; }
 
 .datepicker--time-label {
   display: none;
