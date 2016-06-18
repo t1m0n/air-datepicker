@@ -14,6 +14,11 @@
   }
 }
 
+.datepicker, 
+.datepicker * {
+    box-sizing: border-box;
+}
+
 .datepicker {
   background: #fff;
   border: 1px solid map_get($borderColor, default);

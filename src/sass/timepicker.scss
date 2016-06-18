@@ -67,16 +67,17 @@ $rangeThumbBg: #dedede;
 
   &.-am-pm- {
     .datepicker--time-sliders {
-      flex: 0 1 138px;
-      max-width: 138px;
+      flex: 0 1 120px;
+      max-width: 120px;
     }
   }
 }
 
 .datepicker--time-sliders {
-  flex: 0 1 153px;
-  margin-right: 10px;
-  max-width: 153px;
+  flex: 0 1 141px;
+  margin-left: 10px;
+  margin-right: 5px;
+  max-width: 141px;
 }
 
 .datepicker--time-label {
@@ -90,7 +91,7 @@ $rangeThumbBg: #dedede;
   flex: 1;
   font-size: 14px;
   text-align: center;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 5px;
 }
 
 .datepicker--time-current-colon {
@@ -99,7 +100,8 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-current-hours,
-.datepicker--time-current-minutes {
+.datepicker--time-current-minutes,
+.datepicker--time-current-seconds {
   line-height: 1;
   font-size: 19px;
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
@@ -139,7 +141,7 @@ $rangeThumbBg: #dedede;
   display: flex;
   align-items: center;
   font-size: 11px;
-  height: 17px;
+  height: 15px;
   background: linear-gradient(to right,$rangeTrackBg, $rangeTrackBg) left 50%/100% $rangeTrackHeight no-repeat;
 
   &:first-child {
@@ -244,4 +246,3 @@ $rangeThumbBg: #dedede;
     left: calc(50% - 1px);
   }
 }
-

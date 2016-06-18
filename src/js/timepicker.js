@@ -4,6 +4,8 @@
         '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
         '   <span class="datepicker--time-current-colon">:</span>' +
         '   <span class="datepicker--time-current-minutes">#{minValue}</span>' +
+        '   <span class="datepicker--time-current-colon">:</span>' +
+        '   <span class="datepicker--time-current-seconds">#{secValue}</span>' +
         '</div>' +
         '<div class="datepicker--time-sliders">' +
         '   <div class="datepicker--time-row">' +
@@ -11,6 +13,9 @@
         '   </div>' +
         '   <div class="datepicker--time-row">' +
         '      <input type="range" name="minutes" value="#{minValue}" min="#{minMin}" max="#{minMax}" step="#{minStep}"/>' +
+        '   </div>' +
+        '   <div class="datepicker--time-row">' +
+        '      <input type="range" name="seconds" value="#{secValue}" min="#{secMin}" max="#{secMax}" step="#{secStep}"/>' +
         '   </div>' +
         '</div>' +
         '</div>',
@@ -26,19 +31,19 @@
 
     datepicker.Timepicker.prototype = {
         init: function () {
-            var input = 'input';
+            var input = "input";
             this._setTime(this.d.date);
             this._buildHTML();
 
             if (navigator.userAgent.match(/trident/gi)) {
-                input = 'change';
+                input = "change";
             }
 
-            this.d.$el.on('selectDate', this._onSelectDate.bind(this));
+            this.d.$el.on("selectDate", this._onSelectDate.bind(this));
             this.$ranges.on(input, this._onChangeRange.bind(this));
-            this.$ranges.on('mouseup', this._onMouseUpRange.bind(this));
-            this.$ranges.on('mousemove focus ', this._onMouseEnterRange.bind(this));
-            this.$ranges.on('mouseout blur', this._onMouseOutRange.bind(this));
+            this.$ranges.on("mouseup", this._onMouseUpRange.bind(this));
+            this.$ranges.on("mousemove focus ", this._onMouseEnterRange.bind(this));
+            this.$ranges.on("mouseout blur", this._onMouseOutRange.bind(this));
         },
 
         _setTime: function (date) {
@@ -47,27 +52,33 @@
             this._handleDate(date);
             this.hours = _date.hours < this.minHours ? this.minHours : _date.hours;
             this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
+            this.seconds = _date.seconds < this.minSeconds ? this.minSeconds : _date.seconds;
         },
 
         _setMinTimeFromDate: function (date) {
             this.minHours = date.getHours();
             this.minMinutes = date.getMinutes();
+            this.minSeconds = date.getSeconds();
         },
 
         _setMaxTimeFromDate: function (date) {
             this.maxHours = date.getHours();
             this.maxMinutes = date.getMinutes();
+            this.maxSeconds = date.getSeconds();
         },
 
         _setDefaultMinMaxTime: function () {
             var maxHours = 23,
                 maxMinutes = 59,
+                maxSeconds = 59,
                 opts = this.opts;
 
             this.minHours = opts.minHours < 0 || opts.minHours > maxHours ? 0 : opts.minHours;
             this.minMinutes = opts.minMinutes < 0 || opts.minMinutes > maxMinutes ? 0 : opts.minMinutes;
+            this.minSeconds = opts.minSeconds < 0 || opts.minSeconds > maxSeconds ? 0 : opts.minSeconds;
             this.maxHours = opts.maxHours < 0 || opts.maxHours > maxHours ? maxHours : opts.maxHours;
             this.maxMinutes = opts.maxMinutes < 0 || opts.maxMinutes > maxMinutes ? maxMinutes : opts.maxMinutes;
+            this.maxSeconds = opts.maxSeconds < 0 || opts.maxSeconds > maxSeconds ? maxSeconds : opts.maxSeconds;
         },
 
         /**
@@ -87,6 +98,12 @@
             } else if (this.minutes > this.maxMinutes) {
                 this.minutes = this.maxMinutes;
             }
+
+            if (this.minutes < this.minSeconds) {
+                this.minutes = this.minSeconds;
+            } else if (this.minutes > this.maxSeconds) {
+                this.minutes = this.maxSeconds;
+            }
         },
 
         _buildHTML: function () {
@@ -99,7 +116,11 @@
                     minMin: this.minMinutes,
                     minMax: lz(this.maxMinutes),
                     minStep: this.opts.minutesStep,
-                    minValue: lz(this.minutes)
+                    minValue: lz(this.minutes),
+                    secMin: this.minSeconds,
+                    secMax: lz(this.maxSeconds),
+                    secStep: this.opts.secondsStep,
+                    secValue: lz(this.seconds)
                 },
                 _template = dp.template(template, data);
 
@@ -107,24 +128,28 @@
             this.$ranges = $('[type="range"]', this.$timepicker);
             this.$hours = $('[name="hours"]', this.$timepicker);
             this.$minutes = $('[name="minutes"]', this.$timepicker);
-            this.$hoursText = $('.datepicker--time-current-hours', this.$timepicker);
-            this.$minutesText = $('.datepicker--time-current-minutes', this.$timepicker);
+            this.$seconds = $('[name="seconds"]', this.$timepicker);
+            this.$hoursText = $(".datepicker--time-current-hours", this.$timepicker);
+            this.$minutesText = $(".datepicker--time-current-minutes", this.$timepicker);
+            this.$secondsText = $(".datepicker--time-current-seconds", this.$timepicker);
 
             if (this.d.ampm) {
                 this.$ampm = $('<span class="datepicker--time-current-ampm">')
-                    .appendTo($('.datepicker--time-current', this.$timepicker))
+                    .appendTo($(".datepicker--time-current", this.$timepicker))
                     .html(this.dayPeriod);
 
-                this.$timepicker.addClass('-am-pm-');
+                this.$timepicker.addClass("-am-pm-");
             }
         },
 
         _updateCurrentTime: function () {
             var h =  dp.getLeadingZeroNum(this.displayHours),
-                m = dp.getLeadingZeroNum(this.minutes);
+                m = dp.getLeadingZeroNum(this.minutes),
+                s = dp.getLeadingZeroNum(this.seconds);
 
             this.$hoursText.html(h);
             this.$minutesText.html(m);
+            this.$secondsText.html(s);
 
             if (this.d.ampm) {
                 this.$ampm.html(this.dayPeriod);
@@ -140,7 +165,12 @@
             this.$minutes.attr({
                 min: this.minMinutes,
                 max: this.maxMinutes
-            }).val(this.minutes)
+            }).val(this.minutes);
+
+            this.$seconds.attr({
+                min: this.minSeconds,
+                max: this.maxSeconds
+            }).val(this.seconds);
         },
 
         /**
@@ -185,19 +215,19 @@
             }
 
             var _ampm = ampm || this.d.ampm,
-                dayPeriod = 'am';
+                dayPeriod = "am";
 
             if (_ampm) {
                 switch(true) {
-                    case hours == 0:
+                    case hours === 0:
                         hours = 12;
                         break;
-                    case hours == 12:
-                        dayPeriod = 'pm';
+                    case hours === 12:
+                        dayPeriod = "pm";
                         break;
                     case hours > 11:
                         hours = hours - 12;
-                        dayPeriod = 'pm';
+                        dayPeriod = "pm";
                         break;
                     default:
                         break;
@@ -207,7 +237,7 @@
             return {
                 hours: hours,
                 dayPeriod: dayPeriod
-            }
+            };
         },
 
         set hours (val) {
@@ -228,13 +258,13 @@
 
         _onChangeRange: function (e) {
             var $target = $(e.target),
-                name = $target.attr('name');
+                name = $target.attr("name");
             
             this.d.timepickerIsActive = true;
 
             this[name] = $target.val();
             this._updateCurrentTime();
-            this.d._trigger('timeChange', [this.hours, this.minutes])
+            this.d._trigger("timeChange", [this.hours, this.minutes, this.seconds]);
         },
 
         _onSelectDate: function (e, data) {
@@ -243,14 +273,14 @@
         },
 
         _onMouseEnterRange: function (e) {
-            var name = $(e.target).attr('name');
-            $('.datepicker--time-current-' + name, this.$timepicker).addClass('-focus-');
+            var name = $(e.target).attr("name");
+            $(".datepicker--time-current-" + name, this.$timepicker).addClass("-focus-");
         },
 
         _onMouseOutRange: function (e) {
-            var name = $(e.target).attr('name');
+            var name = $(e.target).attr("name");
             if (this.d.inFocus) return; // Prevent removing focus when mouse out of range slider
-            $('.datepicker--time-current-' + name, this.$timepicker).removeClass('-focus-');
+            $(".datepicker--time-current-" + name, this.$timepicker).removeClass("-focus-");
         },
 
         _onMouseUpRange: function (e) {

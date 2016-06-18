@@ -168,6 +168,11 @@
     .datepickers-container {
       display: none; } }
 
+.datepicker, 
+.datepicker * {
+    box-sizing: border-box;
+}
+
 .datepicker {
   background: #fff;
   border: 1px solid #dbdbdb;
@@ -405,17 +410,18 @@
   padding: 4px;
   position: relative; }
   .datepicker--time.-am-pm- .datepicker--time-sliders {
-    -webkit-flex: 0 1 138px;
-        -ms-flex: 0 1 138px;
-            flex: 0 1 138px;
-    max-width: 138px; }
+    -webkit-flex: 0 1 120px;
+        -ms-flex: 0 1 120px;
+            flex: 0 1 120px;
+    max-width: 120px; }
 
 .datepicker--time-sliders {
-  -webkit-flex: 0 1 153px;
-      -ms-flex: 0 1 153px;
-          flex: 0 1 153px;
-  margin-right: 10px;
-  max-width: 153px; }
+  -webkit-flex: 0 1 141px;
+      -ms-flex: 0 1 141px;
+          flex: 0 1 141px;
+  margin-left: 10px;
+  margin-right: 5px;
+  max-width: 141px; }
 
 .datepicker--time-label {
   display: none;
@@ -433,21 +439,23 @@
           flex: 1;
   font-size: 14px;
   text-align: center;
-  margin: 0 0 0 10px; }
+  margin: 0 0 0 5px; }
 
 .datepicker--time-current-colon {
   margin: 0 2px 3px;
   line-height: 1; }
 
 .datepicker--time-current-hours,
-.datepicker--time-current-minutes {
+.datepicker--time-current-minutes,
+.datepicker--time-current-seconds {
   line-height: 1;
   font-size: 19px;
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
   position: relative;
   z-index: 1; }
   .datepicker--time-current-hours:after,
-  .datepicker--time-current-minutes:after {
+  .datepicker--time-current-minutes:after,
+  .datepicker--time-current-seconds:after {
     content: '';
     background: #f0f0f0;
     border-radius: 4px;
@@ -459,7 +467,8 @@
     z-index: -1;
     opacity: 0; }
   .datepicker--time-current-hours.-focus-:after,
-  .datepicker--time-current-minutes.-focus-:after {
+  .datepicker--time-current-minutes.-focus-:after,
+  .datepicker--time-current-seconds.-focus-:after {
     opacity: 1; }
 
 .datepicker--time-current-ampm {
@@ -480,10 +489,8 @@
       -ms-flex-align: center;
           align-items: center;
   font-size: 11px;
-  height: 17px;
+  height: 15px;
   background: linear-gradient(to right, #dedede, #dedede) left 50%/100% 1px no-repeat; }
-  .datepicker--time-row:first-child {
-    margin-bottom: 4px; }
   .datepicker--time-row input[type='range'] {
     background: none;
     cursor: pointer;
