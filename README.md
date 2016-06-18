@@ -26,6 +26,14 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.1.0
+* added seconds to timepicker
+* added ndex file to use for development purposes
+* tons of missing semicolons added
+* replaced most of single quotes with double quotes
+* minor styling changes to timepicker
+* various small fixes
+
 ### v2.0.2
 * fixed dates array in `onSelect` callback
 

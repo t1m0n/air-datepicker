@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Air datepicker visual tests</title>
-        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="dist/js/datepicker.js"></script>
-        <link rel="stylesheet" href="dist/css/datepicker.css"/>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script type="text/javascript" src="dist/js/datepicker.min.js"></script>
+        <link rel="stylesheet" href="dist/css/datepicker.min.css"/>
         <link rel="stylesheet" href="docs/css/style.css"/>
         <script type="text/javascript">
             var log;
@@ -14,13 +14,13 @@
 
                 return function(text) {
                     var count = $('p', $el).length;
-                    $el.append('<p><span>' + count++ + '.</span> ' + text + '</p>').scrollTop(100000)
-                }
+                    $el.append('<p><span>' + count++ + '.</span> ' + text + '</p>').scrollTop(100000);
+                };
             }
 
             $(function () {
                 log = logger('#v-log');
-            })
+            });
         </script>
     </head>
     <body>
@@ -49,9 +49,9 @@
                         <script type="text/javascript">
                             $('#dp-3').datepicker({
                                 onSelect: function (fd) {
-                                    log(fd)
+                                    log(fd);
                                 }
-                            })
+                            });
                         </script>
                     </div>
                     <div class="vt-tile">
@@ -60,9 +60,9 @@
                         <script type="text/javascript">
                             $('#dp-4').datepicker({
                                 onSelect: function (fd) {
-                                    log(fd)
+                                    log(fd);
                                 }
-                            })
+                            });
                         </script>
                     </div>
                 </div>
@@ -84,9 +84,9 @@
                                 inline: true,
                                 range: true,
                                 onSelect: function (fd) {
-                                    log(fd)
+                                    log(fd);
                                 }
-                            })
+                            });
                         </script>
                     </div>
                     <div class="vt-tile">

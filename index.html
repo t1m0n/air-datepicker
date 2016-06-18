@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Air datepicker visual tests</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+        <script type="text/javascript" src="src/js/datepicker.js"></script>
+        <script type="text/javascript" src="src/js/body.js"></script>
+        <script type="text/javascript" src="src/js/navigation.js"></script>
+        <script type="text/javascript" src="src/js/timepicker.js"></script>
+
+        <link rel="stylesheet" href="dist/css/datepicker.css"/>
+        <link rel="stylesheet" href="docs/css/style.css"/>
+    </head>
+    <body>
+        <div class="visual-tests">
+            <article>
+                <h1>Basic</h1>
+                <div class="row">
+                    <div class="vt-tile">
+                        <input id="timepicker-dev" type="text" value="" />
+                    </div>
+                </div>
+            </article>
+
+            <script type="text/javascript">
+                jQuery("#timepicker-dev").datepicker({
+                    toggleSelected: false,
+                    inline: true,
+                    timepicker: true, 
+                    language: "en", 
+                    dateFormat: "yyyy-mm-dd", 
+                    timeFormat: "hh:ii:ss",
+                    todayButton: new Date()
+                });
+            </script>
+        </div>
+    </body>
+</html>
