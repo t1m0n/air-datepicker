@@ -582,7 +582,8 @@
          * @param {String|Number|Object} [value] - new param value
          */
         update: function (param, value) {
-            var len = arguments.length;
+            var len = arguments.length,
+                lastSelectedDate = this.lastSelectedDate;
 
             if (len == 2) {
                 this.opts[param] = value;
@@ -609,13 +610,13 @@
             }
 
             if (this.opts.timepicker) {
-                this.timepicker._handleDate(this.lastSelectedDate);
+                if (lastSelectedDate) this.timepicker._handleDate(lastSelectedDate);
                 this.timepicker._updateRanges();
                 this.timepicker._updateCurrentTime();
                 // Change hours and minutes if it's values have been changed through min/max hours/minutes
-                if (this.lastSelectedDate) {
-                    this.lastSelectedDate.setHours(this.timepicker.hours);
-                    this.lastSelectedDate.setMinutes(this.timepicker.minutes);
+                if (lastSelectedDate) {
+                    lastSelectedDate.setHours(this.timepicker.hours);
+                    lastSelectedDate.setMinutes(this.timepicker.minutes);
                 }
             }
 
@@ -1934,14 +1935,34 @@
             this.minutes = _date.minutes < this.minMinutes ? this.minMinutes : _date.minutes;
         },
 
+        /**
+         * Sets minHours and minMinutes from date (usually it's a minDate)
+         * Also changes minMinutes if current hours are bigger then @date hours
+         * @param date {Date}
+         * @private
+         */
         _setMinTimeFromDate: function (date) {
             this.minHours = date.getHours();
             this.minMinutes = date.getMinutes();
+
+            // If, for example, min hours are 10, and current hours are 12,
+            // update minMinutes to default value, to be able to choose whole range of values
+            if (this.d.lastSelectedDate) {
+                if (this.d.lastSelectedDate.getHours() > date.getHours()) {
+                    this.minMinutes = this.opts.minMinutes;
+                }
+            }
         },
 
         _setMaxTimeFromDate: function (date) {
             this.maxHours = date.getHours();
             this.maxMinutes = date.getMinutes();
+
+            if (this.d.lastSelectedDate) {
+                if (this.d.lastSelectedDate.getHours() < date.getHours()) {
+                    this.maxMinutes = this.opts.maxMinutes;
+                }
+            }
         },
 
         _setDefaultMinMaxTime: function () {
@@ -2036,7 +2057,6 @@
          */
         _handleDate: function (date) {
             this._setDefaultMinMaxTime();
-
             if (date) {
                 if (dp.isSame(date, this.d.opts.minDate)) {
                     this._setMinTimeFromDate(this.d.opts.minDate);
@@ -2119,7 +2139,10 @@
 
             this[name] = $target.val();
             this._updateCurrentTime();
-            this.d._trigger('timeChange', [this.hours, this.minutes])
+            this.d._trigger('timeChange', [this.hours, this.minutes]);
+
+            this._handleDate(this.d.lastSelectedDate);
+            this.update()
         },
 
         _onSelectDate: function (e, data) {

@@ -93,6 +93,17 @@
                         <h2>{timepicker: true}</h2>
                         <input class="datepicker-here" data-timepicker="true" />
                     </div>
+                    <div class="vt-tile">
+                        <h2>{timepicker: true, minDate: new Date()}</h2>
+                        <input class="datepicker-here" id="dp-6"/>
+                        <script type="text/javascript">
+                            $('#dp-6').datepicker({
+                                minDate: new Date(),
+                                inline: true,
+                                timepicker: true
+                            })
+                        </script>
+                    </div>
                 </div>
             </article>
 

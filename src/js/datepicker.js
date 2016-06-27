@@ -582,7 +582,8 @@
          * @param {String|Number|Object} [value] - new param value
          */
         update: function (param, value) {
-            var len = arguments.length;
+            var len = arguments.length,
+                lastSelectedDate = this.lastSelectedDate;
 
             if (len == 2) {
                 this.opts[param] = value;
@@ -609,13 +610,13 @@
             }
 
             if (this.opts.timepicker) {
-                this.timepicker._handleDate(this.lastSelectedDate);
+                if (lastSelectedDate) this.timepicker._handleDate(lastSelectedDate);
                 this.timepicker._updateRanges();
                 this.timepicker._updateCurrentTime();
                 // Change hours and minutes if it's values have been changed through min/max hours/minutes
-                if (this.lastSelectedDate) {
-                    this.lastSelectedDate.setHours(this.timepicker.hours);
-                    this.lastSelectedDate.setMinutes(this.timepicker.minutes);
+                if (lastSelectedDate) {
+                    lastSelectedDate.setHours(this.timepicker.hours);
+                    lastSelectedDate.setMinutes(this.timepicker.minutes);
                 }
             }
 

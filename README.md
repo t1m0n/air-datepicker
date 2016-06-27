@@ -26,6 +26,10 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.1.0
+* added possibility to select single date when `{range: true}`
+* added support of 12 hours mode in `altFieldDateFormat`
+
 ### v2.0.2
 * fixed dates array in `onSelect` callback
 
