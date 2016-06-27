@@ -1518,7 +1518,6 @@
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
-
             if (opts.range) {
                 if (dp.isSame(parent.minRange, date, type)) classes += ' -range-from-';
                 if (dp.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
@@ -1539,6 +1538,7 @@
                     }
 
                 } else if (parent.selectedDates.length == 2) {
+                    //TODO fix bigger and less with timepicker
                     if (dp.bigger(parent.minRange, date) && dp.less(parent.maxRange, date)) {
                         classes += ' -in-range-'
                     }
