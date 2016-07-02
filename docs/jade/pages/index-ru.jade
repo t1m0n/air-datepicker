@@ -915,11 +915,10 @@ block content
 			+param-header('selectDate(date)')
 			ul
 				li
-					+param('date','Date')
-					| - дата в формате JavaScript
-					+example-inline('Date()', 'js')
+					+param('date','Date|Array')
+					| - дата в формате JavaScript, или массив дат
 			p
-				| Выбирает переданную дату. Если
+				| Выбирает переданную дату или несколько дат, если передан массив с датами. Если
 				+example-inline('{multipleDates: false}','js')
 				| и уже есть активная дата, то она будет деактивирована. Если
 				+example-inline('{multipleDates: true}','js')

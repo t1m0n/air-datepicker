@@ -870,11 +870,12 @@ block content
 			+param-header('selectDate(date)')
 			ul
 				li
-					+param('date','Date')
+					+param('date','Date|Array')
 					| - JavaScript
 					+example-inline('Date()', 'js')
+					|, or array of dates.
 			p
-				| Activates passed date. If
+				| Activates passed date or multiple dates if array is passed. If
 				+example-inline('{multipleDates: false}','js')
 				| and date is already active, then it will be deactivated. If
 				+example-inline('{multipleDates: true}','js')
