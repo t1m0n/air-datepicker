@@ -29,6 +29,10 @@ $('.my-datepicker').datepicker([options])
 ### v2.1.0
 * added possibility to select single date when `{range: true}`
 * added support of 12 hours mode in `altFieldDateFormat`
+* improved work with minDate and maxDate when `{timepicker: true}`
+* fixed wrong class adding when `{range: true}`
+* new languages:
+    - `es` thanks to [MarioAraque](https://github.com/MarioAraque)
 
 ### v2.0.2
 * fixed dates array in `onSelect` callback
