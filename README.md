@@ -33,6 +33,11 @@ $('.my-datepicker').datepicker([options])
 * fixed wrong class adding when `{range: true}`
 * new languages:
     - `es` thanks to [MarioAraque](https://github.com/MarioAraque)
+    - `cs` thanks to [liborm85](https://github.com/liborm85)
+    - `hu` thanks to [gergo85](https://github.com/gergo85)
+    - `fi` thanks to [joonaskaskisolaphz](https://github.com/joonaskaskisolaphz)
+    - `pl` thanks to [xiio](https://github.com/xiio)
+    - `fr` thanks to [nicooprat](https://github.com/nicooprat)
 
 ### v2.0.2
 * fixed dates array in `onSelect` callback
