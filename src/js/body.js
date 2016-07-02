@@ -60,6 +60,8 @@
             var classes = "datepicker--cell datepicker--cell-" + type,
                 currentDate = new Date(),
                 parent = this.d,
+                minRange = dp.resetTime(parent.minRange),
+                maxRange = dp.resetTime(parent.maxRange),
                 opts = parent.opts,
                 d = dp.getParsedDate(date),
                 render = {},
@@ -104,27 +106,26 @@
                 classes += render.classes ? ' ' + render.classes : '';
             }
             if (opts.range) {
-                if (dp.isSame(parent.minRange, date, type)) classes += ' -range-from-';
-                if (dp.isSame(parent.maxRange, date, type)) classes += ' -range-to-';
+                if (dp.isSame(minRange, date, type)) classes += ' -range-from-';
+                if (dp.isSame(maxRange, date, type)) classes += ' -range-to-';
 
                 if (parent.selectedDates.length == 1 && parent.focused) {
                     if (
-                        (dp.bigger(parent.minRange, date) && dp.less(parent.focused, date)) ||
-                        (dp.less(parent.maxRange, date) && dp.bigger(parent.focused, date)))
+                        (dp.bigger(minRange, date) && dp.less(parent.focused, date)) ||
+                        (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
                         classes += ' -in-range-'
                     }
 
-                    if (dp.less(parent.maxRange, date) && dp.isSame(parent.focused, date)) {
+                    if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-from-'
                     }
-                    if (dp.bigger(parent.minRange, date) && dp.isSame(parent.focused, date)) {
+                    if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-to-'
                     }
 
                 } else if (parent.selectedDates.length == 2) {
-                    //TODO fix bigger and less with timepicker
-                    if (dp.bigger(parent.minRange, date) && dp.less(parent.maxRange, date)) {
+                    if (dp.bigger(minRange, date) && dp.less(maxRange, date)) {
                         classes += ' -in-range-'
                     }
                 }

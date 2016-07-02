@@ -1376,6 +1376,16 @@
         return parseInt(num) < 10 ? '0' + num : num;
     };
 
+    /**
+     * Returns copy of date with hours and minutes equals to 0
+     * @param date {Date}
+     */
+    datepicker.resetTime = function (date) {
+        if (typeof date != 'object') return;
+        date = datepicker.getParsedDate(date);
+        return new Date(date.year, date.month, date.date)
+    };
+
     $.fn.datepicker = function ( options ) {
         return this.each(function () {
             if (!$.data(this, pluginName)) {
