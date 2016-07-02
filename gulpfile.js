@@ -31,7 +31,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('dev', ['css','js','i18n', 'cssPage', 'jade-ru', 'jade-en', 'watch']);
-gulp.task('build', ['css','js','i18n', 'jade-ru',' jade-en']);
+gulp.task('build', ['css','js','i18n', 'jade-ru', 'jade-en']);
 
 
 
