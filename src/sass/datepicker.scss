@@ -16,44 +16,44 @@
 
 .datepicker {
   background: #fff;
-  border: 1px solid map_get($borderColor, default);
+  border: 1px solid map_get($datepickerBorderColor, default);
   box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
   border-radius: $datepickerBorderRadius;
   box-sizing: content-box;
-  font-family: $fontFamily, sans-serif;
-  font-size: $fontSize;
-  color: map_get($textColor, common);
+  font-family: $datepickerFontFamily, sans-serif;
+  font-size: $datepickerFontSize;
+  color: map_get($datepickerTextColor, common);
   width: $datepickerWidth;
   position: absolute;
   left: -100000px;
   opacity: 0;
-  transition: opacity $transitionSpeed $transitionEase, transform $transitionSpeed $transitionEase, left 0s $transitionSpeed;
+  transition: opacity $datepickerTransitionSpeed $datepickerTransitionEase, transform $datepickerTransitionSpeed $datepickerTransitionEase, left 0s $datepickerTransitionSpeed;
   z-index: $datepickerZIndex;
 
   &.-from-top- {
-    transform: translateY(-$transitionOffset);
+    transform: translateY(-$datepickerTransitionOffset);
   }
   &.-from-right- {
-    transform: translateX($transitionOffset);
+    transform: translateX($datepickerTransitionOffset);
   }
   &.-from-bottom- {
-    transform: translateY($transitionOffset);
+    transform: translateY($datepickerTransitionOffset);
   }
   &.-from-left- {
-    transform: translateX(-$transitionOffset);
+    transform: translateX(-$datepickerTransitionOffset);
   }
 
 
   &.active {
     opacity: 1;
     transform: translate(0);
-    transition: opacity $transitionSpeed $transitionEase, transform $transitionSpeed $transitionEase, left 0s 0s;
+    transition: opacity $datepickerTransitionSpeed $datepickerTransitionEase, transform $datepickerTransitionSpeed $datepickerTransitionEase, left 0s 0s;
   }
 }
 
 .datepicker-inline {
   .datepicker {
-    border-color: map-get($borderColor, inline);
+    border-color: map-get($datepickerBorderColor, inline);
     box-shadow: none;
     position: static;
     left: auto;
@@ -74,15 +74,15 @@
 
 //  Pointer
 // -------------------------------------------------
-$pointerHalfSize: $pointerSize / 2 - 1;
+$pointerHalfSize: $datepickerPointerSize / 2 - 1;
 
 .datepicker--pointer {
   position: absolute;
   background: #fff;
-  border-top: 1px solid map-get($borderColor, default);
-  border-right: 1px solid map-get($borderColor, default);
-  width: $pointerSize;
-  height: $pointerSize;
+  border-top: 1px solid map-get($datepickerBorderColor, default);
+  border-right: 1px solid map-get($datepickerBorderColor, default);
+  width: $datepickerPointerSize;
+  height: $datepickerPointerSize;
   z-index: -1;
 
   //  Main axis
@@ -112,23 +112,23 @@ $pointerHalfSize: $pointerSize / 2 - 1;
   // -------------------------
 
   .-top-left- &, .-bottom-left- & {
-    left: $pointerOffset;
+    left: $datepickerPointerOffset;
   }
   .-top-right- &, .-bottom-right- & {
-    right: $pointerOffset;
+    right: $datepickerPointerOffset;
   }
   .-top-center- &, .-bottom-center- & {
-    left: calc(50% - #{$pointerSize} / 2);
+    left: calc(50% - #{$datepickerPointerSize} / 2);
   }
 
   .-left-top- &, .-right-top- & {
-    top: $pointerOffset;
+    top: $datepickerPointerOffset;
   }
   .-left-bottom- &, .-right-bottom- & {
-    bottom: $pointerOffset;
+    bottom: $datepickerPointerOffset;
   }
   .-left-center- &, .-right-center- & {
-    top: calc(50% - #{$pointerSize} / 2);
+    top: calc(50% - #{$datepickerPointerSize} / 2);
   }
 
 }

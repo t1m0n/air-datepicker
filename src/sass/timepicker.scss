@@ -58,7 +58,7 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time {
-  border-top: 1px solid map_get($borderColor, nav);
+  border-top: 1px solid map_get($datepickerBorderColor, nav);
   display: flex;
   align-items: center;
 
@@ -108,7 +108,7 @@ $rangeThumbBg: #dedede;
 
   &:after {
     content: '';
-    background: map_get($bg, hover);
+    background: map_get($datepickerBG, hover);
     border-radius: $datepickerBorderRadius;
     position: absolute;
     left: -2px;
@@ -129,7 +129,7 @@ $rangeThumbBg: #dedede;
 .datepicker--time-current-ampm {
   text-transform: uppercase;
   align-self: flex-end;
-  color: map_get($textColor, navArrows);
+  color: map_get($datepickerTextColor, navArrows);
   margin-left: 6px;
   font-size: 11px;
   margin-bottom: 1px;
@@ -173,8 +173,8 @@ $rangeThumbBg: #dedede;
       outline: none;
 
       @include thumbSelector() {
-        background: map_get($bg, selected);
-        border-color: map_get($bg, selected);
+        background: map_get($datepickerBG, selected);
+        border-color: map_get($datepickerBG, selected);
       }
     }
 
@@ -214,7 +214,7 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-icon {
-  color: map_get($textColor, navArrows);
+  color: map_get($datepickerTextColor, navArrows);
   border: 1px solid;
   border-radius: 50%;
   font-size: 16px;
