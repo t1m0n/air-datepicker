@@ -77,7 +77,8 @@
             onChangeYear: '',
             onChangeDecade: '',
             onChangeView: '',
-            onRenderCell: ''
+            onRenderCell: '',
+            onHide: ''
         },
         hotKeys = {
             'ctrlRight': [17, 39],
@@ -800,6 +801,9 @@
             this.inFocus = false;
             this.visible = false;
             this.$el.blur();
+            if (this.opts.onHide) {
+                this.opts.onHide(this);
+            }
         },
 
         down: function (date) {
