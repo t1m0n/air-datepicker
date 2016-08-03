@@ -47,7 +47,7 @@
             var title = this._getTitle(this.d.currentDate),
                 html = dp.template(template, $.extend({title: title}, this.opts));
             this.d.$nav.html(html);
-            if (this.d.view == 'years') {
+            if (this.d.view == 'years' || this.d.view == this.opts.maxView) {
                 $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
             }
             this.setNavStatus();
