@@ -1,5 +1,7 @@
 ;(function () {
-    var pluginName = 'datepicker',
+    //TODO добавить описание метода destroy
+    var VERSION = '2.1.0',
+        pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
         containerBuilt = false,
@@ -138,6 +140,7 @@
     datepicker = Datepicker;
 
     datepicker.prototype = {
+        VERSION: VERSION,
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
