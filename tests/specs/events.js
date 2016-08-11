@@ -15,6 +15,7 @@ var assert = chai.assert,
     afterEach(function () {
         if (dp && destroy) {
             dp.destroy();
+            dp = '';
         }
 
         destroy = true;
@@ -77,6 +78,39 @@ var assert = chai.assert,
 
             expect(dates).to.have.length(2)
         })
+    });
+    
+    describe('onShow', function () {
+        it('should add callback when datepicker is showing', function () {
+            var test = '';
+            dp = $input.datepicker({
+                onShow: function (dp, completed) {
+                    if (!completed) {
+                        test = dp;
+                    }
+                }
+            }).data('datepicker');
+
+            dp.show();
+            expect(test).to.be.equal(dp);
+        })
+    });
+
+    describe('onHide', function () {
+        it('should add callback when datepicker is hiding (after transition completed)', function () {
+            var test = '';
+            dp = $input.datepicker({
+                onHide: function (dp, completed) {
+                    if (!completed) {
+                        test = dp;
+                    }
+                }
+            }).data('datepicker');
+
+            dp.show();
+            dp.hide();
+            expect(test).to.be.equal(dp);
+        });
     });
 
     describe('onRenderCell', function () {

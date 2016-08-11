@@ -75,6 +75,8 @@
 
             // events
             onSelect: '',
+            onShow: '',
+            onHide: '',
             onChangeMonth: '',
             onChangeYear: '',
             onChangeDecade: '',
@@ -785,12 +787,20 @@
         },
 
         show: function () {
+            var onShow = this.opts.onShow;
+
             this.setPosition(this.opts.position);
             this.$datepicker.addClass('active');
             this.visible = true;
+
+            if (onShow) {
+                this._bindVisionEvents(onShow)
+            }
         },
 
         hide: function () {
+            var onHide = this.opts.onHide;
+
             this.$datepicker
                 .removeClass('active')
                 .css({
@@ -803,6 +813,10 @@
             this.inFocus = false;
             this.visible = false;
             this.$el.blur();
+
+            if (onHide) {
+                this._bindVisionEvents(onHide)
+            }
         },
 
         down: function (date) {
@@ -811,6 +825,12 @@
 
         up: function (date) {
             this._changeView(date, 'up');
+        },
+
+        _bindVisionEvents: function (event) {
+            this.$datepicker.off('transitionend.dp');
+            event(this, false);
+            this.$datepicker.one('transitionend.dp', event.bind(this, this, true))
         },
 
         _changeView: function (date, dir) {
