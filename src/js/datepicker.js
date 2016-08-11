@@ -421,7 +421,7 @@
         },
 
         _getWordBoundaryRegExp: function (sign) {
-            return new RegExp('\\b(?=[a-zA-Z0-9äöüßÄÖÜ<])' + sign + '(?![>a-zA-Z0-9äöüßÄÖÜ])');
+            return new RegExp('\\b(?=[a-zA-Z0-9áäöüúÁßÉÄÖÜÚ<])' + sign + '(?![>a-zA-Z0-9áäöüÁßÉÄÖÜÚ])');
         },
 
         selectDate: function (date) {
