@@ -67,12 +67,6 @@
                 render = {},
                 html = d.date;
 
-            if (opts.onRenderCell) {
-                render = opts.onRenderCell(date, type) || {};
-                html = render.html ? render.html : html;
-                classes += render.classes ? ' ' + render.classes : '';
-            }
-
             switch (type) {
                 case 'day':
                     if (parent.isWeekend(d.day)) classes += " -weekend-";
@@ -105,6 +99,7 @@
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
+
             if (opts.range) {
                 if (dp.isSame(minRange, date, type)) classes += ' -range-from-';
                 if (dp.isSame(maxRange, date, type)) classes += ' -range-to-';
