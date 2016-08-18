@@ -1,5 +1,6 @@
 ;(function () {
     //TODO добавить описание метода destroy
+    // TODO добавить описание onShow onHide
     var VERSION = '2.1.0',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
@@ -64,6 +65,7 @@
 
             // timepicker
             timepicker: false,
+            onlyTimePicker: false,
             dateTimeSeparator: ' ',
             timeFormat: '',
             minHours: 0,
@@ -159,7 +161,7 @@
                     this._setPositionClasses(this.opts.position);
                     this._bindEvents()
                 }
-                if (this.opts.keyboardNav) {
+                if (this.opts.keyboardNav && !this.opts.onlyTimePicker) {
                     this._bindKeyboardEvents();
                 }
                 this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
@@ -173,6 +175,10 @@
             if (this.opts.timepicker) {
                 this.timepicker = new $.fn.datepicker.Timepicker(this, this.opts);
                 this._bindTimepickerEvents();
+            }
+
+            if (this.opts.onlyTimePicker) {
+                this.$datepicker.addClass('-only-timepicker-');
             }
 
             this.views[this.currentView] = new $.fn.datepicker.Body(this, this.currentView, this.opts);
@@ -242,6 +248,10 @@
 
             if (this.opts.timepicker) {
                 this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
+            }
+
+            if (this.opts.onlyTimePicker) {
+                this.loc.dateFormat = this.loc.timeFormat;
             }
 
             var boundary = this._getWordBoundaryRegExp;
@@ -1046,7 +1056,7 @@
             }
             $cell = this.views[this.currentView].$el.find(selector);
 
-            return $cell.length ? $cell : '';
+            return $cell.length ? $cell : $('');
         },
 
         destroy: function () {
