@@ -125,7 +125,10 @@
         this.currentDate = this.opts.startDate;
         this.currentView = this.opts.view;
         this._createShortCuts();
-        this.selectedDates = [];
+
+        this.selectedDates = [new Date(this.currentDate)];
+        this.lastSelectedDate = this.selectedDates[0];
+
         this.views = {};
         this.keys = [];
         this.minRange = '';
