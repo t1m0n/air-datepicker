@@ -70,6 +70,10 @@
 .datepicker--content {
   box-sizing: content-box;
   padding: $datepickerPadding;
+
+  .-only-timepicker- & {
+    display: none;
+  }
 }
 
 //  Pointer

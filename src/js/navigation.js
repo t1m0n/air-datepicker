@@ -30,7 +30,7 @@
         },
 
         _buildBaseHtml: function () {
-            if (!this.opts.onlyTimePicker) {
+            if (!this.opts.onlyTimepicker) {
                 this._render();
             }
             this._addButtonsIfNeed();

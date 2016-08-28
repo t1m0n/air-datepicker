@@ -71,6 +71,10 @@ $rangeThumbBg: #dedede;
       max-width: 138px;
     }
   }
+
+  .-only-timepicker- & {
+    border-top: none;
+  }
 }
 
 .datepicker--time-sliders {

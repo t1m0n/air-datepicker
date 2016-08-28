@@ -221,6 +221,8 @@
 .datepicker--content {
   box-sizing: content-box;
   padding: 4px; }
+  .-only-timepicker- .datepicker--content {
+    display: none; }
 
 .datepicker--pointer {
   position: absolute;
@@ -297,6 +299,8 @@
   border-bottom: 1px solid #efefef;
   min-height: 32px;
   padding: 4px; }
+  .-only-timepicker- .datepicker--nav {
+    display: none; }
 
 .datepicker--nav-title,
 .datepicker--nav-action {
@@ -409,6 +413,8 @@
         -ms-flex: 0 1 138px;
             flex: 0 1 138px;
     max-width: 138px; }
+  .-only-timepicker- .datepicker--time {
+    border-top: none; }
 
 .datepicker--time-sliders {
   -webkit-flex: 0 1 153px;

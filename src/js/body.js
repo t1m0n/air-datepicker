@@ -21,8 +21,9 @@
         this.d = d;
         this.type = type;
         this.opts = opts;
+        this.$el = $('');
 
-        if (this.opts.onlyTimePicker) return;
+        if (this.opts.onlyTimepicker) return;
         this.init();
     };
 
@@ -244,7 +245,7 @@
         },
 
         _render: function () {
-            if (this.opts.onlyTimePicker) return;
+            if (this.opts.onlyTimepicker) return;
             this._renderTypes[this.type].bind(this)();
         },
 
@@ -263,7 +264,7 @@
         },
 
         show: function () {
-            if (this.opts.onlyTimePicker) return;
+            if (this.opts.onlyTimepicker) return;
             this.$el.addClass('active');
             this.acitve = true;
         },

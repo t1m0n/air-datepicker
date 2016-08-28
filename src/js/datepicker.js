@@ -65,7 +65,7 @@
 
             // timepicker
             timepicker: false,
-            onlyTimePicker: false,
+            onlyTimepicker: false,
             dateTimeSeparator: ' ',
             timeFormat: '',
             minHours: 0,
@@ -161,7 +161,7 @@
                     this._setPositionClasses(this.opts.position);
                     this._bindEvents()
                 }
-                if (this.opts.keyboardNav && !this.opts.onlyTimePicker) {
+                if (this.opts.keyboardNav && !this.opts.onlyTimepicker) {
                     this._bindKeyboardEvents();
                 }
                 this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
@@ -177,7 +177,7 @@
                 this._bindTimepickerEvents();
             }
 
-            if (this.opts.onlyTimePicker) {
+            if (this.opts.onlyTimepicker) {
                 this.$datepicker.addClass('-only-timepicker-');
             }
 
@@ -250,7 +250,7 @@
                 this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
             }
 
-            if (this.opts.onlyTimePicker) {
+            if (this.opts.onlyTimepicker) {
                 this.loc.dateFormat = this.loc.timeFormat;
             }
 
@@ -610,7 +610,7 @@
             this._syncWithMinMaxDates();
             this._defineLocale(this.opts.language);
             this.nav._addButtonsIfNeed();
-            this.nav._render();
+            if (!this.opts.onlyTimepicker) this.nav._render();
             this.views[this.currentView]._render();
 
             if (this.elIsInput && !this.opts.inline) {
@@ -622,6 +622,10 @@
 
             if (this.opts.classes) {
                 this.$datepicker.addClass(this.opts.classes)
+            }
+
+            if (this.opts.onlyTimepicker) {
+                this.$datepicker.addClass('-only-timepicker-');
             }
 
             if (this.opts.timepicker) {
