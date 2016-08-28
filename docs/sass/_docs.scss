@@ -42,6 +42,13 @@ h4 {
   margin: 24px 0 0;
 }
 
+.row {
+  display: flex;
+  > * {
+    flex: 1;
+  }
+}
+
 article {
   h2, h3 {
     position: relative;
@@ -505,5 +512,58 @@ a {
 
   span {
     color: #ddd;
+  }
+}
+
+//  Logger
+// -------------------------------------------------
+
+.logger {
+  background: rgba(0, 0, 0, .7);
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: Monospace, monospace;
+  height: 150px;
+  overflow: auto;
+  position: relative;
+}
+
+.logger--content {
+  padding: 4px 8px;
+  height: 100%;
+  overflow: auto;
+
+  p {
+    margin: 0;
+    color: greenyellow;
+  }
+
+  span {
+    color: #ddd;
+  }
+}
+
+.logger--clear {
+  color: #333;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  position: absolute;
+  height: 32px;
+  padding: 0 8px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, .5);
+  right: 24px;
+  bottom: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, .8);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, .3);
   }
 }
