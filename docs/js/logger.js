@@ -11,7 +11,7 @@ var logger;
         return function(text) {
             var count = $('p', $el).length,
                 $content = $('.logger--content', $el);
-            $content.append('<p><span>' + count++ + '.</span> ' + text + '</p>').scrollTop(100000)
+            $content.append('<p><span>' + ++count + '.</span> ' + text + '</p>').scrollTop(100000)
         }
     };
 
