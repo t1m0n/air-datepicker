@@ -1,7 +1,5 @@
 ;(function (window, $, undefined) { ;(function () {
-    //TODO добавить описание метода destroy
-    // TODO добавить описание onShow onHide
-    var VERSION = '2.1.0',
+    var VERSION = '2.2.0',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
