@@ -1083,6 +1083,30 @@
             }
         },
 
+        _handleAlreadySelectedDates: function (alreadySelected, selectedDate) {
+            if (this.opts.range) {
+                if (!this.opts.toggleSelected) {
+                    // Add possibility to select same date when range is true
+                    if (this.selectedDates.length != 2) {
+                        this._trigger('clickCell', selectedDate);
+                    }
+                } else {
+                    this.removeDate(selectedDate);
+                }
+            } else if (this.opts.toggleSelected){
+                this.removeDate(selectedDate);
+            }
+
+            // Change last selected date to be able to change time when clicking on this cell
+            if (!this.opts.toggleSelected) {
+                this.lastSelectedDate = alreadySelected;
+                if (this.opts.timepicker) {
+                    this.timepicker._setTime(alreadySelected);
+                    this.timepicker.update();
+                }
+            }
+        },
+
         _onShowEvent: function (e) {
             if (!this.visible) {
                 this.show();
@@ -1157,9 +1181,9 @@
                                 this.focused.setMinutes(this.timepicker.minutes);
                             }
                             this.selectDate(this.focused);
-                        } else if (alreadySelected && this.opts.toggleSelected){
-                            this.removeDate(this.focused);
+                            return;
                         }
+                        this._handleAlreadySelectedDates(alreadySelected, this.focused)
                     }
                 }
             }

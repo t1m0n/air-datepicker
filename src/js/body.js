@@ -293,27 +293,11 @@
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);
+                return;
             }
 
-            if (alreadySelected && this.opts.range) {
-                // Add possibility to select same date when range is true
-                if (dp.selectedDates.length != 2 && !this.opts.toggleSelected || this.opts.toggleSelected) {
-                    dp._trigger('clickCell', selectedDate);
-                    // Change last selected date to be able to change time on last date
-                    dp.lastSelectedDate = alreadySelected;
-                }
-            } else if (alreadySelected && this.opts.toggleSelected){
-                dp.removeDate(selectedDate);
-            }
+            dp._handleAlreadySelectedDates.bind(dp, alreadySelected, selectedDate)();
 
-            // Change last selected date to be able to change time when clicking on this cell
-            if (alreadySelected && !this.opts.toggleSelected) {
-                dp.lastSelectedDate = alreadySelected;
-                if (dp.opts.timepicker) {
-                    dp.timepicker._setTime(alreadySelected);
-                    dp.timepicker.update();
-                }
-            }
         },
 
         _onClickCell: function (e) {
