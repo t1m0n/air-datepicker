@@ -1,3 +1,10 @@
+/**
+ * Air Datepicker
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Timofey Marochkin
+ * https://github.com/t1m0n/air-datepicker
+ */
+
 ;(function () {
     var templates = {
         days:'' +
