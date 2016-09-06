@@ -1,3 +1,10 @@
+/**
+ * Air Datepicker
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Timofey Marochkin
+ * https://github.com/t1m0n/air-datepicker
+ */
+
 ;(function (window, $, undefined) { ;(function () {
     var VERSION = '2.2.0',
         pluginName = 'datepicker',

@@ -1,3 +1,10 @@
+/**
+ * Air Datepicker
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Timofey Marochkin
+ * https://github.com/t1m0n/air-datepicker
+ */
+
 .datepicker--cell-day.-other-month-, .datepicker--cell-year.-other-decade- {
   color: #dedede; }
   .datepicker--cell-day.-other-month-:hover, .datepicker--cell-year.-other-decade-:hover {
