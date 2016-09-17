@@ -26,6 +26,10 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.2.1
+* changed RegExp for recognizing date parts
+* changed jquery version dependency
+
 ### v2.2.0
 * added `onlyTimepicker` option
 * added `onShow` and `onHide` callbacks
