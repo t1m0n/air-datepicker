@@ -377,6 +377,7 @@
                 hours = d.hours,
                 ampm = string.match(boundary('aa')) || string.match(boundary('AA')),
                 dayPeriod = 'am',
+                replacer = this._replacer,
                 validHours;
 
             if (this.opts.timepicker && this.timepicker && ampm) {
@@ -390,49 +391,58 @@
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
                 case /aa/.test(result):
-                    result = result.replace(boundary('aa'), dayPeriod);
+                    result = replacer(result, boundary('aa'), dayPeriod);
                 case /AA/.test(result):
-                    result = result.replace(boundary('AA'), dayPeriod.toUpperCase());
+                    result = replacer(result, boundary('AA'), dayPeriod.toUpperCase());
                 case /dd/.test(result):
-                    result = result.replace(boundary('dd'), d.fullDate);
+                    result = replacer(result, boundary('dd'), d.fullDate);
                 case /d/.test(result):
-                    result = result.replace(boundary('d'), d.date);
+                    result = replacer(result, boundary('d'), d.date);
                 case /DD/.test(result):
-                    result = result.replace(boundary('DD'), locale.days[d.day]);
+                    result = replacer(result, boundary('DD'), locale.days[d.day]);
                 case /D/.test(result):
-                    result = result.replace(boundary('D'), locale.daysShort[d.day]);
+                    result = replacer(result, boundary('D'), locale.daysShort[d.day]);
                 case /mm/.test(result):
-                    result = result.replace(boundary('mm'), d.fullMonth);
+                    result = replacer(result, boundary('mm'), d.fullMonth);
                 case /m/.test(result):
-                    result = result.replace(boundary('m'), d.month + 1);
+                    result = replacer(result, boundary('m'), d.month + 1);
                 case /MM/.test(result):
-                    result = result.replace(boundary('MM'), this.loc.months[d.month]);
+                    result = replacer(result, boundary('MM'), this.loc.months[d.month]);
                 case /M/.test(result):
-                    result = result.replace(boundary('M'), locale.monthsShort[d.month]);
+                    result = replacer(result, boundary('M'), locale.monthsShort[d.month]);
                 case /ii/.test(result):
-                    result = result.replace(boundary('ii'), d.fullMinutes);
+                    result = replacer(result, boundary('ii'), d.fullMinutes);
                 case /i/.test(result):
-                    result = result.replace(boundary('i'), d.minutes);
+                    result = replacer(result, boundary('i'), d.minutes);
                 case /hh/.test(result):
-                    result = result.replace(boundary('hh'), fullHours);
+                    result = replacer(result, boundary('hh'), fullHours);
                 case /h/.test(result):
-                    result = result.replace(boundary('h'), hours);
+                    result = replacer(result, boundary('h'), hours);
                 case /yyyy/.test(result):
-                    result = result.replace(boundary('yyyy'), d.year);
+                    result = replacer(result, boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
-                    result = result.replace(boundary('yyyy1'), decade[0]);
+                    result = replacer(result, boundary('yyyy1'), decade[0]);
                 case /yyyy2/.test(result):
-                    result = result.replace(boundary('yyyy2'), decade[1]);
+                    result = replacer(result, boundary('yyyy2'), decade[1]);
                 case /yy/.test(result):
-                    result = result.replace(boundary('yy'), d.year.toString().slice(-2));
+                    result = replacer(result, boundary('yy'), d.year.toString().slice(-2));
             }
 
             return result;
         },
 
-        _getWordBoundaryRegExp: function (sign) {
-            return new RegExp('\\b(?=[a-zA-Z0-9áäöüúÁßÉÄÖÜÚ<])' + sign + '(?![>a-zA-Z0-9áäöüÁßÉÄÖÜÚ])');
+        _replacer: function (str, reg, data) {
+            return str.replace(reg, function (match, p1,p2,p3) {
+                return p1 + data + p3;
+            })
         },
+
+        _getWordBoundaryRegExp: function (sign) {
+            var symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
+
+            return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
+        },
+
 
         selectDate: function (date) {
             var _this = this,
