@@ -26,6 +26,10 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.2.2
+* fixed min,max dates handling
+
+
 ### v2.2.1
 * changed RegExp for recognizing date parts
 * changed jquery version dependency
