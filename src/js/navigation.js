@@ -89,10 +89,10 @@
 
             switch (this.d.view) {
                 case 'days':
-                    if (!this.d._isInRange(new Date(y, m-1, d), 'month')) {
+                    if (!this.d._isInRange(new Date(y, m-1, 1), 'month')) {
                         this._disableNav('prev')
                     }
-                    if (!this.d._isInRange(new Date(y, m+1, d), 'month')) {
+                    if (!this.d._isInRange(new Date(y, m+1, 1), 'month')) {
                         this._disableNav('next')
                     }
                     break;
