@@ -105,10 +105,11 @@
                     }
                     break;
                 case 'years':
-                    if (!this.d._isInRange(new Date(y-10, m, d), 'year')) {
+                    var decade = dp.getDecade(this.d.date);
+                    if (!this.d._isInRange(new Date(decade[0] - 1, 0, 1), 'year')) {
                         this._disableNav('prev')
                     }
-                    if (!this.d._isInRange(new Date(y+10, m, d), 'year')) {
+                    if (!this.d._isInRange(new Date(decade[1] + 1, 0, 1), 'year')) {
                         this._disableNav('next')
                     }
                     break;
