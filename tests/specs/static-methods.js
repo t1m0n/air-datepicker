@@ -5,7 +5,6 @@ var assert = chai.assert,
 describe('Datepicker', function () {
     describe('getDaysCount', function () {
         it('should return 31 days in December', function () {
-            console.log(plugin.getDaysCount);
             assert.equal(plugin.getDaysCount(new Date(2015, 11)), 31)
         });
         it('should return 30 days in September', function () {

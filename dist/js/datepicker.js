@@ -1,5 +1,6 @@
 ;(function (window, $, undefined) { ;(function () {
-    var pluginName = 'datepicker',
+    var VERSION = '2.2.3',
+        pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
         containerBuilt = false,
@@ -62,6 +63,7 @@
 
             // timepicker
             timepicker: false,
+            onlyTimepicker: false,
             dateTimeSeparator: ' ',
             timeFormat: '',
             minHours: 0,
@@ -73,6 +75,8 @@
 
             // events
             onSelect: '',
+            onShow: '',
+            onHide: '',
             onChangeMonth: '',
             onChangeYear: '',
             onChangeDecade: '',
@@ -138,6 +142,7 @@
     datepicker = Datepicker;
 
     datepicker.prototype = {
+        VERSION: VERSION,
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
@@ -154,7 +159,7 @@
                     this._setPositionClasses(this.opts.position);
                     this._bindEvents()
                 }
-                if (this.opts.keyboardNav) {
+                if (this.opts.keyboardNav && !this.opts.onlyTimepicker) {
                     this._bindKeyboardEvents();
                 }
                 this.$datepicker.on('mousedown', this._onMouseDownDatepicker.bind(this));
@@ -168,6 +173,10 @@
             if (this.opts.timepicker) {
                 this.timepicker = new $.fn.datepicker.Timepicker(this, this.opts);
                 this._bindTimepickerEvents();
+            }
+
+            if (this.opts.onlyTimepicker) {
+                this.$datepicker.addClass('-only-timepicker-');
             }
 
             this.views[this.currentView] = new $.fn.datepicker.Body(this, this.currentView, this.opts);
@@ -237,6 +246,10 @@
 
             if (this.opts.timepicker) {
                 this.loc.dateFormat = [this.loc.dateFormat, this.loc.timeFormat].join(this.opts.dateTimeSeparator);
+            }
+
+            if (this.opts.onlyTimepicker) {
+                this.loc.dateFormat = this.loc.timeFormat;
             }
 
             var boundary = this._getWordBoundaryRegExp;
@@ -364,6 +377,7 @@
                 hours = d.hours,
                 ampm = string.match(boundary('aa')) || string.match(boundary('AA')),
                 dayPeriod = 'am',
+                replacer = this._replacer,
                 validHours;
 
             if (this.opts.timepicker && this.timepicker && ampm) {
@@ -377,49 +391,58 @@
                 case /@/.test(result):
                     result = result.replace(/@/, date.getTime());
                 case /aa/.test(result):
-                    result = result.replace(boundary('aa'), dayPeriod);
+                    result = replacer(result, boundary('aa'), dayPeriod);
                 case /AA/.test(result):
-                    result = result.replace(boundary('AA'), dayPeriod.toUpperCase());
+                    result = replacer(result, boundary('AA'), dayPeriod.toUpperCase());
                 case /dd/.test(result):
-                    result = result.replace(boundary('dd'), d.fullDate);
+                    result = replacer(result, boundary('dd'), d.fullDate);
                 case /d/.test(result):
-                    result = result.replace(boundary('d'), d.date);
+                    result = replacer(result, boundary('d'), d.date);
                 case /DD/.test(result):
-                    result = result.replace(boundary('DD'), locale.days[d.day]);
+                    result = replacer(result, boundary('DD'), locale.days[d.day]);
                 case /D/.test(result):
-                    result = result.replace(boundary('D'), locale.daysShort[d.day]);
+                    result = replacer(result, boundary('D'), locale.daysShort[d.day]);
                 case /mm/.test(result):
-                    result = result.replace(boundary('mm'), d.fullMonth);
+                    result = replacer(result, boundary('mm'), d.fullMonth);
                 case /m/.test(result):
-                    result = result.replace(boundary('m'), d.month + 1);
+                    result = replacer(result, boundary('m'), d.month + 1);
                 case /MM/.test(result):
-                    result = result.replace(boundary('MM'), this.loc.months[d.month]);
+                    result = replacer(result, boundary('MM'), this.loc.months[d.month]);
                 case /M/.test(result):
-                    result = result.replace(boundary('M'), locale.monthsShort[d.month]);
+                    result = replacer(result, boundary('M'), locale.monthsShort[d.month]);
                 case /ii/.test(result):
-                    result = result.replace(boundary('ii'), d.fullMinutes);
+                    result = replacer(result, boundary('ii'), d.fullMinutes);
                 case /i/.test(result):
-                    result = result.replace(boundary('i'), d.minutes);
+                    result = replacer(result, boundary('i'), d.minutes);
                 case /hh/.test(result):
-                    result = result.replace(boundary('hh'), fullHours);
+                    result = replacer(result, boundary('hh'), fullHours);
                 case /h/.test(result):
-                    result = result.replace(boundary('h'), hours);
+                    result = replacer(result, boundary('h'), hours);
                 case /yyyy/.test(result):
-                    result = result.replace(boundary('yyyy'), d.year);
+                    result = replacer(result, boundary('yyyy'), d.year);
                 case /yyyy1/.test(result):
-                    result = result.replace(boundary('yyyy1'), decade[0]);
+                    result = replacer(result, boundary('yyyy1'), decade[0]);
                 case /yyyy2/.test(result):
-                    result = result.replace(boundary('yyyy2'), decade[1]);
+                    result = replacer(result, boundary('yyyy2'), decade[1]);
                 case /yy/.test(result):
-                    result = result.replace(boundary('yy'), d.year.toString().slice(-2));
+                    result = replacer(result, boundary('yy'), d.year.toString().slice(-2));
             }
 
             return result;
         },
 
-        _getWordBoundaryRegExp: function (sign) {
-            return new RegExp('\\b(?=[a-zA-Z0-9äöüßÄÖÜ<])' + sign + '(?![>a-zA-Z0-9äöüßÄÖÜ])');
+        _replacer: function (str, reg, data) {
+            return str.replace(reg, function (match, p1,p2,p3) {
+                return p1 + data + p3;
+            })
         },
+
+        _getWordBoundaryRegExp: function (sign) {
+            var symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
+
+            return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
+        },
+
 
         selectDate: function (date) {
             var _this = this,
@@ -595,7 +618,7 @@
             this._syncWithMinMaxDates();
             this._defineLocale(this.opts.language);
             this.nav._addButtonsIfNeed();
-            this.nav._render();
+            if (!this.opts.onlyTimepicker) this.nav._render();
             this.views[this.currentView]._render();
 
             if (this.elIsInput && !this.opts.inline) {
@@ -607,6 +630,10 @@
 
             if (this.opts.classes) {
                 this.$datepicker.addClass(this.opts.classes)
+            }
+
+            if (this.opts.onlyTimepicker) {
+                this.$datepicker.addClass('-only-timepicker-');
             }
 
             if (this.opts.timepicker) {
@@ -782,12 +809,20 @@
         },
 
         show: function () {
+            var onShow = this.opts.onShow;
+
             this.setPosition(this.opts.position);
             this.$datepicker.addClass('active');
             this.visible = true;
+
+            if (onShow) {
+                this._bindVisionEvents(onShow)
+            }
         },
 
         hide: function () {
+            var onHide = this.opts.onHide;
+
             this.$datepicker
                 .removeClass('active')
                 .css({
@@ -800,6 +835,10 @@
             this.inFocus = false;
             this.visible = false;
             this.$el.blur();
+
+            if (onHide) {
+                this._bindVisionEvents(onHide)
+            }
         },
 
         down: function (date) {
@@ -808,6 +847,12 @@
 
         up: function (date) {
             this._changeView(date, 'up');
+        },
+
+        _bindVisionEvents: function (event) {
+            this.$datepicker.off('transitionend.dp');
+            event(this, false);
+            this.$datepicker.one('transitionend.dp', event.bind(this, this, true))
         },
 
         _changeView: function (date, dir) {
@@ -1023,7 +1068,7 @@
             }
             $cell = this.views[this.currentView].$el.find(selector);
 
-            return $cell.length ? $cell : '';
+            return $cell.length ? $cell : $('');
         },
 
         destroy: function () {
@@ -1043,6 +1088,30 @@
                 _this.$datepicker.closest('.datepicker-inline').remove();
             } else {
                 _this.$datepicker.remove();
+            }
+        },
+
+        _handleAlreadySelectedDates: function (alreadySelected, selectedDate) {
+            if (this.opts.range) {
+                if (!this.opts.toggleSelected) {
+                    // Add possibility to select same date when range is true
+                    if (this.selectedDates.length != 2) {
+                        this._trigger('clickCell', selectedDate);
+                    }
+                } else {
+                    this.removeDate(selectedDate);
+                }
+            } else if (this.opts.toggleSelected){
+                this.removeDate(selectedDate);
+            }
+
+            // Change last selected date to be able to change time when clicking on this cell
+            if (!this.opts.toggleSelected) {
+                this.lastSelectedDate = alreadySelected;
+                if (this.opts.timepicker) {
+                    this.timepicker._setTime(alreadySelected);
+                    this.timepicker.update();
+                }
             }
         },
 
@@ -1120,9 +1189,9 @@
                                 this.focused.setMinutes(this.timepicker.minutes);
                             }
                             this.selectDate(this.focused);
-                        } else if (alreadySelected && this.opts.toggleSelected){
-                            this.removeDate(this.focused);
+                            return;
                         }
+                        this._handleAlreadySelectedDates(alreadySelected, this.focused)
                     }
                 }
             }
@@ -1446,7 +1515,9 @@
         this.d = d;
         this.type = type;
         this.opts = opts;
+        this.$el = $('');
 
+        if (this.opts.onlyTimepicker) return;
         this.init();
     };
 
@@ -1492,12 +1563,6 @@
                 render = {},
                 html = d.date;
 
-            if (opts.onRenderCell) {
-                render = opts.onRenderCell(date, type) || {};
-                html = render.html ? render.html : html;
-                classes += render.classes ? ' ' + render.classes : '';
-            }
-
             switch (type) {
                 case 'day':
                     if (parent.isWeekend(d.day)) classes += " -weekend-";
@@ -1530,6 +1595,7 @@
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
+
             if (opts.range) {
                 if (dp.isSame(minRange, date, type)) classes += ' -range-from-';
                 if (dp.isSame(maxRange, date, type)) classes += ' -range-to-';
@@ -1673,6 +1739,7 @@
         },
 
         _render: function () {
+            if (this.opts.onlyTimepicker) return;
             this._renderTypes[this.type].bind(this)();
         },
 
@@ -1691,6 +1758,7 @@
         },
 
         show: function () {
+            if (this.opts.onlyTimepicker) return;
             this.$el.addClass('active');
             this.acitve = true;
         },
@@ -1719,27 +1787,11 @@
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);
+                return;
             }
 
-            if (alreadySelected && this.opts.range) {
-                // Add possibility to select same date when range is true
-                if (dp.selectedDates.length != 2 && !this.opts.toggleSelected || this.opts.toggleSelected) {
-                    dp._trigger('clickCell', selectedDate);
-                    // Change last selected date to be able to change time on last date
-                    dp.lastSelectedDate = alreadySelected;
-                }
-            } else if (alreadySelected && this.opts.toggleSelected){
-                dp.removeDate(selectedDate);
-            }
+            dp._handleAlreadySelectedDates.bind(dp, alreadySelected, selectedDate)();
 
-            // Change last selected date to be able to change time when clicking on this cell
-            if (alreadySelected && !this.opts.toggleSelected) {
-                dp.lastSelectedDate = alreadySelected;
-                if (dp.opts.timepicker) {
-                    dp.timepicker._setTime(alreadySelected);
-                    dp.timepicker.update();
-                }
-            }
         },
 
         _onClickCell: function (e) {
@@ -1784,7 +1836,9 @@
         },
 
         _buildBaseHtml: function () {
-            this._render();
+            if (!this.opts.onlyTimepicker) {
+                this._render();
+            }
             this._addButtonsIfNeed();
         },
 
@@ -1841,10 +1895,10 @@
 
             switch (this.d.view) {
                 case 'days':
-                    if (!this.d._isInRange(new Date(y, m-1, d), 'month')) {
+                    if (!this.d._isInRange(new Date(y, m-1, 1), 'month')) {
                         this._disableNav('prev')
                     }
-                    if (!this.d._isInRange(new Date(y, m+1, d), 'month')) {
+                    if (!this.d._isInRange(new Date(y, m+1, 1), 'month')) {
                         this._disableNav('next')
                     }
                     break;
@@ -1857,10 +1911,11 @@
                     }
                     break;
                 case 'years':
-                    if (!this.d._isInRange(new Date(y-10, m, d), 'year')) {
+                    var decade = dp.getDecade(this.d.date);
+                    if (!this.d._isInRange(new Date(decade[0] - 1, 0, 1), 'year')) {
                         this._disableNav('prev')
                     }
-                    if (!this.d._isInRange(new Date(y+10, m, d), 'year')) {
+                    if (!this.d._isInRange(new Date(decade[1] + 1, 0, 1), 'year')) {
                         this._disableNav('next')
                     }
                     break;
@@ -1898,7 +1953,7 @@
 ;(function () {
     var template = '<div class="datepicker--time">' +
         '<div class="datepicker--time-current">' +
-        '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
+        '   <span class="datepicker--time-current-hours">#{hourVisible}</span>' +
         '   <span class="datepicker--time-current-colon">:</span>' +
         '   <span class="datepicker--time-current-minutes">#{minValue}</span>' +
         '</div>' +
@@ -2012,7 +2067,8 @@
                     hourMin: this.minHours,
                     hourMax: lz(this.maxHours),
                     hourStep: this.opts.hoursStep,
-                    hourValue: lz(this.displayHours),
+                    hourValue: this.hours,
+                    hourVisible: lz(this.displayHours),
                     minMin: this.minMinutes,
                     minMax: lz(this.maxMinutes),
                     minStep: this.opts.minutesStep,

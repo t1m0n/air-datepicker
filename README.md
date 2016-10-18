@@ -26,6 +26,28 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.2.3
+* fixed min,max dates in decade mode
+
+### v2.2.2
+* fixed min,max dates handling
+
+### v2.2.1
+* changed RegExp for recognizing date parts
+* changed jquery version dependency
+
+### v2.2.0
+* added `onlyTimepicker` option
+* added `onShow` and `onHide` callbacks
+* added `VERSION` field to plugin's prototype
+* now for selecting same date in `range` mode, you should set `{toggleSelected: false}`
+* fixed `dateFormat` method (fixed wrong month name in Hungarian language)
+* fixed second call of `onRenderCallback`
+* fixed `_getCell()` throwing exception
+* new language:
+    - `sk` thanks to [RobiNN1](https://github.com/RobiNN1)
+
+
 ### v2.1.0
 * added possibility to select single date when `{range: true}`
 * added support of 12 hours mode in `altFieldDateFormat`

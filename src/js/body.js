@@ -21,7 +21,9 @@
         this.d = d;
         this.type = type;
         this.opts = opts;
+        this.$el = $('');
 
+        if (this.opts.onlyTimepicker) return;
         this.init();
     };
 
@@ -67,12 +69,6 @@
                 render = {},
                 html = d.date;
 
-            if (opts.onRenderCell) {
-                render = opts.onRenderCell(date, type) || {};
-                html = render.html ? render.html : html;
-                classes += render.classes ? ' ' + render.classes : '';
-            }
-
             switch (type) {
                 case 'day':
                     if (parent.isWeekend(d.day)) classes += " -weekend-";
@@ -105,6 +101,7 @@
                 html = render.html ? render.html : html;
                 classes += render.classes ? ' ' + render.classes : '';
             }
+
             if (opts.range) {
                 if (dp.isSame(minRange, date, type)) classes += ' -range-from-';
                 if (dp.isSame(maxRange, date, type)) classes += ' -range-to-';
@@ -248,6 +245,7 @@
         },
 
         _render: function () {
+            if (this.opts.onlyTimepicker) return;
             this._renderTypes[this.type].bind(this)();
         },
 
@@ -266,6 +264,7 @@
         },
 
         show: function () {
+            if (this.opts.onlyTimepicker) return;
             this.$el.addClass('active');
             this.acitve = true;
         },
@@ -294,27 +293,11 @@
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);
+                return;
             }
 
-            if (alreadySelected && this.opts.range) {
-                // Add possibility to select same date when range is true
-                if (dp.selectedDates.length != 2 && !this.opts.toggleSelected || this.opts.toggleSelected) {
-                    dp._trigger('clickCell', selectedDate);
-                    // Change last selected date to be able to change time on last date
-                    dp.lastSelectedDate = alreadySelected;
-                }
-            } else if (alreadySelected && this.opts.toggleSelected){
-                dp.removeDate(selectedDate);
-            }
+            dp._handleAlreadySelectedDates.bind(dp, alreadySelected, selectedDate)();
 
-            // Change last selected date to be able to change time when clicking on this cell
-            if (alreadySelected && !this.opts.toggleSelected) {
-                dp.lastSelectedDate = alreadySelected;
-                if (dp.opts.timepicker) {
-                    dp.timepicker._setTime(alreadySelected);
-                    dp.timepicker.update();
-                }
-            }
         },
 
         _onClickCell: function (e) {

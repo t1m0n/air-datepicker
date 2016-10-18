@@ -30,7 +30,9 @@
         },
 
         _buildBaseHtml: function () {
-            this._render();
+            if (!this.opts.onlyTimepicker) {
+                this._render();
+            }
             this._addButtonsIfNeed();
         },
 
@@ -87,10 +89,10 @@
 
             switch (this.d.view) {
                 case 'days':
-                    if (!this.d._isInRange(new Date(y, m-1, d), 'month')) {
+                    if (!this.d._isInRange(new Date(y, m-1, 1), 'month')) {
                         this._disableNav('prev')
                     }
-                    if (!this.d._isInRange(new Date(y, m+1, d), 'month')) {
+                    if (!this.d._isInRange(new Date(y, m+1, 1), 'month')) {
                         this._disableNav('next')
                     }
                     break;
@@ -103,10 +105,11 @@
                     }
                     break;
                 case 'years':
-                    if (!this.d._isInRange(new Date(y-10, m, d), 'year')) {
+                    var decade = dp.getDecade(this.d.date);
+                    if (!this.d._isInRange(new Date(decade[0] - 1, 0, 1), 'year')) {
                         this._disableNav('prev')
                     }
-                    if (!this.d._isInRange(new Date(y+10, m, d), 'year')) {
+                    if (!this.d._isInRange(new Date(decade[1] + 1, 0, 1), 'year')) {
                         this._disableNav('next')
                     }
                     break;

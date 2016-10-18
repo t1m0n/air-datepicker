@@ -856,6 +856,26 @@ describe('Options', function () {
         })
     });
 
+    describe('onlyTimepicker', function () {
+        it('only timepicker should be visible', function () {
+            dp = $input.datepicker({
+                timepicker: true,
+                onlyTimepicker: true
+            }).data('datepicker');
+
+            var $time = $('.datepicker--time', dp.$datepicker),
+                $cells = $('.datepicker--cells', dp.$datepicker),
+                $nav = $('.datepicker--nav-title', dp.$datepicker),
+                _class = dp.$datepicker.hasClass('-only-timepicker-');
+
+            expect($time).to.have.length(1);
+            expect($cells).to.have.length(0);
+            expect($nav).to.have.length(0);
+            expect(_class).to.be.equal(true);
+
+        })
+    });
+
     describe('dateTimeSeparator', function () {
         it('should define separator between date string and time', function () {
             var date = new Date(2016,2,9,11,24);

@@ -1,7 +1,7 @@
 ;(function () {
     var template = '<div class="datepicker--time">' +
         '<div class="datepicker--time-current">' +
-        '   <span class="datepicker--time-current-hours">#{hourValue}</span>' +
+        '   <span class="datepicker--time-current-hours">#{hourVisible}</span>' +
         '   <span class="datepicker--time-current-colon">:</span>' +
         '   <span class="datepicker--time-current-minutes">#{minValue}</span>' +
         '</div>' +
@@ -115,7 +115,8 @@
                     hourMin: this.minHours,
                     hourMax: lz(this.maxHours),
                     hourStep: this.opts.hoursStep,
-                    hourValue: lz(this.displayHours),
+                    hourValue: this.hours,
+                    hourVisible: lz(this.displayHours),
                     minMin: this.minMinutes,
                     minMax: lz(this.maxMinutes),
                     minStep: this.opts.minutesStep,

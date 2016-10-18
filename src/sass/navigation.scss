@@ -10,6 +10,10 @@
   border-bottom: 1px solid map_get($datepickerBorderColor, nav);
   min-height: $datepickerNavigationHeight;
   padding: $datepickerPadding;
+
+  .-only-timepicker- & {
+    display: none;
+  }
 }
 
 .datepicker--nav-title,

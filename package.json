@@ -1,6 +1,6 @@
 {
   "name": "air-datepicker",
-  "version": "2.1.0",
+  "version": "2.2.3",
   "devDependencies": {
     "autoprefixer": "^6.1.0",
     "browserify": "^13.0.0",
@@ -25,7 +25,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "jquery": "^3.0.0"
+    "jquery": ">=2.0.0 <4.0.0"
   },
   "description": "Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested no Android 4.4+ and iOS8+)\r ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)",
   "main": "src/js/air-datepicker.js",
