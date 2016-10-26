@@ -6,7 +6,7 @@ $.fn.datepicker.language['no'] = {
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'],
     today: 'Idag',
     clear: 'Nullstill',
-    dateFormat: 'dd/mm/yyyy',
+    dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii',
     firstDay: 1
 };
