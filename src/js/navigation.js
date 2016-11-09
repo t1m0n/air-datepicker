@@ -38,10 +38,10 @@
 
         _addButtonsIfNeed: function () {
             if (this.opts.todayButton) {
-                this._addButton('today')
+                this._addButton('today');
             }
             if (this.opts.clearButton) {
-                this._addButton('clear')
+                this._addButton('clear');
             }
         },
 
@@ -90,27 +90,27 @@
             switch (this.d.view) {
                 case 'days':
                     if (!this.d._isInRange(new Date(y, m-1, 1), 'month')) {
-                        this._disableNav('prev')
+                        this._disableNav('prev');
                     }
                     if (!this.d._isInRange(new Date(y, m+1, 1), 'month')) {
-                        this._disableNav('next')
+                        this._disableNav('next');
                     }
                     break;
                 case 'months':
                     if (!this.d._isInRange(new Date(y-1, m, d), 'year')) {
-                        this._disableNav('prev')
+                        this._disableNav('prev');
                     }
                     if (!this.d._isInRange(new Date(y+1, m, d), 'year')) {
-                        this._disableNav('next')
+                        this._disableNav('next');
                     }
                     break;
                 case 'years':
                     var decade = dp.getDecade(this.d.date);
                     if (!this.d._isInRange(new Date(decade[0] - 1, 0, 1), 'year')) {
-                        this._disableNav('prev')
+                        this._disableNav('prev');
                     }
                     if (!this.d._isInRange(new Date(decade[1] + 1, 0, 1), 'year')) {
-                        this._disableNav('next')
+                        this._disableNav('next');
                     }
                     break;
             }
@@ -135,11 +135,11 @@
             if ($(e.target).hasClass('-disabled-')) return;
 
             if (this.d.view == 'days') {
-                return this.d.view = 'months'
+                return this.d.view = 'months';
             }
 
             this.d.view = 'years';
         }
-    }
+    };
 
 })();

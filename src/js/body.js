@@ -111,19 +111,19 @@
                         (dp.bigger(minRange, date) && dp.less(parent.focused, date)) ||
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
-                        classes += ' -in-range-'
+                        classes += ' -in-range-';
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-from-'
+                        classes += ' -range-from-';
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-to-'
+                        classes += ' -range-to-';
                     }
 
                 } else if (parent.selectedDates.length == 2) {
                     if (dp.bigger(minRange, date) && dp.less(maxRange, date)) {
-                        classes += ' -in-range-'
+                        classes += ' -in-range-';
                     }
                 }
             }
@@ -137,7 +137,7 @@
             return {
                 html: html,
                 classes: classes
-            }
+            };
         },
 
         /**
@@ -164,7 +164,7 @@
                 y = date.getFullYear();
                 m = date.getMonth();
 
-                html += this._getDayHtml(new Date(y, m, i))
+                html += this._getDayHtml(new Date(y, m, i));
             }
 
             return html;
@@ -192,7 +192,7 @@
 
             while(i < 12) {
                 html += this._getMonthHtml(new Date(d.year, i));
-                i++
+                i++;
             }
 
             return html;
@@ -201,7 +201,7 @@
         _getMonthHtml: function (date) {
             var content = this._getCellContents(date, 'month');
 
-            return '<div class="' + content.classes + '" data-month="' + date.getMonth() + '">' + content.html + '</div>'
+            return '<div class="' + content.classes + '" data-month="' + date.getMonth() + '">' + content.html + '</div>';
         },
 
         _getYearsHtml: function (date) {
@@ -221,7 +221,7 @@
         _getYearHtml: function (date) {
             var content = this._getCellContents(date, 'year');
 
-            return '<div class="' + content.classes + '" data-year="' + date.getFullYear() + '">' + content.html + '</div>'
+            return '<div class="' + content.classes + '" data-year="' + date.getFullYear() + '">' + content.html + '</div>';
         },
 
         _renderTypes: {
@@ -230,17 +230,17 @@
                     days = this._getDaysHtml(this.d.currentDate);
 
                 this.$cells.html(days);
-                this.$names.html(dayNames)
+                this.$names.html(dayNames);
             },
             months: function () {
                 var html = this._getMonthsHtml(this.d.currentDate);
 
-                this.$cells.html(html)
+                this.$cells.html(html);
             },
             years: function () {
                 var html = this._getYearsHtml(this.d.currentDate);
 
-                this.$cells.html(html)
+                this.$cells.html(html);
             }
         },
 
@@ -259,7 +259,7 @@
                 $cell = $(this);
                 date = _this.d._getDateFromCell($(this));
                 classes = _this._getCellContents(date, _this.d.cellType);
-                $cell.attr('class',classes.classes)
+                $cell.attr('class',classes.classes);
             });
         },
 
