@@ -8,5 +8,5 @@ $.fn.datepicker.language['fa'] = {
     clear: 'پاک کردن',
     dateFormat: 'yyyy/mm/dd',
     timeFormat: 'hh:ii aa',
-    firstDay: 6
+    firstDay: 0
 };
