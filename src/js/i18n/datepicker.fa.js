@@ -6,7 +6,7 @@ $.fn.datepicker.language['fa'] = {
     monthsShort: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'می', 'ژوئن', 'جولای', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'],
     today: 'امروز',
     clear: 'پاک کردن',
-    dateFormat: 'mm/dd/yyyy',
+    dateFormat: 'yyyy/mm/dd',
     timeFormat: 'hh:ii aa',
     firstDay: 6
 };
