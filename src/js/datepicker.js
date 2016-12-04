@@ -98,7 +98,32 @@
             'altDown': [18, 40],
             'ctrlShiftUp': [16, 17, 38]
         },
-        datepicker;
+        datepicker,
+        getObjectType = (function() {
+            var types = {
+                '[object Number]': 'number',
+                '[object String]': 'string',
+                '[object Object]': 'object',
+                '[object Function]': 'function',
+                '[object Date]': 'date',
+                '[object Undefined]': 'undefined',
+                '[object Null]': 'null'
+            };
+
+            return function(obj) {
+                return types[Object.prototype.toString.apply(obj)];
+            }
+        })(),
+        getDate = function(date) {
+            switch (getObjectType(date)) {
+                case 'date':
+                    return date;
+                case 'number':
+                    return new Date(date);
+                default:
+                    return false;
+            }
+        };
 
     var Datepicker  = function (el, options) {
         this.el = el;
@@ -110,9 +135,7 @@
             $body = $('body');
         }
 
-        if (!this.opts.startDate) {
-            this.opts.startDate = new Date();
-        }
+        this.opts.startDate = getDate(this.opts.startDate) || new Date();
 
         if (this.el.nodeName == 'INPUT') {
             this.elIsInput = true;
@@ -192,8 +215,8 @@
         },
 
         _createShortCuts: function () {
-            this.minDate = this.opts.minDate ? this.opts.minDate : new Date(-8639999913600000);
-            this.maxDate = this.opts.maxDate ? this.opts.maxDate : new Date(8639999913600000);
+            this.minDate = getDate(this.opts.minDate) || new Date(-8639999913600000);
+            this.maxDate = getDate(this.opts.maxDate) || new Date(8639999913600000);
         },
 
         _bindEvents : function () {
