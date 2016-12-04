@@ -551,7 +551,7 @@ block content
             p Если в объекте локализации не будет хватать каких то полей, то они будут взяты из языка по умолчанию.
 
         .param
-            +param-header('startDate', 'Date', 'new Date()')
+            +param-header('startDate', 'Date|number', 'new Date()')
             p Дата, которая будет отображаться при инициализации календаря.
 
         .param
@@ -714,11 +714,11 @@ block content
             p Если true, то при выборе года из другой декады, будет осуществлен переход к этой декаде.
 
         .param
-            +param-header('minDate', 'Date', '""')
+            +param-header('minDate', 'Date|number', '""')
             p Минимальная дата для возможности выбора. Все даты, идущее до нее нельзя будет активировать.
 
         .param
-            +param-header('maxDate', 'Date', '""')
+            +param-header('maxDate', 'Date|number', '""')
             p Максимальная дата для возможности выбора. Все даты, идущее после нее нельзя будет выбрать.
 
         .param
