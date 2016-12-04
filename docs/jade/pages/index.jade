@@ -545,7 +545,7 @@ block content
                 | If object is passed, then data will be taken from this object directly.
             p If some fields are missing, they will be taken from default localization object ('Russian').
         .param
-            +param-header('startDate', 'Date', 'new Date()')
+            +param-header('startDate', 'Date|number', 'new Date()')
             p This date will be shown at first initialization.
         .param
             +param-header('firstDay', 'number', '""')
@@ -694,10 +694,10 @@ block content
             +param-header('moveToOtherYearsOnSelect', 'boolean', 'true')
             p If true, then selecting year from other decade, will cause transition to that decade.
         .param
-            +param-header('minDate', 'Date', '""')
+            +param-header('minDate', 'Date|number', '""')
             p The minimum date for selection. All dates, running before it can't be activated.
         .param
-            +param-header('maxDate', 'Date', '""')
+            +param-header('maxDate', 'Date|number', '""')
             p The maximum date for selection. All dates which comes after it cannot be selected.
         .param
             +param-header('disableNavWhenOutOfRange', 'boolean', 'true')
