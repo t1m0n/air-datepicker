@@ -6,7 +6,7 @@ $.fn.datepicker.language['nl'] = {
     monthsShort: ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
     today: 'Vandaag',
     clear: 'Legen',
-    dateFormat: 'dd-MM-yy',
+    dateFormat: 'dd-mm-yyyy',
     timeFormat: 'hh:ii',
-    firstDay: 0
+    firstDay: 1
 };
