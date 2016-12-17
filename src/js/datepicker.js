@@ -146,7 +146,7 @@
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
-            if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+            if (!$('#datepickers-container')[0] && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
             }
             this._buildBaseHtml();
