@@ -28,7 +28,8 @@
     "jquery": ">=2.0.0 <4.0.0"
   },
   "description": "Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested no Android 4.4+ and iOS8+)\r ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)",
-  "main": "src/js/air-datepicker.js",
+  "main": "dist/js/datepicker.js",
+  "style": "dist/css/datepicker.css",
   "directories": {
     "doc": "docs",
     "test": "tests"
