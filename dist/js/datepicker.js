@@ -1833,6 +1833,7 @@
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
             this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
             this.d.$datepicker.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
+            this.d.$datepicker.on('mousewheel', $.proxy(this._onMouseWhell, this));
         },
 
         _buildBaseHtml: function () {
@@ -1945,7 +1946,17 @@
             }
 
             this.d.view = 'years';
+        },
+
+        _onMouseWhell: function (e) {
+            if (e.deltaY > 0 ) {
+                this.d.prev();
+            } else {
+                this.d.next();
+            }
+            e.preventDefault();
         }
+
     }
 
 })();
