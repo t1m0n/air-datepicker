@@ -266,7 +266,7 @@
         show: function () {
             if (this.opts.onlyTimepicker) return;
             this.$el.addClass('active');
-            this.acitve = true;
+            this.active = true;
         },
 
         hide: function () {
