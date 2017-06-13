@@ -44,6 +44,7 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
+            dragRange: true,
 
             todayButton: false,
             clearButton: false,

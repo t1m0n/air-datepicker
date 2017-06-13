@@ -44,6 +44,7 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
+            dragRange: true,
 
             todayButton: false,
             clearButton: false,
@@ -1531,6 +1532,12 @@
 
         _bindEvents: function () {
             this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
+
+            if (this.opts.range && this.opts.dragRange) {
+                this.$el.on('mousedown', '.datepicker--cell', $.proxy(this._onMouseDown, this));
+                this.$el.on('mousemove', '.datepicker--cell', $.proxy(this._onMouseMove, this));
+                this.$el.on('mouseup', '.datepicker--cell', $.proxy(this._onMouseUp, this));
+            }
         },
 
         _buildBaseHtml: function () {
@@ -1800,6 +1807,31 @@
             if ($el.hasClass('-disabled-')) return;
 
             this._handleClick.bind(this)($el);
+        },
+
+        _onMouseDown: function (e) {
+            this.pressed = true;
+        },
+
+        _onMouseMove: function (e) {
+            if (this.pressed) {
+                e.preventDefault();
+                if (!this.d.selectedDates.length || this.d.selectedDates.length == 2) {
+                    var $el = $(e.target).closest('.datepicker--cell');
+
+                    if (!$el.hasClass('-selected-')) {
+                        this._handleClick($el);
+                    }
+                }
+            }
+        },
+
+        _onMouseUp: function (e) {
+            this.pressed = false;
+            var $el = $(e.target).closest('.datepicker--cell');
+
+            if ($el.hasClass('-disabled-')) return;
+            this._handleClick($el);
         }
     };
 })();

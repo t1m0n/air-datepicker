@@ -21,6 +21,7 @@
     "gulp-wrap": "^0.11.0",
     "jade": "^1.11.0",
     "mocha": "^2.3.4",
+    "node-sass": "^4.5.3",
     "node-static": "^0.7.7",
     "vinyl-source-stream": "^1.1.0"
   },
