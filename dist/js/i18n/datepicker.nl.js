@@ -2,11 +2,11 @@
     days: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
     daysShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
     daysMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
-    months: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
-    monthsShort: ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+    months: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+    monthsShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
     today: 'Vandaag',
     clear: 'Legen',
-    dateFormat: 'dd-MM-yy',
+    dateFormat: 'dd-mm-yy',
     timeFormat: 'hh:ii',
     firstDay: 0
 }; })(jQuery);
