@@ -100,7 +100,7 @@
         },
         datepicker;
 
-    var Datepicker  = function (el, options) {
+    var Datepicker  = function ( el, options, callback ) {
         this.el = el;
         this.$el = $(el);
 
@@ -136,7 +136,7 @@
         this.maxRange = '';
         this._prevOnSelectValue = '';
 
-        this.init()
+        this.init( callback );
     };
 
     datepicker = Datepicker;
@@ -145,7 +145,7 @@
         VERSION: VERSION,
         viewIndexes: ['days', 'months', 'years'],
 
-        init: function () {
+        init: function ( callback ) {
             if (!containerBuilt && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
             }
@@ -189,6 +189,10 @@
             this.$datepicker.on('mouseleave', '.datepicker--cell', this._onMouseLeaveCell.bind(this));
 
             this.inited = true;
+            
+            if (callback instanceof Function) {
+                callback();
+            }
         },
 
         _createShortCuts: function () {
@@ -1455,11 +1459,11 @@
         return new Date(date.year, date.month, date.date)
     };
 
-    $.fn.datepicker = function ( options ) {
+    $.fn.datepicker = function ( options, callback ) {
         return this.each(function () {
             if (!$.data(this, pluginName)) {
                 $.data(this,  pluginName,
-                    new Datepicker( this, options ));
+                    new Datepicker( this, options, callback ));
             } else {
                 var _this = $.data(this, pluginName);
 
