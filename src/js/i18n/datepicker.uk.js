@@ -1,4 +1,4 @@
-;(function ($) { $.fn.datepicker.language['ua'] = {
+$.fn.datepicker.language['uk'] = {
     days: ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четверг', 'П\'ятниця', 'Субота'],
     daysShort: ['Нед', 'Пон', 'Вів', 'Сер', 'Чет', 'П\'я', 'Суб'],
     daysMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
@@ -9,4 +9,4 @@
     dateFormat: 'dd/mm/yyyy',
     timeFormat: 'hh:ii aa',
     firstDay: 1
-}; })(jQuery);
+};
