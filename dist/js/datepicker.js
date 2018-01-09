@@ -480,9 +480,9 @@
             }
 
             if (_this.view == 'days') {
-                if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
+                //if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
                     newDate = new Date(date.getFullYear(), date.getMonth(), 1);
-                }
+                //}
             }
 
             if (_this.view == 'years') {
