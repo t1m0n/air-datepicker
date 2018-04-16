@@ -26,6 +26,11 @@
   width: $datepickerWidth;
   position: absolute;
   left: -100000px;
+  
+  html[dir="rtl"] & {
+    left: 0; /* Fix to prevent horizontal scrolling */
+  }
+  
   opacity: 0;
   transition: opacity $datepickerTransitionSpeed $datepickerTransitionEase, transform $datepickerTransitionSpeed $datepickerTransitionEase, left 0s $datepickerTransitionSpeed;
   z-index: $datepickerZIndex;
