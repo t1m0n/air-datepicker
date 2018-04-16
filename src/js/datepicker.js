@@ -151,6 +151,13 @@
             }
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
+            
+            var overrides = this.loc.defaultOverrides;
+            
+            if(overrides) {
+              this.opts = $.extend(true, this.opts, overrides);
+            }
+                        
             this._syncWithMinMaxDates();
 
             if (this.elIsInput) {
@@ -825,9 +832,7 @@
 
             this.$datepicker
                 .removeClass('active')
-                .css({
-                    left: '-100000px'
-                });
+                .removeAttr("style");
 
             this.focused = '';
             this.keys = [];
