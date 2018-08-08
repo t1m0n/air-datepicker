@@ -190,7 +190,7 @@ describe('Options', function () {
 
             assert.equal(dp.$altField.val(), '17-12-2015');
         });
-        
+
         it('should support 24 hour mode, even if main date format is in 12', function () {
             var date = new Date(2015, 11, 17, 22, 47);
 
@@ -404,7 +404,7 @@ describe('Options', function () {
         var i = 0;
         while(i < 5) {
             offset = Math.round(Math.random() * 50);
-            
+
             (function (offset) {
                 it('should set offset ' + offset + ' from main axis', function () {
                     dp = $input.datepicker({
@@ -429,7 +429,7 @@ describe('Options', function () {
                     assert.equal(iDims.top + iDims.height + offset, dpDims.top);
                 });
             })(offset);
-            
+
             i++;
         }
     });
@@ -665,7 +665,7 @@ describe('Options', function () {
 
             dp.date = date;
 
-            var $prev = $('.datepicker--nav-action[data-action="prev"]', dp.$datepicker);
+            var $prev = $('.datepicker--nav-action[data-air-datepicker-action="prev"]', dp.$datepicker);
 
             expect($prev.attr('class')).to.have.string('-disabled-')
         })
@@ -723,7 +723,7 @@ describe('Options', function () {
             var $button = $('.datepicker--button', dp.$datepicker);
 
             expect($button.length).to.be.equal(1);
-            expect($button.data('action')).to.be.equal('today');
+            expect($button.data('air-datepicker-action')).to.be.equal('today');
 
         })
     });
@@ -738,7 +738,7 @@ describe('Options', function () {
             var $button = $('.datepicker--button', dp.$datepicker);
 
             expect($button.length).to.be.equal(1);
-            expect($button.data('action')).to.be.equal('clear');
+            expect($button.data('air-datepicker-action')).to.be.equal('clear');
 
         })
     });
@@ -802,7 +802,7 @@ describe('Options', function () {
                 prevHtml: 'previous'
             }).data('datepicker');
 
-            var $prev = $('[data-action="prev"]', dp.$datepicker);
+            var $prev = $('[data-air-datepicker-action="prev"]', dp.$datepicker);
 
             expect($prev.html()).to.be.equal('previous');
         });
@@ -814,7 +814,7 @@ describe('Options', function () {
                 nextHtml: 'next'
             }).data('datepicker');
 
-            var $next = $('[data-action="next"]', dp.$datepicker);
+            var $next = $('[data-air-datepicker-action="next"]', dp.$datepicker);
 
             expect($next.html()).to.be.equal('next');
         });

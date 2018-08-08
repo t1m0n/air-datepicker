@@ -26,6 +26,9 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.2.4
+* scoped data actions to air-datepicker namespace
+
 ### v2.2.3
 * fixed min,max dates in decade mode
 
@@ -69,7 +72,7 @@ $('.my-datepicker').datepicker([options])
 
 ### v2.0.0
 * added timepicker (see [docs](http://t1m0n.name/air-datepicker/docs#timepicker) for more info)
-* added possibility to set `Date` in `todayButton` 
+* added possibility to set `Date` in `todayButton`
 * global variable `Datepicker` has been removed, now all placed in `$.fn.datepicker`
 * improved `selectDate` method, now one can pass an array of dates to select
 * added `npm` package
@@ -83,7 +86,7 @@ $('.my-datepicker').datepicker([options])
     - `ro`  thanks to [tourniquet](https://github.com/tourniquet)
 
 ### v1.2.4
-* fixed '$ is not defined' problem. 
+* fixed '$ is not defined' problem.
 
 ### v1.2.3
 * fixed `dateFormat` method.
