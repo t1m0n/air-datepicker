@@ -1,10 +1,10 @@
 ;(function () {
     var template = '' +
-        '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
+        '<div class="datepicker--nav-action" data-air-datepicker-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
-        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
+        '<div class="datepicker--nav-action" data-air-datepicker-action="next">#{nextHtml}</div>',
         buttonsContainerTemplate = '<div class="datepicker--buttons"></div>',
-        button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>',
+        button = '<span class="datepicker--button" data-air-datepicker-action="#{action}">#{label}</span>',
         datepicker = $.fn.datepicker,
         dp = datepicker.Constructor;
 
@@ -70,7 +70,7 @@
                 },
                 html = dp.template(button, data);
 
-            if ($('[data-action=' + type + ']', this.$buttonsContainer).length) return;
+            if ($('[data-air-datepicker-action=' + type + ']', this.$buttonsContainer).length) return;
             this.$buttonsContainer.append(html);
         },
 
@@ -117,16 +117,16 @@
         },
 
         _disableNav: function (nav) {
-            $('[data-action="' + nav + '"]', this.d.$nav).addClass('-disabled-')
+            $('[data-air-datepicker-action="' + nav + '"]', this.d.$nav).addClass('-disabled-')
         },
 
         _activateNav: function (nav) {
-            $('[data-action="' + nav + '"]', this.d.$nav).removeClass('-disabled-')
+            $('[data-air-datepicker-action="' + nav + '"]', this.d.$nav).removeClass('-disabled-')
         },
 
         _onClickNavButton: function (e) {
-            var $el = $(e.target).closest('[data-action]'),
-                action = $el.data('action');
+            var $el = $(e.target).closest('[data-air-datepicker-action]'),
+                action = $el.data('air-datepicker-action');
 
             this.d[action]();
         },

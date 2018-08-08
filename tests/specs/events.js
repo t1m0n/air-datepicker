@@ -79,7 +79,7 @@ var assert = chai.assert,
             expect(dates).to.have.length(2)
         })
     });
-    
+
     describe('onShow', function () {
         it('should add callback when datepicker is showing', function () {
             var test = '';
@@ -151,7 +151,7 @@ var assert = chai.assert,
                 }
             }).data('datepicker');
 
-            $('.datepicker--nav-action[data-action="next"]',dp.$datepicker).click();
+            $('.datepicker--nav-action[data-air-datepicker-action="next"]',dp.$datepicker).click();
 
             expect(_month).to.be.equal(1);
             expect(_year).to.be.equal(2016)
@@ -170,7 +170,7 @@ var assert = chai.assert,
                 }
             }).data('datepicker');
 
-            $('.datepicker--nav-action[data-action="next"]',dp.$datepicker).click();
+            $('.datepicker--nav-action[data-air-datepicker-action="next"]',dp.$datepicker).click();
 
             expect(_year).to.be.equal(2017)
         })
@@ -188,7 +188,7 @@ var assert = chai.assert,
                 }
             }).data('datepicker');
 
-            $('.datepicker--nav-action[data-action="next"]',dp.$datepicker).click();
+            $('.datepicker--nav-action[data-air-datepicker-action="next"]',dp.$datepicker).click();
 
             expect(_decade).to.have.length(2);
             expect(_decade[0]).to.be.equal(2020);
