@@ -48,7 +48,7 @@
       todayButton: false,
       oneWeekButton: true,
       twoWeeksButton: true,
-      clearButton: false,
+      clearButton: true,
 
       showEvent: 'focus',
       autoClose: false,
@@ -1537,6 +1537,8 @@
       months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
       today: 'Сегодня',
+      oneWeek: 'oneWeek',
+      twoWeeks: 'twoWeeks',
       clear: 'Очистить',
       dateFormat: 'dd.mm.yyyy',
       timeFormat: 'hh:ii',
