@@ -43,6 +43,12 @@
             if (this.opts.clearButton) {
                 this._addButton('clear')
             }
+            if (this.opts.oneWeekButton) {
+                this._addButton('oneWeek')
+            }
+            if (this.opts.twoWeeksButton) {
+                this._addButton('twoWeeks')
+            }
         },
 
         _render: function () {
