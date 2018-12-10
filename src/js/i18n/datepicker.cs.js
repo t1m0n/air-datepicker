@@ -5,6 +5,8 @@ $.fn.datepicker.language['cs'] = {
     months: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],
     monthsShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'],
     today: 'Dnes',
+    oneWeek: '1Week',
+    twoWeeks: '2Weeks',
     clear: 'Vymazat',
     dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii',

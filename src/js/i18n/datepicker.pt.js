@@ -5,6 +5,8 @@ $.fn.datepicker.language['pt'] = {
     months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
     monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
     today: 'Hoje',
+    oneWeek: '1Week',
+    twoWeeks: '2Weeks',
     clear: 'Limpar',
     dateFormat: 'dd/mm/yyyy',
     timeFormat: 'hh:ii',
