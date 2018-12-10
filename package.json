@@ -1,6 +1,6 @@
 {
   "name": "air-datepicker",
-  "version": "2.2.3",
+  "version": "2.2.3-alpha1",
   "devDependencies": {
     "autoprefixer": "^6.1.0",
     "browserify": "^13.0.0",
