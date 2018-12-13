@@ -6,7 +6,7 @@ $.fn.datepicker.language['fi'] = {
     monthsShort: ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 'Heinä', 'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'],
     today: 'Tänään',
     oneWeek: '1Week',
-    twoWeeks: '2Weeks',
+    confirmation: 'Confirm',
     clear: 'Tyhjennä',
     dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii',

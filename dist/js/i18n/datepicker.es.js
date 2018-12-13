@@ -6,7 +6,7 @@
     monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
     today: 'Hoy',
     oneWeek: '1Week',
-    twoWeeks: '2Weeks',
+    confirmation: 'Confirm',
     clear: 'Limpiar',
     dateFormat: 'dd/mm/yyyy',
     timeFormat: 'hh:ii aa',

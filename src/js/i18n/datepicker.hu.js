@@ -6,7 +6,7 @@
     monthsShort: ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Szep', 'Okt', 'Nov', 'Dec'],
     today: 'Ma',
     oneWeek: '1Week',
-    twoWeeks: '2Weeks',
+    confirmation: 'Confirm',
     clear: 'Törlés',
     dateFormat: 'yyyy-mm-dd',
     timeFormat: 'hh:ii aa',

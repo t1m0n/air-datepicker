@@ -46,8 +46,8 @@
             if (this.opts.oneWeekButton) {
                 this._addButton('oneWeek')
             }
-            if (this.opts.twoWeeksButton) {
-                this._addButton('twoWeeks')
+            if (this.opts.confirmationButton) {
+                this._addButton('confirmation')
             }
         },
 

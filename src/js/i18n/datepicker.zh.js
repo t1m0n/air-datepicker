@@ -6,7 +6,7 @@ $.fn.datepicker.language['zh'] = {
     monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
     today: '今天',
     oneWeek: '1Week',
-    twoWeeks: '2Weeks',
+    confirmation: 'Confirm',
     clear: '清除',
     dateFormat: 'yyyy-mm-dd',
     timeFormat: 'hh:ii',

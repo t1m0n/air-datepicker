@@ -342,6 +342,9 @@
   display: flex;
   padding: 4px;
   border-top: 1px solid #efefef; }
+  .datepicker--buttons span:nth-child(3) {
+    color: white !important;
+    background-color: #4EB5E6 !important; }
 
 .datepicker--button {
   color: #4EB5E6;

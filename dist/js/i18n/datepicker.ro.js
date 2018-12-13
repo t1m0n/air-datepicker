@@ -6,7 +6,7 @@
     monthsShort: ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     today: 'Azi',
     oneWeek: '1Week',
-    twoWeeks: '2Weeks',
+    confirmation: 'Confirm',
     clear: 'Şterge',
     dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii',

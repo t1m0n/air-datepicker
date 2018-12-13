@@ -47,7 +47,7 @@
 
       todayButton: false,
       oneWeekButton: true,
-      twoWeeksButton: true,
+      confirmationButton: true,
       clearButton: true,
 
       showEvent: 'focus',
@@ -613,35 +613,8 @@
         this._triggerOnChange()
       }
     },
-    twoWeeks: function () {
-      function addDays(date, days) {
-        var result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-      }
-
-      this.selectedDates = [
-        addDays(new Date(), 1),
-        addDays(new Date(), 2),
-        addDays(new Date(), 3),
-        addDays(new Date(), 4),
-        addDays(new Date(), 5),
-        addDays(new Date(), 6),
-        addDays(new Date(), 7),
-        addDays(new Date(), 8),
-        addDays(new Date(), 9),
-        addDays(new Date(), 10),
-        addDays(new Date(), 11),
-        addDays(new Date(), 12),
-        addDays(new Date(), 13),
-        addDays(new Date(), 14)];
-      this.minRange = '';
-      this.maxRange = '';
-      this.views[this.currentView]._render();
-      this._setInputValue();
-      if (this.opts.onSelect) {
-        this._triggerOnChange()
-      }
+    confirmation: function () {
+      this.hide();
     },
 
     clear: function () {
@@ -1538,7 +1511,7 @@
       monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
       today: 'Сегодня',
       oneWeek: '1주일',
-      twoWeeks: '2주일',
+      confirmation: '확인',
       clear: 'Очистить',
       dateFormat: 'dd.mm.yyyy',
       timeFormat: 'hh:ii',
@@ -1912,8 +1885,8 @@
             if (this.opts.oneWeekButton) {
                 this._addButton('oneWeek')
             }
-            if (this.opts.twoWeeksButton) {
-                this._addButton('twoWeeks')
+            if (this.opts.confirmationButton) {
+                this._addButton('confirmation')
             }
         },
 
