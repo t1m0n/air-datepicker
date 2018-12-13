@@ -1,5 +1,5 @@
 ;(function (window, $, undefined) { ;(function () {
-  var VERSION = '2.2.3',
+  var VERSION = '2.2.3-alpha2',
     pluginName = 'datepicker',
     autoInitSelector = '.datepicker-here',
     $body, $datepickersContainer,
@@ -1563,7 +1563,7 @@
         },
 
         _bindEvents: function () {
-            this.$el.on('cl`ick', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {

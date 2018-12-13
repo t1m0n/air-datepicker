@@ -36,7 +36,7 @@
         },
 
         _bindEvents: function () {
-            this.$el.on('cl`ick', '.datepicker--cell', $.proxy(this._onClickCell, this));
+            this.$el.on('click', '.datepicker--cell', $.proxy(this._onClickCell, this));
         },
 
         _buildBaseHtml: function () {
