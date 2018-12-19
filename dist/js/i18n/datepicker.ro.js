@@ -5,6 +5,8 @@
     months: ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'],
     monthsShort: ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     today: 'Azi',
+    oneWeek: '1Week',
+    confirmation: 'Confirm',
     clear: 'Şterge',
     dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii',

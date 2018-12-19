@@ -5,6 +5,8 @@
     months: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec', 'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
     monthsShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
     today: 'Dzisiaj',
+    oneWeek: '1Week',
+    confirmation: 'Confirm',
     clear: 'Wyczyść',
     dateFormat: 'yyyy-mm-dd',
     timeFormat: 'hh:ii:aa',

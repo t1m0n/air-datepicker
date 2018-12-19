@@ -76,6 +76,11 @@
   display: flex;
   padding: $datepickerPadding;
   border-top: 1px solid map_get($datepickerBorderColor, nav);
+
+  span:nth-child(3) {
+    color: white !important;
+    background-color: map_get($datepickerTextColor, currentDate) !important;
+  }
 }
 
 .datepicker--button {

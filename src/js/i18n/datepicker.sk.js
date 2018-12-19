@@ -5,6 +5,8 @@ $.fn.datepicker.language['sk'] = {
     months: ['Január','Február','Marec','Apríl','Máj','Jún', 'Júl','August','September','Október','November','December'],
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Máj', 'Jún', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
     today: 'Dnes',
+    oneWeek: '1Week',
+    confirmation: 'Confirm',
     clear: 'Vymazať',
     dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii',

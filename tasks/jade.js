@@ -30,7 +30,7 @@ module.exports = {
             .pipe(plumber())
             .pipe(jade({
                 data: {
-                    lang: 'en'
+                    lang: 'kr'
                 }
             }))
             .pipe(gulp.dest('docs/'))
