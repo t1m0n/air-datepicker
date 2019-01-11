@@ -444,7 +444,9 @@
         },
 
 
-        selectDate: function (date) {
+        selectDate: function (date, _force) {
+            var force = _force || false;
+            
             var _this = this,
                 opts = _this.opts,
                 d = _this.parsedDate,
@@ -480,13 +482,13 @@
             }
 
             if (_this.view == 'days') {
-                if (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect) {
+                if (force || (date.getMonth() != d.month && opts.moveToOtherMonthsOnSelect)) {
                     newDate = new Date(date.getFullYear(), date.getMonth(), 1);
                 }
             }
 
             if (_this.view == 'years') {
-                if (date.getFullYear() != d.year && opts.moveToOtherYearsOnSelect) {
+                if (force || (date.getFullYear() != d.year && opts.moveToOtherYearsOnSelect)) {
                     newDate = new Date(date.getFullYear(), 0, 1);
                 }
             }
