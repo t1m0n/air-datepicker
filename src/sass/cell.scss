@@ -125,7 +125,7 @@
 // -------------------------------------------------
 
 .datepicker--cell-day {
-  width: (100/7)#{'%'};
+  width: calc(100% / 7);
 
   &.-other-month- {
     @extend %otherMonth;
