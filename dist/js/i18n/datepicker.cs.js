@@ -1,4 +1,4 @@
-;(function ($) { $.fn.datepicker.language['cs'] = {
+;(function ($) { $.fn.airdatepicker.language['cs'] = {
     days: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
     daysShort: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
     daysMin: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],

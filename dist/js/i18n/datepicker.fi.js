@@ -1,4 +1,4 @@
-;(function ($) { $.fn.datepicker.language['fi'] = {
+;(function ($) { $.fn.airdatepicker.language['fi'] = {
     days: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
     daysShort: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
     daysMin: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],

@@ -1,4 +1,4 @@
-;(function ($) { ;(function ($) { $.fn.datepicker.language['hu'] = {
+;(function ($) { ;(function ($) { $.fn.airdatepicker.language['hu'] = {
     days: ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat'],
     daysShort: ['Va', 'Hé', 'Ke', 'Sze', 'Cs', 'Pé', 'Szo'],
     daysMin: ['V', 'H', 'K', 'Sz', 'Cs', 'P', 'Sz'],
