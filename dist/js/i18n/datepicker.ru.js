@@ -6,7 +6,7 @@
     monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек'],
     today: 'Сегодня',
     clear: 'Очистить',
-    dateFormat: 'dd.nn.yyyy',
+    dateFormat: 'dd.mm.yyyy',
     timeFormat: 'hh:ii aa',
     firstDay: 1
 }; })(jQuery);
