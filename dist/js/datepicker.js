@@ -1,8 +1,8 @@
 ;(function (window, $, undefined) { ;(function () {
-    var VERSION = '2.2.3',
+    var VERSION = '2.2.3 (modified)',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
-        $body, $datepickersContainer,
+        $parentElement, $datepickersContainer,
         containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
@@ -11,8 +11,10 @@
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
+            parentElement: $('body'),
             classes: '',
             inline: false,
+            autoSize: true,
             language: 'ru',
             startDate: new Date(),
             firstDay: '',
@@ -44,6 +46,8 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
+            minRangeLength: 1,
+            maxRangeLength: false,
 
             todayButton: false,
             clearButton: false,
@@ -106,9 +110,7 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if ($body == undefined) {
-            $body = $('body');
-        }
+        $parentElement = this.opts.parentElement;
 
         if (!this.opts.startDate) {
             this.opts.startDate = new Date();
@@ -146,9 +148,9 @@
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
-            if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+            //if (!containerBuilt && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
-            }
+            //}
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
             this._syncWithMinMaxDates();
@@ -223,13 +225,13 @@
             if (typeof lang == 'string') {
                 this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
-                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
+                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "en" instead');
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.en)
                 }
 
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, lang)
             }
 
             if (this.opts.dateFormat) {
@@ -262,8 +264,7 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
-            $datepickersContainer = $('#datepickers-container');
+            $datepickersContainer = $parentElement.append('<div class="datepickers-container" id="datepickers-container"></div>');
         },
 
         _buildBaseHtml: function () {
@@ -1445,6 +1446,16 @@
         return parseInt(num) < 10 ? '0' + num : num;
     };
 
+    datepicker.addDays = function (date, days = 0) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
+    datepicker.dateDifference = function (date1, date2) {
+        return Math.ceil(Math.abs(date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+    };
+
     /**
      * Returns copy of date with hours and minutes equals to 0
      * @param date {Date}
@@ -1605,14 +1616,72 @@
                         (dp.bigger(minRange, date) && dp.less(parent.focused, date)) ||
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
-                        classes += ' -in-range-'
+                        if (dp.bigger(minRange, date) && dp.less(parent.focused, date)) {
+                            if ((!opts.maxRangeLength || dp.dateDifference(date, minRange) < opts.maxRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (dp.less(maxRange, date) && dp.bigger(parent.focused, date)) {
+                            if ((!opts.maxRangeLength || dp.dateDifference(maxRange, date) < opts.maxRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
+                    } else {
+                        if (minRange && dp.bigger(parent.focused, date)) {
+                            if ((!opts.minRangeLength || dp.dateDifference(date, minRange) < opts.minRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (maxRange && dp.less(parent.focused, date)) {
+                            if ((!opts.minRangeLength || dp.dateDifference(maxRange, date) < opts.minRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-from-'
+                        if ((!opts.maxRangeLength || dp.dateDifference(maxRange, parent.focused) < opts.maxRangeLength) && !(dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                            classes += ' -range-from-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if (dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1) {
+                                date = dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : '');
+                            } else {
+                                date = dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : '');
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-to-'
+                        if ((!opts.maxRangeLength || dp.dateDifference(parent.focused, minRange) < opts.maxRangeLength) && !(dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                            classes += ' -range-to-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if (dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1) {
+                                date = dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : '');
+                            } else {
+                                date = dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : '');
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
 
                 } else if (parent.selectedDates.length == 2) {
@@ -1622,9 +1691,11 @@
                 }
             }
 
-
             if (dp.isSame(currentDate, date, type)) classes += ' -current-';
-            if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
+            if (parent.focused && dp.isSame(date, parent.focused, type)) {
+                classes += ' -focus-';
+                if (parent.lastDateInRange) delete parent.lastDateInRange;
+            }
             if (parent._isSelected(date, type)) classes += ' -selected-';
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
@@ -1652,9 +1723,10 @@
 
             var startDayIndex = -daysFromPevMonth + 1,
                 m, y,
-                html = '';
+                html = '',
+                max = this.opts.autoSize ? totalMonthDays + daysFromNextMonth : 42 - daysFromPevMonth;
 
-            for (var i = startDayIndex, max = totalMonthDays + daysFromNextMonth; i <= max; i++) {
+            for (var i = startDayIndex; i <= max; i++) {
                 y = date.getFullYear();
                 m = date.getMonth();
 
@@ -1782,7 +1854,7 @@
                 return;
             }
             // Select date if min view is reached
-            var selectedDate = new Date(year, month, date),
+            var selectedDate = dp.lastDateInRange ? dp.lastDateInRange : new Date(year, month, date),
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {

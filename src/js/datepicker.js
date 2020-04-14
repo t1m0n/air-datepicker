@@ -1,8 +1,8 @@
 ;(function () {
-    var VERSION = '2.2.3',
+    var VERSION = '2.2.3 (modified)',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
-        $body, $datepickersContainer,
+        $parentElement, $datepickersContainer,
         containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
@@ -11,8 +11,10 @@
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
+            parentElement: $('body'),
             classes: '',
             inline: false,
+            autoSize: true,
             language: 'ru',
             startDate: new Date(),
             firstDay: '',
@@ -44,6 +46,8 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
+            minRangeLength: 1,
+            maxRangeLength: false,
 
             todayButton: false,
             clearButton: false,
@@ -106,9 +110,7 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if ($body == undefined) {
-            $body = $('body');
-        }
+        $parentElement = this.opts.parentElement;
 
         if (!this.opts.startDate) {
             this.opts.startDate = new Date();
@@ -146,9 +148,9 @@
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
-            if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+            //if (!containerBuilt && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
-            }
+            //}
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
             this._syncWithMinMaxDates();
@@ -223,13 +225,13 @@
             if (typeof lang == 'string') {
                 this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
-                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
+                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "en" instead');
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.en)
                 }
 
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, lang)
             }
 
             if (this.opts.dateFormat) {
@@ -1443,6 +1445,16 @@
 
     datepicker.getLeadingZeroNum = function (num) {
         return parseInt(num) < 10 ? '0' + num : num;
+    };
+
+    datepicker.addDays = function (date, days = 0) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
+    datepicker.dateDifference = function (date1, date2) {
+        return Math.ceil(Math.abs(date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
     };
 
     /**

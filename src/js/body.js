@@ -111,14 +111,72 @@
                         (dp.bigger(minRange, date) && dp.less(parent.focused, date)) ||
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
-                        classes += ' -in-range-'
+                        if (dp.bigger(minRange, date) && dp.less(parent.focused, date)) {
+                            if ((!opts.maxRangeLength || dp.dateDifference(date, minRange) < opts.maxRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (dp.less(maxRange, date) && dp.bigger(parent.focused, date)) {
+                            if ((!opts.maxRangeLength || dp.dateDifference(maxRange, date) < opts.maxRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
+                    } else {
+                        if (minRange && dp.bigger(parent.focused, date)) {
+                            if ((!opts.minRangeLength || dp.dateDifference(date, minRange) < opts.minRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (maxRange && dp.less(parent.focused, date)) {
+                            if ((!opts.minRangeLength || dp.dateDifference(maxRange, date) < opts.minRangeLength)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-from-'
+                        if ((!opts.maxRangeLength || dp.dateDifference(maxRange, parent.focused) < opts.maxRangeLength) && !(dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                            classes += ' -range-from-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if (dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1) {
+                                date = dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : '');
+                            } else {
+                                date = dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : '');
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-to-'
+                        if ((!opts.maxRangeLength || dp.dateDifference(parent.focused, minRange) < opts.maxRangeLength) && !(dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                            classes += ' -range-to-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if (dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1) {
+                                date = dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : '');
+                            } else {
+                                date = dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : '');
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
 
                 } else if (parent.selectedDates.length == 2) {
@@ -130,7 +188,10 @@
 
 
             if (dp.isSame(currentDate, date, type)) classes += ' -current-';
-            if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
+            if (parent.focused && dp.isSame(date, parent.focused, type)) {
+                classes += ' -focus-';
+                if (parent.lastDateInRange) delete parent.lastDateInRange;
+            }
             if (parent._isSelected(date, type)) classes += ' -selected-';
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
@@ -158,9 +219,10 @@
 
             var startDayIndex = -daysFromPevMonth + 1,
                 m, y,
-                html = '';
+                html = '',
+                max = this.opts.autoSize ? totalMonthDays + daysFromNextMonth : 42 - daysFromPevMonth;
 
-            for (var i = startDayIndex, max = totalMonthDays + daysFromNextMonth; i <= max; i++) {
+            for (var i = startDayIndex; i <= max; i++) {
                 y = date.getFullYear();
                 m = date.getMonth();
 
@@ -288,7 +350,7 @@
                 return;
             }
             // Select date if min view is reached
-            var selectedDate = new Date(year, month, date),
+            var selectedDate = dp.lastDateInRange ? dp.lastDateInRange : new Date(year, month, date),
                 alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
