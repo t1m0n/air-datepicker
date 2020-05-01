@@ -512,7 +512,7 @@
                             _this.selectedDates = [];
                         }
                     }else{
-                        if(_this.temporaryDates.some(d=>d>date)){
+                        if(_this.temporaryDates.some(d => d > date)){
                             _this.temporaryDates.pop();
                         }else{
                             _this.temporaryDates.shift();
@@ -528,9 +528,15 @@
                 }
             } else if (opts.range) {
                 if (len == 2) {
-                    _this.selectedDates = _this.temporaryDates = [date];
-                    _this.minRange = date;
-                    _this.maxRange = '';
+                    if(opts.maxDays == 1){
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    }else{
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                        _this.maxRange = '';
+                    }
                 } else if (len == 1) {
                     _this.temporaryDates.push(date);
                     if (!_this.maxRange) {
@@ -1693,10 +1699,12 @@
                             classes += ' -range-from-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
-                                date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
-                            } else {
-                                date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
+                                    date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
+                                }
                             }
                             parent.lastDateInRange = date;
                         }
@@ -1710,10 +1718,12 @@
                             classes += ' -range-to-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
-                                date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
-                            } else {
-                                date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
+                                    date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
+                                }
                             }
                             parent.lastDateInRange = date;
                         }

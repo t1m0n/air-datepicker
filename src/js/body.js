@@ -149,10 +149,12 @@
                             classes += ' -range-from-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
-                                date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
-                            } else {
-                                date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
+                                    date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
+                                }
                             }
                             parent.lastDateInRange = date;
                         }
@@ -166,10 +168,12 @@
                             classes += ' -range-to-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
-                                date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
-                            } else {
-                                date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
+                                    date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
+                                }
                             }
                             parent.lastDateInRange = date;
                         }

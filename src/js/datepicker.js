@@ -528,9 +528,15 @@
                 }
             } else if (opts.range) {
                 if (len == 2) {
-                    _this.selectedDates = _this.temporaryDates = [date];
-                    _this.minRange = date;
-                    _this.maxRange = '';
+                    if(opts.maxDays == 1){
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    }else{
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                        _this.maxRange = '';
+                    }
                 } else if (len == 1) {
                     _this.temporaryDates.push(date);
                     if (!_this.maxRange) {
