@@ -41,14 +41,15 @@
 
             minDate: '',
             maxDate: '',
+            minDays: 1,
+            maxDays: false,
+
             disableNavWhenOutOfRange: true,
 
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
-            minRangeLength: 1,
-            maxRangeLength: false,
-
+            
             todayButton: false,
             clearButton: false,
 
@@ -132,6 +133,7 @@
         this.currentView = this.opts.view;
         this._createShortCuts();
         this.selectedDates = [];
+        this.temporaryDates = [];
         this.views = {};
         this.keys = [];
         this.minRange = '';
@@ -501,17 +503,37 @@
 
             if (opts.multipleDates && !opts.range) { // Set priority to range functionality
                 if (len === opts.multipleDates) return;
-                if (!_this._isSelected(date)) {
-                    _this.selectedDates.push(date);
+                if (!_this._isTemporary(date)) {
+                    if((!opts.maxDays || _this.selectedDates.length < opts.maxDays)){
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }else{
+                        if(_this.temporaryDates.some(d=>d>date)){
+                            _this.temporaryDates.pop();
+                        }else{
+                            _this.temporaryDates.shift();
+                        }
+                        
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }
                 }
             } else if (opts.range) {
                 if (len == 2) {
-                    _this.selectedDates = [date];
+                    _this.selectedDates = _this.temporaryDates = [date];
                     _this.minRange = date;
                     _this.maxRange = '';
                 } else if (len == 1) {
-                    _this.selectedDates.push(date);
-                    if (!_this.maxRange){
+                    _this.temporaryDates.push(date);
+                    if (!_this.maxRange) {
                         _this.maxRange = date;
                     } else {
                         _this.minRange = date;
@@ -521,14 +543,15 @@
                         _this.maxRange = _this.minRange;
                         _this.minRange = date;
                     }
-                    _this.selectedDates = [_this.minRange, _this.maxRange]
+                    _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    _this.selectedDates = _this.temporaryDates
 
                 } else {
-                    _this.selectedDates = [date];
+                    _this.selectedDates = _this.temporaryDates = [date];
                     _this.minRange = date;
                 }
             } else {
-                _this.selectedDates = [date];
+                _this.selectedDates = _this.temporaryDates = [date];
             }
 
             _this._setInputValue();
@@ -549,21 +572,26 @@
         },
 
         removeDate: function (date) {
-            var selected = this.selectedDates,
-                _this = this;
-
+            var _this = this;
             if (!(date instanceof Date)) return;
 
-            return selected.some(function (curDate, i) {
+            return _this.temporaryDates.some(function (curDate, i) {
+                
                 if (datepicker.isSame(curDate, date)) {
-                    selected.splice(i, 1);
+                    _this.temporaryDates.splice(i, 1);
 
-                    if (!_this.selectedDates.length) {
+                    if(_this.temporaryDates.length >= _this.opts.minDays){
+                        _this.selectedDates = _this.temporaryDates;
+                    }else{
+                        _this.selectedDates = [];
+                    }
+
+                    if (!_this.temporaryDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
                         _this.lastSelectedDate = '';
                     } else {
-                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
+                        _this.lastSelectedDate = _this.temporaryDates[_this.temporaryDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -669,6 +697,17 @@
         _isSelected: function (checkDate, cellType) {
             var res = false;
             this.selectedDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
+        },
+
+        _isTemporary: function (checkDate, cellType) {
+            var res = false;
+            this.temporaryDates.some(function (date) {
                 if (datepicker.isSame(date, checkDate, cellType)) {
                     res = date;
                     return true;
@@ -1617,32 +1656,32 @@
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
                         if (dp.bigger(minRange, date) && dp.less(parent.focused, date)) {
-                            if ((!opts.maxRangeLength || dp.dateDifference(date, minRange) < opts.maxRangeLength)) {
+                            if ((!opts.maxDays || dp.dateDifference(date, minRange) < opts.maxDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : ''))) {
                                     classes += ' -range-to-';
                                 }
                             }
                         } else if (dp.less(maxRange, date) && dp.bigger(parent.focused, date)) {
-                            if ((!opts.maxRangeLength || dp.dateDifference(maxRange, date) < opts.maxRangeLength)) {
+                            if ((!opts.maxDays || dp.dateDifference(maxRange, date) < opts.maxDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : ''))) {
                                     classes += ' -range-from-';
                                 }
                             }
                         }
                     } else {
                         if (minRange && dp.bigger(parent.focused, date)) {
-                            if ((!opts.minRangeLength || dp.dateDifference(date, minRange) < opts.minRangeLength)) {
+                            if ((!opts.minDays || dp.dateDifference(date, minRange) < opts.minDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : ''))) {
                                     classes += ' -range-to-';
                                 }
                             }
                         } else if (maxRange && dp.less(parent.focused, date)) {
-                            if ((!opts.minRangeLength || dp.dateDifference(maxRange, date) < opts.minRangeLength)) {
+                            if ((!opts.minDays || dp.dateDifference(maxRange, date) < opts.minDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : ''))) {
                                     classes += ' -range-from-';
                                 }
                             }
@@ -1650,36 +1689,36 @@
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        if ((!opts.maxRangeLength || dp.dateDifference(maxRange, parent.focused) < opts.maxRangeLength) && !(dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                        if ((!opts.maxDays || dp.dateDifference(maxRange, parent.focused) < opts.maxDays) && !(dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
                             classes += ' -range-from-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1) {
-                                date = dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : '');
+                            if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
+                                date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
                             } else {
-                                date = dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : '');
+                                date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
                             }
                             parent.lastDateInRange = date;
                         }
 
-                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
                             classes += ' -in-range-';
                         }
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        if ((!opts.maxRangeLength || dp.dateDifference(parent.focused, minRange) < opts.maxRangeLength) && !(dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                        if ((!opts.maxDays || dp.dateDifference(parent.focused, minRange) < opts.maxDays) && !(dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
                             classes += ' -range-to-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1) {
-                                date = dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : '');
+                            if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
+                                date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
                             } else {
-                                date = dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : '');
+                                date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
                             }
                             parent.lastDateInRange = date;
                         }
 
-                        if ((dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                        if ((dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
                             classes += ' -in-range-';
                         }
                     }
@@ -1696,7 +1735,13 @@
                 classes += ' -focus-';
                 if (parent.lastDateInRange) delete parent.lastDateInRange;
             }
-            if (parent._isSelected(date, type)) classes += ' -selected-';
+            if (parent._isTemporary(date, type)){
+                if (parent._isSelected(date, type)){
+                    classes += ' -selected-';
+                } else{
+                    classes += ' -in-range-';
+                }
+            } 
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
             return {

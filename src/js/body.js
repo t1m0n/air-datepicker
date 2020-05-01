@@ -112,32 +112,32 @@
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
                         if (dp.bigger(minRange, date) && dp.less(parent.focused, date)) {
-                            if ((!opts.maxRangeLength || dp.dateDifference(date, minRange) < opts.maxRangeLength)) {
+                            if ((!opts.maxDays || dp.dateDifference(date, minRange) < opts.maxDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : ''))) {
                                     classes += ' -range-to-';
                                 }
                             }
                         } else if (dp.less(maxRange, date) && dp.bigger(parent.focused, date)) {
-                            if ((!opts.maxRangeLength || dp.dateDifference(maxRange, date) < opts.maxRangeLength)) {
+                            if ((!opts.maxDays || dp.dateDifference(maxRange, date) < opts.maxDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : ''))) {
                                     classes += ' -range-from-';
                                 }
                             }
                         }
                     } else {
                         if (minRange && dp.bigger(parent.focused, date)) {
-                            if ((!opts.minRangeLength || dp.dateDifference(date, minRange) < opts.minRangeLength)) {
+                            if ((!opts.minDays || dp.dateDifference(date, minRange) < opts.minDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : ''))) {
                                     classes += ' -range-to-';
                                 }
                             }
                         } else if (maxRange && dp.less(parent.focused, date)) {
-                            if ((!opts.minRangeLength || dp.dateDifference(maxRange, date) < opts.minRangeLength)) {
+                            if ((!opts.minDays || dp.dateDifference(maxRange, date) < opts.minDays)) {
                                 classes += ' -in-range-';
-                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : ''))) {
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : ''))) {
                                     classes += ' -range-from-';
                                 }
                             }
@@ -145,36 +145,36 @@
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        if ((!opts.maxRangeLength || dp.dateDifference(maxRange, parent.focused) < opts.maxRangeLength) && !(dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                        if ((!opts.maxDays || dp.dateDifference(maxRange, parent.focused) < opts.maxDays) && !(dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
                             classes += ' -range-from-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1) {
-                                date = dp.addDays(maxRange, opts.minRangeLength ? -(opts.minRangeLength - 1) : '');
+                            if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
+                                date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
                             } else {
-                                date = dp.addDays(maxRange, opts.maxRangeLength ? -(opts.maxRangeLength - 1) : '');
+                                date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
                             }
                             parent.lastDateInRange = date;
                         }
 
-                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minRangeLength - 1)) {
+                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
                             classes += ' -in-range-';
                         }
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        if ((!opts.maxRangeLength || dp.dateDifference(parent.focused, minRange) < opts.maxRangeLength) && !(dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                        if ((!opts.maxDays || dp.dateDifference(parent.focused, minRange) < opts.maxDays) && !(dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
                             classes += ' -range-to-';
                             if (parent.lastDateInRange) delete parent.lastDateInRange;
                         } else {
-                            if (dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1) {
-                                date = dp.addDays(minRange, opts.minRangeLength ? +(opts.minRangeLength - 1) : '');
+                            if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
+                                date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
                             } else {
-                                date = dp.addDays(minRange, opts.maxRangeLength ? +(opts.maxRangeLength - 1) : '');
+                                date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
                             }
                             parent.lastDateInRange = date;
                         }
 
-                        if ((dp.dateDifference(parent.focused, minRange) < opts.minRangeLength - 1)) {
+                        if ((dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
                             classes += ' -in-range-';
                         }
                     }
@@ -192,7 +192,13 @@
                 classes += ' -focus-';
                 if (parent.lastDateInRange) delete parent.lastDateInRange;
             }
-            if (parent._isSelected(date, type)) classes += ' -selected-';
+            if (parent._isTemporary(date, type)){
+                if (parent._isSelected(date, type)){
+                    classes += ' -selected-';
+                } else{
+                    classes += ' -in-range-';
+                }
+            } 
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
             return {

@@ -46,8 +46,8 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
-            minRangeLength: 1,
-            maxRangeLength: false,
+            minDays: 1,
+            maxDays: false,
 
             todayButton: false,
             clearButton: false,
@@ -132,6 +132,7 @@
         this.currentView = this.opts.view;
         this._createShortCuts();
         this.selectedDates = [];
+        this.temporaryDates = [];
         this.views = {};
         this.keys = [];
         this.minRange = '';
@@ -502,17 +503,37 @@
 
             if (opts.multipleDates && !opts.range) { // Set priority to range functionality
                 if (len === opts.multipleDates) return;
-                if (!_this._isSelected(date)) {
-                    _this.selectedDates.push(date);
+                if (!_this._isTemporary(date)) {
+                    if((!opts.maxDays || _this.selectedDates.length < opts.maxDays)){
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }else{
+                        if(_this.temporaryDates.some(d=>d>date)){
+                            _this.temporaryDates.pop();
+                        }else{
+                            _this.temporaryDates.shift();
+                        }
+                        
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }
                 }
             } else if (opts.range) {
                 if (len == 2) {
-                    _this.selectedDates = [date];
+                    _this.selectedDates = _this.temporaryDates = [date];
                     _this.minRange = date;
                     _this.maxRange = '';
                 } else if (len == 1) {
-                    _this.selectedDates.push(date);
-                    if (!_this.maxRange){
+                    _this.temporaryDates.push(date);
+                    if (!_this.maxRange) {
                         _this.maxRange = date;
                     } else {
                         _this.minRange = date;
@@ -522,14 +543,15 @@
                         _this.maxRange = _this.minRange;
                         _this.minRange = date;
                     }
-                    _this.selectedDates = [_this.minRange, _this.maxRange]
+                    _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    _this.selectedDates = _this.temporaryDates
 
                 } else {
-                    _this.selectedDates = [date];
+                    _this.selectedDates = _this.temporaryDates = [date];
                     _this.minRange = date;
                 }
             } else {
-                _this.selectedDates = [date];
+                _this.selectedDates = _this.temporaryDates = [date];
             }
 
             _this._setInputValue();
@@ -550,21 +572,26 @@
         },
 
         removeDate: function (date) {
-            var selected = this.selectedDates,
-                _this = this;
-
+            var _this = this;
             if (!(date instanceof Date)) return;
 
-            return selected.some(function (curDate, i) {
+            return _this.temporaryDates.some(function (curDate, i) {
+                
                 if (datepicker.isSame(curDate, date)) {
-                    selected.splice(i, 1);
+                    _this.temporaryDates.splice(i, 1);
 
-                    if (!_this.selectedDates.length) {
+                    if(_this.temporaryDates.length >= _this.opts.minDays){
+                        _this.selectedDates = _this.temporaryDates;
+                    }else{
+                        _this.selectedDates = [];
+                    }
+
+                    if (!_this.temporaryDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
                         _this.lastSelectedDate = '';
                     } else {
-                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
+                        _this.lastSelectedDate = _this.temporaryDates[_this.temporaryDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -677,6 +704,18 @@
             });
             return res;
         },
+
+        _isTemporary: function (checkDate, cellType) {
+            var res = false;
+            this.temporaryDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
+        },
+
 
         _setInputValue: function () {
             var _this = this,
