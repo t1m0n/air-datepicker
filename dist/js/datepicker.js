@@ -1145,7 +1145,12 @@
                         this._trigger('clickCell', selectedDate);
                     }
                 } else {
-                    this.removeDate(selectedDate);
+                    if (this.selectedDates.length != 2) {
+                        this._trigger('clickCell', selectedDate);
+                    }else{
+                        this.removeDate(selectedDate);
+                        this.removeDate(alreadySelected);
+                    }
                 }
             } else if (this.opts.toggleSelected){
                 this.removeDate(selectedDate);
