@@ -42,3 +42,12 @@ export function insertAfter(newElement, targetElement) {
         .insertBefore(newElement, targetElement.nextSibling);
     return newElement;
 }
+
+/**
+ * Makes object deep copy
+ * @param {Object} obj
+ * @return {Object}
+ */
+export function deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}

@@ -26,11 +26,13 @@ let entry = {
     index: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', './index.js'],
 };
 
+if (!dev) {
+    entry.index = './index.js';
+}
 
 //  Config
 // -------------------------------------------------
-
-module.exports = {
+let config = {
     mode: dev ? 'development' : 'production',
     entry: entry,
     devtool: dev ? 'eval-source-map' : 'none',
@@ -79,8 +81,13 @@ module.exports = {
         modules: [`${__dirname}/src/js`, `${__dirname}/src`, 'node_modules']
     },
     plugins: plugins,
-    devServer: {
+};
+
+if (dev) {
+    config.devServer = {
         contentBase: './dist',
         hot: true
-    },
-};
+    };
+}
+
+module.exports = config;

@@ -1,7 +1,9 @@
+import localeRu from './locale/ru';
+
 export default {
     classes: '',
     inline: false,
-    language: 'ru',
+    locale: localeRu,
     startDate: new Date(),
     firstDay: '',
     weekends: [6, 0],

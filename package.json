@@ -2,7 +2,9 @@
   "name": "air-datepicker",
   "version": "2.2.3",
   "scripts": {
-    "dev": "set NODE_ENV=development&& node server-dev.js"
+    "dev": "set NODE_ENV=development&& webpack",
+    "dev:serve": "set NODE_ENV=development&& node server-dev.js",
+    "prod": "set NODE_ENV=production&& webpack"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

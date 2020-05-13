@@ -1,6 +1,7 @@
 /* eslint-disable */
 import defaults from './defaults';
-import {getEl, createElement, insertAfter} from './utils';
+import {getEl, createElement, insertAfter, deepCopy} from './utils';
+import ru from './locale/ru';
 
 import './datepicker.scss';
 
@@ -45,7 +46,7 @@ export default class AirDatepicker {
         this.visible = false;
         this.silent = false; // Need to prevent unnecessary rendering
 
-        this.currentDate = this.opts.startDate;
+        this.viewDate = this.opts.startDate;
         this.currentView = this.opts.view;
         this.selectedDates = [];
         this.views = {};
@@ -62,6 +63,7 @@ export default class AirDatepicker {
             buildDatepickersContainer();
         }
         this._buildBaseHtml();
+        this._handleLocale();
     }
 
     _buildBaseHtml() {
@@ -85,5 +87,45 @@ export default class AirDatepicker {
         this.$nav = getEl('.datepicker--nav', this.$datepicker);
     }
 
+    _handleLocale(){
+        let {locale, dateFormat, firstDay, timepicker, onlyTimepicker, timeFormat, dateTimeSeparator} = this.opts;
+        this.locale = deepCopy(locale);
+
+        if (dateFormat) {
+            this.locale.dateFormat = dateFormat
+        }
+
+        if (timeFormat) {
+            this.locale.timeFormat = timeFormat
+        }
+
+        if (firstDay !== undefined) {
+            this.locale.firstDay = firstDay
+        }
+
+        if (timepicker) {
+            this.locale.dateFormat = [this.locale.dateFormat, this.locale.timeFormat].join(dateTimeSeparator);
+        }
+
+        if (onlyTimepicker) {
+            this.locale.dateFormat = this.locale.timeFormat;
+        }
+
+        let boundary = AirDatepicker.getWordBoundaryRegExp;
+        //TODO заменить на новый формат
+        if (this.locale.timeFormat.match(boundary('aa')) ||
+            this.locale.timeFormat.match(boundary('AA'))
+        ) {
+            this.ampm = true;
+        }
+
+    }
+
     static defaults = defaults
+    //TODO надо вспомнить че к чему, возможно стоит упростить
+    static getWordBoundaryRegExp(sign){
+        let symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
+
+        return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
+    }
 }
