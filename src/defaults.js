@@ -1,4 +1,5 @@
 import localeRu from './locale/ru';
+import consts from './consts';
 
 export default {
     classes: '',
@@ -16,8 +17,8 @@ export default {
     position: 'bottom left',
     offset: 12,
 
-    view: 'days',
-    minView: 'days',
+    view: consts.days,
+    minView: consts.days,
 
     showOtherMonths: true,
     selectOtherMonths: true,

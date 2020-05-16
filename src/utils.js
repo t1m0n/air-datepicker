@@ -11,16 +11,21 @@ export function getEl (el, context=document) {
 
 /**
  * Creates HTML DOM element
- * @param {String} tagName - element's tag name
- * @param {String} className
- * @param {String} id
- * @param {Object} attrs
+ * @param {String} [tagName] - element's tag name
+ * @param {String} [className]
+ * @param {String} [innerHtml]
+ * @param {String} [id]
+ * @param {Object} [attrs]
  * @returns {HTMLElement}
  */
-export function createElement({tagName='div', className='', id='', attrs={}} = {}) {
+export function createElement({tagName='div', className='', innerHtml='', id='', attrs={}} = {}) {
     let $element = document.createElement(tagName);
-    if (className) $element.classList.add(className);
+    if (className) $element.classList.add(...className.split(' '));
     if (id) $element.id = id;
+
+    if (innerHtml) {
+        $element.innerHTML = innerHtml;
+    }
 
     if (attrs) {
         for (let attr in attrs) {

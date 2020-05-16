@@ -1,6 +1,7 @@
 /* eslint-disable */
 import defaults from './defaults';
 import {getEl, createElement, insertAfter, deepCopy} from './utils';
+import DatepickerBody from './datepickerBody';
 import ru from './locale/ru';
 
 import './datepicker.scss';
@@ -10,9 +11,9 @@ let $body = '',
     containerBuilt = false,
     baseTemplate = '' +
         '<div class="datepicker">' +
-        '<i class="datepicker--pointer"></i>' +
-        '<nav class="datepicker--nav"></nav>' +
-        '<div class="datepicker--content"></div>' +
+            '<i class="datepicker--pointer"></i>' +
+            '<nav class="datepicker--nav"></nav>' +
+            '<div class="datepicker--content"></div>' +
         '</div>';
 
 function buildDatepickersContainer () {
@@ -34,7 +35,9 @@ export default class AirDatepicker {
             $body = getEl('body');
         }
 
-        if (!this.opts.startDate) {
+        let {view, startDate} = this.opts;
+
+        if (!startDate) {
             this.opts.startDate = new Date();
         }
 
@@ -47,7 +50,7 @@ export default class AirDatepicker {
         this.silent = false; // Need to prevent unnecessary rendering
 
         this.viewDate = this.opts.startDate;
-        this.currentView = this.opts.view;
+        this.currentView = view;
         this.selectedDates = [];
         this.views = {};
         this.keys = [];
@@ -59,17 +62,47 @@ export default class AirDatepicker {
     }
 
     init(){
+        let {opts: {inline, position, classes, onlyTimepicker, keyboardNav}} = this;
+
         if (!containerBuilt && !this.opts.inline && this.elIsInput) {
             buildDatepickersContainer();
         }
         this._buildBaseHtml();
         this._handleLocale();
+        //TODO дописать обработку мин макс
+        // this._handleMinMaxDates();
+
+        if (this.elIsInput) {
+            if (!inline) {
+                // Set extra classes for proper transitions
+                this._setPositionClasses(position);
+                //TODO дописать добавление событий
+                this._bindEvents()
+            }
+            if (keyboardNav && !onlyTimepicker) {
+                //TODO дописать обработку клавиатуры
+                this._bindKeyboardEvents();
+            }
+        }
+
+        if (classes) {
+            this.$datepicker.classList.add(...classes.split(' '))
+        }
+
+        if (onlyTimepicker) {
+            this.$datepicker.classList.add('-only-timepicker-');
+        }
+
+        this.views[this.currentView] = new DatepickerBody({
+            dp: this,
+            type: this.currentView,
+            opts: this.opts
+        });
     }
 
     _buildBaseHtml() {
         let $appendTarget,
             $inline = createElement({className: 'datepicker-inline'});
-
         if  (this.elIsInput) {
             if (!this.opts.inline) {
                 $appendTarget = $datepickersContainer;
@@ -118,6 +151,28 @@ export default class AirDatepicker {
         ) {
             this.ampm = true;
         }
+
+    }
+
+    _setPositionClasses(pos){
+        pos = pos.split(' ');
+        let main = pos[0],
+            sec = pos[1],
+            classes = `datepicker -${main}-${sec}- -from-${main}-`;
+
+        if (this.visible) classes += ' active';
+
+        this.$datepicker.removeAttribute('class')
+        this.$datepicker.classList.add(...classes.split(' '))
+    }
+
+    _bindEvents(){
+
+    }
+    _bindKeyboardEvents(){
+
+    }
+    _handleMinMaxDates(){
 
     }
 
