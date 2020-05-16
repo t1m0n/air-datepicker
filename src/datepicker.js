@@ -12,7 +12,7 @@ let $body = '',
     baseTemplate = '' +
         '<div class="datepicker">' +
             '<i class="datepicker--pointer"></i>' +
-            '<nav class="datepicker--nav"></nav>' +
+            '<div class="datepicker--navigation"></div>' +
             '<div class="datepicker--content"></div>' +
         '</div>';
 
@@ -132,7 +132,7 @@ export default class AirDatepicker {
             this.locale.timeFormat = timeFormat
         }
 
-        if (firstDay !== undefined) {
+        if (firstDay !== '') {
             this.locale.firstDay = firstDay
         }
 
@@ -174,6 +174,10 @@ export default class AirDatepicker {
     }
     _handleMinMaxDates(){
 
+    }
+
+    isWeekend = (day) => {
+        return this.opts.weekends.includes(day);
     }
 
     static defaults = defaults

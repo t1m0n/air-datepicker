@@ -37,7 +37,27 @@ export default class AirDatepickerBody {
         this.$cells = getEl('.datepicker-body--cells', this.$el);
     }
 
+    _getDayNamesHtml(firstDay) {
+        let html = '',
+            isWeekend = this.dp.isWeekend,
+            curDay = firstDay,
+            i = 0;
+
+        while (i < 7) {
+            html += `<div class="datepicker--day-name ${isWeekend(curDay) ? consts.cssClassWeekend : ''}">
+                        ${this.dp.locale.daysMin[curDay % 7]}
+                    </div>`;
+            i++;
+            curDay++;
+        }
+
+        return html;
+    }
+
     _renderDays(){
+        let dayNames = this._getDayNamesHtml(this.dp.locale.firstDay);
+
+        this.$cells.innerHTML = dayNames;
 
     }
 
