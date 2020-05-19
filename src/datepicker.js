@@ -26,7 +26,7 @@ function buildDatepickersContainer () {
     return $datepickersContainer;
 }
 
-export default class AirDatepicker {
+export default class Datepicker {
     constructor(el, opts) {
         this.$el = getEl(el);
         this.opts = {...defaults, ...opts};
@@ -144,7 +144,7 @@ export default class AirDatepicker {
             this.locale.dateFormat = this.locale.timeFormat;
         }
 
-        let boundary = AirDatepicker.getWordBoundaryRegExp;
+        let boundary = Datepicker.getWordBoundaryRegExp;
         //TODO заменить на новый формат
         if (this.locale.timeFormat.match(boundary('aa')) ||
             this.locale.timeFormat.match(boundary('AA'))

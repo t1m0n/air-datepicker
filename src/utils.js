@@ -56,3 +56,53 @@ export function insertAfter(newElement, targetElement) {
 export function deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+
+/**
+ * Calculates amount of days in passed date
+ * @param {Date} date
+ * @return {number}
+ */
+export function getDaysCount(date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+}
+
+/**
+ * Get detailed date object
+ * @param {Date} date
+ * @return {{
+ *  date: number,
+ *  hours: number,
+ *  fullDate: (string|*),
+ *  month: number,
+ *  fullHours: (string|*),
+ *  year: number,
+ *  minutes: number,
+ *  fullMonth: string,
+ *  day: number,
+ *  fullMinutes: (string|*)
+ * }}
+ */
+export function getParsedDate(date) {
+    return {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        fullMonth: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1, // One based
+        date: date.getDate(),
+        fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
+        day: date.getDay(),
+        hours: date.getHours(),
+        fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
+        minutes: date.getMinutes(),
+        fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
+    };
+}
+
+export function subDays(date, days) {
+    let {year, month, date: _date} = getParsedDate(date);
+    return new Date(year, month, _date - days);
+}
+
+export function addDays(date, days) {
+    let {year, month, date: _date} = getParsedDate(date);
+    return new Date(year, month, _date + days);
+}

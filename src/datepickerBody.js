@@ -1,6 +1,7 @@
 /* eslint-disable */
 import consts from './consts';
-import {getEl, createElement, insertAfter, deepCopy} from './utils';
+import {getEl, createElement, getDaysCount, getParsedDate, subDays, addDays, insertAfter, deepCopy} from './utils';
+import DatepickerCell from './datepickerCell';
 
 let templates = {
     [consts.days]:`` +
@@ -10,11 +11,12 @@ let templates = {
     [consts.years]: `<div class="datepicker-body--cells -${consts.years}-"></div>`
 };
 
-export default class AirDatepickerBody {
+export default class DatepickerBody {
     constructor({dp, type, opts}) {
         this.dp = dp;
         this.type = type;
         this.opts = opts;
+        this.cells = [];
         this.$el = '';
 
         this.init();
@@ -22,7 +24,8 @@ export default class AirDatepickerBody {
 
     init(){
         this._buildBaseHtml();
-        this._render();
+        this._generateCells();
+        this.render();
     }
 
     _buildBaseHtml() {
@@ -37,7 +40,7 @@ export default class AirDatepickerBody {
         this.$cells = getEl('.datepicker-body--cells', this.$el);
     }
 
-    _getDayNamesHtml(firstDay) {
+    _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
         let html = '',
             isWeekend = this.dp.isWeekend,
             curDay = firstDay,
@@ -54,11 +57,49 @@ export default class AirDatepickerBody {
         return html;
     }
 
+    _getDaysCells(){
+        let {viewDate, locale: {firstDay}} = this.dp,
+            totalMonthDays = getDaysCount(viewDate),
+            {year, month} = getParsedDate(viewDate),
+            firstMonthDay = new Date(year, month, 1),
+            lastMonthDay = new Date(year, month, totalMonthDays),
+            daysFromPrevMonth = firstMonthDay.getDay() - firstDay,
+            daysFromNextMonth = 6 - lastMonthDay.getDay() + firstDay;
+
+        daysFromPrevMonth = daysFromPrevMonth < 0 ? daysFromPrevMonth + 7 : daysFromPrevMonth;
+        daysFromNextMonth = daysFromNextMonth > 6 ? daysFromNextMonth - 7 : daysFromNextMonth;
+
+        let firstRenderDate = subDays(firstMonthDay, daysFromPrevMonth),
+            totalRenderDays = totalMonthDays + daysFromPrevMonth + daysFromNextMonth,
+            firstRenderDayDate = firstRenderDate.getDate(),
+            {year:renderYear, month: renderMonth} = getParsedDate(firstRenderDate),
+            i = 0;
+
+        while(i < totalRenderDays) {
+            let date = new Date(renderYear, renderMonth, firstRenderDayDate + i);
+            this._generateCell(date);
+            i++;
+        }
+    }
+
+    _generateCell(date) {
+        let {type, dp, opts} = this;
+        let cell = new DatepickerCell({
+            type,
+            dp,
+            opts,
+            date,
+            body: this
+        });
+
+        this.cells.push(cell);
+
+        return cell;
+    }
+
     _renderDays(){
-        let dayNames = this._getDayNamesHtml(this.dp.locale.firstDay);
-
-        this.$cells.innerHTML = dayNames;
-
+        this.$names.innerHTML =  this._getDayNamesHtml();
+        this._getDaysCells();
     }
 
     _renderMonths(){
@@ -69,7 +110,7 @@ export default class AirDatepickerBody {
 
     }
 
-    _render(){
+    _generateCells(){
         switch (this.type) {
             case consts.days:
                 this._renderDays();
@@ -81,5 +122,9 @@ export default class AirDatepickerBody {
                 this._renderYears();
                 break;
         }
+    }
+
+    render(){
+        this.cells.forEach(c=>{c.render()});
     }
 }
