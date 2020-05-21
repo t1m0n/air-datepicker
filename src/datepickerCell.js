@@ -14,10 +14,10 @@ export default class DatepickerCell {
     }
 
     _init(){
-        this._buildBaseHtml();
+        this._createElement();
     }
 
-    _buildBaseHtml() {
+    _createElement() {
         let {year, month, date} = getParsedDate(this.date);
 
         this.$cell = createElement({
@@ -26,8 +26,7 @@ export default class DatepickerCell {
                 'data-year': year,
                 'data-month': month,
                 'date-date': date
-            },
-            innerHtml: this._getHtml()
+            }
         })
     }
 
@@ -44,7 +43,8 @@ export default class DatepickerCell {
         }
     }
 
-    render(){
-        this.body.$cells.appendChild(this.$cell);
+    render = () =>{
+        this.$cell.innerHTML = this._getHtml();
+        return this.$cell;
     }
 }

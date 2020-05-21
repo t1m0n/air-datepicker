@@ -6,9 +6,6 @@ let $input = document.querySelector('#dp');
 
 new Datepicker($input, {
     inline: true,
-    navTitles: {
-        days: 'asdfasdf'
-    }
 });
 
 if (module.hot) {

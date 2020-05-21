@@ -1,7 +1,8 @@
 /* eslint-disable */
 import defaults from './defaults';
-import {getEl, createElement, insertAfter, deepCopy} from './utils';
+import {getEl, createElement, insertAfter, deepCopy, getLeadingZeroNum, getParsedDate, getDecade} from './utils';
 import DatepickerBody from './datepickerBody';
+import DatepickerNav from './datepickerNav';
 import ru from './locale/ru';
 
 import './datepicker.scss';
@@ -29,6 +30,7 @@ function buildDatepickersContainer () {
 export default class Datepicker {
     constructor(el, opts) {
         this.$el = getEl(el);
+        //TODO сделать deepMerge
         this.opts = {...defaults, ...opts};
 
         if (!$body) {
@@ -62,9 +64,9 @@ export default class Datepicker {
     }
 
     init(){
-        let {opts: {inline, position, classes, onlyTimepicker, keyboardNav}} = this;
+        let {opts, opts: {inline, position, classes, onlyTimepicker, keyboardNav}} = this;
 
-        if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+        if (!containerBuilt && !inline && this.elIsInput) {
             buildDatepickersContainer();
         }
         this._buildBaseHtml();
@@ -96,8 +98,15 @@ export default class Datepicker {
         this.views[this.currentView] = new DatepickerBody({
             dp: this,
             type: this.currentView,
-            opts: this.opts
+            opts
         });
+
+        this.nav = new DatepickerNav({
+            dp: this,
+            opts,
+        })
+
+        this.$nav.appendChild(this.nav.render());
     }
 
     _buildBaseHtml() {
@@ -117,7 +126,7 @@ export default class Datepicker {
 
         this.$datepicker = getEl('.datepicker', $appendTarget);
         this.$content = getEl('.datepicker--content',  this.$datepicker);
-        this.$nav = getEl('.datepicker--nav', this.$datepicker);
+        this.$nav = getEl('.datepicker--navigation', this.$datepicker);
     }
 
     _handleLocale(){
@@ -176,8 +185,81 @@ export default class Datepicker {
 
     }
 
+    formatDate(string, date=this.viewDate) {
+        var result = string,
+            boundary = Datepicker.getWordBoundaryRegExp,
+            locale = this.locale,
+            parsedDate = getParsedDate(date),
+            decade = getDecade(date),
+            fullHours = parsedDate.fullHours,
+            hours = parsedDate.hours,
+            replacer = Datepicker.replacer,
+            ampm = string.match(boundary('aa')) || string.match(boundary('AA')),
+            dayPeriod = 'am',
+            validHours;
+
+        //TODO обработка выбора времени
+        // if (this.opts.timepicker && this.timepicker && ampm) {
+        //     validHours = this.timepicker._getValidHoursFromDate(date, ampm);
+        //     fullHours = getLeadingZeroNum(validHours.hours);
+        //     hours = validHours.hours;
+        //     dayPeriod = validHours.dayPeriod;
+        // }
+
+
+
+        switch (true) {
+            case /@/.test(result):
+                result = result.replace(/@/, date.getTime());
+            case /aa/.test(result):
+                result = replacer(result, boundary('aa'), dayPeriod);
+            case /AA/.test(result):
+                result = replacer(result, boundary('AA'), dayPeriod.toUpperCase());
+            case /dd/.test(result):
+                result = replacer(result, boundary('dd'), parsedDate.fullDate);
+            case /d/.test(result):
+                result = replacer(result, boundary('d'), parsedDate.date);
+            case /DD/.test(result):
+                result = replacer(result, boundary('DD'), locale.days[parsedDate.day]);
+            case /D/.test(result):
+                result = replacer(result, boundary('D'), locale.daysShort[parsedDate.day]);
+            case /mm/.test(result):
+                result = replacer(result, boundary('mm'), parsedDate.fullMonth);
+            case /m/.test(result):
+                result = replacer(result, boundary('m'), parsedDate.month + 1);
+            case /MM/.test(result):
+                result = replacer(result, boundary('MM'), this.locale.months[parsedDate.month]);
+            case /M/.test(result):
+                result = replacer(result, boundary('M'), locale.monthsShort[parsedDate.month]);
+            case /ii/.test(result):
+                result = replacer(result, boundary('ii'), parsedDate.fullMinutes);
+            case /i/.test(result):
+                result = replacer(result, boundary('i'), parsedDate.minutes);
+            case /hh/.test(result):
+                result = replacer(result, boundary('hh'), fullHours);
+            case /h/.test(result):
+                result = replacer(result, boundary('h'), hours);
+            case /yyyy/.test(result):
+                result = replacer(result, boundary('yyyy'), parsedDate.year);
+            case /yyyy1/.test(result):
+                result = replacer(result, boundary('yyyy1'), decade[0]);
+            case /yyyy2/.test(result):
+                result = replacer(result, boundary('yyyy2'), decade[1]);
+            case /yy/.test(result):
+                result = replacer(result, boundary('yy'), parsedDate.year.toString().slice(-2));
+        }
+
+        return result;
+    }
+
     isWeekend = (day) => {
         return this.opts.weekends.includes(day);
+    }
+
+    static replacer(str, reg, data) {
+        return str.replace(reg, function (match, p1,p2,p3) {
+            return p1 + data + p3;
+        })
     }
 
     static defaults = defaults

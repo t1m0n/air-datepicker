@@ -97,6 +97,25 @@ export function getParsedDate(date) {
     };
 }
 
+/**
+ * Converts 1 -> 01
+ * @param {Number} num
+ * @return {String|Number}
+ */
+export function getLeadingZeroNum(num) {
+    return num < 10 ? '0' + num : num;
+}
+
+/**
+ * Calculates current decade
+ * @param {Date} date
+ * @return {number[]} - array of two years, decade start - decade end
+ */
+export function getDecade(date) {
+    let firstYear = Math.floor(date.getFullYear() / 10) * 10;
+    return [firstYear, firstYear + 9];
+}
+
 export function subDays(date, days) {
     let {year, month, date: _date} = getParsedDate(date);
     return new Date(year, month, _date - days);

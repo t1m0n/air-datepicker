@@ -47,8 +47,9 @@ export default class DatepickerBody {
             i = 0;
 
         while (i < 7) {
-            html += `<div class="datepicker--day-name ${isWeekend(curDay) ? consts.cssClassWeekend : ''}">
-                        ${this.dp.locale.daysMin[curDay % 7]}
+            let day = curDay % 7;
+            html += `<div class="datepicker--day-name ${isWeekend(day) ? consts.cssClassWeekend : ''}">
+                        ${this.dp.locale.daysMin[day]}
                     </div>`;
             i++;
             curDay++;
@@ -125,6 +126,8 @@ export default class DatepickerBody {
     }
 
     render(){
-        this.cells.forEach(c=>{c.render()});
+        this.cells.forEach(c=>{
+            this.$cells.appendChild(c.render());
+        });
     }
 }
