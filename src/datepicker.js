@@ -5,6 +5,7 @@ import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
 import ru from './locale/ru';
 
+import './datepickerVars.scss';
 import './datepicker.scss';
 
 let $body = '',
@@ -106,7 +107,8 @@ export default class Datepicker {
             opts,
         })
 
-        this.$nav.appendChild(this.nav.render());
+        this.$content.appendChild(this.views[this.currentView].$el);
+        this.$nav.appendChild(this.nav.$el);
     }
 
     _buildBaseHtml() {

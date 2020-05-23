@@ -2,6 +2,8 @@
 import consts from './consts';
 import {getEl, createElement, getDaysCount, getParsedDate, subDays, addDays, insertAfter, deepCopy} from './utils';
 
+import './datepickerCell.scss';
+
 export default class DatepickerCell {
     constructor({type, date, dp, opts, body} = {}) {
         this.type = type;

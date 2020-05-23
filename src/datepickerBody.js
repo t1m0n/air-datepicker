@@ -3,6 +3,8 @@ import consts from './consts';
 import {getEl, createElement, getDaysCount, getParsedDate, subDays, addDays, insertAfter, deepCopy} from './utils';
 import DatepickerCell from './datepickerCell';
 
+import './datepickerBody.scss';
+
 let templates = {
     [consts.days]:`` +
         `<div class="datepicker-body--day-names"></div>` +
@@ -34,8 +36,6 @@ export default class DatepickerBody {
             innerHtml: templates[this.type]
         });
 
-        this.dp.$content.appendChild(this.$el);
-
         this.$names = getEl('.datepicker-body--day-names', this.$el);
         this.$cells = getEl('.datepicker-body--cells', this.$el);
     }
@@ -48,7 +48,7 @@ export default class DatepickerBody {
 
         while (i < 7) {
             let day = curDay % 7;
-            html += `<div class="datepicker--day-name ${isWeekend(day) ? consts.cssClassWeekend : ''}">
+            html += `<div class="datepicker-body--day-name ${isWeekend(day) ? consts.cssClassWeekend : ''}">
                         ${this.dp.locale.daysMin[day]}
                     </div>`;
             i++;

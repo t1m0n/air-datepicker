@@ -5,3 +5,35 @@
 .datepicker-body {
 
 }
+
+
+/*  Day names
+   ------------------------------------------------- */
+
+.datepicker-body--day-names {
+  display: grid;
+  grid-template-columns: repeat(7, var(--adp-day-cell-width));
+  margin: 8px 0 3px;
+}
+
+.datepicker-body--day-name {
+  color: var(--adp-day-name-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: .8em;
+}
+
+/*  Cells container
+   ------------------------------------------------- */
+
+.datepicker-body--cells {
+  display: grid;
+  &.-days- {
+    grid-template-columns: repeat(7, var(--adp-day-cell-width));
+    grid-auto-rows: var(--adp-day-cell-height);
+  }
+}

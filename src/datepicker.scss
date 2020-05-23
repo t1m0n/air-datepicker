@@ -3,5 +3,46 @@
    ------------------------------------------------- */
 
 .datepicker {
+  background: var(--adp-background-color);
+  border: 1px solid var(--adp-border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  border-radius: var(--adp-border-radius);
+  box-sizing: content-box;
+  font-family: var(--adp-font-family), sans-serif;
+  font-size: var(--adp-font-size);
+  color: var(--adp-color);
+  width: var(--adp-width);
+  position: absolute;
+  left: -100000px;
+  opacity: 0;
+  transition:
+    opacity var(--adp-transition-duration) var(--adp-transition-ease),
+    transform var(--adp-transition-duration) var(--adp-transition-ease),
+    left 0s var(--adp-transition-duration);
+  z-index: var(--adp-z-index);
+}
 
+.datepicker-inline {
+  .datepicker {
+    border-color: var(--adp-border-color-inline);
+    box-shadow: none;
+    position: static;
+    left: auto;
+    right: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  .datepicker--pointer {
+    display: none;
+  }
+}
+
+.datepicker--content {
+  box-sizing: content-box;
+  padding: var(--adp-padding);
+
+  .-only-timepicker- & {
+    display: none;
+  }
 }

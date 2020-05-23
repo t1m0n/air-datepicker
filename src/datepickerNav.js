@@ -1,6 +1,8 @@
 /* eslint-disable */
 import {createElement} from './utils';
 
+import './datepickerNav.scss';
+
 export default class DatepickerNav {
     constructor({dp, opts}) {
         this.dp = dp;
@@ -11,6 +13,7 @@ export default class DatepickerNav {
 
     init(){
         this._createElement();
+        this.render();
     }
 
     _createElement(){
@@ -24,14 +27,12 @@ export default class DatepickerNav {
         return this.dp.formatDate(this.opts.navTitles[this.dp.currentView], this.dp.viewDate)
     }
 
-    render(){
+    render = () => {
         let title = this._getTitle();
         let {prevHtml, nextHtml} = this.opts;
         this.$el.innerHTML = `` +
             `<div class="datepicker-nav--action" data-action="prev">${prevHtml}</div>` +
             `<div class="datepicker-nav--title">${title}</div>` +
             `<div class="datepicker-nav--action" data-action="next">${nextHtml}</div>`;
-
-        return this.$el;
     }
 }

@@ -1,0 +1,36 @@
+/* -------------------------------------------------
+    Datepicker vars
+   ------------------------------------------------- */
+
+:root {
+  --adp-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --adp-font-size: 14px;
+  --adp-width: 246px; // Day cell width will be equal to 34px
+  --adp-z-index: 100;
+  --adp-padding: 4px;
+
+  --adp-transition-duration: .3s;
+  --adp-transition-ease: ease-out;
+
+  --adp-background-color: #fff;
+  --adp-background-color-hover: #f0f0f0;
+  --adp-background-color-active: #eaeaea;
+
+  --adp-color: #4a4a4a;
+
+  --adp-border-color: #dbdbdb;
+  --adp-border-color-inline: #d7d7d7;
+
+  --adp-nav-border-color: #efefef;
+  --adp-nav-height: 32px;
+  --adp-nav-arrow-color: #9c9c9c;
+  --adp-nav-color-secondary: #9c9c9c;
+
+  --adp-day-name-color: #ff9a19;
+
+  --adp-day-cell-width: 1fr;
+  --adp-day-cell-height: 32px;
+
+
+  --adp-border-radius: 4px;
+}
