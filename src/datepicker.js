@@ -3,10 +3,12 @@ import defaults from './defaults';
 import {getEl, createElement, insertAfter, deepCopy, getLeadingZeroNum, getParsedDate, getDecade} from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
+import withEvents from './withEvents';
 import ru from './locale/ru';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
+import consts from './consts';
 
 let $body = '',
     $datepickersContainer = '',
@@ -254,9 +256,69 @@ export default class Datepicker {
         return result;
     }
 
+    /**
+     * Changes month, year, decade to next period
+     */
+    next = () => {
+        let {year, month} = this.parsedViewDate,
+            {onChangeMonth, onChangeYear, onChangeDecade} = this.opts;
+
+        switch (this.currentView) {
+            case consts.days:
+                this.setViewDate(new Date(year, month + 1, 1));
+                if (onChangeMonth) onChangeMonth(month, year);
+                break;
+            case consts.months:
+                this.date = new Date(year + 1, month, 1);
+                if (onChangeYear) onChangeYear(year);
+                break;
+            case consts.years:
+                this.date = new Date(year + 10, 0, 1);
+                if (onChangeDecade) onChangeDecade(this.curDecade);
+                break;
+        }
+    }
+
+    /**
+     * Changes month, year, decade to prev period
+     */
+    prev = () => {
+        let {year, month} = this.parsedViewDate,
+            {onChangeMonth, onChangeYear, onChangeDecade} = this.opts;
+
+        switch (this.currentView) {
+            case consts.days:
+                this.setViewDate(new Date(year, month - 1, 1));
+                if (onChangeMonth) onChangeMonth(month, year);
+                break;
+            case consts.months:
+                this.date = new Date(year - 1, month, 1);
+                if (onChangeYear) onChangeYear(year);
+                break;
+            case consts.years:
+                this.date = new Date(year - 10, 0, 1);
+                if (onChangeDecade) onChangeDecade(this.curDecade);
+                break;
+        }
+    }
+
+    /**
+     * Sets new view date of datepicker
+     * @param {Date} date
+     */
+    setViewDate = date => {
+        this.viewDate = date;
+        this.trigger(consts.eventChangeViewDate, date);
+    }
+
     get parsedViewDate(){
         return getParsedDate(this.viewDate);
     }
+
+    get curDecade() {
+        return getDecade(this.viewDate)
+    }
+
 
     isWeekend = (day) => {
         return this.opts.weekends.includes(day);
@@ -276,3 +338,5 @@ export default class Datepicker {
         return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
     }
 }
+
+withEvents(Datepicker.prototype);

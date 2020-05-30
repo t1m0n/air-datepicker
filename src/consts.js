@@ -3,5 +3,7 @@ export default {
     months: 'months',
     years: 'years',
 
+    eventChangeViewDate: 'changeViewDate',
+
     cssClassWeekend: '-weekend-'
 };

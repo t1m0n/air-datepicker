@@ -181,3 +181,35 @@ export function isSameDate(date1, date2, cellType=consts.days) {
 
     return conditions[cellType];
 }
+
+/**
+ * Adds event listener to DOM element
+ * @param {HTMLElement|HTMLCollection} el
+ * @param {String} type
+ * @param {Function} listener
+ */
+export function addEventListener(el, type, listener) {
+    if (el.length) {
+        el.forEach(e=>{
+            e.addEventListener(type, listener);
+        });
+    } else {
+        el.addEventListener(type, listener);
+    }
+}
+
+/**
+ * Finds closest DOM element to passed target. Similar to jQuery.closest()
+ * @param {HTMLElement} target
+ * @param {String} selector
+ * @return {HTMLElement|Boolean}
+ */
+export function closest(target, selector) {
+    if (!target || target === document) return false;
+
+    if (target.matches(selector)) {
+        return target;
+    }
+
+    return closest(target.parentNode, selector);
+}
