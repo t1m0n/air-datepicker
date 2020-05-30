@@ -1,3 +1,5 @@
+@import "./_objects";
+
 /* -------------------------------------------------
     Datepicker cell
    ------------------------------------------------- */
@@ -6,4 +8,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1; // ?
+
+  &.-focus- {
+    background: var(--adp-background-color-hover);
+  }
+
+  &.-current- {
+    color: var(--adp-color-current-date);
+
+    &.-focus- {
+      color: var(--adp-color);
+    }
+
+    &.-in-range- {
+      color: var(--adp-color-current-date);
+    }
+  }
+}
+
+
+/*  Day cell
+   ------------------------------------------------- */
+
+.datepicker-cell.-day- {
+  &.-other-month- {
+    @extend %otherMonth;
+  }
 }

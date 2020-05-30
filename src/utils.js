@@ -3,6 +3,8 @@
  * @param {HTMLElement, String} el
  * @param {Document|HTMLElement} [context=document]
  */
+import consts from './consts';
+
 export function getEl (el, context=document) {
     return typeof el === 'string'
         ? context['querySelector'](el)
@@ -116,12 +118,66 @@ export function getDecade(date) {
     return [firstYear, firstYear + 9];
 }
 
+/**
+ * Subtract days from date
+ * @param {Date} date
+ * @param {Number} days
+ * @return {Date}
+ */
 export function subDays(date, days) {
     let {year, month, date: _date} = getParsedDate(date);
     return new Date(year, month, _date - days);
 }
 
+/**
+ * Add days to date
+ * @param {Date} date
+ * @param {Number} days
+ * @return {Date}
+ */
 export function addDays(date, days) {
     let {year, month, date: _date} = getParsedDate(date);
     return new Date(year, month, _date + days);
+}
+
+/**
+ * Class names handler
+ * @param {String|Object} classes - class names, could contain strings or object
+ */
+export function classNames(...classes) {
+    let classNames = [];
+
+    classes.forEach(c => {
+        if (typeof c === 'object') {
+            for(let cName in c) {
+                if (c[cName]) {
+                    classNames.push(cName);
+                }
+            }
+        } else if (c) {
+            classNames.push(c);
+        }
+    });
+    return classNames.join(' ');
+}
+
+/**
+ * Checks if passed dates are the same
+ * @param {Date} date1
+ * @param {Date} date2
+ * @param {String} cellType - one of days|months|years
+ * @return {boolean}
+ */
+export function isSameDate(date1, date2, cellType=consts.days) {
+    if (!date1 || !date2) return false;
+    let d1 = getParsedDate(date1),
+        d2 = getParsedDate(date2),
+
+        conditions = {
+            [consts.days]: d1.date === d2.date && d1.month === d2.month && d1.year === d2.year,
+            [consts.months]: d1.month === d2.month && d1.year === d2.year,
+            [consts.years]: d1.year === d2.year
+        };
+
+    return conditions[cellType];
 }

@@ -15,8 +15,15 @@
   --adp-background-color: #fff;
   --adp-background-color-hover: #f0f0f0;
   --adp-background-color-active: #eaeaea;
+  --adp-background-color-in-range: rgba(92, 196, 239, .1);
+  --adp-background-color-in-range-focused: rgba(92, 196, 239, .2);
+  --adp-background-color-selected-other-month-focused: #8ad5f4;
+  --adp-background-color-selected-other-month: #a2ddf6;
 
   --adp-color: #4a4a4a;
+  --adp-color-current-date: #4eb5e6;
+  --adp-color-other-month: #dedede;
+  --adp-color-other-month-hover: #c5c5c5;
 
   --adp-border-color: #dbdbdb;
   --adp-border-color-inline: #d7d7d7;

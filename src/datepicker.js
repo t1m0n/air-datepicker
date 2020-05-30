@@ -254,6 +254,10 @@ export default class Datepicker {
         return result;
     }
 
+    get parsedViewDate(){
+        return getParsedDate(this.viewDate);
+    }
+
     isWeekend = (day) => {
         return this.opts.weekends.includes(day);
     }
