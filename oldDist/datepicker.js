@@ -1720,11 +1720,13 @@
 
             _renderTypes: {
                 days: function () {
+console.time('render');
                     var dayNames = this._getDayNamesHtml(this.d.loc.firstDay),
                         days = this._getDaysHtml(this.d.currentDate);
 
                     this.$cells.html(days);
                     this.$names.html(dayNames)
+console.timeEnd('render')
                 },
                 months: function () {
                     var html = this._getMonthsHtml(this.d.currentDate);

@@ -33,6 +33,10 @@
     background: var(--adp-background-color-hover);
   }
 
+  &:active {
+    background: var(--adp-background-color-active);
+  }
+
   &.-disabled- {
     visibility: hidden;
   }

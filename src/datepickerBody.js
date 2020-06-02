@@ -26,8 +26,15 @@ export default class DatepickerBody {
 
     init(){
         this._buildBaseHtml();
-        this._generateCells();
+        if (this.type === consts.days) {
+            this._renderDayNames();
+        }
         this.render();
+        this._bindDatepickerEvents();
+    }
+
+    _bindDatepickerEvents(){
+        // this.dp.on(consts.eventChangeViewDate, this.render);
     }
 
     _buildBaseHtml() {
@@ -99,7 +106,6 @@ export default class DatepickerBody {
     }
 
     _renderDays(){
-        this.$names.innerHTML =  this._getDayNamesHtml();
         this._getDaysCells();
     }
 
@@ -109,6 +115,10 @@ export default class DatepickerBody {
 
     _renderYears(){
 
+    }
+
+    _renderDayNames(){
+        this.$names.innerHTML =  this._getDayNamesHtml();
     }
 
     _generateCells(){
@@ -125,9 +135,15 @@ export default class DatepickerBody {
         }
     }
 
-    render(){
+    render = () => {
+console.time('render');
+        this.cells = [];
+        this.$cells.innerHTML = '';
+
+        this._generateCells();
         this.cells.forEach(c=>{
             this.$cells.appendChild(c.render());
         });
+console.timeEnd('render')
     }
 }
