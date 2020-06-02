@@ -34,7 +34,7 @@ export default class DatepickerBody {
     }
 
     _bindDatepickerEvents(){
-        // this.dp.on(consts.eventChangeViewDate, this.render);
+        this.dp.on(consts.eventChangeViewDate, this.render);
     }
 
     _buildBaseHtml() {

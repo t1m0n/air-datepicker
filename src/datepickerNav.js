@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {createElement, addEventListener, closest} from './utils';
+import {closest, createElement, getEl} from './utils';
 
 import './datepickerNav.scss';
 import consts from './consts';
@@ -14,9 +14,19 @@ export default class DatepickerNav {
 
     init(){
         this._createElement();
+        this._buildBaseHtml();
+        this._defineDOM();
+
         this.render();
+
         this._bindEvents();
         this._bindDatepickerEvents();
+    }
+
+    _defineDOM(){
+        this.$title = getEl('.datepicker-nav--title', this.$el);
+        this.$prev = getEl('[data-action="prev"]', this.$el);
+        this.$next = getEl('[data-action="next"]', this.$el);
     }
 
     _bindEvents(){
@@ -47,12 +57,16 @@ export default class DatepickerNav {
         this.dp[actionName]();
     }
 
-    render = () => {
-        let title = this._getTitle();
+    _buildBaseHtml(){
         let {prevHtml, nextHtml} = this.opts;
+
         this.$el.innerHTML = `` +
             `<div class="datepicker-nav--action" data-action="prev">${prevHtml}</div>` +
-            `<div class="datepicker-nav--title">${title}</div>` +
+            `<div class="datepicker-nav--title"></div>` +
             `<div class="datepicker-nav--action" data-action="next">${nextHtml}</div>`;
+    }
+
+    render = () => {
+        this.$title.innerHTML = this._getTitle();
     }
 }
