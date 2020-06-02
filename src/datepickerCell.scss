@@ -5,7 +5,11 @@
    ------------------------------------------------- */
 
 .datepicker-cell {
+  border-radius: var(--adp-cell-border-radius);
+  box-sizing: border-box;
+  cursor: pointer;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   z-index: 1; // ?
