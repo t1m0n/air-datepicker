@@ -55,6 +55,7 @@ export default class Datepicker {
         this.silent = false; // Need to prevent unnecessary rendering
 
         this.viewDate = this.opts.startDate;
+        this.focusDate = false;
         this.currentView = view;
         this.selectedDates = [];
         this.views = {};
@@ -309,6 +310,11 @@ export default class Datepicker {
     setViewDate = date => {
         this.viewDate = date;
         this.trigger(consts.eventChangeViewDate, date);
+    }
+
+    setFocusDate = date => {
+        this.focusDate = date;
+        this.trigger(consts.eventChangeFocusDate, date);
     }
 
     get parsedViewDate(){

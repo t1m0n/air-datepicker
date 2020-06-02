@@ -80,8 +80,18 @@ export default class DatepickerCell {
         }
     }
 
+    focus = e =>{
+        this.$cell.classList.add('-focus-');
+    }
+
+    removeFocus = e =>{
+        this.$cell.classList.remove('-focus-');
+    }
+
     render = () =>{
         this.$cell.innerHTML = this._getHtml();
+        this.$cell.adpCell = this;
+
         return this.$cell;
     }
 }

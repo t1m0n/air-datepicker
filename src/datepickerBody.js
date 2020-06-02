@@ -1,6 +1,18 @@
 /* eslint-disable */
 import consts from './consts';
-import {getEl, createElement, getDaysCount, getParsedDate, subDays, addDays, insertAfter, deepCopy} from './utils';
+import {
+    getEl,
+    createElement,
+    getDaysCount,
+    getParsedDate,
+    subDays,
+    addDays,
+    isSameDate,
+    addEventListener,
+    insertAfter,
+    deepCopy,
+    closest
+} from './utils';
 import DatepickerCell from './datepickerCell';
 
 import './datepickerBody.scss';
@@ -20,6 +32,7 @@ export default class DatepickerBody {
         this.opts = opts;
         this.cells = [];
         this.$el = '';
+        this.focusedCell = false;
 
         this.init();
     }
@@ -30,11 +43,18 @@ export default class DatepickerBody {
             this._renderDayNames();
         }
         this.render();
+        this._bindEvents();
         this._bindDatepickerEvents();
+    }
+
+    _bindEvents(){
+        addEventListener(this.$el, 'mouseover', this.onMouseOverCell)
+        addEventListener(this.$el, 'mouseout', this.onMouseOutCell)
     }
 
     _bindDatepickerEvents(){
         this.dp.on(consts.eventChangeViewDate, this.render);
+        this.dp.on(consts.eventChangeFocusDate, this.onChangeFocusDate);
     }
 
     _buildBaseHtml() {
@@ -135,8 +155,38 @@ export default class DatepickerBody {
         }
     }
 
+    _focusCell(){
+        let cell = this.cells.find(c=>{
+            return isSameDate(c.date, this.dp.focusDate);
+        });
+
+        if (cell) {
+            cell.focus();
+            this.focusedCell = cell;
+        }
+    }
+
+    _removeFocus(){
+        this.focusedCell.removeFocus();
+    }
+
+    onMouseOverCell = e => {
+        let $cell = closest(e.target, '.datepicker-cell');
+        this.dp.setFocusDate($cell ? $cell.adpCell.date : false);
+    }
+
+    onMouseOutCell = e => {
+        this.dp.setFocusDate(false);
+    }
+
+    onChangeFocusDate = date =>{
+        if (!date) {
+            this._removeFocus();
+        }
+        this._focusCell()
+    }
+
     render = () => {
-console.time('render');
         this.cells = [];
         this.$cells.innerHTML = '';
 
@@ -144,6 +194,5 @@ console.time('render');
         this.cells.forEach(c=>{
             this.$cells.appendChild(c.render());
         });
-console.timeEnd('render')
     }
 }

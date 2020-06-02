@@ -4,6 +4,7 @@ export default {
     years: 'years',
 
     eventChangeViewDate: 'changeViewDate',
+    eventChangeFocusDate: 'changeFocusDate',
 
     cssClassWeekend: '-weekend-'
 };
