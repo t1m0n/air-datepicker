@@ -29,6 +29,25 @@
       color: var(--adp-color-current-date);
     }
   }
+
+  &.-disabled- {
+    cursor: default;
+    color: var(--adp-color-disabled);
+
+    &.-focus- {
+      color: var(--adp-color-disabled);
+    }
+
+    &.-in-range- {
+      color: var(--adp-color-disabled-in-range);
+    }
+
+    &.-current- {
+      &.-focus- {
+        color:var(--adp-color-disabled);
+      }
+    }
+  }
 }
 
 

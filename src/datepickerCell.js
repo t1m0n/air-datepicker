@@ -1,6 +1,6 @@
 /* eslint-disable */
 import consts from './consts';
-import {getEl, createElement, classNames, getParsedDate, isSameDate} from './utils';
+import {getEl, createElement, classNames, getParsedDate, isSameDate, isDateSmaller, isDateBigger} from './utils';
 
 import './datepickerCell.scss';
 
@@ -42,7 +42,7 @@ export default class DatepickerCell {
             'datepicker-cell',
             `-${this.type.slice(0, -1)}-`, // days -> day etc.'`
             {
-                '-current-': isSameDate(currentDate, this.date, this.type)
+                '-current-': isSameDate(currentDate, this.date, this.type),
             }
         )
         let classNameType = '';
@@ -53,7 +53,7 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': isOtherMonth,
-                    '-disabled-': isOtherMonth && !selectOtherMonths
+                    '-disabled-': isOtherMonth && !selectOtherMonths || this._isOutOfMinMaxRange()
                 });
                 break
             case consts.months:
@@ -77,6 +77,23 @@ export default class DatepickerCell {
                 return month;
             case consts.years:
                 return year;
+        }
+    }
+
+    _isOutOfMinMaxRange() {
+        let {minDate, maxDate} = this.opts;
+        let {date} = this;
+
+        if (minDate && maxDate) {
+            return isDateSmaller(date, minDate) || isDateBigger(date, maxDate)
+        }
+
+        if (minDate) {
+            return isDateSmaller(date, minDate)
+        }
+
+        if (maxDate) {
+            return  isDateBigger(date, maxDate)
         }
     }
 
