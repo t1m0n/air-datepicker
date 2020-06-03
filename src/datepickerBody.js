@@ -180,7 +180,7 @@ export default class DatepickerBody {
     }
 
     onChangeFocusDate = date =>{
-        if (!date) {
+        if (!date && this.focusedCell) {
             this._removeFocus();
         }
         this._focusCell()
