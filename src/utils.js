@@ -161,6 +161,26 @@ export function classNames(...classes) {
     return classNames.join(' ');
 }
 
+export function addClass(el, ...classes) {
+    if (el.length) {
+        el.forEach(node=>{
+            node.classList.add(...classes);
+        });
+    } else {
+        el.classList.add(...classes);
+    }
+}
+
+export function removeClass(el, ...classes) {
+    if (el.length) {
+        el.forEach(node=>{
+            node.classList.remove(...classes);
+        });
+    } else {
+        el.classList.remove(...classes);
+    }
+}
+
 /**
  * Checks if passed dates are the same
  * @param {Date} date1
@@ -180,6 +200,14 @@ export function isSameDate(date1, date2, cellType=consts.days) {
         };
 
     return conditions[cellType];
+}
+
+export function isDateBigger(date, comparedDate) {
+    return date.getTime() > comparedDate.getTime();
+}
+
+export function isDateSmaller(date, comparedDate) {
+    return date.getTime() < comparedDate.getTime();
 }
 
 /**
