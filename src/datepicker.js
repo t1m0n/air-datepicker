@@ -1,6 +1,15 @@
 /* eslint-disable */
 import defaults from './defaults';
-import {getEl, createElement, insertAfter, deepCopy, getLeadingZeroNum, getParsedDate, getDecade} from './utils';
+import {
+    getEl,
+    createElement,
+    insertAfter,
+    deepCopy,
+    getLeadingZeroNum,
+    getParsedDate,
+    getDecade,
+    isSameDate
+} from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
 import withEvents from './withEvents';
@@ -66,6 +75,8 @@ export default class Datepicker {
 
         this.init();
     }
+
+    viewIndexes = [consts.days, consts.months, consts.years];
 
     init(){
         let {opts, opts: {inline, position, classes, onlyTimepicker, keyboardNav}} = this;
@@ -270,7 +281,7 @@ export default class Datepicker {
                 if (onChangeMonth) onChangeMonth(month, year);
                 break;
             case consts.months:
-                this.date = new Date(year + 1, month, 1);
+                this.setViewDate(new Date(year + 1, month, 1));
                 if (onChangeYear) onChangeYear(year);
                 break;
             case consts.years:
@@ -293,7 +304,7 @@ export default class Datepicker {
                 if (onChangeMonth) onChangeMonth(month, year);
                 break;
             case consts.months:
-                this.date = new Date(year - 1, month, 1);
+                this.setViewDate(new Date(year - 1, month, 1));
                 if (onChangeYear) onChangeYear(year);
                 break;
             case consts.years:
@@ -303,11 +314,35 @@ export default class Datepicker {
         }
     }
 
+    down(date) {
+        this._handleUpDownActions(date, 'down');
+    }
+
+    up(date) {
+        this._handleUpDownActions(date, 'up');
+    }
+
+    _handleUpDownActions(date, dir) {
+        date = date || this.focusDate || this.viewDate;
+
+        let nextView = dir === 'up' ? this.viewIndex + 1 : this.viewIndex - 1;
+        if (nextView > 2) nextView = 2;
+        if (nextView < 0) nextView = 0;
+
+        this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
+        this.setCurrentView(this.viewIndexes[nextView])
+    }
+
+    setPosition(){
+
+    }
+
     /**
      * Sets new view date of datepicker
      * @param {Date} date
      */
     setViewDate = date => {
+        if (isSameDate(date, this.viewDate)) return;
         this.viewDate = date;
         this.trigger(consts.eventChangeViewDate, date);
     }
@@ -317,12 +352,40 @@ export default class Datepicker {
         this.trigger(consts.eventChangeFocusDate, date);
     }
 
+    setCurrentView = view => {
+        if (!this.viewIndexes.includes(view)) return;
+
+        if (!this.views[view]) {
+            let newView = this.views[view] = new DatepickerBody({
+                dp: this,
+                opts: this.opts,
+                type: view
+            });
+
+            this.$content.appendChild(newView.$el);
+        }
+
+        this.currentView = view;
+
+        if (this.elIsInput && this.visible) this.setPosition();
+
+        if (this.opts.onChangeView) {
+            this.opts.onChangeView(view)
+        }
+
+        this.trigger(consts.eventChangeCurrentView, view);
+    }
+
     get parsedViewDate(){
         return getParsedDate(this.viewDate);
     }
 
     get curDecade() {
         return getDecade(this.viewDate)
+    }
+
+    get viewIndex(){
+        return this.viewIndexes.indexOf(this.currentView);
     }
 
 

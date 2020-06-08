@@ -55,6 +55,7 @@ export default class DatepickerBody {
     _bindDatepickerEvents(){
         this.dp.on(consts.eventChangeViewDate, this.render);
         this.dp.on(consts.eventChangeFocusDate, this.onChangeFocusDate);
+        this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
     }
 
     _buildBaseHtml() {
@@ -130,7 +131,14 @@ export default class DatepickerBody {
     }
 
     _renderMonths(){
+        let totalMonths = 12,
+            {year} = this.dp.parsedViewDate,
+            currentMonth = 0;
 
+        while(currentMonth < totalMonths) {
+            this.cells.push(this._generateCell(new Date(year, currentMonth)));
+            currentMonth++;
+        }
     }
 
     _renderYears(){
@@ -168,6 +176,22 @@ export default class DatepickerBody {
 
     _removeFocus(){
         this.focusedCell.removeFocus();
+    }
+
+    show() {
+        this.$el.classList.remove('-hidden-')
+    }
+
+    hide() {
+        this.$el.classList.add('-hidden-')
+    }
+
+    onChangeCurrentView = view =>{
+        if (view !== this.type) {
+            this.hide();
+        } else {
+            this.show();
+        }
     }
 
     onMouseOverCell = e => {

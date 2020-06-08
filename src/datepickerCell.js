@@ -37,6 +37,7 @@ export default class DatepickerCell {
         let currentDate = new Date();
         let {selectOtherMonths, showOtherMonths} = this.opts;
         let {day, month} = getParsedDate(this.date);
+        let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
 
         let classNameCommon = classNames(
             'datepicker-cell',
@@ -53,10 +54,13 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': isOtherMonth,
-                    '-disabled-': isOtherMonth && !selectOtherMonths || this._isOutOfMinMaxRange()
+                    '-disabled-': isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange
                 });
                 break
             case consts.months:
+                classNameType = classNames({
+                    '-disabled-': isOutOfMinMaxRange
+                });
                 break
             case consts.years:
                 break
@@ -74,7 +78,7 @@ export default class DatepickerCell {
             case consts.days:
                 return date;
             case consts.months:
-                return month;
+                return this.dp.locale[this.opts.monthsField][month];
             case consts.years:
                 return year;
         }

@@ -3,7 +3,11 @@
    ------------------------------------------------- */
 
 .datepicker-body {
+  transition: all var(--adp-transition-duration) var(--adp-transition-ease);
 
+  &.-hidden- {
+    display: none;
+  }
 }
 
 
@@ -35,5 +39,10 @@
   &.-days- {
     grid-template-columns: repeat(7, var(--adp-day-cell-width));
     grid-auto-rows: var(--adp-day-cell-height);
+  }
+
+  &.-months- {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: var(--adp-month-cell-height);
   }
 }

@@ -32,10 +32,12 @@ export default class DatepickerNav {
 
     _bindEvents(){
         this.$el.addEventListener('click', this.onClickNav);
+        this.$title.addEventListener('click', this.onClickNavTitle)
     }
 
     _bindDatepickerEvents(){
         this.dp.on(consts.eventChangeViewDate, this.onChangeViewDate);
+        this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
     }
 
     _createElement(){
@@ -65,15 +67,15 @@ export default class DatepickerNav {
                 }
                 break;
             case consts.months:
-                //TODO обработать когда другие виды будут готовы
-                // if (!this.d._isInRange(new Date(y-1, m, d), 'year')) {
-                //     this._disableNav('prev')
-                // }
-                // if (!this.d._isInRange(new Date(y+1, m, d), 'year')) {
-                //     this._disableNav('next')
-                // }
+                if (minDate && isDateSmaller(new Date(year - 1, month, date), minDate)) {
+                    this._disableNav('prev')
+                }
+                if (maxDate && isDateBigger(new Date(year + 1, month, date), maxDate)) {
+                    this._disableNav('next')
+                }
                 break;
             case consts.years:
+                //TODO обработать когда другие виды будут готовы
                 // var decade = dp.getDecade(this.d.date);
                 // if (!this.d._isInRange(new Date(decade[0] - 1, 0, 1), 'year')) {
                 //     this._disableNav('prev')
@@ -106,6 +108,16 @@ export default class DatepickerNav {
         this.render();
         this._resetNavStatus();
         this._handleNavStatus();
+    }
+
+    onChangeCurrentView = view =>{
+        this.render();
+        this._resetNavStatus();
+        this._handleNavStatus();
+    }
+
+    onClickNavTitle = e =>{
+        this.dp.up();
     }
 
     _buildBaseHtml(){
