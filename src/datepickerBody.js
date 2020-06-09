@@ -7,6 +7,7 @@ import {
     getParsedDate,
     subDays,
     addDays,
+    getDecade,
     isSameDate,
     addEventListener,
     insertAfter,
@@ -142,7 +143,15 @@ export default class DatepickerBody {
     }
 
     _renderYears(){
+        let decade = getDecade(this.dp.viewDate),
+            firstYear = decade[0] - 1,
+            lastYear = decade[1] + 1,
+            year = firstYear;
 
+        while(year <= lastYear) {
+            this.cells.push(this._generateCell(new Date(year, 0)))
+            year++;
+        }
     }
 
     _renderDayNames(){

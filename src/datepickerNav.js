@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {closest, createElement, getEl, isDateBigger, removeClass, isDateSmaller} from './utils';
+import {closest, createElement, getEl, isDateBigger, toggleClass, removeClass, isDateSmaller, getDecade} from './utils';
 
 import './datepickerNav.scss';
 import consts from './consts';
@@ -75,14 +75,13 @@ export default class DatepickerNav {
                 }
                 break;
             case consts.years:
-                //TODO обработать когда другие виды будут готовы
-                // var decade = dp.getDecade(this.d.date);
-                // if (!this.d._isInRange(new Date(decade[0] - 1, 0, 1), 'year')) {
-                //     this._disableNav('prev')
-                // }
-                // if (!this.d._isInRange(new Date(decade[1] + 1, 0, 1), 'year')) {
-                //     this._disableNav('next')
-                // }
+                let decade = getDecade(this.dp.viewDate);
+                if (minDate && isDateSmaller(new Date(decade[0] - 1, 0, 1), minDate)) {
+                    this._disableNav('prev')
+                }
+                if (maxDate && isDateBigger(new Date(decade[1] + 1, 0, 1), maxDate)) {
+                    this._disableNav('next')
+                }
                 break;
         }
     }
@@ -117,6 +116,7 @@ export default class DatepickerNav {
     }
 
     onClickNavTitle = e =>{
+        if (this.dp.isFinalView) return;
         this.dp.up();
     }
 
@@ -131,5 +131,9 @@ export default class DatepickerNav {
 
     render = () => {
         this.$title.innerHTML = this._getTitle();
+
+        toggleClass(this.$title, {
+            '-disabled-': this.dp.isFinalView
+        })
     }
 }

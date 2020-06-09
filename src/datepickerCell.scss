@@ -55,7 +55,16 @@
    ------------------------------------------------- */
 
 .datepicker-cell.-day- {
-  &.-other-month- {
+  &.-other-month-, {
+    @extend %otherMonth;
+  }
+}
+
+/*  Year cell
+   ------------------------------------------------- */
+
+.datepicker-cell.-year- {
+  &.-other-decade-, {
     @extend %otherMonth;
   }
 }

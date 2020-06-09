@@ -161,6 +161,16 @@ export function classNames(...classes) {
     return classNames.join(' ');
 }
 
+export function toggleClass(el, classes) {
+    for (let className in classes) {
+        if (classes[className]) {
+            el.classList.add(className);
+        } else {
+            el.classList.remove(className);
+        }
+    }
+}
+
 export function addClass(el, ...classes) {
     if (el.length) {
         el.forEach(node=>{

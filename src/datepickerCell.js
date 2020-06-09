@@ -1,6 +1,15 @@
 /* eslint-disable */
 import consts from './consts';
-import {getEl, createElement, classNames, getParsedDate, isSameDate, isDateSmaller, isDateBigger} from './utils';
+import {
+    getEl,
+    createElement,
+    classNames,
+    getParsedDate,
+    isSameDate,
+    isDateSmaller,
+    isDateBigger,
+    getDecade
+} from './utils';
 
 import './datepickerCell.scss';
 
@@ -35,8 +44,8 @@ export default class DatepickerCell {
     _getClassName(){
         let {parsedViewDate} = this.dp;
         let currentDate = new Date();
-        let {selectOtherMonths, showOtherMonths} = this.opts;
-        let {day, month} = getParsedDate(this.date);
+        let {selectOtherMonths, showOtherMonths, selectOtherYears} = this.opts;
+        let {day, month, year} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
 
         let classNameCommon = classNames(
@@ -63,6 +72,13 @@ export default class DatepickerCell {
                 });
                 break
             case consts.years:
+                let [firstDecadeYear, lastDecadeYear] = getDecade(this.dp.viewDate),
+                    isOtherDecade = year < firstDecadeYear || year > lastDecadeYear;
+
+                classNameType = classNames({
+                    '-other-decade-': isOtherDecade,
+                    '-disabled-': isOutOfMinMaxRange || (isOtherDecade && !selectOtherYears)
+                });
                 break
         }
 
@@ -73,6 +89,8 @@ export default class DatepickerCell {
 
     _getHtml(){
         let {year, month, date} = getParsedDate(this.date);
+
+        //TODO обработку showOtherMonths, showOtherYears
 
         switch (this.type) {
             case consts.days:

@@ -285,7 +285,7 @@ export default class Datepicker {
                 if (onChangeYear) onChangeYear(year);
                 break;
             case consts.years:
-                this.date = new Date(year + 10, 0, 1);
+                this.setViewDate(new Date(year + 10, 0, 1));
                 if (onChangeDecade) onChangeDecade(this.curDecade);
                 break;
         }
@@ -308,7 +308,7 @@ export default class Datepicker {
                 if (onChangeYear) onChangeYear(year);
                 break;
             case consts.years:
-                this.date = new Date(year - 10, 0, 1);
+                this.setViewDate(new Date(year - 10, 0, 1));
                 if (onChangeDecade) onChangeDecade(this.curDecade);
                 break;
         }
@@ -386,6 +386,10 @@ export default class Datepicker {
 
     get viewIndex(){
         return this.viewIndexes.indexOf(this.currentView);
+    }
+
+    get isFinalView(){
+        return this.currentView === consts.years;
     }
 
 

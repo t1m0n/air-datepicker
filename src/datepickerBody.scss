@@ -45,4 +45,9 @@
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: var(--adp-month-cell-height);
   }
+
+  &.-years- {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: var(--adp-year-cell-height);
+  }
 }
