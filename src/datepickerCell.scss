@@ -48,6 +48,21 @@
       }
     }
   }
+
+  &.-selected- {
+    color: #fff;
+    border: none;
+    background: var(--adp-cell-background-color-selected);
+
+    &.-current- {
+      color: #fff;
+      background: var(--adp-cell-background-color-selected);
+    }
+
+    &.-focus- {
+      background: var(--adp-cell-background-color-selected-hover);
+    }
+  }
 }
 
 

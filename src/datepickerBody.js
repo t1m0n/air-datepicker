@@ -51,6 +51,7 @@ export default class DatepickerBody {
     _bindEvents(){
         addEventListener(this.$el, 'mouseover', this.onMouseOverCell)
         addEventListener(this.$el, 'mouseout', this.onMouseOutCell)
+        addEventListener(this.$el, 'click', this.onClickCell)
     }
 
     _bindDatepickerEvents(){
@@ -127,11 +128,11 @@ export default class DatepickerBody {
         return cell;
     }
 
-    _renderDays(){
+    _generateDayCells(){
         this._getDaysCells();
     }
 
-    _renderMonths(){
+    _generateMonthCells(){
         let totalMonths = 12,
             {year} = this.dp.parsedViewDate,
             currentMonth = 0;
@@ -142,7 +143,7 @@ export default class DatepickerBody {
         }
     }
 
-    _renderYears(){
+    _generateYearCells(){
         let decade = getDecade(this.dp.viewDate),
             firstYear = decade[0] - 1,
             lastYear = decade[1] + 1,
@@ -161,13 +162,13 @@ export default class DatepickerBody {
     _generateCells(){
         switch (this.type) {
             case consts.days:
-                this._renderDays();
+                this._generateDayCells();
                 break;
             case consts.months:
-                this._renderMonths();
+                this._generateMonthCells();
                 break;
             case consts.years:
-                this._renderYears();
+                this._generateYearCells();
                 break;
         }
     }
@@ -195,6 +196,10 @@ export default class DatepickerBody {
         this.$el.classList.add('-hidden-')
     }
 
+    destroyCells(){
+        this.cells.forEach(c=>c.destroy())
+    }
+
     onChangeCurrentView = view =>{
         if (view !== this.type) {
             this.hide();
@@ -212,6 +217,26 @@ export default class DatepickerBody {
         this.dp.setFocusDate(false);
     }
 
+    onClickCell = e => {
+        let $cell = closest(e.target, '.datepicker-cell');
+        if (!$cell) return;
+        let cell = $cell.adpCell;
+
+        //TODO обработка timepicker
+        // if (this.timepicker) {
+        //     date.setHours(this.timepicker.hours);
+        //     date.setMinutes(this.timepicker.minutes);
+        // }
+
+        let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date)
+
+        if (alreadySelectedDate) {
+            this.dp._handleAlreadySelectedDates();
+        } else {
+            this.dp.selectDate(cell.date);
+        }
+    }
+
     onChangeFocusDate = date =>{
         if (!date && this.focusedCell) {
             this._removeFocus();
@@ -220,6 +245,7 @@ export default class DatepickerBody {
     }
 
     render = () => {
+        this.destroyCells();
         this.cells = [];
         this.$cells.innerHTML = '';
 

@@ -141,7 +141,7 @@ export function addDays(date, days) {
 }
 
 /**
- * Class names handler
+ * Class names handler, inspired by https://github.com/JedWatson/classnames but very simplified
  * @param {String|Object} classes - class names, could contain strings or object
  */
 export function classNames(...classes) {

@@ -21,11 +21,23 @@ export default class DatepickerCell {
         this.opts = opts;
         this.body = body;
 
-        this._init();
+        this.init();
     }
 
-    _init(){
+    init(){
         this._createElement();
+        this._bindDatepickerEvents();
+        if (this.dp.hasSelectedDates) {
+            this._handleSelectedStatus();
+        }
+    }
+
+    _bindDatepickerEvents(){
+        this.dp.on(consts.eventSelectDate, this.onSelectDate);
+    }
+
+    unbindDatepickerEvents(){
+        this.dp.off(consts.eventSelectDate, this.onSelectDate);
     }
 
     _createElement() {
@@ -119,12 +131,39 @@ export default class DatepickerCell {
         }
     }
 
+    destroy(){
+        this.unbindDatepickerEvents();
+    }
+
     focus = e =>{
         this.$cell.classList.add('-focus-');
     }
 
     removeFocus = e =>{
         this.$cell.classList.remove('-focus-');
+    }
+
+    select = () =>{
+        this.$cell.classList.add('-selected-');
+        this.selected = true;
+    }
+
+    removeSelect = () =>{
+        this.$cell.classList.remove('-selected-');
+        this.selected = false;
+    }
+
+    _handleSelectedStatus(){
+        let selected = this.dp._checkIfDateIsSelected(this.date);
+        if (selected) {
+            this.select();
+        } else if (!selected && this.selected) {
+            this.removeSelect();
+        }
+    }
+
+    onSelectDate = date =>{
+        this._handleSelectedStatus();
     }
 
     render = () =>{

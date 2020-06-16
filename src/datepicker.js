@@ -322,6 +322,102 @@ export default class Datepicker {
         this._handleUpDownActions(date, 'up');
     }
 
+    selectDate(date) {
+        let {currentView, parsedViewDate} = this;
+        let {moveToOtherMonthsOnSelect, moveToOtherYearsOnSelect, multipleDates, range, onSelect, autoClose} = this.opts;
+        let newViewDate;
+
+        if (Array.isArray(date)) {
+            date.forEach(d => {
+                this.selectDate(d)
+            });
+            return;
+        }
+
+        if (!(date instanceof Date)) return;
+
+        this.lastSelectedDate = date;
+
+        // Checks if selected date is out of current month or decade
+        // If so, change `viewDate`
+        if (currentView === consts.days) {
+            if (date.getMonth() !== parsedViewDate.month && moveToOtherMonthsOnSelect) {
+                newViewDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            }
+        }
+
+        if (currentView === consts.years) {
+            if (date.getFullYear() !== parsedViewDate.year && moveToOtherYearsOnSelect) {
+                newViewDate = new Date(date.getFullYear(), 0, 1);
+            }
+        }
+
+        if (newViewDate) {
+            this.setViewDate(newViewDate);
+        }
+
+        if (multipleDates && !range) {
+
+        } else if (range) {
+
+        } else {
+            this.selectedDates = [date];
+        }
+
+        console.time('selecte date');
+        this.trigger(consts.eventSelectDate, date)
+        console.timeEnd('selecte date');
+
+        if (onSelect) {
+            //TODO дописать onSelect
+            onSelect()
+        }
+
+        if (autoClose && !this.timepickerIsActive) {
+            if (!multipleDates && !range) {
+                this.hide();
+            } else if (range && this.selectedDates.length === 2) {
+                this.hide();
+            }
+        }
+
+    }
+
+    show(){
+
+    }
+
+    hide(){
+
+    }
+
+    _setInputValue(){
+
+    }
+
+    /**
+     * Checks if date is already selected, returns selected date if finds some
+     * Returns selected date needed for timepicker
+     * @param {Date} date
+     * @return {boolean|Date}
+     * @private
+     */
+    _checkIfDateIsSelected = date =>{
+        let alreadySelectedDate = false;
+
+        this.selectedDates.some(selectedDate=>{
+            let same = isSameDate(date, selectedDate);
+            alreadySelectedDate = same && selectedDate;
+            return same;
+        })
+
+        return alreadySelectedDate
+    }
+
+    _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate){
+        //TODO дописать
+    }
+
     _handleUpDownActions(date, dir) {
         date = date || this.focusDate || this.viewDate;
 
@@ -390,6 +486,10 @@ export default class Datepicker {
 
     get isFinalView(){
         return this.currentView === consts.years;
+    }
+
+    get hasSelectedDates(){
+        return this.selectedDates.length > 0;
     }
 
 
