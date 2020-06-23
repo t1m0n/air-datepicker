@@ -6,7 +6,10 @@ export default {
     eventChangeViewDate: 'changeViewDate',
     eventChangeFocusDate: 'changeFocusDate',
     eventChangeCurrentView: 'changeCurrentView',
-    eventSelectDate: 'selectDate',
+    eventChangeSelectedDate: 'changeSelectedDate',
+
+    actionSelectDate: 'selectDate',
+    actionDeselectDate: 'deselectDate',
 
     cssClassWeekend: '-weekend-'
 };

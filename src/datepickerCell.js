@@ -33,11 +33,11 @@ export default class DatepickerCell {
     }
 
     _bindDatepickerEvents(){
-        this.dp.on(consts.eventSelectDate, this.onSelectDate);
+        this.dp.on(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
     }
 
     unbindDatepickerEvents(){
-        this.dp.off(consts.eventSelectDate, this.onSelectDate);
+        this.dp.off(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
     }
 
     _createElement() {
@@ -162,7 +162,7 @@ export default class DatepickerCell {
         }
     }
 
-    onSelectDate = date =>{
+    onChangeSelectedDate = ({action, date}) =>{
         this._handleSelectedStatus();
     }
 

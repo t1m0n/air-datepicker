@@ -233,10 +233,10 @@ export default class DatepickerBody {
             return;
         }
 
-        let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date)
+        let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date, cell.type);
 
         if (alreadySelectedDate) {
-            this.dp._handleAlreadySelectedDates();
+            this.dp._handleAlreadySelectedDates(alreadySelectedDate, cell.date);
         } else {
             this.dp.selectDate(cell.date);
         }

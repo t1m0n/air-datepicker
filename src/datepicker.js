@@ -365,12 +365,11 @@ export default class Datepicker {
         }
 
         console.time('selecte date');
-        this.trigger(consts.eventSelectDate, date)
+        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
         console.timeEnd('selecte date');
 
         if (onSelect) {
-            //TODO дописать onSelect
-            onSelect()
+            this._triggerOnChange();
         }
 
         if (autoClose && !this.timepickerIsActive) {
@@ -383,6 +382,35 @@ export default class Datepicker {
 
     }
 
+    deselect(date){
+        let selected = this.selectedDates,
+            _this = this;
+
+        if (!(date instanceof Date)) return;
+
+        return selected.some((curDate, i) => {
+            if (isSameDate(curDate, date)) {
+                selected.splice(i, 1);
+
+                if (!_this.selectedDates.length) {
+                    _this.minRange = '';
+                    _this.maxRange = '';
+                    _this.lastSelectedDate = '';
+                } else {
+                    _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
+                }
+
+                this.trigger(consts.eventChangeSelectedDate, {action: consts.actionDeselectDate,  date});
+
+                if (_this.opts.onSelect) {
+                    _this._triggerOnChange();
+                }
+
+                return true
+            }
+        })
+    }
+
     show(){
 
     }
@@ -392,6 +420,11 @@ export default class Datepicker {
     }
 
     _setInputValue(){
+
+    }
+
+    //TODO дописать пользовательский onSelect
+    _triggerOnChange(){
 
     }
 
@@ -416,7 +449,33 @@ export default class Datepicker {
     }
 
     _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate){
-        //TODO дописать
+        let {range, toggleSelected, timepicker} = this.opts;
+        if (range) {
+            //TODO range=true
+
+            // if (!this.opts.toggleSelected) {
+            //     // Add possibility to select same date when range is true
+            //     if (this.selectedDates.length != 2) {
+            //         this._trigger('clickCell', selectedDate);
+            //     }
+            // } else {
+            //     this.removeDate(selectedDate);
+            // }
+        } else if (toggleSelected){
+            this.deselect(newSelectedDate);
+        }
+
+        // Change last selected date to be able to change time when clicking on this cell
+        if (!toggleSelected) {
+            this.lastSelectedDate = alreadySelectedDate;
+
+            //TODO timepickcer
+
+            if (timepicker) {
+                // this.timepicker._setTime(alreadySelectedDate);
+                // this.timepicker.update();
+            }
+        }
     }
 
     _handleUpDownActions(date, dir) {
