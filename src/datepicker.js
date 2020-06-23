@@ -492,6 +492,10 @@ export default class Datepicker {
         return this.selectedDates.length > 0;
     }
 
+    get isMinViewReached(){
+        return this.currentView === this.opts.minView || this.currentView === consts.days;
+    }
+
 
     isWeekend = (day) => {
         return this.opts.weekends.includes(day);

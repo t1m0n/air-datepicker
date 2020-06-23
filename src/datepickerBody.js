@@ -228,6 +228,11 @@ export default class DatepickerBody {
         //     date.setMinutes(this.timepicker.minutes);
         // }
 
+        if (!this.dp.isMinViewReached) {
+            this.dp.down();
+            return;
+        }
+
         let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date)
 
         if (alreadySelectedDate) {
