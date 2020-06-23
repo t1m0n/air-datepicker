@@ -324,7 +324,15 @@ export default class Datepicker {
 
     selectDate(date) {
         let {currentView, parsedViewDate} = this;
-        let {moveToOtherMonthsOnSelect, moveToOtherYearsOnSelect, multipleDates, range, onSelect, autoClose} = this.opts;
+        let {
+            moveToOtherMonthsOnSelect,
+            moveToOtherYearsOnSelect,
+            multipleDates,
+            range,
+            onSelect,
+            autoClose
+        } = this.opts;
+        let selectedDaysLen = this.selectedDates.length;
         let newViewDate;
 
         if (Array.isArray(date)) {
@@ -357,16 +365,17 @@ export default class Datepicker {
         }
 
         if (multipleDates && !range) {
-
+            if (selectedDaysLen === multipleDates) return;
+            if (!this._checkIfDateIsSelected(date)) {
+                this.selectedDates.push(date);
+            }
         } else if (range) {
 
         } else {
             this.selectedDates = [date];
         }
 
-        console.time('selecte date');
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
-        console.timeEnd('selecte date');
 
         if (onSelect) {
             this._triggerOnChange();
