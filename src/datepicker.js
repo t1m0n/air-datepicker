@@ -399,14 +399,15 @@ export default class Datepicker {
      * Checks if date is already selected, returns selected date if finds some
      * Returns selected date needed for timepicker
      * @param {Date} date
+     * @param {String} cellType - days, months, years
      * @return {boolean|Date}
      * @private
      */
-    _checkIfDateIsSelected = date =>{
+    _checkIfDateIsSelected = (date, cellType=consts.days) =>{
         let alreadySelectedDate = false;
 
         this.selectedDates.some(selectedDate=>{
-            let same = isSameDate(date, selectedDate);
+            let same = isSameDate(date, selectedDate, cellType);
             alreadySelectedDate = same && selectedDate;
             return same;
         })

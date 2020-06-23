@@ -154,7 +154,7 @@ export default class DatepickerCell {
     }
 
     _handleSelectedStatus(){
-        let selected = this.dp._checkIfDateIsSelected(this.date);
+        let selected = this.dp._checkIfDateIsSelected(this.date, this.type);
         if (selected) {
             this.select();
         } else if (!selected && this.selected) {
