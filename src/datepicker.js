@@ -79,13 +79,18 @@ export default class Datepicker {
     viewIndexes = [consts.days, consts.months, consts.years];
 
     init(){
-        let {opts, opts: {inline, position, classes, onlyTimepicker, keyboardNav}} = this;
+        let {opts, opts: {inline, position, classes, altField, onlyTimepicker, keyboardNav}} = this;
 
         if (!containerBuilt && !inline && this.elIsInput) {
             buildDatepickersContainer();
         }
         this._buildBaseHtml();
         this._handleLocale();
+        this._bindSubEvents();
+
+        if (altField) {
+            this.$altField = getEl(altField);
+        }
         //TODO дописать обработку мин макс
         // this._handleMinMaxDates();
 
@@ -123,6 +128,10 @@ export default class Datepicker {
 
         this.$content.appendChild(this.views[this.currentView].$el);
         this.$nav.appendChild(this.nav.$el);
+    }
+
+    _bindSubEvents(){
+        this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate)
     }
 
     _buildBaseHtml() {
@@ -429,7 +438,19 @@ export default class Datepicker {
     }
 
     _setInputValue(){
+        let {opts: {altFieldDateFormat, altField, multipleDatesSeparator}, selectedDates, $altField, locale} = this,
+            value = selectedDates.map(date => this.formatDate(locale.dateFormat, date)),
+            altValues;
 
+        if (altField && $altField) {
+            altValues = selectedDates.map(date=> this.formatDate(altFieldDateFormat, date));
+            altValues = altValues.join(multipleDatesSeparator);
+            $altField.value = altValues;
+        }
+
+        value = value.join(this.opts.multipleDatesSeparator);
+
+        this.$el.value = value;
     }
 
     //TODO дописать пользовательский onSelect
@@ -539,6 +560,10 @@ export default class Datepicker {
         }
 
         this.trigger(consts.eventChangeCurrentView, view);
+    }
+
+    _onChangeSelectedDate = () =>{
+        this._setInputValue();
     }
 
     get parsedViewDate(){
