@@ -8,6 +8,7 @@ import {
     isSameDate,
     isDateSmaller,
     isDateBigger,
+    isDateBetween,
     getDecade
 } from './utils';
 
@@ -34,10 +35,12 @@ export default class DatepickerCell {
 
     _bindDatepickerEvents(){
         this.dp.on(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
+        this.dp.on(consts.eventChangeFocusDate, this.onChangeFocusDate);
     }
 
     unbindDatepickerEvents(){
         this.dp.off(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
+        this.dp.off(consts.eventChangeFocusDate, this.onChangeFocusDate);
     }
 
     _createElement() {
@@ -137,10 +140,12 @@ export default class DatepickerCell {
 
     focus = e =>{
         this.$cell.classList.add('-focus-');
+        this.focused = true;
     }
 
     removeFocus = e =>{
         this.$cell.classList.remove('-focus-');
+        this.focused = false;
     }
 
     select = () =>{
@@ -149,14 +154,47 @@ export default class DatepickerCell {
     }
 
     removeSelect = () =>{
-        this.$cell.classList.remove('-selected-');
+        this.$cell.classList.remove('-selected-', '-range-from-', '-range-to-');
         this.selected = false;
     }
 
+    _handleRangeStatus(){
+        let {rangeDateFrom, rangeDateTo, selectedDates, focusDate, opts: {range}} = this.dp;
+
+        if (range) {
+            switch (selectedDates.length) {
+                case 0:
+                    this.$cell.classList.remove('-in-range-');
+                    break;
+                case 1:
+                    if (isDateBetween(this.date, rangeDateFrom, focusDate)) {
+                        this.$cell.classList.add('-in-range-')
+                    }
+                    break;
+                case 2:
+                    if (isDateBetween(this.date, rangeDateFrom, rangeDateTo)) {
+                        this.$cell.classList.add('-in-range-')
+                    }
+            }
+        }
+    }
+
     _handleSelectedStatus(){
+        let {range} = this.opts;
         let selected = this.dp._checkIfDateIsSelected(this.date, this.type);
         if (selected) {
             this.select();
+
+            if (range) {
+                let extraClass = '';
+                if (isSameDate(this.date, this.dp.rangeDateFrom, this.type)) {
+                    extraClass = '-range-from-';
+                } else if (isSameDate(this.date, this.dp.rangeDateTo, this.type)) {
+                    extraClass = '-range-to-';
+                }
+                this.$cell.classList.add(extraClass);
+            }
+
         } else if (!selected && this.selected) {
             this.removeSelect();
         }
@@ -164,6 +202,30 @@ export default class DatepickerCell {
 
     onChangeSelectedDate = ({action, date}) =>{
         this._handleSelectedStatus();
+        if (this.opts.range) {
+            this._handleRangeStatus()
+        }
+    }
+
+    onChangeFocusDate = date =>{
+        if (!date) {
+            if (this.focused) {
+                this.removeFocus();
+            }
+            return;
+        }
+
+        let datesAreSame = isSameDate(date, this.date);
+
+        if (datesAreSame) {
+            this.focus();
+        } else if (!datesAreSame && this.focused) {
+            this.removeFocus()
+        }
+
+        if (this.opts.range) {
+            this._handleRangeStatus()
+        }
     }
 
     render = () =>{

@@ -56,7 +56,6 @@ export default class DatepickerBody {
 
     _bindDatepickerEvents(){
         this.dp.on(consts.eventChangeViewDate, this.render);
-        this.dp.on(consts.eventChangeFocusDate, this.onChangeFocusDate);
         this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
     }
 
@@ -173,21 +172,6 @@ export default class DatepickerBody {
         }
     }
 
-    _focusCell(){
-        let cell = this.cells.find(c=>{
-            return isSameDate(c.date, this.dp.focusDate);
-        });
-
-        if (cell) {
-            cell.focus();
-            this.focusedCell = cell;
-        }
-    }
-
-    _removeFocus(){
-        this.focusedCell.removeFocus();
-    }
-
     show() {
         this.$el.classList.remove('-hidden-')
     }
@@ -240,13 +224,6 @@ export default class DatepickerBody {
         } else {
             this.dp.selectDate(cell.date);
         }
-    }
-
-    onChangeFocusDate = date =>{
-        if (!date && this.focusedCell) {
-            this._removeFocus();
-        }
-        this._focusCell()
     }
 
     render = () => {

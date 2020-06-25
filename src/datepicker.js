@@ -8,6 +8,7 @@ import {
     getLeadingZeroNum,
     getParsedDate,
     getDecade,
+    isDateBigger,
     isSameDate
 } from './utils';
 import DatepickerBody from './datepickerBody';
@@ -69,8 +70,8 @@ export default class Datepicker {
         this.selectedDates = [];
         this.views = {};
         this.keys = [];
-        this.minRange = '';
-        this.maxRange = '';
+        this.rangeDateFrom = '';
+        this.rangeDateTo = '';
         this._prevOnSelectValue = '';
 
         this.init();
@@ -232,7 +233,7 @@ export default class Datepicker {
         // }
 
 
-
+        //TODO перейти на UTC формат
         switch (true) {
             case /@/.test(result):
                 result = result.replace(/@/, date.getTime());
@@ -332,7 +333,7 @@ export default class Datepicker {
     }
 
     selectDate(date) {
-        let {currentView, parsedViewDate} = this;
+        let {currentView, parsedViewDate, selectedDates} = this;
         let {
             moveToOtherMonthsOnSelect,
             moveToOtherYearsOnSelect,
@@ -341,7 +342,7 @@ export default class Datepicker {
             onSelect,
             autoClose
         } = this.opts;
-        let selectedDaysLen = this.selectedDates.length;
+        let selectedDaysLen = selectedDates.length;
         let newViewDate;
 
         if (Array.isArray(date)) {
@@ -376,12 +377,35 @@ export default class Datepicker {
         if (multipleDates && !range) {
             if (selectedDaysLen === multipleDates) return;
             if (!this._checkIfDateIsSelected(date)) {
-                this.selectedDates.push(date);
+                selectedDates.push(date);
             }
         } else if (range) {
-
+            switch (selectedDaysLen) {
+                case 1:
+                    selectedDates.push(date);
+                    if (!this.rangeDateTo){
+                        this.rangeDateTo = date;
+                    } else {
+                        this.rangeDateFrom = date;
+                    }
+                    // Swap dates if they were selected via dp.selectDate() and second date was smaller then first
+                    if (isDateBigger(this.rangeDateFrom, this.rangeDateTo)) {
+                        this.rangeDateTo = this.rangeDateFrom;
+                        this.rangeDateFrom = date;
+                    }
+                    this.selectedDates = [this.rangeDateFrom, this.rangeDateTo];
+                    break;
+                case 2:
+                    this.selectedDates = [date];
+                    this.rangeDateFrom = date;
+                    this.rangeDateTo = '';
+                    break;
+                default:
+                    this.selectedDates = [date];
+                    this.rangeDateFrom = date;
+            }
         } else {
-            this.selectedDates = [date];
+            selectedDates = [date];
         }
 
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
@@ -393,7 +417,7 @@ export default class Datepicker {
         if (autoClose && !this.timepickerIsActive) {
             if (!multipleDates && !range) {
                 this.hide();
-            } else if (range && this.selectedDates.length === 2) {
+            } else if (range && selectedDaysLen === 2) {
                 this.hide();
             }
         }
@@ -411,8 +435,8 @@ export default class Datepicker {
                 selected.splice(i, 1);
 
                 if (!_this.selectedDates.length) {
-                    _this.minRange = '';
-                    _this.maxRange = '';
+                    _this.rangeDateFrom = '';
+                    _this.rangeDateTo = '';
                     _this.lastSelectedDate = '';
                 } else {
                     _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];

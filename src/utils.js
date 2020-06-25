@@ -220,6 +220,10 @@ export function isDateSmaller(date, comparedDate) {
     return date.getTime() < comparedDate.getTime();
 }
 
+export function isDateBetween(date, dateFrom, dateTo) {
+    return isDateBigger(date, dateFrom) && isDateSmaller(date, dateTo);
+}
+
 /**
  * Adds event listener to DOM element
  * @param {HTMLElement|HTMLCollection} el
