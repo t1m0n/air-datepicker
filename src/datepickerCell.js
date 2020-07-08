@@ -9,7 +9,8 @@ import {
     isDateSmaller,
     isDateBigger,
     isDateBetween,
-    getDecade
+    getDecade,
+    addClass
 } from './utils';
 
 import './datepickerCell.scss';
@@ -30,6 +31,9 @@ export default class DatepickerCell {
         this._bindDatepickerEvents();
         if (this.dp.hasSelectedDates) {
             this._handleSelectedStatus();
+            if (this.opts.range) {
+                this._handleRangeStatus();
+            }
         }
     }
 
@@ -159,42 +163,24 @@ export default class DatepickerCell {
     }
 
     _handleRangeStatus(){
-        let {rangeDateFrom, rangeDateTo, selectedDates, focusDate, opts: {range}} = this.dp;
+        let {rangeDateFrom, rangeDateTo} = this.dp;
+        let classes = classNames({
+            '-in-range-': rangeDateFrom && rangeDateTo && isDateBetween(this.date, rangeDateFrom, rangeDateTo),
+            '-range-from-': rangeDateFrom && isSameDate(this.date, rangeDateFrom, this.type),
+            '-range-to-': rangeDateTo && isSameDate(this.date, rangeDateTo, this.type)
+        });
 
-        if (range) {
-            switch (selectedDates.length) {
-                case 0:
-                    this.$cell.classList.remove('-in-range-');
-                    break;
-                case 1:
-                    if (isDateBetween(this.date, rangeDateFrom, focusDate)) {
-                        this.$cell.classList.add('-in-range-')
-                    }
-                    break;
-                case 2:
-                    if (isDateBetween(this.date, rangeDateFrom, rangeDateTo)) {
-                        this.$cell.classList.add('-in-range-')
-                    }
-            }
+        this.$cell.classList.remove('-range-from-', '-range-to-', '-in-range-');
+
+        if (classes) {
+            this.$cell.classList.add(...classes.split(' '));
         }
     }
 
     _handleSelectedStatus(){
-        let {range} = this.opts;
         let selected = this.dp._checkIfDateIsSelected(this.date, this.type);
         if (selected) {
             this.select();
-
-            if (range) {
-                let extraClass = '';
-                if (isSameDate(this.date, this.dp.rangeDateFrom, this.type)) {
-                    extraClass = '-range-from-';
-                } else if (isSameDate(this.date, this.dp.rangeDateTo, this.type)) {
-                    extraClass = '-range-to-';
-                }
-                this.$cell.classList.add(extraClass);
-            }
-
         } else if (!selected && this.selected) {
             this.removeSelect();
         }

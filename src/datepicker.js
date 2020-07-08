@@ -9,7 +9,7 @@ import {
     getParsedDate,
     getDecade,
     isDateBigger,
-    isSameDate
+    isSameDate, isDateSmaller
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
@@ -333,6 +333,7 @@ export default class Datepicker {
     }
 
     selectDate(date) {
+
         let {currentView, parsedViewDate, selectedDates} = this;
         let {
             moveToOtherMonthsOnSelect,
@@ -383,10 +384,9 @@ export default class Datepicker {
             switch (selectedDaysLen) {
                 case 1:
                     selectedDates.push(date);
+                    // Need to define this manually if call selectDate programmatically
                     if (!this.rangeDateTo){
                         this.rangeDateTo = date;
-                    } else {
-                        this.rangeDateFrom = date;
                     }
                     // Swap dates if they were selected via dp.selectDate() and second date was smaller then first
                     if (isDateBigger(this.rangeDateFrom, this.rangeDateTo)) {
@@ -543,6 +543,19 @@ export default class Datepicker {
         this.setCurrentView(this.viewIndexes[nextView])
     }
 
+    _handleRangeOnFocus(){
+        if (this.selectedDates.length === 1) {
+            let selectedDate = this.selectedDates[0];
+            if (isDateBigger(selectedDate, this.focusDate)) {
+                this.rangeDateTo =  this.selectedDates[0];
+                this.rangeDateFrom = this.focusDate;
+            } else {
+                this.rangeDateTo = this.focusDate;
+                this.rangeDateFrom = this.selectedDates[0];
+            }
+        }
+    }
+
     setPosition(){
 
     }
@@ -559,6 +572,11 @@ export default class Datepicker {
 
     setFocusDate = date => {
         this.focusDate = date;
+
+        if (this.opts.range && date) {
+            this._handleRangeOnFocus();
+        }
+
         this.trigger(consts.eventChangeFocusDate, date);
     }
 

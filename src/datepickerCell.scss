@@ -49,6 +49,30 @@
     }
   }
 
+  &.-in-range- {
+    background: var(--adp-cell-background-color-in-range);
+    border-radius: 0;
+
+    &:hover {
+      background: var(--adp-cell-background-color-in-range-hover);
+    }
+  }
+
+  &.-range-from- {
+    border: 1px solid var(--adp-cell-border-color-in-range);
+    background-color: var(--adp-cell-background-color-in-range);
+    border-radius: var(--adp-cell-border-radius) 0 0 var(--adp-cell-border-radius);
+  }
+  &.-range-to- {
+    border: 1px solid var(--adp-cell-border-color-in-range);
+    background-color: var(--adp-cell-background-color-in-range);
+    border-radius: 0 var(--adp-cell-border-radius) var(--adp-cell-border-radius) 0;
+  }
+
+  &.-range-to-.-range-from- {
+    border-radius: var(--adp-cell-border-radius);
+  }
+
   &.-selected- {
     color: #fff;
     border: none;
