@@ -92,8 +92,8 @@ export default class Datepicker {
         if (altField) {
             this.$altField = getEl(altField);
         }
-        //TODO дописать обработку мин макс
-        // this._handleMinMaxDates();
+
+        this._limitViewDateByMaxMinDates();
 
         if (this.elIsInput) {
             if (!inline) {
@@ -207,8 +207,16 @@ export default class Datepicker {
     _bindKeyboardEvents(){
 
     }
-    _handleMinMaxDates(){
 
+    _limitViewDateByMaxMinDates(){
+        let {viewDate, opts: {minDate, maxDate}} = this;
+
+        if (maxDate && isDateBigger(viewDate, maxDate)) {
+            this.setViewDate(maxDate);
+        }
+        if (minDate && isDateSmaller(viewDate, minDate)) {
+            this.setViewDate(minDate);
+        }
     }
 
     formatDate(string, date=this.viewDate) {
