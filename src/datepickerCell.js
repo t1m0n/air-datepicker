@@ -61,10 +61,9 @@ export default class DatepickerCell {
     }
 
     _getClassName(){
-        let {parsedViewDate} = this.dp;
         let currentDate = new Date();
-        let {selectOtherMonths, showOtherMonths, selectOtherYears} = this.opts;
-        let {day, month, year} = getParsedDate(this.date);
+        let {selectOtherMonths, selectOtherYears} = this.opts;
+        let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
 
         let classNameCommon = classNames(
@@ -78,11 +77,10 @@ export default class DatepickerCell {
 
         switch (this.type) {
             case consts.days:
-                let isOtherMonth = month !== parsedViewDate.month;
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
-                    '-other-month-': isOtherMonth,
-                    '-disabled-': isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange
+                    '-other-month-': this.isOtherMonth,
+                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange
                 });
                 break
             case consts.months:
@@ -91,12 +89,9 @@ export default class DatepickerCell {
                 });
                 break
             case consts.years:
-                let [firstDecadeYear, lastDecadeYear] = getDecade(this.dp.viewDate),
-                    isOtherDecade = year < firstDecadeYear || year > lastDecadeYear;
-
                 classNameType = classNames({
-                    '-other-decade-': isOtherDecade,
-                    '-disabled-': isOutOfMinMaxRange || (isOtherDecade && !selectOtherYears)
+                    '-other-decade-': this.isOtherDecade,
+                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears)
                 });
                 break
         }
@@ -108,16 +103,17 @@ export default class DatepickerCell {
 
     _getHtml(){
         let {year, month, date} = getParsedDate(this.date);
+        let {showOtherMonths, showOtherYears} = this.opts;
 
         //TODO обработку showOtherMonths, showOtherYears
 
         switch (this.type) {
             case consts.days:
-                return date;
+                return !showOtherMonths && this.isOtherMonth ? '' : date;
             case consts.months:
                 return this.dp.locale[this.opts.monthsField][month];
             case consts.years:
-                return year;
+                return !showOtherYears && this.isOtherDecade ? '': year;
         }
     }
 
@@ -188,6 +184,20 @@ export default class DatepickerCell {
 
     get isDisabled(){
         return this.$cell.matches('.-disabled-');
+    }
+
+    get isOtherMonth(){
+        let {parsedViewDate} = this.dp;
+        let {month} = getParsedDate(this.date);
+
+        return month !== parsedViewDate.month;
+    }
+
+    get isOtherDecade(){
+        let {year} = getParsedDate(this.date);
+        let [firstDecadeYear, lastDecadeYear] = getDecade(this.dp.viewDate);
+
+        return year < firstDecadeYear || year > lastDecadeYear;
     }
 
     onChangeSelectedDate = ({action, date}) =>{
