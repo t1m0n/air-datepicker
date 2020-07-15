@@ -413,7 +413,7 @@ export default class Datepicker {
                     this.rangeDateFrom = date;
             }
         } else {
-            selectedDates = [date];
+            this.selectedDates = [date];
         }
 
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});

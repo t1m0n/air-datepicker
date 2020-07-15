@@ -206,6 +206,8 @@ export default class DatepickerBody {
         if (!$cell) return;
         let cell = $cell.adpCell;
 
+        if (cell.isDisabled) return;
+
         //TODO обработка timepicker
         // if (this.timepicker) {
         //     date.setHours(this.timepicker.hours);

@@ -186,7 +186,13 @@ export default class DatepickerCell {
         }
     }
 
+    get isDisabled(){
+        return this.$cell.matches('.-disabled-');
+    }
+
     onChangeSelectedDate = ({action, date}) =>{
+        if (this.isDisabled) return;
+
         this._handleSelectedStatus();
         if (this.opts.range) {
             this._handleRangeStatus()
