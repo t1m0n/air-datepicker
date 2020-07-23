@@ -9,7 +9,7 @@ export default {
     eventChangeSelectedDate: 'changeSelectedDate',
 
     actionSelectDate: 'selectDate',
-    actionDeselectDate: 'deselectDate',
+    actionUnselectDate: 'unselectDate',
 
     cssClassWeekend: '-weekend-'
 };

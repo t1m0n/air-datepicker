@@ -12,7 +12,7 @@ import {
     addEventListener,
     insertAfter,
     deepCopy,
-    closest
+    closest, isDateBigger, isDateSmaller
 } from './utils';
 import DatepickerCell from './datepickerCell';
 
@@ -33,7 +33,7 @@ export default class DatepickerBody {
         this.opts = opts;
         this.cells = [];
         this.$el = '';
-        this.focusedCell = false;
+        this.pressed = false;
 
         this.init();
     }
@@ -49,9 +49,18 @@ export default class DatepickerBody {
     }
 
     _bindEvents(){
+        let {range, dynamicRange} = this.opts;
+
         addEventListener(this.$el, 'mouseover', this.onMouseOverCell)
         addEventListener(this.$el, 'mouseout', this.onMouseOutCell)
         addEventListener(this.$el, 'click', this.onClickCell)
+
+        if (range && dynamicRange) {
+            addEventListener(this.$el, 'mousedown', this.onMouseDown)
+            addEventListener(this.$el, 'mousemove', this.onMouseMove)
+            addEventListener(window.document, 'mouseup', this.onMouseUp)
+        }
+
     }
 
     _bindDatepickerEvents(){
@@ -184,6 +193,31 @@ export default class DatepickerBody {
         this.cells.forEach(c=>c.destroy())
     }
 
+    handleClick = e =>{
+        let $cell = closest(e.target, '.datepicker-cell');
+        if (!$cell) return;
+        let cell = $cell.adpCell;
+        if (cell.isDisabled) return;
+
+        //TODO обработка timepicker
+        // if (this.timepicker) {
+        //     date.setHours(this.timepicker.hours);
+        //     date.setMinutes(this.timepicker.minutes);
+        // }
+        if (!this.dp.isMinViewReached) {
+            this.dp.down();
+            return;
+        }
+
+        let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date, cell.type);
+
+        if (alreadySelectedDate) {
+            this.dp._handleAlreadySelectedDates(alreadySelectedDate, cell.date);
+        } else {
+            this.dp.selectDate(cell.date);
+        }
+    }
+
     onChangeCurrentView = view =>{
         if (view !== this.type) {
             this.hide();
@@ -202,30 +236,52 @@ export default class DatepickerBody {
     }
 
     onClickCell = e => {
-        let $cell = closest(e.target, '.datepicker-cell');
-        if (!$cell) return;
-        let cell = $cell.adpCell;
+        this.handleClick(e);
+    }
 
-        if (cell.isDisabled) return;
+    onMouseDown = e =>{
+        this.pressed = true;
 
-        //TODO обработка timepicker
-        // if (this.timepicker) {
-        //     date.setHours(this.timepicker.hours);
-        //     date.setMinutes(this.timepicker.minutes);
-        // }
+        let $cell = closest(e.target, '.datepicker-cell'),
+            cell = $cell && $cell.adpCell;
 
-        if (!this.dp.isMinViewReached) {
-            this.dp.down();
-            return;
+        if (isSameDate(cell.date, this.dp.rangeDateFrom)) {
+            this.rangeFromFocused = true;
         }
-
-        let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date, cell.type);
-
-        if (alreadySelectedDate) {
-            this.dp._handleAlreadySelectedDates(alreadySelectedDate, cell.date);
-        } else {
-            this.dp.selectDate(cell.date);
+        if (isSameDate(cell.date, this.dp.rangeDateTo)) {
+            this.rangeToFocused = true;
         }
+    }
+
+    onMouseMove = e => {
+        if (!this.pressed || !this.dp.isMinViewReached) return;
+        e.preventDefault();
+
+        let $cell = closest(e.target, '.datepicker-cell'),
+            cell = $cell && $cell.adpCell,
+            {selectedDates, rangeDateTo, rangeDateFrom} = this.dp;
+
+        if (!cell || cell.isDisabled) return;
+
+        let {date} = cell;
+
+        // Allow user to change selected range
+        if (selectedDates.length === 2) {
+            if (this.rangeFromFocused && !isDateBigger(date, rangeDateTo)) {
+                this.dp.replaceDate(rangeDateFrom, date);
+                this.dp.rangeDateFrom = date;
+            }
+            if (this.rangeToFocused && !isDateSmaller(date, rangeDateFrom)) {
+                this.dp.replaceDate(rangeDateTo, date);
+                this.dp.rangeDateTo = date;
+            }
+        }
+    }
+
+    onMouseUp = e => {
+        this.pressed = false;
+        this.rangeFromFocused = false;
+        this.rangeToFocused = false;
     }
 
     render = () => {

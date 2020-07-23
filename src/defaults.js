@@ -35,7 +35,7 @@ export default {
     multipleDates: false, // Boolean or Number
     multipleDatesSeparator: ',',
     range: false,
-    dragRange: true,
+    dynamicRange: true, // ????
 
     todayButton: false,
     clearButton: false,

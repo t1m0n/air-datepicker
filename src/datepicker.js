@@ -450,7 +450,7 @@ export default class Datepicker {
                     _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
                 }
 
-                this.trigger(consts.eventChangeSelectedDate, {action: consts.actionDeselectDate,  date});
+                this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate,  date});
 
                 if (_this.opts.onSelect) {
                     _this._triggerOnChange();
@@ -459,6 +459,14 @@ export default class Datepicker {
                 return true
             }
         })
+    }
+
+    replaceDate(selectedDate, newDate) {
+        let index = this.selectedDates.indexOf(selectedDate);
+        if (index < 0) return;
+        this.selectedDates[index] = newDate;
+
+        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, newDate});
     }
 
     show(){
