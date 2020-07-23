@@ -105,8 +105,6 @@ export default class DatepickerCell {
         let {year, month, date} = getParsedDate(this.date);
         let {showOtherMonths, showOtherYears} = this.opts;
 
-        //TODO обработку showOtherMonths, showOtherYears
-
         switch (this.type) {
             case consts.days:
                 return !showOtherMonths && this.isOtherMonth ? '' : date;

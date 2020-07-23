@@ -432,7 +432,7 @@ export default class Datepicker {
 
     }
 
-    deselect(date){
+    unselect(date){
         let selected = this.selectedDates,
             _this = this;
 
@@ -513,18 +513,16 @@ export default class Datepicker {
     _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate){
         let {range, toggleSelected, timepicker} = this.opts;
         if (range) {
-            //TODO range=true
-
-            // if (!this.opts.toggleSelected) {
-            //     // Add possibility to select same date when range is true
-            //     if (this.selectedDates.length != 2) {
-            //         this._trigger('clickCell', selectedDate);
-            //     }
-            // } else {
-            //     this.removeDate(selectedDate);
-            // }
+            if (!toggleSelected) {
+                // Add possibility to select same date when range is true
+                if (this.selectedDates.length !== 2) {
+                    this.selectDate(newSelectedDate);
+                }
+            } else {
+                this.unselect(newSelectedDate);
+            }
         } else if (toggleSelected){
-            this.deselect(newSelectedDate);
+            this.unselect(newSelectedDate);
         }
 
         // Change last selected date to be able to change time when clicking on this cell
