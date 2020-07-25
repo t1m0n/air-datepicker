@@ -8,6 +8,7 @@ window.dp = new Datepicker($input, {
     inline: true,
     range: true,
     toggleSelected: false,
+    buttons: ['today', 'clear'],
     // maxDate: new Date(2020, 5, 15),
     // minDate: new Date(2021, 5, 15),
 });

@@ -35,8 +35,8 @@ export default {
     multipleDates: false, // Boolean or Number
     multipleDatesSeparator: ',',
     range: false,
-    dynamicRange: true, // ????
-
+    dynamicRange: true,
+    //TODO next
     todayButton: false,
     clearButton: false,
 

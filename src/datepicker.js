@@ -19,6 +19,7 @@ import ru from './locale/ru';
 import './datepickerVars.scss';
 import './datepicker.scss';
 import consts from './consts';
+import DatepickerButtons from './datepickerButtons';
 
 let $body = '',
     $datepickersContainer = '',
@@ -127,6 +128,15 @@ export default class Datepicker {
             opts,
         })
 
+        if (this.$buttons) {
+            this.buttons = new DatepickerButtons({
+                dp: this,
+                opts
+            })
+
+            this.$buttons.appendChild(this.buttons.$el);
+        }
+
         this.$content.appendChild(this.views[this.currentView].$el);
         this.$nav.appendChild(this.nav.$el);
     }
@@ -137,7 +147,9 @@ export default class Datepicker {
 
     _buildBaseHtml() {
         let $appendTarget,
-            $inline = createElement({className: 'datepicker-inline'});
+            $inline = createElement({className: 'datepicker-inline'}),
+            {buttons} = this.opts;
+
         if  (this.elIsInput) {
             if (!this.opts.inline) {
                 $appendTarget = $datepickersContainer;
@@ -153,6 +165,11 @@ export default class Datepicker {
         this.$datepicker = getEl('.datepicker', $appendTarget);
         this.$content = getEl('.datepicker--content',  this.$datepicker);
         this.$nav = getEl('.datepicker--navigation', this.$datepicker);
+
+        if (buttons && Array.isArray(buttons)) {
+            this.$buttons = createElement({className: 'datepicker--buttons'});
+            this.$datepicker.appendChild(this.$buttons);
+        }
     }
 
     _handleLocale(){
@@ -467,6 +484,14 @@ export default class Datepicker {
         this.selectedDates[index] = newDate;
 
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, newDate});
+    }
+
+    clear(){
+        this.selectedDates = [];
+        this.rangeDateFrom = false;
+        this.rangeDateTo = false;
+
+        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate});
     }
 
     show(){
