@@ -6,7 +6,7 @@ let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
     inline: true,
-    range: true,
+    range: false,
     toggleSelected: false,
     buttons: ['today', 'clear'],
     // maxDate: new Date(2020, 5, 15),

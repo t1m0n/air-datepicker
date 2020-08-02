@@ -2,6 +2,8 @@
 import {classNames, createElement} from './utils';
 import buttonPresets from './buttonPresets';
 
+import './datepickerButtons.scss';
+
 export default class DatepickerButtons {
     constructor({dp, opts}) {
         this.dp = dp;
@@ -53,9 +55,11 @@ export default class DatepickerButtons {
      * @return HTMLElement
      */
     createButton({content, className, tagName='button'}){
+        let _content = typeof content === 'function' ? content({dp: this.dp, locale: this.dp.locale}) : content
+
         return createElement({
             tagName,
-            innerHtml: typeof content === 'function' ? content({dp: this.dp, locale: this.dp.locale}) : content,
+            innerHtml: `<span tabindex='-1'>${_content}</span>`,
             className: classNames('datepicker-button', className)
         });
     }

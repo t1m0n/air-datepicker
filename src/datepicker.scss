@@ -46,3 +46,8 @@
     display: none;
   }
 }
+
+.datepicker--buttons {
+  padding: var(--adp-padding);
+  border-top: 1px solid var(--adp-border-color);
+}

@@ -21,13 +21,15 @@
   --adp-background-color-selected-other-month: #a2ddf6;
 
   --adp-color: #4a4a4a;
-  --adp-color-current-date: #4eb5e6;
+  --adp-accent-color: #4eb5e6;
+  --adp-color-current-date: var(--adp-accent-color);
   --adp-color-other-month: #dedede;
   --adp-color-disabled: #aeaeae;
   --adp-color-disabled-in-range: #939393;
   --adp-color-other-month-hover: #c5c5c5;
 
   --adp-border-color: #dbdbdb;
+  --adp-border-radius: 4px;
   --adp-border-color-inline: #d7d7d7;
 
   --adp-nav-border-color: #efefef;
@@ -42,12 +44,17 @@
   --adp-month-cell-height: 42px;
   --adp-year-cell-height: 56px;
 
-
-  --adp-border-radius: 4px;
   --adp-cell-border-radius: 4px;
   --adp-cell-background-color-selected: #5cc4ef;
   --adp-cell-background-color-selected-hover: #45bced;
   --adp-cell-background-color-in-range: rgba(92, 196, 239, 0.1);
   --adp-cell-background-color-in-range-hover: rgba(92, 196, 239, 0.2);
   --adp-cell-border-color-in-range: var(--adp-cell-background-color-selected);
+
+  --adp-btn-height: 32px;
+  --adp-btn-color: var(--adp-accent-color);
+  --adp-btn-color-hover: var(--adp-color);
+  --adp-btn-border-radius: var(--adp-border-radius);
+  --adp-btn-background-color-hover: var(--adp-background-color-hover);
+  --adp-btn-background-color-active: var(--adp-background-color-active);
 }
