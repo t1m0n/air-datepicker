@@ -36,7 +36,6 @@ export default {
     multipleDatesSeparator: ',',
     range: false,
     dynamicRange: true,
-    //TODO next
     todayButton: false,
     clearButton: false,
 
@@ -53,6 +52,7 @@ export default {
         years: 'yyyy1 - yyyy2'
     },
 
+    //TODO next
     // timepicker
     timepicker: false,
     onlyTimepicker: false,

@@ -255,3 +255,18 @@ export function closest(target, selector) {
 
     return closest(target.parentNode, selector);
 }
+
+/**
+ * Clamps number between min and max
+ * @param {Number} val
+ * @param {Number} min
+ * @param {Number} max
+ * @return {Number}
+ */
+export function clamp(val, min, max,) {
+    return val > max
+        ? max
+        : val < min
+            ? min
+            : val;
+}

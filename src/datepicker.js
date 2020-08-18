@@ -20,6 +20,7 @@ import './datepickerVars.scss';
 import './datepicker.scss';
 import consts from './consts';
 import DatepickerButtons from './datepickerButtons';
+import DatepickerTime from './datepickerTime';
 
 let $body = '',
     $datepickersContainer = '',
@@ -81,7 +82,8 @@ export default class Datepicker {
     viewIndexes = [consts.days, consts.months, consts.years];
 
     init(){
-        let {opts, opts: {inline, position, classes, altField, onlyTimepicker, keyboardNav}} = this;
+        let {opts, opts: {inline, timepicker, position, classes, altField, onlyTimepicker, keyboardNav}} = this;
+        let dp = this;
 
         if (!containerBuilt && !inline && this.elIsInput) {
             buildDatepickersContainer();
@@ -118,21 +120,21 @@ export default class Datepicker {
         }
 
         this.views[this.currentView] = new DatepickerBody({
-            dp: this,
+            dp,
             type: this.currentView,
             opts
         });
 
-        this.nav = new DatepickerNav({
-            dp: this,
-            opts,
-        })
+        this.nav = new DatepickerNav({dp,opts,})
+
+        if (timepicker) {
+            this.timepicker = new DatepickerTime({dp,opts,})
+            this.$timepicker.appendChild(this.timepicker.$el);
+        }
+
 
         if (this.$buttons) {
-            this.buttons = new DatepickerButtons({
-                dp: this,
-                opts
-            })
+            this.buttons = new DatepickerButtons({dp,opts})
 
             this.$buttons.appendChild(this.buttons.$el);
         }
@@ -148,7 +150,7 @@ export default class Datepicker {
     _buildBaseHtml() {
         let $appendTarget,
             $inline = createElement({className: 'datepicker-inline'}),
-            {buttons} = this.opts;
+            {buttons, timepicker} = this.opts;
 
         if  (this.elIsInput) {
             if (!this.opts.inline) {
@@ -165,6 +167,11 @@ export default class Datepicker {
         this.$datepicker = getEl('.datepicker', $appendTarget);
         this.$content = getEl('.datepicker--content',  this.$datepicker);
         this.$nav = getEl('.datepicker--navigation', this.$datepicker);
+
+        if (timepicker) {
+            this.$timepicker = createElement({className: 'datepicker--time'});
+            this.$datepicker.appendChild(this.$timepicker);
+        }
 
         if (buttons && Array.isArray(buttons)) {
             this.$buttons = createElement({className: 'datepicker--buttons'});
@@ -358,7 +365,6 @@ export default class Datepicker {
     }
 
     selectDate(date) {
-
         let {currentView, parsedViewDate, selectedDates} = this;
         let {
             moveToOtherMonthsOnSelect,

@@ -11,16 +11,15 @@
         <input type="text" id="dp"/>
 
         <script type="text/javascript">
-            $('#dp').datepicker({
-                range: true,
+            let dp = $('#dp').datepicker({
+                // range: true,
                 inline: true,
-                maxDate: new Date(2020, 5, 15),
                 todayButton: 'Хуй',
                 timepicker: true,
-                navTitles: {
-                    days: 'asdfasdf'
-                }
-            });
+            }).data('datepicker');
+
+
+            window.dp = dp;
 
         </script>
     </body>
