@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {createElement, isSameDate, getParsedDate, clamp} from './utils';
-import consts from './consts';
+import {clamp, classNames, createElement, getLeadingZeroNum, getEl, getParsedDate, isSameDate} from './utils';
 
 import './datepickerTime.scss';
 
@@ -8,18 +7,56 @@ export default class DatepickerTime {
     constructor({opts, dp} = {}) {
         this.opts = opts;
         this.dp = dp;
-
         this.init();
     }
 
     init() {
         this.setTime(this.dp.viewDate);
         this.createElement();
+        this.buildHtml();
+        this.defineDOM();
         this.render();
     }
 
     createElement(){
         this.$el = createElement({className: 'datepicker-time'});
+    }
+
+    buildHtml(data){
+        let {
+            hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dp, dayPeriod,
+            opts: {hoursStep, minutesStep}
+        } = this;
+
+        this.$el.innerHTML = `` +
+            `<div class="${classNames('datepicker-time', {'-am-pm-': dp.ampm,})}">` +
+            `<div class="datepicker-time--current">` +
+            `   <span class="datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
+            `   <span class="datepicker-time--current-colon">:</span>` +
+            `   <span class="datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
+            `   ${dp.ampm ? `<span class='datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
+            `</div>` +
+            `<div class="datepicker-time--sliders">` +
+            `   <div class="datepicker-time--row">` +
+            `      <input type="range" name="hours" value="${hours}" min="${minHours}" max="${maxHours}" step="${hoursStep}"/>` +
+            `   </div>` +
+            `   <div class="datepicker-time--row">` +
+            `      <input type="range" name="minutes" value="${minutes}" min="${minMinutes}" max="${maxMinutes}" step="${minutesStep}"/>` +
+            `   </div>` +
+            `</div>` +
+            `</div>`;
+    }
+
+    defineDOM(){
+        let getElWithContext = selector=>getEl(selector, this.$el);
+        
+        this.$ranges = getElWithContext('[type="range"]');
+        this.$hours = getElWithContext('[name="hours"]');
+        this.$timeWrap = getElWithContext('[name="hours"]');
+        this.$minutes = getElWithContext('[name="minutes"]');
+        this.$hoursText = getElWithContext('.datepicker-time--current-hours');
+        this.$minutesText = getElWithContext('.datepicker-time--current-minutes');
+        this.$ampm = getElWithContext('.datepicker-time--current-ampm')
     }
 
 
@@ -55,10 +92,10 @@ export default class DatepickerTime {
             maxMinutesPossible = 59,
             {minHours, minMinutes, maxHours, maxMinutes} = this.opts;
 
-        this.minHours = minHours < 0 || minHours > maxHoursPossible ? 0 : minHours;
-        this.minMinutes = minMinutes < 0 || minMinutes > maxMinutesPossible ? 0 : minMinutes;
-        this.maxHours = maxHours < 0 || maxHours > maxHours ? maxHours : maxHoursPossible;
-        this.maxMinutes = maxMinutes < 0 || maxMinutes > maxMinutes ? maxMinutesPossible : maxMinutes;
+        this.minHours = clamp(minHours, 0, maxHoursPossible);
+        this.minMinutes = clamp(minMinutes, 0 ,maxMinutesPossible);
+        this.maxHours = clamp(maxHours, 0, maxHoursPossible);
+        this.maxMinutes = clamp(maxMinutes, 0, maxMinutesPossible);
     }
 
     setMinTimeFromMinDate(date){
@@ -125,6 +162,19 @@ export default class DatepickerTime {
             hours: hours,
             dayPeriod: dayPeriod
         }
+    }
+
+    set hours (val) {
+        this._hours = val;
+
+        let {hours, dayPeriod} = this.getValidHoursFromDate(val);
+
+        this.displayHours = hours;
+        this.dayPeriod = dayPeriod;
+    }
+
+    get hours() {
+        return this._hours;
     }
 
     render(){
