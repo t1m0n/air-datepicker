@@ -1,7 +1,17 @@
 /* eslint-disable */
-import {clamp, classNames, createElement, getLeadingZeroNum, getEl, getParsedDate, isSameDate} from './utils';
+import {
+    clamp,
+    classNames,
+    createElement,
+    getLeadingZeroNum,
+    getEl,
+    getParsedDate,
+    isSameDate,
+    addEventListener
+} from './utils';
 
 import './datepickerTime.scss';
+import consts from './consts';
 
 export default class DatepickerTime {
     constructor({opts, dp} = {}) {
@@ -16,6 +26,22 @@ export default class DatepickerTime {
         this.buildHtml();
         this.defineDOM();
         this.render();
+
+        this.bindDatepickerEvents();
+        this.bindDOMEvents();
+    }
+
+    bindDatepickerEvents(){
+        this.dp.on(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
+    }
+
+    bindDOMEvents(){
+        let changeEvent = 'input';
+        if (navigator.userAgent.match(/trident/gi)) {
+            changeEvent = 'change';
+        }
+
+        addEventListener(this.$ranges, changeEvent, this.onChangeInputRange);
     }
 
     createElement(){
@@ -50,7 +76,7 @@ export default class DatepickerTime {
     defineDOM(){
         let getElWithContext = selector=>getEl(selector, this.$el);
         
-        this.$ranges = getElWithContext('[type="range"]');
+        this.$ranges = this.$el.querySelectorAll('[type="range"]');
         this.$hours = getElWithContext('[name="hours"]');
         this.$timeWrap = getElWithContext('[name="hours"]');
         this.$minutes = getElWithContext('[name="minutes"]');
@@ -63,6 +89,11 @@ export default class DatepickerTime {
     setTime(date){
         this.setMinMaxTime(date);
         this.setCurrentTime(date);
+    }
+
+    addTimeToDate(date) {
+        date.setHours(this.hours);
+        date.setMinutes(this.minutes);
     }
 
     // old handleDate
@@ -162,6 +193,18 @@ export default class DatepickerTime {
             hours: hours,
             dayPeriod: dayPeriod
         }
+    }
+
+    onChangeSelectedDate = ({action, date}) => {
+        this.addTimeToDate(date);
+        this.setTime(date);
+    }
+
+    onChangeInputRange = (e) =>{
+        let $target = e.target,
+            name = $target.getAttribute('name');
+
+        console.log(name);
     }
 
     set hours (val) {

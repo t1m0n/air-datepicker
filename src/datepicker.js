@@ -508,7 +508,7 @@ export default class Datepicker {
 
     }
 
-    _setInputValue(){
+    _setInputValue = () => {
         let {opts: {altFieldDateFormat, altField, multipleDatesSeparator}, selectedDates, $altField, locale} = this,
             value = selectedDates.map(date => this.formatDate(locale.dateFormat, date)),
             altValues;
@@ -650,7 +650,8 @@ export default class Datepicker {
     }
 
     _onChangeSelectedDate = () =>{
-        this._setInputValue();
+        // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker)
+        setTimeout(this._setInputValue)
     }
 
     get parsedViewDate(){

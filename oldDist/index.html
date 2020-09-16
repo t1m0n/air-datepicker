@@ -6,6 +6,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="./datepicker.js"></script>
         <link rel='stylesheet' href='./styles.css'/>
+        <style type='text/css'>
+            input[type='text'] {
+                width: 500px;
+                height: 32px;
+            }
+
+        </style>
     </head>
     <body>
         <input type="text" id="dp"/>
@@ -14,9 +21,9 @@
             let dp = $('#dp').datepicker({
                 // range: true,
                 inline: true,
-                todayButton: 'Хуй',
                 timepicker: true,
-                timeFormat: 'hh : mm aa'
+                multipleDates: true,
+                toggleSelected: false,
             }).data('datepicker');
 
 
