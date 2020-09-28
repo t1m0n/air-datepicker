@@ -3,6 +3,7 @@
 Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested on Android 4.4+ and iOS8+).
 
 ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img-time.png)
+![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/multiplemonths.png)
 
 ## Install
 
@@ -18,6 +19,13 @@ npm i --save air-datepicker
 ## Usage
 ```javascript
 $('.my-datepicker').datepicker([options])
+```
+
+## Multiple months
+```javascript
+$('.my-datepicker').datepicker({
+    doubleMonth: true
+});
 ```
 
 ## Demo and docs
