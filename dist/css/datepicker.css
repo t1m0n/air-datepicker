@@ -924,10 +924,13 @@
     background-color: transparent !important;
 }
 
-.datepicker-mobile .othermonth{
-    display: none !important;
+.datepicker .inline-block{
+    display: inline-block;
+    max-width: 245px;
 }
 
-.datepicker-mobile .inline-block{
-    width: 100% !important;
+@media only screen and (max-width: 600px){
+    .datepicker{
+        width: 250px !important;
+    }
 }
