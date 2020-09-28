@@ -12,7 +12,7 @@
                     '<div class="datepicker--content"></div>' +
                 '</div>',
         baseTemplateDoubleTop = '' +
-            '<div class="datepicker" style="width: 100%;">' +
+            '<div class="datepicker" style="width: 500px;">' +
                 '<div class="inline-block defaultmonth">' +
                     '<i class="datepicker--pointer"></i>' +
                     '<nav class="datepicker--nav"></nav>' +
@@ -29,7 +29,7 @@
         defaults = {
             classes: '',
             inline: false,
-            language: 'ru',
+            language: 'it',
             startDate: new Date(),
             firstDay: '',
             weekends: [6, 0],
@@ -348,6 +348,7 @@
         next: function () {
             var d = this.parsedDate,
                 o = this.opts;
+                console.log(this);
             switch (this.view) {
                 case 'days':
                     this.date = new Date(d.year, d.month + 1, 1);
@@ -511,6 +512,8 @@
 
             if (newDate) {
                 _this.silent = true;
+                // cambia mese cliccando su othermonth
+                // _this.date = newDate;
                 _this.silent = false;
                 _this.nav._render()
             }
@@ -1327,6 +1330,8 @@
 
         set date (val) {
             if (!(val instanceof Date)) return;
+            
+            // console.log(val);
 
             this.currentDate = val;
 
@@ -1892,7 +1897,11 @@
     var template = '' +
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
-        '<div class="datepicker--nav-action"></div>',
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
+        templateOtherFirst = '' +
+        '<div class="datepicker--nav-action"></div>' +
+        '<div class="datepicker--nav-title">#{title}</div>' +
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
         templateOther = '' +
         '<div class="datepicker--nav-action"></div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
@@ -1946,7 +1955,7 @@
             this.d.$navOther.html(htmlOther);
             
             var title = this._getTitle(this.d.currentDate),
-                html = dp.template(template, $.extend({title: title}, this.opts));
+                html = dp.template(this.opts.doubleMonth ? templateOtherFirst : template, $.extend({title: title}, this.opts));
             this.d.$nav.html(html);
             
             if (this.d.view == 'years') {
