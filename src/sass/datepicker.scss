@@ -147,3 +147,27 @@ $pointerHalfSize: $datepickerPointerSize / 2 - 1;
     display: block;
   }
 }
+
+
+// Multiple Months
+// -------------------------------------------------
+
+.othermonth{
+    margin-left: 10px;
+}
+
+.othermonth .datepicker--nav-action:not([data-action=next]), .defaultmonth .datepicker--nav-action:not([data-action=prev]), .othermonth .datepicker--nav-title {
+    cursor: default;
+    background-color: transparent !important;
+}
+
+.datepicker .inline-block{
+    display: inline-block;
+    max-width: 245px;
+}
+
+@media only screen and (max-width: 600px){
+    .datepicker{
+        width: 250px !important;
+    }
+}
