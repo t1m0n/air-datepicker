@@ -4,16 +4,32 @@
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
         containerBuilt = false,
-        baseTemplate = '' +
+        baseTemplateTop = '' +
             '<div class="datepicker">' +
-            '<i class="datepicker--pointer"></i>' +
-            '<nav class="datepicker--nav"></nav>' +
-            '<div class="datepicker--content"></div>' +
+                '<div class="inline-block defaultmonth">' +
+                    '<i class="datepicker--pointer"></i>' +
+                    '<nav class="datepicker--nav"></nav>' +
+                    '<div class="datepicker--content"></div>' +
+                '</div>',
+        baseTemplateDoubleTop = '' +
+            '<div class="datepicker" style="width: 500px;">' +
+                '<div class="inline-block defaultmonth">' +
+                    '<i class="datepicker--pointer"></i>' +
+                    '<nav class="datepicker--nav"></nav>' +
+                    '<div class="datepicker--content"></div>' +
+                '</div>',
+        baseTemplateOtherMonth = '' +
+            '<div class="inline-block othermonth">' +
+                '<i class="datepicker--pointer"></i>' +
+                '<nav class="datepicker--nav"></nav>' +
+                '<div class="datepicker--content"></div>' +
             '</div>',
+        baseTemplateFooter = '<div class="datepicker--footer"></div>',
+        baseTemplateBottom = '</div>',
         defaults = {
             classes: '',
             inline: false,
-            language: 'ru',
+            language: 'it',
             startDate: new Date(),
             firstDay: '',
             weekends: [6, 0],
@@ -42,21 +58,22 @@
             disableNavWhenOutOfRange: true,
 
             multipleDates: false, // Boolean or Number
-            multipleDatesSeparator: ',',
+            multipleDatesSeparator: ' - ',
             range: false,
+            doubleMonth: false,
 
             todayButton: false,
             clearButton: false,
 
             showEvent: 'focus',
-            autoClose: false,
+            autoClose: true,
 
             // navigation
             monthsField: 'monthsShort',
             prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
             nextHtml: '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>',
             navTitles: {
-                days: 'MM, <i>yyyy</i>',
+                days: 'MM <i>yyyy</i>',
                 months: 'yyyy',
                 years: 'yyyy1 - yyyy2'
             },
@@ -280,9 +297,10 @@
                 $appendTarget = $inline.appendTo(this.$el)
             }
 
-            this.$datepicker = $(baseTemplate).appendTo($appendTarget);
+            this.$datepicker = $((this.opts.doubleMonth ? baseTemplateDoubleTop + baseTemplateOtherMonth : baseTemplateTop) + (this.opts.range ? '' : '') + baseTemplateBottom).appendTo($appendTarget);
             this.$content = $('.datepicker--content', this.$datepicker);
-            this.$nav = $('.datepicker--nav', this.$datepicker);
+            this.$nav = $('.defaultmonth .datepicker--nav', this.$datepicker);
+            this.$navOther = $('.othermonth .datepicker--nav', this.$datepicker);
         },
 
         _triggerOnChange: function () {
@@ -330,6 +348,7 @@
         next: function () {
             var d = this.parsedDate,
                 o = this.opts;
+                console.log(this);
             switch (this.view) {
                 case 'days':
                     this.date = new Date(d.year, d.month + 1, 1);
@@ -493,7 +512,8 @@
 
             if (newDate) {
                 _this.silent = true;
-                _this.date = newDate;
+                // cambia mese cliccando su othermonth
+                // _this.date = newDate;
                 _this.silent = false;
                 _this.nav._render()
             }
@@ -1310,6 +1330,8 @@
 
         set date (val) {
             if (!(val instanceof Date)) return;
+            
+            // console.log(val);
 
             this.currentDate = val;
 
@@ -1472,6 +1494,54 @@
     $.fn.datepicker.Constructor = Datepicker;
 
     $.fn.datepicker.language = {
+        it: {
+            days: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+            daysShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+            daysMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+            months: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno', 'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+            monthsShort: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+            today: 'Oggi',
+            clear: 'Pulisci',
+            dateFormat: 'dd/mm/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 1
+        },
+        de: {
+            days: [ "Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag" ],
+            daysShort: [ "So","Mo","Di","Mi","Do","Fr","Sa" ],
+            daysMin: [ "So","Mo","Di","Mi","Do","Fr","Sa" ],
+            months: [ "Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember" ],
+            monthsShort: [ "Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez" ],
+            today: 'Heute',
+            clear: 'Aufräumen',
+            dateFormat: 'dd/mm/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 1
+        },
+        en: {
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            clear: 'Clear',
+            dateFormat: 'dd/mm/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 1
+        },
+        fr: {
+            days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            daysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            daysMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+            months: ['Janvier','Février','Mars','Avril','Mai','Juin', 'Juillet','Août','Septembre','Octobre','Novembre','Decembre'],
+            monthsShort: ['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: "Aujourd'hui",
+            clear: 'Effacer',
+            dateFormat: 'dd/mm/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 1
+        },
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
             daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
@@ -1480,8 +1550,8 @@
             monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
             today: 'Сегодня',
             clear: 'Очистить',
-            dateFormat: 'dd.mm.yyyy',
-            timeFormat: 'hh:ii',
+            dateFormat: 'dd/mm/yyyy',
+            timeFormat: 'hh:ii aa',
             firstDay: 1
         }
     };
@@ -1535,8 +1605,10 @@
 
         _buildBaseHtml: function () {
             this.$el = $(templates[this.type]).appendTo(this.d.$content);
+            // console.log($('.defaultmonth .datepicker--cells', this.$el));
             this.$names = $('.datepicker--days-names', this.$el);
-            this.$cells = $('.datepicker--cells', this.$el);
+            this.$cells = $('.defaultmonth .datepicker--cells');
+            this.$cellsDouble = $('.othermonth .datepicker--cells');
         },
 
         _getDayNamesHtml: function (firstDay, curDay, html, i) {
@@ -1552,7 +1624,7 @@
             return this._getDayNamesHtml(firstDay, ++curDay, html, ++i);
         },
 
-        _getCellContents: function (date, type) {
+        _getCellContents: function (date, type, month) {
             var classes = "datepicker--cell datepicker--cell-" + type,
                 currentDate = new Date(),
                 parent = this.d,
@@ -1562,11 +1634,12 @@
                 d = dp.getParsedDate(date),
                 render = {},
                 html = d.date;
+                // console.log(d,month);
 
             switch (type) {
                 case 'day':
                     if (parent.isWeekend(d.day)) classes += " -weekend-";
-                    if (d.month != this.d.parsedDate.month) {
+                    if (d.month != month) {
                         classes += " -other-month-";
                         if (!opts.selectOtherMonths) {
                             classes += " -disabled-";
@@ -1613,6 +1686,10 @@
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
                         classes += ' -range-to-'
+                        // console.log(date);
+                    }
+                    else {
+                        // console.log("nop");
                     }
 
                 } else if (parent.selectedDates.length == 2) {
@@ -1641,6 +1718,7 @@
          * @private
          */
         _getDaysHtml: function (date) {
+            
             var totalMonthDays = dp.getDaysCount(date),
                 firstMonthDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
                 lastMonthDay = new Date(date.getFullYear(), date.getMonth(), totalMonthDays).getDay(),
@@ -1657,15 +1735,17 @@
             for (var i = startDayIndex, max = totalMonthDays + daysFromNextMonth; i <= max; i++) {
                 y = date.getFullYear();
                 m = date.getMonth();
-
-                html += this._getDayHtml(new Date(y, m, i))
+                
+                html += this._getDayHtml(new Date(y, m, i), date.getMonth())
             }
+            
+            // console.log(date, date.getMonth());
 
             return html;
         },
 
-        _getDayHtml: function (date) {
-           var content = this._getCellContents(date, 'day');
+        _getDayHtml: function (date, month) {
+           var content = this._getCellContents(date, 'day', month);
 
             return '<div class="' + content.classes + '" ' +
                 'data-date="' + date.getDate() + '" ' +
@@ -1693,7 +1773,7 @@
         },
 
         _getMonthHtml: function (date) {
-            var content = this._getCellContents(date, 'month');
+            var content = this._getCellContents(date, 'month', date.getMonth());
 
             return '<div class="' + content.classes + '" data-month="' + date.getMonth() + '">' + content.html + '</div>'
         },
@@ -1713,7 +1793,7 @@
         },
 
         _getYearHtml: function (date) {
-            var content = this._getCellContents(date, 'year');
+            var content = this._getCellContents(date, 'year', date.getMonth());
 
             return '<div class="' + content.classes + '" data-year="' + date.getFullYear() + '">' + content.html + '</div>'
         },
@@ -1722,8 +1802,11 @@
             days: function () {
                 var dayNames = this._getDayNamesHtml(this.d.loc.firstDay),
                     days = this._getDaysHtml(this.d.currentDate);
+                    
+                    // console.log(days);
 
                 this.$cells.html(days);
+                this.$cellsDouble.html(this._getDaysHtml(new Date(this.d.currentDate.getFullYear(), this.d.currentDate.getMonth() + 1, 1)));
                 this.$names.html(dayNames)
             },
             months: function () {
@@ -1744,15 +1827,21 @@
         },
 
         _update: function () {
-            var $cells = $('.datepicker--cell', this.$cells),
+            var $cells = $('.datepicker--cell'),
                 _this = this,
                 classes,
                 $cell,
                 date;
-            $cells.each(function (cell, i) {
+            $('.defaultmonth .datepicker--cell').each(function (cell, i) {
                 $cell = $(this);
                 date = _this.d._getDateFromCell($(this));
-                classes = _this._getCellContents(date, _this.d.cellType);
+                classes = _this._getCellContents(date, _this.d.cellType, _this.d.currentDate.getMonth());
+                $cell.attr('class',classes.classes)
+            });
+            $('.othermonth .datepicker--cell').each(function (cell, i) {
+                $cell = $(this);
+                date = _this.d._getDateFromCell($(this));
+                classes = _this._getCellContents(date, _this.d.cellType, _this.d.currentDate.getMonth() + 1);
                 $cell.attr('class',classes.classes)
             });
         },
@@ -1809,6 +1898,14 @@
         '<div class="datepicker--nav-action" data-action="prev">#{prevHtml}</div>' +
         '<div class="datepicker--nav-title">#{title}</div>' +
         '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
+        templateOtherFirst = '' +
+        '<div class="datepicker--nav-action"></div>' +
+        '<div class="datepicker--nav-title">#{title}</div>' +
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
+        templateOther = '' +
+        '<div class="datepicker--nav-action"></div>' +
+        '<div class="datepicker--nav-title">#{title}</div>' +
+        '<div class="datepicker--nav-action" data-action="next">#{nextHtml}</div>',
         buttonsContainerTemplate = '<div class="datepicker--buttons"></div>',
         button = '<span class="datepicker--button" data-action="#{action}">#{label}</span>',
         datepicker = $.fn.datepicker,
@@ -1831,6 +1928,7 @@
 
         _bindEvents: function () {
             this.d.$nav.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
+            this.d.$navOther.on('click', '.datepicker--nav-action', $.proxy(this._onClickNavButton, this));
             this.d.$nav.on('click', '.datepicker--nav-title', $.proxy(this._onClickNavTitle, this));
             this.d.$datepicker.on('click', '.datepicker--button', $.proxy(this._onClickNavButton, this));
         },
@@ -1852,9 +1950,14 @@
         },
 
         _render: function () {
+            var titleOther = this._getTitle(new Date(this.d.currentDate.getFullYear(), this.d.currentDate.getMonth() + 1, 1)),
+                htmlOther = dp.template(templateOther, $.extend({title: titleOther}, this.opts));
+            this.d.$navOther.html(htmlOther);
+            
             var title = this._getTitle(this.d.currentDate),
-                html = dp.template(template, $.extend({title: title}, this.opts));
+                html = dp.template(this.opts.doubleMonth ? templateOtherFirst : template, $.extend({title: title}, this.opts));
             this.d.$nav.html(html);
+            
             if (this.d.view == 'years') {
                 $('.datepicker--nav-title', this.d.$nav).addClass('-disabled-');
             }
@@ -1933,8 +2036,9 @@
         _onClickNavButton: function (e) {
             var $el = $(e.target).closest('[data-action]'),
                 action = $el.data('action');
-
-            this.d[action]();
+            if($el.length > 0){
+                this.d[action]();
+            }
         },
 
         _onClickNavTitle: function (e) {
