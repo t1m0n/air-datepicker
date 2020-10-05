@@ -1,13 +1,13 @@
 /* eslint-disable */
 import {
+    addEventListener,
     clamp,
     classNames,
     createElement,
-    getLeadingZeroNum,
     getEl,
+    getLeadingZeroNum,
     getParsedDate,
-    isSameDate,
-    addEventListener
+    isSameDate
 } from './utils';
 
 import './datepickerTime.scss';
@@ -92,6 +92,7 @@ export default class DatepickerTime {
     }
 
     addTimeToDate(date) {
+        if (!date) return;
         date.setHours(this.hours);
         date.setMinutes(this.minutes);
     }
@@ -204,7 +205,12 @@ export default class DatepickerTime {
         let $target = e.target,
             name = $target.getAttribute('name');
 
-        console.log(name);
+        this[name] = $target.value;
+
+        this.dp.trigger(consts.eventChangeTime, {
+            hours: this.hours,
+            minutes: this.minutes
+        });
     }
 
     set hours (val) {

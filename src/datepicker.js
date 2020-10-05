@@ -1,20 +1,19 @@
 /* eslint-disable */
 import defaults from './defaults';
 import {
-    getEl,
     createElement,
-    insertAfter,
     deepCopy,
-    getLeadingZeroNum,
-    getParsedDate,
     getDecade,
+    getEl,
+    getParsedDate,
+    insertAfter,
     isDateBigger,
-    isSameDate, isDateSmaller
+    isDateSmaller,
+    isSameDate
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
 import withEvents from './withEvents';
-import ru from './locale/ru';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
@@ -144,7 +143,9 @@ export default class Datepicker {
     }
 
     _bindSubEvents(){
-        this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate)
+        this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
+        this.on(consts.eventChangeTime, this._onChangeTime);
+
     }
 
     _buildBaseHtml() {
@@ -226,8 +227,8 @@ export default class Datepicker {
     }
 
     _bindEvents(){
-
     }
+
     _bindKeyboardEvents(){
 
     }
@@ -508,7 +509,7 @@ export default class Datepicker {
 
     }
 
-    _setInputValue = () => {
+    setInputValue = () => {
         let {opts: {altFieldDateFormat, altField, multipleDatesSeparator}, selectedDates, $altField, locale} = this,
             value = selectedDates.map(date => this.formatDate(locale.dateFormat, date)),
             altValues;
@@ -568,7 +569,7 @@ export default class Datepicker {
         if (!toggleSelected) {
             this.lastSelectedDate = alreadySelectedDate;
 
-            //TODO timepickcer
+            //TODO timepickcer NEXT изменение времени в таймпикере после выбора уже выбранной даты
 
             if (timepicker) {
                 // this.timepicker._setTime(alreadySelectedDate);
@@ -649,9 +650,40 @@ export default class Datepicker {
         this.trigger(consts.eventChangeCurrentView, view);
     }
 
+    getCell(jsDate) {
+        let {year, month, date} = getParsedDate(jsDate);
+
+        return this.$content.querySelector(`[data-year="${year}"][data-month="${month}"][data-date="${date}"]`);
+    }
+
     _onChangeSelectedDate = () =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker)
-        setTimeout(this._setInputValue)
+        setTimeout(this.setInputValue)
+    }
+
+    _onChangeTime = ({hours, minutes}) =>{
+        let today = new Date();
+        let {lastSelectedDate} = this;
+        let targetDate = lastSelectedDate;
+
+        if (!lastSelectedDate) {
+            targetDate = today;
+        }
+
+        let $cell = this.getCell(targetDate),
+            cell = $cell.adpCell;
+
+        if (cell.isDisabled) return;
+
+        targetDate.setHours(hours);
+        targetDate.setMinutes(minutes);
+
+        if (!lastSelectedDate) {
+            this.selectDate(targetDate);
+        } else {
+            this.setInputValue();
+            //TODO добавить onSelect
+        }
     }
 
     get parsedViewDate(){

@@ -7,6 +7,8 @@ export default {
     eventChangeFocusDate: 'changeFocusDate',
     eventChangeCurrentView: 'changeCurrentView',
     eventChangeSelectedDate: 'changeSelectedDate',
+    eventChangeTime: 'changeTime',
+    eventChangeLastSelectedDate: 'changeTime',
 
     actionSelectDate: 'selectDate',
     actionUnselectDate: 'unselectDate',

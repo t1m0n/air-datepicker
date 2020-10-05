@@ -22,7 +22,14 @@
                 // range: true,
                 inline: true,
                 timepicker: true,
-                multipleDates: true,
+                // multipleDates: true,
+                onRenderCell: function(date){
+                    if (date.getDate() === new Date().getDate()) {
+                        return {
+                            disabled: true
+                        }
+                    }
+                },
                 toggleSelected: false,
             }).data('datepicker');
 

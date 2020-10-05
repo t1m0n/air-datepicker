@@ -55,7 +55,7 @@ export default class DatepickerCell {
             attrs: {
                 'data-year': year,
                 'data-month': month,
-                'date-date': date
+                'data-date': date
             }
         })
     }
