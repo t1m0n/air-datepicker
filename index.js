@@ -11,8 +11,8 @@ window.dp = new Datepicker($input, {
     timepicker: true,
     multipleDates: true,
     buttons: ['today', 'clear'],
-    multipleDatesSeparator: ',        '
-    // maxDate: new Date(2020, 9, 2, 10, 0),
+    multipleDatesSeparator: ',        ',
+    maxDate: new Date(2020, 9, 2, 10, 0), //TODO NEXT обработка мин макс значений для таймпикера
     // minDate: new Date(2021, 5, 15),
 });
 

@@ -14,6 +14,17 @@ import {
 import './datepickerTime.scss';
 import consts from './consts';
 
+/**
+ * Timepicker
+ *
+ * How does it work:
+ * Timepicker has its own hour and minute values. At the start they will be equal to current time, or to min/max date values.
+ * When user selects date, timepicker add its values to the date, because by default time are reset to zero values.
+ * When lastSelectedDate is changed (e.g. when user clicks on already selected date in multiple dates mode or in range mode)
+ * then hour and minute values are taken from this date and stored in a timepicker instance.
+ * That's why its important to trigger changeSelectDate and changeLastSelectedDate in certain order, depend on situation
+ *
+ */
 export default class DatepickerTime {
     constructor({opts, dp} = {}) {
         this.opts = opts;
