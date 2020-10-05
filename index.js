@@ -6,11 +6,12 @@ let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
     inline: true,
-    range: false,
+    range: true,
     toggleSelected: false,
     timepicker: true,
     multipleDates: true,
     buttons: ['today', 'clear'],
+    multipleDatesSeparator: ',        '
     // maxDate: new Date(2020, 9, 2, 10, 0),
     // minDate: new Date(2021, 5, 15),
 });

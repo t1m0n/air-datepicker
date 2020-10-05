@@ -387,8 +387,6 @@ export default class Datepicker {
 
         if (!(date instanceof Date)) return;
 
-        this.lastSelectedDate = date;
-
         // Checks if selected date is out of current month or decade
         // If so, change `viewDate`
         if (currentView === consts.days) {
@@ -440,7 +438,10 @@ export default class Datepicker {
             this.selectedDates = [date];
         }
 
+        // Order of triggering events is important for timepicker
+        // First add time to selected date, after everything else
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
+        this._updateLastSelectedDate(date);
 
         if (onSelect) {
             this._triggerOnChange();
@@ -469,9 +470,9 @@ export default class Datepicker {
                 if (!_this.selectedDates.length) {
                     _this.rangeDateFrom = '';
                     _this.rangeDateTo = '';
-                    _this.lastSelectedDate = '';
+                    _this._updateLastSelectedDate(false);
                 } else {
-                    _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
+                    _this._updateLastSelectedDate(_this.selectedDates[_this.selectedDates.length - 1]);
                 }
 
                 this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate,  date});
@@ -490,7 +491,10 @@ export default class Datepicker {
         if (index < 0) return;
         this.selectedDates[index] = newDate;
 
-        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, newDate});
+        // Order of triggering events is important for Timepicker
+        // First update time from date to render sliders properly, than trigger that date was selected
+        this._updateLastSelectedDate(newDate);
+        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date: newDate});
     }
 
     clear(){
@@ -567,14 +571,7 @@ export default class Datepicker {
 
         // Change last selected date to be able to change time when clicking on this cell
         if (!toggleSelected) {
-            this.lastSelectedDate = alreadySelectedDate;
-
-            //TODO timepickcer NEXT изменение времени в таймпикере после выбора уже выбранной даты
-
-            if (timepicker) {
-                // this.timepicker._setTime(alreadySelectedDate);
-                // this.timepicker.update();
-            }
+            this._updateLastSelectedDate(alreadySelectedDate)
         }
     }
 
@@ -648,6 +645,15 @@ export default class Datepicker {
         }
 
         this.trigger(consts.eventChangeCurrentView, view);
+    }
+
+    /**
+     * Updates lastSelectedDate param and triggers corresponding event
+     * @param {Date|Boolean} date - date or empty
+     */
+    _updateLastSelectedDate = date =>{
+        this.lastSelectedDate = date;
+        this.trigger(consts.eventChangeLastSelectedDate, date);
     }
 
     getCell(jsDate) {

@@ -39,6 +39,19 @@ export function createElement({tagName='div', className='', innerHtml='', id='',
 }
 
 /**
+ * Sets multiple attributes of element
+ * @param {HTMLElement} el
+ * @param {Object} attrs - attributes object
+ * @returns {HTMLElement}
+ */
+export function setAttribute(el, attrs){
+    for (let [name, value] of Object.entries(attrs)) {
+        el.setAttribute(name, value);
+    }
+    return el;
+}
+
+/**
  * Inserts newElement after targetElement
  * @param {HTMLElement} newElement - element to be inserted
  * @param {HTMLElement} targetElement - after which must be inserted

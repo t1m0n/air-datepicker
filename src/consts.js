@@ -8,7 +8,7 @@ export default {
     eventChangeCurrentView: 'changeCurrentView',
     eventChangeSelectedDate: 'changeSelectedDate',
     eventChangeTime: 'changeTime',
-    eventChangeLastSelectedDate: 'changeTime',
+    eventChangeLastSelectedDate: 'changeLastSelectedDate',
 
     actionSelectDate: 'selectDate',
     actionUnselectDate: 'unselectDate',

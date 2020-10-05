@@ -7,7 +7,8 @@ import {
     getEl,
     getLeadingZeroNum,
     getParsedDate,
-    isSameDate
+    isSameDate,
+    setAttribute,
 } from './utils';
 
 import './datepickerTime.scss';
@@ -33,6 +34,7 @@ export default class DatepickerTime {
 
     bindDatepickerEvents(){
         this.dp.on(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
+        this.dp.on(consts.eventChangeLastSelectedDate, this.onChangeLastSelectedDate);
     }
 
     bindDOMEvents(){
@@ -196,9 +198,30 @@ export default class DatepickerTime {
         }
     }
 
+    updateSliders(){
+        setAttribute(this.$hours, {
+            min: this.minHours,
+            max: this.maxHours
+        }).value = this.hours;
+
+        setAttribute(this.$minutes, {
+            min: this.minMinutes,
+            max: this.maxMinutes
+        }).value = this.minutes;
+    }
+
     onChangeSelectedDate = ({action, date}) => {
+        if (!date) return;
+
         this.addTimeToDate(date);
         this.setTime(date);
+    }
+
+    onChangeLastSelectedDate = (date) => {
+        if (!date) return;
+
+        this.setTime(date);
+        this.render();
     }
 
     onChangeInputRange = (e) =>{
@@ -227,6 +250,6 @@ export default class DatepickerTime {
     }
 
     render(){
-
+        this.updateSliders();
     }
 }
