@@ -438,8 +438,6 @@ export default class Datepicker {
             this.selectedDates = [date];
         }
 
-        // Order of triggering events is important for timepicker
-        // First add time to selected date, after everything else
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
         this._updateLastSelectedDate(date);
 
@@ -491,14 +489,16 @@ export default class Datepicker {
         if (index < 0) return;
         this.selectedDates[index] = newDate;
 
-        // Order of triggering events is important for Timepicker
-        // First update time from date to render sliders properly, than trigger that date was selected
+        this.trigger(consts.eventChangeSelectedDate, {
+            action: consts.actionSelectDate,
+            date: newDate,
+            addTime: false
+        });
         this._updateLastSelectedDate(newDate);
-        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date: newDate});
     }
 
     clear(){
-        this.selectedDates = [];
+        this.selectedDates = []
         this.rangeDateFrom = false;
         this.rangeDateTo = false;
 

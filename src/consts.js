@@ -6,7 +6,7 @@ export default {
     eventChangeViewDate: 'changeViewDate',
     eventChangeFocusDate: 'changeFocusDate',
     eventChangeCurrentView: 'changeCurrentView',
-    eventChangeSelectedDate: 'changeSelectedDate',
+    eventChangeSelectedDate: 'changeSelectedDate', // Params: action(select, unselect); date; addTime(should timepicker add its time to selected date)
     eventChangeTime: 'changeTime',
     eventChangeLastSelectedDate: 'changeLastSelectedDate',
 
