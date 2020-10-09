@@ -492,7 +492,7 @@ export default class Datepicker {
         this.trigger(consts.eventChangeSelectedDate, {
             action: consts.actionSelectDate,
             date: newDate,
-            addTime: false
+            updateTime: true
         });
         this._updateLastSelectedDate(newDate);
     }
@@ -663,7 +663,7 @@ export default class Datepicker {
     }
 
     _onChangeSelectedDate = () =>{
-        // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker)
+        // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(this.setInputValue)
     }
 

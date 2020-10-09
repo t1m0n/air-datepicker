@@ -126,7 +126,7 @@ export default class DatepickerTime {
     }
 
     setCurrentTime(date) {
-        let {hours, minutes} = getParsedDate(date);
+        let {hours, minutes} = date ? getParsedDate(date) : this;
 
         this.hours = clamp(hours, this.minHours, this.maxHours);
         this.minutes = clamp(minutes, this.minMinutes, this.maxMinutes);
@@ -221,13 +221,14 @@ export default class DatepickerTime {
         }).value = this.minutes;
     }
 
-    onChangeSelectedDate = ({action, date, addTime=true}) => {
+    onChangeSelectedDate = ({action, date, addTime=true, updateTime=false}) => {
         if (!date) return;
 
-        if (addTime) {
-            this.addTimeToDate(date);
-        }
-        this.setTime(date);
+        // Check if date is minDate or maxDate and set timepickers time to corresponding values
+        this.setMinMaxTime(date);
+        this.setCurrentTime(updateTime ? date : false);
+
+        this.addTimeToDate(date);
     }
 
     onChangeLastSelectedDate = (date) => {

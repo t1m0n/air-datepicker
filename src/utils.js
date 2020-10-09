@@ -226,11 +226,26 @@ export function isSameDate(date1, date2, cellType=consts.days) {
 }
 
 export function isDateBigger(date, comparedDate) {
-    return date.getTime() > comparedDate.getTime();
+    return copyDate(date, false).getTime() > copyDate(comparedDate, false).getTime();
 }
 
 export function isDateSmaller(date, comparedDate) {
-    return date.getTime() < comparedDate.getTime();
+    return copyDate(date, false).getTime() < copyDate(comparedDate, false).getTime();
+}
+
+export function copyDate(date, keepTime=true) {
+    let newDate = new Date(date.getTime());
+
+    if (!keepTime) {
+        resetTime(newDate);
+    }
+
+    return newDate;
+}
+
+export function resetTime(date) {
+    date.setHours(0,0,0,0);
+    return date;
 }
 
 export function isDateBetween(date, dateFrom, dateTo) {
