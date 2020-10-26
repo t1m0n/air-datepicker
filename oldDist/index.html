@@ -20,10 +20,10 @@
         <script type="text/javascript">
             let dp = $('#dp').datepicker({
                 // range: true,
-                inline: true,
                 timepicker: true,
                 inline: true,
                 maxDate: new Date(2020, 9, 20, 10, 30),
+                timeFormat: 'hh:mm aa',
                 // multipleDates: true,
                 onRenderCell: function(date){
                     if (date.getDate() === new Date().getDate()) {

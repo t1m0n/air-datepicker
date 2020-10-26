@@ -12,14 +12,10 @@ window.dp = new Datepicker($input, {
     multipleDates: false,
     buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
-    // maxDate: new Date(2020, 9, 20, 10, 30), //TODO NEXT стилизация таймпикера
+    // maxDate: new Date(2020, 9, 20, 10, 30),
     // minDate: new Date(2020, 9, 5, 15, 45),
 });
 
 if (module.hot) {
-    module.hot.accept('datepicker', ()=>{
-        setTimeout(()=>{
-            window.dp.destroy();
-        })
-    });
+    module.hot.accept();
 }

@@ -91,7 +91,6 @@ export default class DatepickerTime {
         
         this.$ranges = this.$el.querySelectorAll('[type="range"]');
         this.$hours = getElWithContext('[name="hours"]');
-        this.$timeWrap = getElWithContext('[name="hours"]');
         this.$minutes = getElWithContext('[name="minutes"]');
         this.$hoursText = getElWithContext('.datepicker-time--current-hours');
         this.$minutesText = getElWithContext('.datepicker-time--current-minutes');
@@ -110,7 +109,6 @@ export default class DatepickerTime {
         date.setMinutes(this.minutes);
     }
 
-    // old handleDate
     setMinMaxTime(date) {
         this.setMinMaxTimeFromOptions();
 
@@ -226,7 +224,7 @@ export default class DatepickerTime {
         this.$minutesText.innerHTML =  getLeadingZeroNum(this.minutes)
 
         if (this.dp.ampm) {
-            this.$ampm.innerHTML(this.dayPeriod);
+            this.$ampm.innerHTML = this.dayPeriod;
         }
     }
 

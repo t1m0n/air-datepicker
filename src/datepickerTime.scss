@@ -42,7 +42,7 @@ $rangeThumbSize: 12px;
   background: #fff;
   cursor: pointer;
 
-  transition: background .2s;
+  transition: background var(--adp-transition-duration);
 }
 
 @mixin track {
@@ -54,16 +54,12 @@ $rangeThumbSize: 12px;
 }
 
 .datepicker-time {
-  display: flex;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-column-gap: 12px;
   align-items: center;
   position: relative;
-
-  &.-am-pm- {
-    .datepicker-time--sliders {
-      flex: 0 1 138px;
-      max-width: 138px;
-    }
-  }
+  padding: 0 var(--adp-time-padding-inner);
 
   .-only-timepicker- & {
     border-top: none;
@@ -71,14 +67,6 @@ $rangeThumbSize: 12px;
 }
 
 .datepicker-time--sliders {
-  flex: 0 1 153px;
-  margin-right: 10px;
-  max-width: 153px;
-}
-
-.datepicker-time--label {
-  display: none;
-  font-size: 12px;
 }
 
 .datepicker-time--current {
@@ -87,7 +75,6 @@ $rangeThumbSize: 12px;
   flex: 1;
   font-size: 14px;
   text-align: center;
-  margin: 0 0 0 10px;
 }
 
 .datepicker-time--current-colon {
@@ -126,7 +113,7 @@ $rangeThumbSize: 12px;
 .datepicker-time--current-ampm {
   text-transform: uppercase;
   align-self: flex-end;
-  color: var(--adp-color);
+  color: var(--adp-time-day-period-color);
   margin-left: 6px;
   font-size: 11px;
   margin-bottom: 1px;
@@ -206,8 +193,5 @@ $rangeThumbSize: 12px;
     &:focus::-ms-fill-upper {
 
     }
-  }
-  span {
-    padding: 0 12px;
   }
 }
