@@ -6,7 +6,7 @@ let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
     inline: true,
-    // range: true ,
+    range: false ,
     toggleSelected: false,
     timepicker: true,
     multipleDates: false,
@@ -17,5 +17,9 @@ window.dp = new Datepicker($input, {
 });
 
 if (module.hot) {
-    module.hot.accept();
+    module.hot.accept('datepicker', ()=>{
+        setTimeout(()=>{
+            window.dp.destroy();
+        })
+    });
 }

@@ -55,6 +55,8 @@ export default class DatepickerTime {
         }
 
         addEventListener(this.$ranges, changeEvent, this.onChangeInputRange);
+        addEventListener(this.$ranges, 'mouseenter', this.onMouseEnterLeave);
+        addEventListener(this.$ranges, 'mouseleave', this.onMouseEnterLeave);
     }
 
     createElement(){
@@ -219,6 +221,17 @@ export default class DatepickerTime {
         }).value = this.minutes;
     }
 
+    updateText(){
+        this.$hoursText.innerHTML = getLeadingZeroNum(this.displayHours);
+        this.$minutesText.innerHTML =  getLeadingZeroNum(this.minutes)
+
+        if (this.dp.ampm) {
+            this.$ampm.innerHTML(this.dayPeriod);
+        }
+    }
+
+
+
     onChangeSelectedDate = ({action, date, addTime=true, updateTime=false}) => {
         if (!date) return;
 
@@ -241,11 +254,23 @@ export default class DatepickerTime {
             name = $target.getAttribute('name');
 
         this[name] = $target.value;
+        this.updateText();
 
         this.dp.trigger(consts.eventChangeTime, {
             hours: this.hours,
             minutes: this.minutes
         });
+    }
+
+    onMouseEnterLeave = (e) => {
+        let name = e.target.getAttribute('name'),
+            $el = this.$minutesText
+
+        if (name === 'hours') {
+            $el = this.$hoursText;
+        }
+
+        $el.classList.toggle('-focus-');
     }
 
     set hours (val) {
@@ -263,5 +288,6 @@ export default class DatepickerTime {
 
     render(){
         this.updateSliders();
+        this.updateText();
     }
 }

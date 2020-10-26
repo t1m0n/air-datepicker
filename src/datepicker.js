@@ -662,6 +662,14 @@ export default class Datepicker {
         return this.$content.querySelector(`[data-year="${year}"][data-month="${month}"][data-date="${date}"]`);
     }
 
+    // TODO дописать destroy
+    destroy = () =>{
+        let parent = this.$datepicker.parentNode;
+        if (parent) {
+            parent.removeChild(this.$datepicker);
+        }
+    }
+
     _onChangeSelectedDate = () =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(this.setInputValue)
