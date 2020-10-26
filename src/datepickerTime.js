@@ -58,7 +58,7 @@ export default class DatepickerTime {
     }
 
     createElement(){
-        this.$el = createElement({className: 'datepicker-time'});
+        this.$el = createElement({className: classNames('datepicker-time', {'-am-pm-': dp.ampm,})});
     }
 
     buildHtml(data){
@@ -68,7 +68,6 @@ export default class DatepickerTime {
         } = this;
 
         this.$el.innerHTML = `` +
-            `<div class="${classNames('datepicker-time', {'-am-pm-': dp.ampm,})}">` +
             `<div class="datepicker-time--current">` +
             `   <span class="datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
             `   <span class="datepicker-time--current-colon">:</span>` +
@@ -82,7 +81,6 @@ export default class DatepickerTime {
             `   <div class="datepicker-time--row">` +
             `      <input type="range" name="minutes" value="${minutes}" min="${minMinutes}" max="${maxMinutes}" step="${minutesStep}"/>` +
             `   </div>` +
-            `</div>` +
             `</div>`;
     }
 
