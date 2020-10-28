@@ -13,13 +13,14 @@ import {
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
+import DatepickerButtons from './datepickerButtons';
+import DatepickerTime from './datepickerTime';
+import DatepickerKeyboard from './datepickerKeyboard';
 import withEvents from './withEvents';
+import consts from './consts';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
-import consts from './consts';
-import DatepickerButtons from './datepickerButtons';
-import DatepickerTime from './datepickerTime';
 
 let $body = '',
     $datepickersContainer = '',
@@ -104,9 +105,9 @@ export default class Datepicker {
                 //TODO дописать добавление событий
                 this._bindEvents()
             }
+
             if (keyboardNav && !onlyTimepicker) {
-                //TODO дописать обработку клавиатуры
-                this._bindKeyboardEvents();
+               new DatepickerKeyboard({dp: this, opts})
             }
         }
 
@@ -229,9 +230,7 @@ export default class Datepicker {
     _bindEvents(){
     }
 
-    _bindKeyboardEvents(){
 
-    }
 
     _limitViewDateByMaxMinDates(){
         let {viewDate, opts: {minDate, maxDate}} = this;
@@ -670,6 +669,9 @@ export default class Datepicker {
         }
     }
 
+    //  Subscription events
+    // -------------------------------------------------
+
     _onChangeSelectedDate = () =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(this.setInputValue)
@@ -700,6 +702,9 @@ export default class Datepicker {
         }
     }
 
+    //  Helpers
+    // -------------------------------------------------
+
     get parsedViewDate(){
         return getParsedDate(this.viewDate);
     }
@@ -723,7 +728,6 @@ export default class Datepicker {
     get isMinViewReached(){
         return this.currentView === this.opts.minView || this.currentView === consts.days;
     }
-
 
     isWeekend = (day) => {
         return this.opts.weekends.includes(day);

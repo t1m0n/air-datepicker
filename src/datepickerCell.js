@@ -215,7 +215,7 @@ export default class DatepickerCell {
             return;
         }
 
-        let datesAreSame = isSameDate(date, this.date);
+        let datesAreSame = isSameDate(date, this.date, this.type);
 
         if (datesAreSame) {
             this.focus();

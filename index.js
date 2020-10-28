@@ -10,9 +10,9 @@ window.dp = new Datepicker($input, {
     toggleSelected: false,
     timepicker: true,
     multipleDates: false,
-    buttons: ['today', 'clear'],
+    // buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
-    // maxDate: new Date(2020, 9, 20, 10, 30),
+    maxDate: new Date(2020, 9, 20, 10, 30),
     // minDate: new Date(2020, 9, 5, 15, 45),
 });
 

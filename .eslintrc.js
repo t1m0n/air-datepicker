@@ -1,48 +1,53 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true,
+    'env': {
+        'browser': true,
+        'es6': true,
+        'node': true,
     },
-    "parser": "babel-eslint",
-    "extends": [
-        "eslint:recommended",
+    'parser': 'babel-eslint',
+    'extends': [
+        'eslint:recommended',
     ],
-    "globals": {
-        "module": "readonly",
+    'globals': {
+        'module': 'readonly',
     },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "legacyDecorators": true
+    'parserOptions': {
+        'ecmaFeatures': {
+            'legacyDecorators': true
         },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
+        'ecmaVersion': 2018,
+        'sourceType': 'module'
     },
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "warn",
-            "always"
-        ],
-        "curly": ["error", "multi-line"],
-        "no-unused-vars": [
-            "error",
+    'rules': {
+        'indent': [
+            'error',
+            4,
             {
-                "ignoreRestSiblings": true,
-                "argsIgnorePattern": "^e$" // Разрешаем определять аргумент 'e'(events) и не использовать
+                SwitchCase: 1
             }
         ],
-        "max-len": ["error", { "code": 120, "ignoreStrings": true}]
+        'linebreak-style': [
+            'error',
+            'windows'
+        ],
+        'quotes': [
+            'error',
+            'single'
+        ],
+        'semi': [
+            'warn',
+            'always'
+        ],
+        'arrow-parens': ['error', 'as-needed', {requireForBlockBody: true}],
+        'curly': ['error', 'multi-line'],
+        'no-unused-vars': [
+            'error',
+            {
+                'ignoreRestSiblings': true,
+                'argsIgnorePattern': '^e$', // Allow to use 'e'(events) argument
+                varsIgnorePattern: '^_$',
+            }
+        ],
+        'max-len': ['error', {'code': 120, 'ignoreStrings': true}]
     },
 };
