@@ -534,8 +534,8 @@ export default class Datepicker {
     }
 
     /**
-     * Checks if date is already selected, returns selected date if finds some
-     * Returns selected date needed for timepicker
+     * Checks if date is already selected, returns selected date if finds one
+     * Returns selected date, need for timepicker
      * @param {Date} date
      * @param {String} cellType - days, months, years
      * @return {boolean|Date}
@@ -732,10 +732,10 @@ export default class Datepicker {
             targetDate = today;
         }
 
-        let $cell = this.getCell(targetDate),
-            cell = $cell.adpCell;
+        let $cell = this.getCell(targetDate);
+        let cell = $cell && $cell.adpCell;
 
-        if (cell.isDisabled) return;
+        if (cell && cell.isDisabled) return;
 
         targetDate.setHours(hours);
         targetDate.setMinutes(minutes);
