@@ -43,7 +43,6 @@ export default class DatepickerKeyboard {
         return potentialFocused;
     }
 
-    //TODO next переход к следующему месяцу после фокусировки
     focusNextCell(keyName) {
         let initialFocusDate = this.getInitialFocusDate(),
             {currentView} = this.dp,
@@ -106,11 +105,34 @@ export default class DatepickerKeyboard {
 
     onKeyDown = (e) => {
         let {key, which} = e;
+        let {dp, dp: {focusDate}, opts} = this;
+
         this.registerKey(key);
         
         if (this.isArrow(which)) {
             e.preventDefault();
             this.focusNextCell(key);
+            return;
+        }
+
+        if (key === 'Enter') {
+            if (dp.currentView !== opts.minView) {
+                dp.down();
+                return;
+            }
+            if (focusDate) {
+                let alreadySelectedDate = dp._checkIfDateIsSelected(focusDate);
+                if (!alreadySelectedDate) {
+                    dp.selectDate(focusDate);
+                } else {
+                    dp._handleAlreadySelectedDates(alreadySelectedDate, focusDate);
+                }
+                return;
+            }
+        }
+
+        if (key === 'Escape') {
+            this.dp.hide();
         }
     }
 

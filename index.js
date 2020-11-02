@@ -7,8 +7,8 @@ let $input = document.querySelector('#dp');
 window.dp = new Datepicker($input, {
     inline: true,
     range: false ,
-    toggleSelected: false,
-    // timepicker: true,
+    toggleSelected: true,
+    timepicker: true,
     multipleDates: false,
     // buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
