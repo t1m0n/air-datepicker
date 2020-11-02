@@ -8,11 +8,11 @@ window.dp = new Datepicker($input, {
     inline: true,
     range: false ,
     toggleSelected: false,
-    timepicker: true,
+    // timepicker: true,
     multipleDates: false,
     // buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
-    maxDate: new Date(2020, 9, 20, 10, 30),
+    // maxDate: new Date(2020, 9, 20, 10, 30),
     // minDate: new Date(2020, 9, 5, 15, 45),
 });
 

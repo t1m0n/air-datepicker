@@ -43,6 +43,7 @@ export default class DatepickerKeyboard {
         return potentialFocused;
     }
 
+    //TODO next переход к следующему месяцу после фокусировки
     focusNextCell(keyName) {
         let initialFocusDate = this.getInitialFocusDate(),
             {currentView} = this.dp,
@@ -84,7 +85,7 @@ export default class DatepickerKeyboard {
             newFocusedDate = minDate;
         }
 
-        this.dp.setFocusDate(newFocusedDate);
+        this.dp.setFocusDate(newFocusedDate, {byKeyboard: true});
     }
 
     registerKey(keyName) {

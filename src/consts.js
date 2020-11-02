@@ -4,7 +4,7 @@ export default {
     years: 'years',
 
     eventChangeViewDate: 'changeViewDate',
-    eventChangeFocusDate: 'changeFocusDate',
+    eventChangeFocusDate: 'changeFocusDate', // possible params - {byKeyboard,}
     eventChangeCurrentView: 'changeCurrentView',
     // Params:
     // action(select, unselect);

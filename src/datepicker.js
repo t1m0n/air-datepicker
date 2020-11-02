@@ -145,8 +145,8 @@ export default class Datepicker {
 
     _bindSubEvents(){
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
+        this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
         this.on(consts.eventChangeTime, this._onChangeTime);
-
     }
 
     _buildBaseHtml() {
@@ -612,14 +612,14 @@ export default class Datepicker {
         this.trigger(consts.eventChangeViewDate, date);
     }
 
-    setFocusDate = date => {
+    setFocusDate = (date, params) => {
         this.focusDate = date;
 
         if (this.opts.range && date) {
             this._handleRangeOnFocus();
         }
 
-        this.trigger(consts.eventChangeFocusDate, date);
+        this.trigger(consts.eventChangeFocusDate, date, params);
     }
 
     setCurrentView = view => {
@@ -669,12 +669,58 @@ export default class Datepicker {
         }
     }
 
+    //  Utils
+    // -------------------------------------------------
+
+    isOtherMonth = (date) => {
+        let {month} = getParsedDate(date);
+
+        return month !== this.parsedViewDate.month;
+    }
+
+    isOtherYear = (date) => {
+        let {year} = getParsedDate(date);
+
+        return year !== this.parsedViewDate.year;
+    }
+
+    isOtherDecade = (date) => {
+        let {year} = getParsedDate(date);
+        let [firstDecadeYear, lastDecadeYear] = getDecade(this.viewDate);
+
+        return year < firstDecadeYear || year > lastDecadeYear;
+    }
+
     //  Subscription events
     // -------------------------------------------------
 
     _onChangeSelectedDate = () =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(this.setInputValue)
+    }
+
+    _onChangeFocusedDate = (date, {byKeyboard} = {}) =>{
+        if (!date) return;
+        let shouldPerformTransition = false;
+
+        if (byKeyboard) {
+            switch (this.currentView) {
+                case consts.days:
+                    shouldPerformTransition = this.isOtherMonth(date);
+                    break;
+                case consts.months:
+                    shouldPerformTransition = this.isOtherYear(date);
+                    break;
+                case consts.years:
+                    shouldPerformTransition = this.isOtherDecade(date);
+                    break;
+            }
+        }
+
+        if (shouldPerformTransition) {
+            this.setViewDate(date);
+        }
+
     }
 
     _onChangeTime = ({hours, minutes}) =>{

@@ -29,6 +29,7 @@ export default class DatepickerCell {
     init(){
         this._createElement();
         this._bindDatepickerEvents();
+        this._handleInitialFocusStatus();
         if (this.dp.hasSelectedDates) {
             this._handleSelectedStatus();
             if (this.opts.range) {
@@ -180,22 +181,24 @@ export default class DatepickerCell {
         }
     }
 
+    _handleInitialFocusStatus(){
+        let datesAreSame = isSameDate(this.dp.focusDate, this.date, this.type);
+
+        if (datesAreSame) {
+            this.focus();
+        }
+    }
+
     get isDisabled(){
         return this.$cell.matches('.-disabled-');
     }
 
     get isOtherMonth(){
-        let {parsedViewDate} = this.dp;
-        let {month} = getParsedDate(this.date);
-
-        return month !== parsedViewDate.month;
+        return this.dp.isOtherMonth(this.date);
     }
 
     get isOtherDecade(){
-        let {year} = getParsedDate(this.date);
-        let [firstDecadeYear, lastDecadeYear] = getDecade(this.dp.viewDate);
-
-        return year < firstDecadeYear || year > lastDecadeYear;
+        return this.dp.isOtherDecade(this.date);
     }
 
     onChangeSelectedDate = ({action, date}) =>{
