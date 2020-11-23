@@ -612,7 +612,13 @@ export default class Datepicker {
         this.trigger(consts.eventChangeViewDate, date);
     }
 
-    setFocusDate = (date, params) => {
+    /**
+     * Sets new focusDate
+     * @param {Date} date
+     * @param {Object} [params]
+     * @param {Boolean} params.viewDateTransition
+     */
+    setFocusDate = (date, params = {}) => {
         this.focusDate = date;
 
         if (this.opts.range && date) {
@@ -699,22 +705,12 @@ export default class Datepicker {
         setTimeout(this.setInputValue)
     }
 
-    _onChangeFocusedDate = (date, {byKeyboard} = {}) =>{
+    _onChangeFocusedDate = (date, {viewDateTransition} = {}) =>{
         if (!date) return;
         let shouldPerformTransition = false;
 
-        if (byKeyboard) {
-            switch (this.currentView) {
-                case consts.days:
-                    shouldPerformTransition = this.isOtherMonth(date);
-                    break;
-                case consts.months:
-                    shouldPerformTransition = this.isOtherYear(date);
-                    break;
-                case consts.years:
-                    shouldPerformTransition = this.isOtherDecade(date);
-                    break;
-            }
+        if (viewDateTransition) {
+            shouldPerformTransition = this.isOtherMonth(date) || this.isOtherYear(date) || this.isOtherDecade(date);
         }
 
         if (shouldPerformTransition) {

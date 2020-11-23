@@ -3,6 +3,18 @@ import {getParsedDate, isDateBigger, isDateSmaller} from './utils';
 
 export default class DatepickerKeyboard {
     pressedKeys = new Set();
+    
+    hotKeys = new Map(
+        [
+            [[['Control', 'ArrowRight'],['Control', 'ArrowUp']], dateParts =>  dateParts.month++],
+            [[['Control', 'ArrowLeft'],['Control', 'ArrowDown']], dateParts =>  dateParts.month--],
+            [[['Shift', 'ArrowRight'],['Shift', 'ArrowUp']], dateParts =>  dateParts.year++],
+            [[['Shift', 'ArrowLeft'],['Shift', 'ArrowDown']], dateParts =>  dateParts.year--],
+            [[['Alt', 'ArrowRight'],['Alt', 'ArrowUp']], dateParts =>  dateParts.year+= 10],
+            [[['Alt', 'ArrowLeft'],['Alt', 'ArrowDown']], dateParts =>  dateParts.year-= 10],
+            [['Control', 'Shift', 'ArrowUp'], (dateParts, dp) =>  dp.up()],
+        ]
+    )
 
     constructor({dp, opts}) {
         this.dp = dp;
@@ -84,7 +96,7 @@ export default class DatepickerKeyboard {
             newFocusedDate = minDate;
         }
 
-        this.dp.setFocusDate(newFocusedDate, {byKeyboard: true});
+        this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }
 
     registerKey(keyName) {
@@ -95,8 +107,42 @@ export default class DatepickerKeyboard {
         this.pressedKeys.delete(keyName);
     }
 
-    isHotKeyPressed = () => {
+    handleHotKey = (combination) =>{
+        let fn = this.hotKeys.get(combination);
+        let dateParts = getParsedDate(this.getInitialFocusDate());
 
+        fn(dateParts);
+
+        let {year, month, date} = dateParts;
+
+        let newFocusDate = new Date(year, month, date);
+
+        this.dp.setFocusDate(newFocusDate, {viewDateTransition: true});
+    }
+
+    /**
+     * Checks if one of hot key is pressed. If so, then returns array of matched combinations
+      * @return {boolean | Array}
+     */
+    isHotKeyPressed = () => {
+        let hotKeyIsPressed = false;
+        let pressedKeysLength = this.pressedKeys.size;
+        let isAllKeysArePressed = key => this.pressedKeys.has(key);
+
+        for (let [combinations] of this.hotKeys) {
+            if (hotKeyIsPressed) break;
+            if (Array.isArray(combinations[0])) {
+                combinations.forEach((combination) => {
+                    if (hotKeyIsPressed || pressedKeysLength !== combination.length) return;
+                    hotKeyIsPressed = combination.every(isAllKeysArePressed) && combinations;
+                });
+            } else {
+                if (pressedKeysLength !== combinations.length) continue;
+                hotKeyIsPressed = combinations.every(isAllKeysArePressed) && combinations;
+            }
+        }
+
+        return hotKeyIsPressed;
     }
 
     isArrow = (keyCode) => {
@@ -108,7 +154,15 @@ export default class DatepickerKeyboard {
         let {dp, dp: {focusDate}, opts} = this;
 
         this.registerKey(key);
-        
+
+        let pressedHotKey = this.isHotKeyPressed();
+
+        if (pressedHotKey) {
+            e.preventDefault();
+            this.handleHotKey(pressedHotKey);
+            return;
+        }
+
         if (this.isArrow(which)) {
             e.preventDefault();
             this.focusNextCell(key);
