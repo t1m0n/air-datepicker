@@ -4,14 +4,21 @@ export default {
     years: 'years',
 
     eventChangeViewDate: 'changeViewDate',
-    eventChangeFocusDate: 'changeFocusDate', // possible params - {byKeyboard,}
     eventChangeCurrentView: 'changeCurrentView',
-    // Params:
-    // action(select, unselect);
-    // date;
-    // addTime(should timepicker add its time to selected date) //TODO удалить если не используется
-    // updateTime(if true, then timepicker will take time from passed date and save it to instance)
+
+    /**
+     * @param {Boolean} [viewDateTransition] - should perform transition to new viewDate
+     * if passed date is out current month/year/decade range
+     */
+    eventChangeFocusDate: 'changeFocusDate',
+
+    /**
+     * @param {String} action
+     * @param {Date} date
+     * @param {Boolean} [updateTime] - if true, then timepicker will take time from passed date and save it to instance
+     */
     eventChangeSelectedDate: 'changeSelectedDate',
+
     eventChangeTime: 'changeTime',
     eventChangeLastSelectedDate: 'changeLastSelectedDate',
 

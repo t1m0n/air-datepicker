@@ -20,7 +20,6 @@ import consts from './consts';
  * How does it work:
  * Timepicker has its own hour and minute values. At the start they will be equal to current time, or to min/max date values.
  * When user selects date, timepicker add its values to the date (when consts.eventChangeSelectedDate is triggered).
- * We could prevent adding time to date by passing addTime=false parameter to event.
  * When lastSelectedDate is changed (e.g. when user clicks on already selected date in multiple dates mode or in range mode)
  * then hour and minute values are taken from this date and stored in a timepicker instance.
  *
@@ -230,7 +229,7 @@ export default class DatepickerTime {
 
 
 
-    onChangeSelectedDate = ({action, date, addTime=true, updateTime=false}) => {
+    onChangeSelectedDate = ({date, updateTime=false}) => {
         if (!date) return;
 
         // Check if date is minDate or maxDate and set timepickers time to corresponding values
