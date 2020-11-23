@@ -1,5 +1,5 @@
 import consts from './consts';
-import {getParsedDate, isDateBigger, isDateSmaller} from './utils';
+import {getParsedDate, isDateBigger, isDateSmaller, getDaysCount} from './utils';
 
 export default class DatepickerKeyboard {
     pressedKeys = new Set();
@@ -59,7 +59,6 @@ export default class DatepickerKeyboard {
         let initialFocusDate = this.getInitialFocusDate(),
             {currentView} = this.dp,
             {days, months, years} = consts,
-            {minDate, maxDate} = this.opts,
             parsedFocusDate = getParsedDate(initialFocusDate),
             y = parsedFocusDate.year,
             m = parsedFocusDate.month,
@@ -88,14 +87,7 @@ export default class DatepickerKeyboard {
                 break;
         }
 
-        let newFocusedDate = new Date(y, m, d);
-
-        if (maxDate && isDateBigger(newFocusedDate, maxDate)) {
-            newFocusedDate = maxDate;
-        } else if (minDate && isDateSmaller(newFocusedDate, minDate)) {
-            newFocusedDate = minDate;
-        }
-
+        let newFocusedDate = this.dp.getClampedDate(new Date(y, m, d));
         this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }
 
@@ -108,16 +100,22 @@ export default class DatepickerKeyboard {
     }
 
     handleHotKey = (combination) =>{
-        let fn = this.hotKeys.get(combination);
-        let dateParts = getParsedDate(this.getInitialFocusDate());
+        let fn = this.hotKeys.get(combination),
+            dateParts = getParsedDate(this.getInitialFocusDate());
 
         fn(dateParts);
 
         let {year, month, date} = dateParts;
 
-        let newFocusDate = new Date(year, month, date);
+        let totalDaysInNextMonth = getDaysCount(new Date(year, month));
 
-        this.dp.setFocusDate(newFocusDate, {viewDateTransition: true});
+        if (totalDaysInNextMonth < date) {
+            date = totalDaysInNextMonth;
+        }
+
+        let newFocusedDate = this.dp.getClampedDate(new Date(year, month, date));
+
+        this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }
 
     /**

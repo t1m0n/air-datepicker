@@ -775,6 +775,23 @@ export default class Datepicker {
         return this.opts.weekends.includes(day);
     }
 
+    /**
+     * Clamps passed date between min and max date
+     * @param {Date} date
+     */
+    getClampedDate = (date) => {
+        let {minDate, maxDate} = this.opts,
+            newDate = date;
+
+        if (maxDate && isDateBigger(date, maxDate)) {
+            newDate = maxDate;
+        } else if (minDate && isDateSmaller(date, minDate)) {
+            newDate = minDate;
+        }
+
+        return newDate;
+    }
+
     static replacer(str, reg, data) {
         return str.replace(reg, function (match, p1,p2,p3) {
             return p1 + data + p3;
