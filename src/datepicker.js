@@ -1,6 +1,7 @@
 /* eslint-disable */
 import defaults from './defaults';
 import {
+    copyDate,
     createElement,
     deepCopy,
     getDecade,
@@ -440,10 +441,6 @@ export default class Datepicker {
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
         this._updateLastSelectedDate(date);
 
-        if (onSelect) {
-            this._triggerOnChange();
-        }
-
         if (autoClose && !this.timepickerIsActive) {
             if (!multipleDates && !range) {
                 this.hide();
@@ -474,10 +471,6 @@ export default class Datepicker {
 
                 this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate,  date});
 
-                if (_this.opts.onSelect) {
-                    _this._triggerOnChange();
-                }
-
                 return true
             }
         })
@@ -485,7 +478,14 @@ export default class Datepicker {
 
     replaceDate(selectedDate, newDate) {
         let index = this.selectedDates.indexOf(selectedDate);
+
         if (index < 0) return;
+
+        // Add check if same date exists, if so don't trigger change events
+        if (isSameDate(this.selectedDates[index], newDate, this.currentView)) {
+            return;
+        }
+
         this.selectedDates[index] = newDate;
 
         this.trigger(consts.eventChangeSelectedDate, {
@@ -493,6 +493,7 @@ export default class Datepicker {
             date: newDate,
             updateTime: true
         });
+
         this._updateLastSelectedDate(newDate);
     }
 
@@ -528,9 +529,22 @@ export default class Datepicker {
         this.$el.value = value;
     }
 
-    //TODO дописать пользовательский onSelect
-    _triggerOnChange(){
+    _triggerOnSelect(){
+        let dates = [],
+            formattedDates = [],
+            datepicker = this,
+            {selectedDates, locale, opts: {onSelect}} = datepicker;
 
+        if (selectedDates.length) {
+            dates = selectedDates.map(copyDate);
+            formattedDates = dates.map(date => this.formatDate(locale.dateFormat, date));
+        }
+
+        onSelect({
+            dates,
+            formattedDates,
+            datepicker
+        });
     }
 
     /**
@@ -702,7 +716,12 @@ export default class Datepicker {
 
     _onChangeSelectedDate = () =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
-        setTimeout(this.setInputValue)
+        setTimeout(() => {
+            this.setInputValue()
+            if (this.opts.onSelect) {
+                this._triggerOnSelect();
+            }
+        })
     }
 
     _onChangeFocusedDate = (date, {viewDateTransition} = {}) =>{
@@ -721,7 +740,7 @@ export default class Datepicker {
 
     _onChangeTime = ({hours, minutes}) =>{
         let today = new Date();
-        let {lastSelectedDate} = this;
+        let {lastSelectedDate, opts: {onSelect}} = this;
         let targetDate = lastSelectedDate;
 
         if (!lastSelectedDate) {
@@ -740,7 +759,9 @@ export default class Datepicker {
             this.selectDate(targetDate);
         } else {
             this.setInputValue();
-            //TODO добавить onSelect
+            if (onSelect) {
+                this._triggerOnSelect();
+            }
         }
     }
 

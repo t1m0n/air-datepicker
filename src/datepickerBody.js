@@ -268,16 +268,16 @@ export default class DatepickerBody {
                 date.setHours(hours);
                 date.setMinutes(minutes);
 
-                this.dp.replaceDate(rangeDateFrom, date);
                 this.dp.rangeDateFrom = date;
+                this.dp.replaceDate(rangeDateFrom, date);
             }
             if (this.rangeToFocused && !isDateSmaller(date, rangeDateFrom)) {
                 let {hours, minutes} = getParsedDate(rangeDateTo);
                 date.setHours(hours);
                 date.setMinutes(minutes);
 
-                this.dp.replaceDate(rangeDateTo, date);
                 this.dp.rangeDateTo = date;
+                this.dp.replaceDate(rangeDateTo, date);
             }
         }
     }

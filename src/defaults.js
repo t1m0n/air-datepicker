@@ -52,8 +52,6 @@ export default {
         years: 'yyyy1 - yyyy2'
     },
 
-    //TODO next
-    // timepicker
     timepicker: false,
     onlyTimepicker: false,
     dateTimeSeparator: ' ',
@@ -65,13 +63,14 @@ export default {
     hoursStep: 1,
     minutesStep: 1,
 
+    //TODO NEXT
     // events
-    onSelect: '',
-    onShow: '',
-    onHide: '',
-    onChangeMonth: '',
-    onChangeYear: '',
-    onChangeDecade: '',
-    onChangeView: '',
-    onRenderCell: ''
+    onSelect: false,
+    onShow: false,
+    onHide: false,
+    onChangeMonth: false,
+    onChangeYear: false,
+    onChangeDecade: false,
+    onChangeView: false,
+    onRenderCell: false
 };

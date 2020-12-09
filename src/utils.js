@@ -233,10 +233,16 @@ export function isDateSmaller(date, comparedDate) {
     return copyDate(date, false).getTime() < copyDate(comparedDate, false).getTime();
 }
 
+/**
+ * Copies date
+ * @param {Date} date
+ * @param {Boolean} [keepTime] - should keep the time in a new date or not
+ * @return {Date}
+ */
 export function copyDate(date, keepTime=true) {
     let newDate = new Date(date.getTime());
 
-    if (!keepTime) {
+    if (typeof keepTime === 'boolean' && !keepTime) {
         resetTime(newDate);
     }
 
