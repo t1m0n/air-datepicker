@@ -265,8 +265,7 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
-            $datepickersContainer = $('#datepickers-container');
+            $datepickersContainer = $parentElement.append('<div class="datepickers-container"></div>');
         },
 
         _buildBaseHtml: function () {
@@ -553,8 +552,14 @@
                     _this.selectedDates = _this.temporaryDates
 
                 } else {
-                    _this.selectedDates = _this.temporaryDates = [date];
-                    _this.minRange = date;
+                    if (opts.maxDays == 1) {
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    } else {
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                    }
                 }
             } else {
                 _this.selectedDates = _this.temporaryDates = [date];
@@ -584,7 +589,11 @@
             return _this.temporaryDates.some(function (curDate, i) {
                 
                 if (datepicker.isSame(curDate, date)) {
-                    _this.temporaryDates.splice(i, 1);
+                    if (_this.opts.maxDays == 1 && _this.opts.range) {
+                        _this.temporaryDates.splice(i, 2);
+                    } else {
+                        _this.temporaryDates.splice(i, 1);
+                    }
 
                     if(_this.temporaryDates.length >= _this.opts.minDays){
                         _this.selectedDates = _this.temporaryDates;
@@ -625,6 +634,7 @@
 
         clear: function () {
             this.selectedDates = [];
+            this.temporaryDates = [];
             this.minRange = '';
             this.maxRange = '';
             this.views[this.currentView]._render();
@@ -1534,6 +1544,18 @@
     $.fn.datepicker.Constructor = Datepicker;
 
     $.fn.datepicker.language = {
+        en: {
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            clear: 'Clear',
+            dateFormat: 'mm/dd/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 0
+        },
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
             daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],

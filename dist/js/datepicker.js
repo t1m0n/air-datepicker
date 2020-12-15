@@ -41,15 +41,14 @@
 
             minDate: '',
             maxDate: '',
-            minDays: 1,
-            maxDays: false,
-
             disableNavWhenOutOfRange: true,
 
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
-            
+            minDays: 1,
+            maxDays: false,
+
             todayButton: false,
             clearButton: false,
 
@@ -266,7 +265,7 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $datepickersContainer = $parentElement.append('<div class="datepickers-container" id="datepickers-container"></div>');
+            $datepickersContainer = $parentElement.append('<div class="datepickers-container"></div>');
         },
 
         _buildBaseHtml: function () {
@@ -512,7 +511,7 @@
                             _this.selectedDates = [];
                         }
                     }else{
-                        if(_this.temporaryDates.some(d => d > date)){
+                        if(_this.temporaryDates.some(d=>d>date)){
                             _this.temporaryDates.pop();
                         }else{
                             _this.temporaryDates.shift();
@@ -553,8 +552,14 @@
                     _this.selectedDates = _this.temporaryDates
 
                 } else {
-                    _this.selectedDates = _this.temporaryDates = [date];
-                    _this.minRange = date;
+                    if (opts.maxDays == 1) {
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    } else {
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                    }
                 }
             } else {
                 _this.selectedDates = _this.temporaryDates = [date];
@@ -584,7 +589,11 @@
             return _this.temporaryDates.some(function (curDate, i) {
                 
                 if (datepicker.isSame(curDate, date)) {
-                    _this.temporaryDates.splice(i, 1);
+                    if (_this.opts.maxDays == 1 && _this.opts.range) {
+                        _this.temporaryDates.splice(i, 2);
+                    } else {
+                        _this.temporaryDates.splice(i, 1);
+                    }
 
                     if(_this.temporaryDates.length >= _this.opts.minDays){
                         _this.selectedDates = _this.temporaryDates;
@@ -625,6 +634,7 @@
 
         clear: function () {
             this.selectedDates = [];
+            this.temporaryDates = [];
             this.minRange = '';
             this.maxRange = '';
             this.views[this.currentView]._render();
@@ -721,6 +731,7 @@
             });
             return res;
         },
+
 
         _setInputValue: function () {
             var _this = this,
@@ -1533,6 +1544,18 @@
     $.fn.datepicker.Constructor = Datepicker;
 
     $.fn.datepicker.language = {
+        en: {
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            clear: 'Clear',
+            dateFormat: 'mm/dd/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 0
+        },
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
             daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
@@ -1745,6 +1768,7 @@
                 }
             }
 
+
             if (dp.isSame(currentDate, date, type)) classes += ' -current-';
             if (parent.focused && dp.isSame(date, parent.focused, type)) {
                 classes += ' -focus-';
@@ -1915,7 +1939,7 @@
             }
             // Select date if min view is reached
             var selectedDate = dp.lastDateInRange ? dp.lastDateInRange : new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
+                alreadySelected = this.d._isTemporary(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);

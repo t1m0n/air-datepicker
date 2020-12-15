@@ -361,7 +361,7 @@
             }
             // Select date if min view is reached
             var selectedDate = dp.lastDateInRange ? dp.lastDateInRange : new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
+                alreadySelected = this.d._isTemporary(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);
