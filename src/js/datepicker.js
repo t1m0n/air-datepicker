@@ -1,8 +1,8 @@
 ;(function () {
-    var VERSION = '2.2.3',
+    var VERSION = '2.2.3 (modified)',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
-        $body, $datepickersContainer,
+        $parentElement, $datepickersContainer,
         containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
@@ -11,8 +11,10 @@
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
+            parentElement: $('body'),
             classes: '',
             inline: false,
+            autoSize: true,
             language: 'ru',
             startDate: new Date(),
             firstDay: '',
@@ -44,6 +46,8 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
+            minDays: 1,
+            maxDays: false,
 
             todayButton: false,
             clearButton: false,
@@ -106,9 +110,7 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if ($body == undefined) {
-            $body = $('body');
-        }
+        $parentElement = this.opts.parentElement;
 
         if (!this.opts.startDate) {
             this.opts.startDate = new Date();
@@ -130,6 +132,7 @@
         this.currentView = this.opts.view;
         this._createShortCuts();
         this.selectedDates = [];
+        this.temporaryDates = [];
         this.views = {};
         this.keys = [];
         this.minRange = '';
@@ -146,9 +149,9 @@
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
-            if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+            //if (!containerBuilt && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
-            }
+            //}
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
             this._syncWithMinMaxDates();
@@ -223,13 +226,13 @@
             if (typeof lang == 'string') {
                 this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
-                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
+                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "en" instead');
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.en)
                 }
 
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, lang)
             }
 
             if (this.opts.dateFormat) {
@@ -262,8 +265,7 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
-            $datepickersContainer = $('#datepickers-container');
+            $datepickersContainer = $parentElement.append('<div class="datepickers-container"></div>');
         },
 
         _buildBaseHtml: function () {
@@ -500,17 +502,43 @@
 
             if (opts.multipleDates && !opts.range) { // Set priority to range functionality
                 if (len === opts.multipleDates) return;
-                if (!_this._isSelected(date)) {
-                    _this.selectedDates.push(date);
+                if (!_this._isTemporary(date)) {
+                    if((!opts.maxDays || _this.selectedDates.length < opts.maxDays)){
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }else{
+                        if(_this.temporaryDates.some(d=>d>date)){
+                            _this.temporaryDates.pop();
+                        }else{
+                            _this.temporaryDates.shift();
+                        }
+                        
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }
                 }
             } else if (opts.range) {
                 if (len == 2) {
-                    _this.selectedDates = [date];
-                    _this.minRange = date;
-                    _this.maxRange = '';
+                    if(opts.maxDays == 1){
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    }else{
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                        _this.maxRange = '';
+                    }
                 } else if (len == 1) {
-                    _this.selectedDates.push(date);
-                    if (!_this.maxRange){
+                    _this.temporaryDates.push(date);
+                    if (!_this.maxRange) {
                         _this.maxRange = date;
                     } else {
                         _this.minRange = date;
@@ -520,14 +548,21 @@
                         _this.maxRange = _this.minRange;
                         _this.minRange = date;
                     }
-                    _this.selectedDates = [_this.minRange, _this.maxRange]
+                    _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    _this.selectedDates = _this.temporaryDates
 
                 } else {
-                    _this.selectedDates = [date];
-                    _this.minRange = date;
+                    if (opts.maxDays == 1) {
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    } else {
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                    }
                 }
             } else {
-                _this.selectedDates = [date];
+                _this.selectedDates = _this.temporaryDates = [date];
             }
 
             _this._setInputValue();
@@ -548,21 +583,30 @@
         },
 
         removeDate: function (date) {
-            var selected = this.selectedDates,
-                _this = this;
-
+            var _this = this;
             if (!(date instanceof Date)) return;
 
-            return selected.some(function (curDate, i) {
+            return _this.temporaryDates.some(function (curDate, i) {
+                
                 if (datepicker.isSame(curDate, date)) {
-                    selected.splice(i, 1);
+                    if (_this.opts.maxDays == 1 && _this.opts.range) {
+                        _this.temporaryDates.splice(i, 2);
+                    } else {
+                        _this.temporaryDates.splice(i, 1);
+                    }
 
-                    if (!_this.selectedDates.length) {
+                    if(_this.temporaryDates.length >= _this.opts.minDays){
+                        _this.selectedDates = _this.temporaryDates;
+                    }else{
+                        _this.selectedDates = [];
+                    }
+
+                    if (!_this.temporaryDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
                         _this.lastSelectedDate = '';
                     } else {
-                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
+                        _this.lastSelectedDate = _this.temporaryDates[_this.temporaryDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -590,6 +634,7 @@
 
         clear: function () {
             this.selectedDates = [];
+            this.temporaryDates = [];
             this.minRange = '';
             this.maxRange = '';
             this.views[this.currentView]._render();
@@ -675,6 +720,18 @@
             });
             return res;
         },
+
+        _isTemporary: function (checkDate, cellType) {
+            var res = false;
+            this.temporaryDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
+        },
+
 
         _setInputValue: function () {
             var _this = this,
@@ -1099,7 +1156,12 @@
                         this._trigger('clickCell', selectedDate);
                     }
                 } else {
-                    this.removeDate(selectedDate);
+                    if (this.selectedDates.length != 2) {
+                        this._trigger('clickCell', selectedDate);
+                    }else{
+                        this.removeDate(selectedDate);
+                        this.removeDate(alreadySelected);
+                    }
                 }
             } else if (this.opts.toggleSelected){
                 this.removeDate(selectedDate);
@@ -1445,6 +1507,16 @@
         return parseInt(num) < 10 ? '0' + num : num;
     };
 
+    datepicker.addDays = function (date, days = 0) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
+    datepicker.dateDifference = function (date1, date2) {
+        return Math.ceil(Math.abs(date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+    };
+
     /**
      * Returns copy of date with hours and minutes equals to 0
      * @param date {Date}
@@ -1472,6 +1544,18 @@
     $.fn.datepicker.Constructor = Datepicker;
 
     $.fn.datepicker.language = {
+        en: {
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            clear: 'Clear',
+            dateFormat: 'mm/dd/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 0
+        },
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
             daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],

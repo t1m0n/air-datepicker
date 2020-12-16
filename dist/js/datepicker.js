@@ -1,8 +1,8 @@
 ;(function (window, $, undefined) { ;(function () {
-    var VERSION = '2.2.3',
+    var VERSION = '2.2.3 (modified)',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
-        $body, $datepickersContainer,
+        $parentElement, $datepickersContainer,
         containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
@@ -11,8 +11,10 @@
             '<div class="datepicker--content"></div>' +
             '</div>',
         defaults = {
+            parentElement: $('body'),
             classes: '',
             inline: false,
+            autoSize: true,
             language: 'ru',
             startDate: new Date(),
             firstDay: '',
@@ -44,6 +46,8 @@
             multipleDates: false, // Boolean or Number
             multipleDatesSeparator: ',',
             range: false,
+            minDays: 1,
+            maxDays: false,
 
             todayButton: false,
             clearButton: false,
@@ -106,9 +110,7 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if ($body == undefined) {
-            $body = $('body');
-        }
+        $parentElement = this.opts.parentElement;
 
         if (!this.opts.startDate) {
             this.opts.startDate = new Date();
@@ -130,6 +132,7 @@
         this.currentView = this.opts.view;
         this._createShortCuts();
         this.selectedDates = [];
+        this.temporaryDates = [];
         this.views = {};
         this.keys = [];
         this.minRange = '';
@@ -146,9 +149,9 @@
         viewIndexes: ['days', 'months', 'years'],
 
         init: function () {
-            if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+            //if (!containerBuilt && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
-            }
+            //}
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
             this._syncWithMinMaxDates();
@@ -223,13 +226,13 @@
             if (typeof lang == 'string') {
                 this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
-                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "ru" instead');
-                    this.loc = $.extend(true, {}, $.fn.datepicker.language.ru)
+                    console.warn('Can\'t find language "' + lang + '" in Datepicker.language, will use "en" instead');
+                    this.loc = $.extend(true, {}, $.fn.datepicker.language.en)
                 }
 
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, $.fn.datepicker.language[lang])
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, $.fn.datepicker.language[lang])
             } else {
-                this.loc = $.extend(true, {}, $.fn.datepicker.language.ru, lang)
+                this.loc = $.extend(true, {}, $.fn.datepicker.language.en, lang)
             }
 
             if (this.opts.dateFormat) {
@@ -262,8 +265,7 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
-            $datepickersContainer = $('#datepickers-container');
+            $datepickersContainer = $parentElement.append('<div class="datepickers-container"></div>');
         },
 
         _buildBaseHtml: function () {
@@ -500,17 +502,43 @@
 
             if (opts.multipleDates && !opts.range) { // Set priority to range functionality
                 if (len === opts.multipleDates) return;
-                if (!_this._isSelected(date)) {
-                    _this.selectedDates.push(date);
+                if (!_this._isTemporary(date)) {
+                    if((!opts.maxDays || _this.selectedDates.length < opts.maxDays)){
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }else{
+                        if(_this.temporaryDates.some(d=>d>date)){
+                            _this.temporaryDates.pop();
+                        }else{
+                            _this.temporaryDates.shift();
+                        }
+                        
+                        _this.temporaryDates.push(date);
+                        if(_this.temporaryDates.length >= opts.minDays){
+                            _this.selectedDates = _this.temporaryDates;
+                        }else{
+                            _this.selectedDates = [];
+                        }
+                    }
                 }
             } else if (opts.range) {
                 if (len == 2) {
-                    _this.selectedDates = [date];
-                    _this.minRange = date;
-                    _this.maxRange = '';
+                    if(opts.maxDays == 1){
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    }else{
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                        _this.maxRange = '';
+                    }
                 } else if (len == 1) {
-                    _this.selectedDates.push(date);
-                    if (!_this.maxRange){
+                    _this.temporaryDates.push(date);
+                    if (!_this.maxRange) {
                         _this.maxRange = date;
                     } else {
                         _this.minRange = date;
@@ -520,14 +548,21 @@
                         _this.maxRange = _this.minRange;
                         _this.minRange = date;
                     }
-                    _this.selectedDates = [_this.minRange, _this.maxRange]
+                    _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    _this.selectedDates = _this.temporaryDates
 
                 } else {
-                    _this.selectedDates = [date];
-                    _this.minRange = date;
+                    if (opts.maxDays == 1) {
+                        _this.minRange = date;
+                        _this.maxRange = date;
+                        _this.selectedDates = _this.temporaryDates = [_this.minRange, _this.maxRange];
+                    } else {
+                        _this.selectedDates = _this.temporaryDates = [date];
+                        _this.minRange = date;
+                    }
                 }
             } else {
-                _this.selectedDates = [date];
+                _this.selectedDates = _this.temporaryDates = [date];
             }
 
             _this._setInputValue();
@@ -548,21 +583,30 @@
         },
 
         removeDate: function (date) {
-            var selected = this.selectedDates,
-                _this = this;
-
+            var _this = this;
             if (!(date instanceof Date)) return;
 
-            return selected.some(function (curDate, i) {
+            return _this.temporaryDates.some(function (curDate, i) {
+                
                 if (datepicker.isSame(curDate, date)) {
-                    selected.splice(i, 1);
+                    if (_this.opts.maxDays == 1 && _this.opts.range) {
+                        _this.temporaryDates.splice(i, 2);
+                    } else {
+                        _this.temporaryDates.splice(i, 1);
+                    }
 
-                    if (!_this.selectedDates.length) {
+                    if(_this.temporaryDates.length >= _this.opts.minDays){
+                        _this.selectedDates = _this.temporaryDates;
+                    }else{
+                        _this.selectedDates = [];
+                    }
+
+                    if (!_this.temporaryDates.length) {
                         _this.minRange = '';
                         _this.maxRange = '';
                         _this.lastSelectedDate = '';
                     } else {
-                        _this.lastSelectedDate = _this.selectedDates[_this.selectedDates.length - 1];
+                        _this.lastSelectedDate = _this.temporaryDates[_this.temporaryDates.length - 1];
                     }
 
                     _this.views[_this.currentView]._render();
@@ -590,6 +634,7 @@
 
         clear: function () {
             this.selectedDates = [];
+            this.temporaryDates = [];
             this.minRange = '';
             this.maxRange = '';
             this.views[this.currentView]._render();
@@ -675,6 +720,18 @@
             });
             return res;
         },
+
+        _isTemporary: function (checkDate, cellType) {
+            var res = false;
+            this.temporaryDates.some(function (date) {
+                if (datepicker.isSame(date, checkDate, cellType)) {
+                    res = date;
+                    return true;
+                }
+            });
+            return res;
+        },
+
 
         _setInputValue: function () {
             var _this = this,
@@ -1099,7 +1156,12 @@
                         this._trigger('clickCell', selectedDate);
                     }
                 } else {
-                    this.removeDate(selectedDate);
+                    if (this.selectedDates.length != 2) {
+                        this._trigger('clickCell', selectedDate);
+                    }else{
+                        this.removeDate(selectedDate);
+                        this.removeDate(alreadySelected);
+                    }
                 }
             } else if (this.opts.toggleSelected){
                 this.removeDate(selectedDate);
@@ -1445,6 +1507,16 @@
         return parseInt(num) < 10 ? '0' + num : num;
     };
 
+    datepicker.addDays = function (date, days = 0) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
+    datepicker.dateDifference = function (date1, date2) {
+        return Math.ceil(Math.abs(date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+    };
+
     /**
      * Returns copy of date with hours and minutes equals to 0
      * @param date {Date}
@@ -1472,6 +1544,18 @@
     $.fn.datepicker.Constructor = Datepicker;
 
     $.fn.datepicker.language = {
+        en: {
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            clear: 'Clear',
+            dateFormat: 'mm/dd/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 0
+        },
         ru: {
             days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
             daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
@@ -1605,14 +1689,76 @@
                         (dp.bigger(minRange, date) && dp.less(parent.focused, date)) ||
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
-                        classes += ' -in-range-'
+                        if (dp.bigger(minRange, date) && dp.less(parent.focused, date)) {
+                            if ((!opts.maxDays || dp.dateDifference(date, minRange) < opts.maxDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (dp.less(maxRange, date) && dp.bigger(parent.focused, date)) {
+                            if ((!opts.maxDays || dp.dateDifference(maxRange, date) < opts.maxDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
+                    } else {
+                        if (minRange && dp.bigger(parent.focused, date)) {
+                            if ((!opts.minDays || dp.dateDifference(date, minRange) < opts.minDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (maxRange && dp.less(parent.focused, date)) {
+                            if ((!opts.minDays || dp.dateDifference(maxRange, date) < opts.minDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-from-'
+                        if ((!opts.maxDays || dp.dateDifference(maxRange, parent.focused) < opts.maxDays) && !(dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
+                            classes += ' -range-from-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
+                                    date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
+                                }
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-to-'
+                        if ((!opts.maxDays || dp.dateDifference(parent.focused, minRange) < opts.maxDays) && !(dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
+                            classes += ' -range-to-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
+                                    date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
+                                }
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
 
                 } else if (parent.selectedDates.length == 2) {
@@ -1624,8 +1770,17 @@
 
 
             if (dp.isSame(currentDate, date, type)) classes += ' -current-';
-            if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
-            if (parent._isSelected(date, type)) classes += ' -selected-';
+            if (parent.focused && dp.isSame(date, parent.focused, type)) {
+                classes += ' -focus-';
+                if (parent.lastDateInRange) delete parent.lastDateInRange;
+            }
+            if (parent._isTemporary(date, type)){
+                if (parent._isSelected(date, type)){
+                    classes += ' -selected-';
+                } else{
+                    classes += ' -in-range-';
+                }
+            } 
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
             return {
@@ -1652,9 +1807,10 @@
 
             var startDayIndex = -daysFromPevMonth + 1,
                 m, y,
-                html = '';
+                html = '',
+                max = this.opts.autoSize ? totalMonthDays + daysFromNextMonth : 42 - daysFromPevMonth;
 
-            for (var i = startDayIndex, max = totalMonthDays + daysFromNextMonth; i <= max; i++) {
+            for (var i = startDayIndex; i <= max; i++) {
                 y = date.getFullYear();
                 m = date.getMonth();
 
@@ -1782,8 +1938,8 @@
                 return;
             }
             // Select date if min view is reached
-            var selectedDate = new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
+            var selectedDate = dp.lastDateInRange ? dp.lastDateInRange : new Date(year, month, date),
+                alreadySelected = this.d._isTemporary(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);

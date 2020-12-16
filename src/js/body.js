@@ -111,14 +111,76 @@
                         (dp.bigger(minRange, date) && dp.less(parent.focused, date)) ||
                         (dp.less(maxRange, date) && dp.bigger(parent.focused, date)))
                     {
-                        classes += ' -in-range-'
+                        if (dp.bigger(minRange, date) && dp.less(parent.focused, date)) {
+                            if ((!opts.maxDays || dp.dateDifference(date, minRange) < opts.maxDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (dp.less(maxRange, date) && dp.bigger(parent.focused, date)) {
+                            if ((!opts.maxDays || dp.dateDifference(maxRange, date) < opts.maxDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
+                    } else {
+                        if (minRange && dp.bigger(parent.focused, date)) {
+                            if ((!opts.minDays || dp.dateDifference(date, minRange) < opts.minDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : ''))) {
+                                    classes += ' -range-to-';
+                                }
+                            }
+                        } else if (maxRange && dp.less(parent.focused, date)) {
+                            if ((!opts.minDays || dp.dateDifference(maxRange, date) < opts.minDays)) {
+                                classes += ' -in-range-';
+                                if (!dp.dateDifference(date, dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : ''))) {
+                                    classes += ' -range-from-';
+                                }
+                            }
+                        }
                     }
 
                     if (dp.less(maxRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-from-'
+                        if ((!opts.maxDays || dp.dateDifference(maxRange, parent.focused) < opts.maxDays) && !(dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
+                            classes += ' -range-from-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1) {
+                                    date = dp.addDays(maxRange, opts.minDays ? -(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(maxRange, opts.maxDays ? -(opts.maxDays - 1) : '');
+                                }
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(maxRange, parent.focused) < opts.minDays - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
                     if (dp.bigger(minRange, date) && dp.isSame(parent.focused, date)) {
-                        classes += ' -range-to-'
+                        if ((!opts.maxDays || dp.dateDifference(parent.focused, minRange) < opts.maxDays) && !(dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
+                            classes += ' -range-to-';
+                            if (parent.lastDateInRange) delete parent.lastDateInRange;
+                        } else {
+                            if(opts.maxDays!=1){
+                                if (dp.dateDifference(parent.focused, minRange) < opts.minDays - 1) {
+                                    date = dp.addDays(minRange, opts.minDays ? +(opts.minDays - 1) : '');
+                                } else {
+                                    date = dp.addDays(minRange, opts.maxDays ? +(opts.maxDays - 1) : '');
+                                }
+                            }
+                            parent.lastDateInRange = date;
+                        }
+
+                        if ((dp.dateDifference(parent.focused, minRange) < opts.minDays - 1)) {
+                            classes += ' -in-range-';
+                        }
                     }
 
                 } else if (parent.selectedDates.length == 2) {
@@ -130,8 +192,17 @@
 
 
             if (dp.isSame(currentDate, date, type)) classes += ' -current-';
-            if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
-            if (parent._isSelected(date, type)) classes += ' -selected-';
+            if (parent.focused && dp.isSame(date, parent.focused, type)) {
+                classes += ' -focus-';
+                if (parent.lastDateInRange) delete parent.lastDateInRange;
+            }
+            if (parent._isTemporary(date, type)){
+                if (parent._isSelected(date, type)){
+                    classes += ' -selected-';
+                } else{
+                    classes += ' -in-range-';
+                }
+            } 
             if (!parent._isInRange(date, type) || render.disabled) classes += ' -disabled-';
 
             return {
@@ -158,9 +229,10 @@
 
             var startDayIndex = -daysFromPevMonth + 1,
                 m, y,
-                html = '';
+                html = '',
+                max = this.opts.autoSize ? totalMonthDays + daysFromNextMonth : 42 - daysFromPevMonth;
 
-            for (var i = startDayIndex, max = totalMonthDays + daysFromNextMonth; i <= max; i++) {
+            for (var i = startDayIndex; i <= max; i++) {
                 y = date.getFullYear();
                 m = date.getMonth();
 
@@ -288,8 +360,8 @@
                 return;
             }
             // Select date if min view is reached
-            var selectedDate = new Date(year, month, date),
-                alreadySelected = this.d._isSelected(selectedDate, this.d.cellType);
+            var selectedDate = dp.lastDateInRange ? dp.lastDateInRange : new Date(year, month, date),
+                alreadySelected = this.d._isTemporary(selectedDate, this.d.cellType);
 
             if (!alreadySelected) {
                 dp._trigger('clickCell', selectedDate);
