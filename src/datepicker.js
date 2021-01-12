@@ -231,8 +231,6 @@ export default class Datepicker {
     _bindEvents(){
     }
 
-
-
     _limitViewDateByMaxMinDates(){
         let {viewDate, opts: {minDate, maxDate}} = this;
 
@@ -315,21 +313,17 @@ export default class Datepicker {
      * Changes month, year, decade to next period
      */
     next = () => {
-        let {year, month} = this.parsedViewDate,
-            {onChangeMonth, onChangeYear, onChangeDecade} = this.opts;
+        let {year, month} = this.parsedViewDate;
 
         switch (this.currentView) {
             case consts.days:
                 this.setViewDate(new Date(year, month + 1, 1));
-                if (onChangeMonth) onChangeMonth(month, year);
                 break;
             case consts.months:
                 this.setViewDate(new Date(year + 1, month, 1));
-                if (onChangeYear) onChangeYear(year);
                 break;
             case consts.years:
                 this.setViewDate(new Date(year + 10, 0, 1));
-                if (onChangeDecade) onChangeDecade(this.curDecade);
                 break;
         }
     }
@@ -338,21 +332,17 @@ export default class Datepicker {
      * Changes month, year, decade to prev period
      */
     prev = () => {
-        let {year, month} = this.parsedViewDate,
-            {onChangeMonth, onChangeYear, onChangeDecade} = this.opts;
+        let {year, month} = this.parsedViewDate;
 
         switch (this.currentView) {
             case consts.days:
                 this.setViewDate(new Date(year, month - 1, 1));
-                if (onChangeMonth) onChangeMonth(month, year);
                 break;
             case consts.months:
                 this.setViewDate(new Date(year - 1, month, 1));
-                if (onChangeYear) onChangeYear(year);
                 break;
             case consts.years:
                 this.setViewDate(new Date(year - 10, 0, 1));
-                if (onChangeDecade) onChangeDecade(this.curDecade);
                 break;
         }
     }
@@ -623,6 +613,17 @@ export default class Datepicker {
     setViewDate = date => {
         if (isSameDate(date, this.viewDate)) return;
         this.viewDate = date;
+        let {onChangeViewDate} = this.opts;
+
+        if (onChangeViewDate) {
+            let {month, year} = this.parsedViewDate;
+            onChangeViewDate({
+                month,
+                year,
+                decade: this.curDecade
+            })
+        }
+
         this.trigger(consts.eventChangeViewDate, date);
     }
 

@@ -6,14 +6,17 @@ let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
     inline: true,
-    range: true ,
+    range: false ,
     toggleSelected: false,
     timepicker: true,
     // buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
     onSelect({dates, formattedDates, datepicker}){
-        console.log(formattedDates);
+    },
+    onChangeViewDate({month, year, decade}){
+        console.log(month, year);
     }
+
     // maxDate: new Date(2020, 9, 20, 10, 30),
     // minDate: new Date(2020, 9, 5, 15, 45),
 });

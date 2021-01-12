@@ -63,14 +63,12 @@ export default {
     hoursStep: 1,
     minutesStep: 1,
 
+    onSelect: false,
+    onChangeViewDate: false,
     //TODO NEXT
     // events
-    onSelect: false,
     onShow: false,
     onHide: false,
-    onChangeMonth: false,
-    onChangeYear: false,
-    onChangeDecade: false,
     onChangeView: false,
     onRenderCell: false
 };
