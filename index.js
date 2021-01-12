@@ -14,7 +14,9 @@ window.dp = new Datepicker($input, {
     onSelect({dates, formattedDates, datepicker}){
     },
     onChangeViewDate({month, year, decade}){
-        console.log(month, year);
+    },
+    onChangeView(view) {
+        console.log(view);
     }
 
     // maxDate: new Date(2020, 9, 20, 10, 30),

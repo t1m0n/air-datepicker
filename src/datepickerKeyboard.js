@@ -103,7 +103,7 @@ export default class DatepickerKeyboard {
         let fn = this.hotKeys.get(combination),
             dateParts = getParsedDate(this.getInitialFocusDate());
 
-        fn(dateParts);
+        fn(dateParts, this.dp);
 
         let {year, month, date} = dateParts;
 
