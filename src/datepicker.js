@@ -7,10 +7,11 @@ import {
     getDecade,
     getEl,
     getParsedDate,
+    getLeadingZeroNum,
     insertAfter,
     isDateBigger,
     isDateSmaller,
-    isSameDate
+    isSameDate,
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
@@ -255,14 +256,12 @@ export default class Datepicker {
             dayPeriod = 'am',
             validHours;
 
-        //TODO обработка выбора времени
-        // if (this.opts.timepicker && this.timepicker && ampm) {
-        //     validHours = this.timepicker._getValidHoursFromDate(date, ampm);
-        //     fullHours = getLeadingZeroNum(validHours.hours);
-        //     hours = validHours.hours;
-        //     dayPeriod = validHours.dayPeriod;
-        // }
-
+        if (this.opts.timepicker && this.timepicker && ampm) {
+            validHours = this.timepicker.getValidHoursFromDate(date, ampm);
+            fullHours = getLeadingZeroNum(validHours.hours);
+            hours = validHours.hours;
+            dayPeriod = validHours.dayPeriod;
+        }
 
         //TODO перейти на UTC формат
         switch (true) {

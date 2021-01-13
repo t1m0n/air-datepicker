@@ -169,7 +169,6 @@ export default class DatepickerTime {
      * @param date {Date|Number} - date or hours
      * @param [ampm] {Boolean} - 12 hours mode
      * @returns {{hours: number, dayPeriod: string}}
-     * @private
      */
     getValidHoursFromDate(date, ampm){
         let _date = date,
