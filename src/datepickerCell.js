@@ -18,21 +18,32 @@ import './datepickerCell.scss';
 export default class DatepickerCell {
     constructor({type, date, dp, opts, body} = {}) {
         this.type = type;
+        this.singleType = this.type.slice(0, -1); // days -> day etc.'`
         this.date = date;
         this.dp = dp;
         this.opts = opts;
         this.body = body;
+        this.customData = false;
 
         this.init();
     }
 
     init(){
+        let {range, onRenderCell} = this.opts;
+
+        if (onRenderCell) {
+            this.customData = onRenderCell({
+                date: this.date,
+                type: this.singleType,
+            });
+        }
+
         this._createElement();
         this._bindDatepickerEvents();
         this._handleInitialFocusStatus();
         if (this.dp.hasSelectedDates) {
             this._handleSelectedStatus();
-            if (this.opts.range) {
+            if (range) {
                 this._handleRangeStatus();
             }
         }
@@ -69,7 +80,7 @@ export default class DatepickerCell {
 
         let classNameCommon = classNames(
             'datepicker-cell',
-            `-${this.type.slice(0, -1)}-`, // days -> day etc.'`
+            `-${this.singleType}-`, // days -> day etc.'`
             {
                 '-current-': isSameDate(currentDate, this.date, this.type),
             }
@@ -97,14 +108,16 @@ export default class DatepickerCell {
                 break
         }
 
-        //TODO дописать с диапазоном и onRenderCell
-
-        return classNames(classNameCommon, classNameType);
+        return classNames(classNameCommon, classNameType, this.customData?.classes);
     }
 
     _getHtml(){
         let {year, month, date} = getParsedDate(this.date);
         let {showOtherMonths, showOtherYears} = this.opts;
+
+        if (this.customData?.html !== undefined) {
+            return this.customData.html;
+        }
 
         switch (this.type) {
             case consts.days:

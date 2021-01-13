@@ -66,10 +66,10 @@ export default {
     onSelect: false,
     onChangeViewDate: false,
     onChangeView: false,
+    onRenderCell: false,
 
     //TODO NEXT
     // events
     onShow: false,
     onHide: false,
-    onRenderCell: false
 };

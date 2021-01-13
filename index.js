@@ -17,6 +17,9 @@ window.dp = new Datepicker($input, {
     },
     onChangeView(view) {
         console.log(view);
+    },
+    onRenderCell({date, type}) {
+
     }
 
     // maxDate: new Date(2020, 9, 20, 10, 30),

@@ -25,7 +25,8 @@
                 // maxDate: new Date(2020, 9, 20, 10, 30),
                 timeFormat: 'hh:mm aa',
                 // multipleDates: true,
-                onRenderCell: function(date){
+                onRenderCell: function(date, type){
+                    console.log(type);
                     if (date.getDate() === new Date().getDate()) {
                         return {
                             disabled: true

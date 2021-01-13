@@ -3,8 +3,9 @@
   "version": "2.2.3",
   "scripts": {
     "dev": "set NODE_ENV=development&& webpack",
-    "dev:serve": "set NODE_ENV=development&& node server-dev.js",
-    "prod": "set NODE_ENV=production&& webpack"
+    "dev:serve": "npm run browser&& set NODE_ENV=development&& node server-dev.js",
+    "prod": "set NODE_ENV=production&& webpack",
+    "browser": "open-cli http://localhost:3000 -- 'chrome' "
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -19,6 +20,7 @@
     "express": "^4.17.1",
     "html-webpack-plugin": "^4.3.0",
     "node-sass": "^4.14.0",
+    "open-cli": "^6.0.1",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
@@ -27,7 +29,6 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0"
   },
-  "dependencies": {},
   "description": "Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested no Android 4.4+ and iOS8+)\r ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)",
   "main": "src/js/air-datepicker.js",
   "directories": {
