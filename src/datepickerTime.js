@@ -231,7 +231,7 @@ export default class DatepickerTime {
     onChangeSelectedDate = ({date, updateTime=false}) => {
         if (!date) return;
 
-        // Check if date is minDate or maxDate and set timepickers time to corresponding values
+        // Check if date is minDate or maxDate and set timepicker's time to corresponding values
         this.setMinMaxTime(date);
         this.setCurrentTime(updateTime ? date : false);
 

@@ -354,14 +354,13 @@ export default class Datepicker {
         this._handleUpDownActions(date, 'up');
     }
 
-    selectDate(date) {
+    selectDate(date, {updateTime} = {}) {
         let {currentView, parsedViewDate, selectedDates} = this;
         let {
             moveToOtherMonthsOnSelect,
             moveToOtherYearsOnSelect,
             multipleDates,
             range,
-            onSelect,
             autoClose
         } = this.opts;
         let selectedDaysLen = selectedDates.length;
@@ -427,7 +426,7 @@ export default class Datepicker {
             this.selectedDates = [date];
         }
 
-        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date});
+        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date, updateTime});
         this._updateLastSelectedDate(date);
 
         if (autoClose && !this.timepickerIsActive) {

@@ -9,7 +9,6 @@ window.dp = new Datepicker($input, {
     range: false ,
     toggleSelected: false,
     timepicker: true,
-    timeFormat: 'hh : mm ',
     // buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
     onSelect({dates, formattedDates, datepicker}){

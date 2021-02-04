@@ -6,4 +6,4 @@
 * убраны onChangeMonth, onChangeYear, onChangeDecade, заменены одним колбэком onChangeViewDate
 * onSelect теперь принимает объект вместо нескольких параметров
 * onRenderCell тоже принимает объект
-
+* selectDate добавлен второй параметр {updateTime}
