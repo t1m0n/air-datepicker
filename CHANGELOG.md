@@ -7,3 +7,4 @@
 * onSelect теперь принимает объект вместо нескольких параметров
 * onRenderCell тоже принимает объект
 * selectDate добавлен второй параметр {updateTime}
+* изменена формат даты на Unicode Technical Standard https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table

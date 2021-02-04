@@ -47,7 +47,7 @@ export default {
     prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
     nextHtml: '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>',
     navTitles: {
-        days: 'MM, <i>yyyy</i>',
+        days: 'MMMM, <i>yyyy</i>',
         months: 'yyyy',
         years: 'yyyy1 - yyyy2'
     },

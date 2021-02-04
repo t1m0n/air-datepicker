@@ -263,10 +263,9 @@ export default class Datepicker {
             dayPeriod = validHours.dayPeriod;
         }
 
-        //TODO перейти на UTC формат next
         switch (true) {
             // Timestamp
-            case /T/.test(result):
+            case !!/T/.test(result):
                 result = replacer(result, boundary('T'), date.getTime());
 
             // Minutes
