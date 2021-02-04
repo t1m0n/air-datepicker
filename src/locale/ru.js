@@ -7,6 +7,6 @@ export default {
     today: 'Сегодня',
     clear: 'Очистить',
     dateFormat: 'dd.MM.yyyy',
-    timeFormat: 'hh:mm',
+    timeFormat: 'hh:mm AA',
     firstDay: 1
 };

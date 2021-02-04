@@ -244,7 +244,7 @@ export default class Datepicker {
     }
 
     formatDate(string, date=this.viewDate) {
-        var result = string,
+        let result = string,
             boundary = Datepicker.getWordBoundaryRegExp,
             locale = this.locale,
             parsedDate = getParsedDate(date),
@@ -263,9 +263,46 @@ export default class Datepicker {
             dayPeriod = validHours.dayPeriod;
         }
 
+        let formats = {
+            // Time in ms
+            T: date.getTime(),
+
+            // Minutes
+            m: parsedDate.minutes,
+            mm: parsedDate.fullMinutes,
+
+            // Hours
+            h: hours,
+            hh: fullHours,
+
+            // Day period
+            aa: dayPeriod,
+            AA: dayPeriod.toUpperCase(),
+
+            // Day of week
+            E: locale.daysShort[parsedDate.day],
+            EEEE: locale.days[parsedDate.day],
+
+            // Date of month
+            d: parsedDate.date,
+            dd: parsedDate.fullDate,
+
+            // Months
+            M: parsedDate.month + 1,
+            MM: parsedDate.fullMonth,
+            MMM: locale.monthsShort[parsedDate.month],
+            MMMM: locale.months[parsedDate.month],
+
+            // Years
+            yy: parsedDate.year.toString().slice(-2),
+            yyyy: parsedDate.year,
+            yyyy1: decade[0],
+            yyyy2: decade[1]
+        }
+
         switch (true) {
             // Timestamp
-            case !!/T/.test(result):
+            case /T/.test(result):
                 result = replacer(result, boundary('T'), date.getTime());
 
             // Minutes
@@ -320,6 +357,7 @@ export default class Datepicker {
         }
 
         return result;
+
     }
 
     /**
