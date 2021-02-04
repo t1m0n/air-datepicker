@@ -6,7 +6,7 @@ export default {
     monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
     today: 'Сегодня',
     clear: 'Очистить',
-    dateFormat: 'dd.mm.yyyy',
-    timeFormat: 'hh:ii',
+    dateFormat: 'dd.MM.yyyy',
+    timeFormat: 'hh:mm',
     firstDay: 1
 };

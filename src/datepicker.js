@@ -263,46 +263,61 @@ export default class Datepicker {
             dayPeriod = validHours.dayPeriod;
         }
 
-        //TODO перейти на UTC формат
+        //TODO перейти на UTC формат next
         switch (true) {
-            case /@/.test(result):
-                result = result.replace(/@/, date.getTime());
-            case /aa/.test(result):
-                result = replacer(result, boundary('aa'), dayPeriod);
-            case /AA/.test(result):
-                result = replacer(result, boundary('AA'), dayPeriod.toUpperCase());
-            case /dd/.test(result):
-                result = replacer(result, boundary('dd'), parsedDate.fullDate);
-            case /d/.test(result):
-                result = replacer(result, boundary('d'), parsedDate.date);
-            case /DD/.test(result):
-                result = replacer(result, boundary('DD'), locale.days[parsedDate.day]);
-            case /D/.test(result):
-                result = replacer(result, boundary('D'), locale.daysShort[parsedDate.day]);
+            // Timestamp
+            case /T/.test(result):
+                result = replacer(result, boundary('T'), date.getTime());
+
+            // Minutes
             case /mm/.test(result):
-                result = replacer(result, boundary('mm'), parsedDate.fullMonth);
+                result = replacer(result, boundary('mm'), parsedDate.fullMinutes);
             case /m/.test(result):
-                result = replacer(result, boundary('m'), parsedDate.month + 1);
-            case /MM/.test(result):
-                result = replacer(result, boundary('MM'), this.locale.months[parsedDate.month]);
-            case /M/.test(result):
-                result = replacer(result, boundary('M'), locale.monthsShort[parsedDate.month]);
-            case /ii/.test(result):
-                result = replacer(result, boundary('ii'), parsedDate.fullMinutes);
-            case /i/.test(result):
-                result = replacer(result, boundary('i'), parsedDate.minutes);
+                result = replacer(result, boundary('m'), parsedDate.minutes);
+
+            // Hours
             case /hh/.test(result):
                 result = replacer(result, boundary('hh'), fullHours);
             case /h/.test(result):
                 result = replacer(result, boundary('h'), hours);
+
+            // Day period
+            case /aa/.test(result):
+                result = replacer(result, boundary('aa'), dayPeriod);
+            case /AA/.test(result):
+                result = replacer(result, boundary('AA'), dayPeriod.toUpperCase());
+
+            // Day of week
+            case /E/.test(result):
+                result = replacer(result, boundary('E'), locale.daysShort[parsedDate.day]);
+            case /EEEE/.test(result):
+                result = replacer(result, boundary('EEEE'), locale.days[parsedDate.day]);
+
+            // Date of month
+            case /d/.test(result):
+                result = replacer(result, boundary('d'), parsedDate.date);
+            case /dd/.test(result):
+                result = replacer(result, boundary('dd'), parsedDate.fullDate);
+
+            // Months
+            case /M/.test(result):
+                result = replacer(result, boundary('M'), parsedDate.month + 1);
+            case /MM/.test(result):
+                result = replacer(result, boundary('MM'), parsedDate.fullMonth);
+            case /MMM/.test(result):
+                result = replacer(result, boundary('MM'), locale.monthsShort[parsedDate.month]);
+            case /MMMM/.test(result):
+                result = replacer(result, boundary('MMMM'), this.locale.months[parsedDate.month]);
+
+            //Years
+            case /yy/.test(result):
+                result = replacer(result, boundary('yy'), parsedDate.year.toString().slice(-2));
             case /yyyy/.test(result):
                 result = replacer(result, boundary('yyyy'), parsedDate.year);
             case /yyyy1/.test(result):
                 result = replacer(result, boundary('yyyy1'), decade[0]);
             case /yyyy2/.test(result):
                 result = replacer(result, boundary('yyyy2'), decade[1]);
-            case /yy/.test(result):
-                result = replacer(result, boundary('yy'), parsedDate.year.toString().slice(-2));
         }
 
         return result;
