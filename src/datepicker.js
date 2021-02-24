@@ -300,64 +300,12 @@ export default class Datepicker {
             yyyy2: decade[1]
         }
 
-        switch (true) {
-            // Timestamp
-            case /T/.test(result):
-                result = replacer(result, boundary('T'), date.getTime());
 
-            // Minutes
-            case /mm/.test(result):
-                result = replacer(result, boundary('mm'), parsedDate.fullMinutes);
-            case /m/.test(result):
-                result = replacer(result, boundary('m'), parsedDate.minutes);
-
-            // Hours
-            case /hh/.test(result):
-                result = replacer(result, boundary('hh'), fullHours);
-            case /h/.test(result):
-                result = replacer(result, boundary('h'), hours);
-
-            // Day period
-            case /aa/.test(result):
-                result = replacer(result, boundary('aa'), dayPeriod);
-            case /AA/.test(result):
-                result = replacer(result, boundary('AA'), dayPeriod.toUpperCase());
-
-            // Day of week
-            case /E/.test(result):
-                result = replacer(result, boundary('E'), locale.daysShort[parsedDate.day]);
-            case /EEEE/.test(result):
-                result = replacer(result, boundary('EEEE'), locale.days[parsedDate.day]);
-
-            // Date of month
-            case /d/.test(result):
-                result = replacer(result, boundary('d'), parsedDate.date);
-            case /dd/.test(result):
-                result = replacer(result, boundary('dd'), parsedDate.fullDate);
-
-            // Months
-            case /M/.test(result):
-                result = replacer(result, boundary('M'), parsedDate.month + 1);
-            case /MM/.test(result):
-                result = replacer(result, boundary('MM'), parsedDate.fullMonth);
-            case /MMM/.test(result):
-                result = replacer(result, boundary('MM'), locale.monthsShort[parsedDate.month]);
-            case /MMMM/.test(result):
-                result = replacer(result, boundary('MMMM'), this.locale.months[parsedDate.month]);
-
-            //Years
-            case /yy/.test(result):
-                result = replacer(result, boundary('yy'), parsedDate.year.toString().slice(-2));
-            case /yyyy/.test(result):
-                result = replacer(result, boundary('yyyy'), parsedDate.year);
-            case /yyyy1/.test(result):
-                result = replacer(result, boundary('yyyy1'), decade[0]);
-            case /yyyy2/.test(result):
-                result = replacer(result, boundary('yyyy2'), decade[1]);
+        for (let [format, data] of Object.entries(formats)) {
+            result = replacer(result, boundary(format), data);
         }
 
         return result;
-
     }
 
     /**
