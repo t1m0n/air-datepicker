@@ -20,6 +20,10 @@ window.dp = new Datepicker($input, {
     },
     onRenderCell({date, type}) {
 
+    },
+
+    dateFormat: date => {
+        return date.toLocaleString('EN')
     }
 
     // maxDate: new Date(2020, 9, 20, 10, 30),

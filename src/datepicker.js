@@ -199,7 +199,7 @@ export default class Datepicker {
             this.locale.firstDay = firstDay
         }
 
-        if (timepicker) {
+        if (timepicker && typeof dateFormat !== 'function') {
             this.locale.dateFormat = [this.locale.dateFormat, this.locale.timeFormat].join(dateTimeSeparator);
         }
 
@@ -208,7 +208,7 @@ export default class Datepicker {
         }
 
         let boundary = Datepicker.getWordBoundaryRegExp;
-        //TODO заменить на новый формат
+
         if (this.locale.timeFormat.match(boundary('aa')) ||
             this.locale.timeFormat.match(boundary('AA'))
         ) {
@@ -503,11 +503,16 @@ export default class Datepicker {
 
     setInputValue = () => {
         let {opts: {altFieldDateFormat, altField, multipleDatesSeparator}, selectedDates, $altField, locale} = this,
-            value = selectedDates.map(date => this.formatDate(locale.dateFormat, date)),
+            value = selectedDates.map(date => {
+                if (typeof locale.dateFormat === 'function') {
+                    return locale.dateFormat(date);
+                }
+                return this.formatDate(locale.dateFormat, date)
+            }),
             altValues;
 
         if (altField && $altField) {
-            altValues = selectedDates.map(date=> this.formatDate(altFieldDateFormat, date));
+            altValues = selectedDates.map(date => this.formatDate(altFieldDateFormat, date));
             altValues = altValues.join(multipleDatesSeparator);
             $altField.value = altValues;
         }
@@ -819,7 +824,7 @@ export default class Datepicker {
     }
 
     static defaults = defaults
-    //TODO надо вспомнить че к чему, возможно стоит упростить
+
     static getWordBoundaryRegExp(sign){
         let symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
 
