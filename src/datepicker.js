@@ -230,6 +230,10 @@ export default class Datepicker {
     }
 
     _bindEvents(){
+        this.$el.addEventListener('focus', this._onFocus)
+        this.$el.addEventListener('blur', this._onBlur)
+        this.$datepicker.addEventListener('mousedown', this._onMouseDown)
+        this.$datepicker.addEventListener('mouseup', this._onMouseUp)
     }
 
     _limitViewDateByMaxMinDates(){
@@ -494,11 +498,65 @@ export default class Datepicker {
     }
 
     show(){
-
+        this.setPosition(this.opts.position);
+        this.$datepicker.classList.add('-active-');
+        this.visible = true;
     }
 
     hide(){
+        this.$datepicker.classList.remove('-active-');
+        this.$datepicker.style.left = '-10000px';
+        this.visible = false;
+    }
 
+    setPosition(position) {
+        position = position || this.opts.position;
+
+        let dims = this.$el.getBoundingClientRect(),
+            selfDims = this.$datepicker.getBoundingClientRect(),
+            pos = position.split(' '),
+            top, left,
+            offset = this.opts.offset,
+            main = pos[0],
+            secondary = pos[1];
+
+        switch (main) {
+            case 'top':
+                top = dims.top - selfDims.height - offset;
+                break;
+            case 'right':
+                left = dims.left + dims.width + offset;
+                break;
+            case 'bottom':
+                top = dims.top + dims.height + offset;
+                break;
+            case 'left':
+                left = dims.left - selfDims.width - offset;
+                break;
+        }
+
+        switch(secondary) {
+            case 'top':
+                top = dims.top;
+                break;
+            case 'right':
+                left = dims.left + dims.width - selfDims.width;
+                break;
+            case 'bottom':
+                top = dims.top + dims.height - selfDims.height;
+                break;
+            case 'left':
+                left = dims.left;
+                break;
+            case 'center':
+                if (/left|right/.test(main)) {
+                    top = dims.top + dims.height/2 - selfDims.height/2;
+                } else {
+                    left = dims.left + dims.width/2 - selfDims.width/2;
+                }
+        }
+
+        this.$datepicker.style.cssText = `left: ${left}px; top: ${top + window.scrollY}px`;
     }
 
     setInputValue = () => {
@@ -530,7 +588,13 @@ export default class Datepicker {
 
         if (selectedDates.length) {
             dates = selectedDates.map(copyDate);
-            formattedDates = dates.map(date => this.formatDate(locale.dateFormat, date));
+            formattedDates = dates.map(date => {
+                if (typeof locale.dateFormat === 'function') {
+                    return locale.dateFormat(date);
+                }
+
+                return this.formatDate(locale.dateFormat, date)
+            });
         }
 
         onSelect({
@@ -603,10 +667,6 @@ export default class Datepicker {
                 this.rangeDateFrom = this.selectedDates[0];
             }
         }
-    }
-
-    setPosition(){
-
     }
 
     /**
@@ -767,6 +827,27 @@ export default class Datepicker {
                 this._triggerOnSelect();
             }
         }
+    }
+
+    _onFocus = () => {
+        if (!this.visible) {
+            this.show();
+        }
+    }
+
+    _onBlur = (e) => {
+        if (!this.inFocus && this.visible) {
+            this.hide();
+        }
+    }
+
+    _onMouseDown = e => {
+        this.inFocus = true;
+    }
+
+    _onMouseUp = e => {
+        this.inFocus = false;
+        this.$el.focus();
     }
 
     //  Helpers

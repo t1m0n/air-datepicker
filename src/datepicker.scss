@@ -20,6 +20,29 @@
     transform var(--adp-transition-duration) var(--adp-transition-ease),
     left 0s var(--adp-transition-duration);
   z-index: var(--adp-z-index);
+
+  &.-from-top- {
+    transform: translateY(calc(var(--adp-transition-offset) * -1));
+  }
+  &.-from-right- {
+    transform: translateX(var(--adp-transition-offset));
+  }
+  &.-from-bottom- {
+    transform: translateY(var(--adp-transition-offset));
+  }
+  &.-from-left- {
+    transform: translateX(calc(var(--adp-transition-offset) * -1));
+  }
+
+  &.-active- {
+    opacity: 1;
+    transform: translate(0);
+    transition:
+      opacity var(--adp-transition-duration) var(--adp-transition-ease),
+      transform var(--adp-transition-duration) var(--adp-transition-ease),
+      left 0s 0s;
+
+  }
 }
 
 .datepicker-inline {
