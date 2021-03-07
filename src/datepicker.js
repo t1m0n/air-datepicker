@@ -556,7 +556,8 @@ export default class Datepicker {
                 }
         }
 
-        this.$datepicker.style.cssText = `left: ${left}px; top: ${top + window.scrollY}px`;
+        //TODO доделать обработку скролл контекста
+        this.$datepicker.style.cssText = `left: ${left + window.scrollX}px; top: ${top + window.scrollY}px`;
     }
 
     setInputValue = () => {
@@ -836,9 +837,9 @@ export default class Datepicker {
     }
 
     _onBlur = (e) => {
-        if (!this.inFocus && this.visible) {
-            this.hide();
-        }
+        // if (!this.inFocus && this.visible) {
+        //     this.hide();
+        // }
     }
 
     _onMouseDown = e => {
