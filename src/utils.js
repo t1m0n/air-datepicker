@@ -196,7 +196,7 @@ export function addClass(el, ...classes) {
 
 export function removeClass(el, ...classes) {
     if (el.length) {
-        el.forEach(node=>{
+        el.forEach((node) => {
             node.classList.remove(...classes);
         });
     } else {
@@ -266,7 +266,7 @@ export function isDateBetween(date, dateFrom, dateTo) {
  */
 export function addEventListener(el, type, listener) {
     if (el.length) {
-        el.forEach(e=>{
+        el.forEach((e) => {
             e.addEventListener(type, listener);
         });
     } else {
@@ -288,6 +288,25 @@ export function closest(target, selector) {
     }
 
     return closest(target.parentNode, selector);
+}
+
+/**
+ * Finds closest parent that is scrollable
+ * @param el {HTMLElement} - target el
+ * @return {boolean|HTMLElement}
+ */
+export function getClosestScrollableParent(el) {
+    let $scrollableParent = false;
+    let $parent = el.parentNode;
+
+    while(!$scrollableParent && $parent) {
+        if ($parent.scrollHeight > $parent.clientHeight) {
+            $scrollableParent = $parent;
+        }
+        $parent = $parent.parentNode;
+    }
+
+    return $scrollableParent;
 }
 
 /**

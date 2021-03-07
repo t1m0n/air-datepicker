@@ -12,6 +12,7 @@ import {
     isDateBigger,
     isDateSmaller,
     isSameDate,
+    getClosestScrollableParent,
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
@@ -66,7 +67,6 @@ export default class Datepicker {
 
         this.inited = false;
         this.visible = false;
-        this.silent = false; // Need to prevent unnecessary rendering
 
         this.viewDate = this.opts.startDate;
         this.focusDate = false;
@@ -77,6 +77,7 @@ export default class Datepicker {
         this.rangeDateFrom = '';
         this.rangeDateTo = '';
         this._prevOnSelectValue = '';
+        this.$scrollableParent = false;
 
         this.init();
     }
@@ -501,15 +502,25 @@ export default class Datepicker {
         this.setPosition(this.opts.position);
         this.$datepicker.classList.add('-active-');
         this.visible = true;
+
+        this.$scrollableParent = getClosestScrollableParent(this.$el);
+
+        if (this.$scrollableParent && !this.$scrollableParent.matches('html')) {
+            this.$scrollableParent.addEventListener('scroll', this._onScrollParent)
+        }
     }
 
     hide(){
         this.$datepicker.classList.remove('-active-');
         this.$datepicker.style.left = '-10000px';
         this.visible = false;
+
+        if (this.$scrollableParent) {
+            this.$scrollableParent.removeEventListener('scroll', this._onScrollParent)
+        }
     }
 
-    setPosition(position) {
+    setPosition = (position) => {
         position = position || this.opts.position;
 
         let dims = this.$el.getBoundingClientRect(),
@@ -834,6 +845,7 @@ export default class Datepicker {
         if (!this.visible) {
             this.show();
         }
+
     }
 
     _onBlur = (e) => {
@@ -849,6 +861,12 @@ export default class Datepicker {
     _onMouseUp = e => {
         this.inFocus = false;
         this.$el.focus();
+    }
+
+    _onScrollParent = e => {
+        if (this.visible) {
+            this.setPosition();
+        }
     }
 
     //  Helpers
