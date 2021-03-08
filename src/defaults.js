@@ -67,9 +67,6 @@ export default {
     onChangeViewDate: false,
     onChangeView: false,
     onRenderCell: false,
-
-    //TODO NEXT
-    // events
     onShow: false,
     onHide: false,
 };

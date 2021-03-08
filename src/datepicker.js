@@ -231,7 +231,7 @@ export default class Datepicker {
     }
 
     _bindEvents(){
-        this.$el.addEventListener('focus', this._onFocus)
+        this.$el.addEventListener(this.opts.showEvent, this._onFocus)
         this.$el.addEventListener('blur', this._onBlur)
         this.$datepicker.addEventListener('mousedown', this._onMouseDown)
         this.$datepicker.addEventListener('mouseup', this._onMouseUp)
