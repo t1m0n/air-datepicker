@@ -24,6 +24,14 @@ window.dp = new Datepicker($input, {
 
     dateFormat: date => {
         return date.toLocaleString('EN')
+    },
+
+    onShow(visible) {
+        console.log('onShow', visible);
+    },
+
+    onHide(visible) {
+        console.log('onHide', visible);
     }
 
     // maxDate: new Date(2020, 9, 20, 10, 30),

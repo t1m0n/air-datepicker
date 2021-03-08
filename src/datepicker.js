@@ -508,6 +508,12 @@ export default class Datepicker {
         if (this.$scrollableParent && !this.$scrollableParent.matches('html')) {
             this.$scrollableParent.addEventListener('scroll', this._onScrollParent)
         }
+
+        let {onShow} = this.opts;
+
+        if (onShow) {
+            this._handleVisibilityEvents(onShow);
+        }
     }
 
     hide(){
@@ -517,6 +523,12 @@ export default class Datepicker {
 
         if (this.$scrollableParent) {
             this.$scrollableParent.removeEventListener('scroll', this._onScrollParent)
+        }
+
+        let {onHide} = this.opts;
+
+        if (onHide) {
+            this._handleVisibilityEvents(onHide);
         }
     }
 
@@ -567,7 +579,6 @@ export default class Datepicker {
                 }
         }
 
-        //TODO доделать обработку скролл контекста
         this.$datepicker.style.cssText = `left: ${left + window.scrollX}px; top: ${top + window.scrollY}px`;
     }
 
@@ -679,6 +690,20 @@ export default class Datepicker {
                 this.rangeDateFrom = this.selectedDates[0];
             }
         }
+    }
+
+    _handleVisibilityEvents = (cb) => {
+        if (this._onTransitionEnd) {
+            this.$datepicker.removeEventListener('transitionend', this._onTransitionEnd);
+        }
+
+        cb(false);
+
+        this._onTransitionEnd = () => {
+            cb(true);
+        }
+
+        this.$datepicker.addEventListener('transitionend', this._onTransitionEnd, {once: true});
     }
 
     /**
@@ -845,13 +870,12 @@ export default class Datepicker {
         if (!this.visible) {
             this.show();
         }
-
     }
 
     _onBlur = (e) => {
-        // if (!this.inFocus && this.visible) {
-        //     this.hide();
-        // }
+        if (!this.inFocus && this.visible) {
+            this.hide();
+        }
     }
 
     _onMouseDown = e => {
