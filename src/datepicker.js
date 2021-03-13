@@ -525,6 +525,10 @@ export default class Datepicker {
             this.$scrollableParent.removeEventListener('scroll', this._onScrollParent)
         }
 
+        if (this.elIsInput) {
+            this.$el.blur();
+        }
+
         let {onHide} = this.opts;
 
         if (onHide) {
