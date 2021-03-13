@@ -12,6 +12,7 @@ import {
     isDateBigger,
     isDateSmaller,
     isSameDate,
+    deepMerge,
     getClosestScrollableParent,
 } from './utils';
 import DatepickerBody from './datepickerBody';
@@ -48,8 +49,7 @@ function buildDatepickersContainer () {
 export default class Datepicker {
     constructor(el, opts) {
         this.$el = getEl(el);
-        //TODO сделать deepMerge
-        this.opts = {...defaults, ...opts};
+        this.opts = deepMerge({}, defaults, opts);
 
         if (!$body) {
             $body = getEl('body');
@@ -103,9 +103,7 @@ export default class Datepicker {
 
         if (this.elIsInput) {
             if (!inline) {
-                // Set extra classes for proper transitions
                 this._setPositionClasses(position);
-                //TODO дописать добавление событий
                 this._bindEvents()
             }
 
