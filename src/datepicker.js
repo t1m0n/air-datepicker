@@ -1,4 +1,3 @@
-/* eslint-disable */
 import defaults from './defaults';
 import {
     copyDate,
@@ -104,16 +103,16 @@ export default class Datepicker {
         if (this.elIsInput) {
             if (!inline) {
                 this._setPositionClasses(position);
-                this._bindEvents()
+                this._bindEvents();
             }
 
             if (keyboardNav && !onlyTimepicker) {
-               this.keyboardNav = new DatepickerKeyboard({dp: this, opts})
+                this.keyboardNav = new DatepickerKeyboard({dp: this, opts});
             }
         }
 
         if (classes) {
-            this.$datepicker.classList.add(...classes.split(' '))
+            this.$datepicker.classList.add(...classes.split(' '));
         }
 
         if (onlyTimepicker) {
@@ -126,16 +125,16 @@ export default class Datepicker {
             opts
         });
 
-        this.nav = new DatepickerNav({dp,opts,})
+        this.nav = new DatepickerNav({dp,opts,});
 
         if (timepicker) {
-            this.timepicker = new DatepickerTime({dp,opts,})
+            this.timepicker = new DatepickerTime({dp,opts,});
             this.$timepicker.appendChild(this.timepicker.$el);
         }
 
 
         if (this.$buttons) {
-            this.buttons = new DatepickerButtons({dp,opts})
+            this.buttons = new DatepickerButtons({dp,opts});
 
             this.$buttons.appendChild(this.buttons.$el);
         }
@@ -187,15 +186,15 @@ export default class Datepicker {
         this.locale = deepCopy(locale);
 
         if (dateFormat) {
-            this.locale.dateFormat = dateFormat
+            this.locale.dateFormat = dateFormat;
         }
 
         if (timeFormat) {
-            this.locale.timeFormat = timeFormat
+            this.locale.timeFormat = timeFormat;
         }
 
         if (firstDay !== '') {
-            this.locale.firstDay = firstDay
+            this.locale.firstDay = firstDay;
         }
 
         if (timepicker && typeof dateFormat !== 'function') {
@@ -224,15 +223,15 @@ export default class Datepicker {
 
         if (this.visible) classes += ' active';
 
-        this.$datepicker.removeAttribute('class')
-        this.$datepicker.classList.add(...classes.split(' '))
+        this.$datepicker.removeAttribute('class');
+        this.$datepicker.classList.add(...classes.split(' '));
     }
 
     _bindEvents(){
-        this.$el.addEventListener(this.opts.showEvent, this._onFocus)
-        this.$el.addEventListener('blur', this._onBlur)
-        this.$datepicker.addEventListener('mousedown', this._onMouseDown)
-        this.$datepicker.addEventListener('mouseup', this._onMouseUp)
+        this.$el.addEventListener(this.opts.showEvent, this._onFocus);
+        this.$el.addEventListener('blur', this._onBlur);
+        this.$datepicker.addEventListener('mousedown', this._onMouseDown);
+        this.$datepicker.addEventListener('mouseup', this._onMouseUp);
     }
 
     _limitViewDateByMaxMinDates(){
@@ -301,7 +300,7 @@ export default class Datepicker {
             yyyy: parsedDate.year,
             yyyy1: decade[0],
             yyyy2: decade[1]
-        }
+        };
 
 
         for (let [format, data] of Object.entries(formats)) {
@@ -370,8 +369,8 @@ export default class Datepicker {
         let newViewDate;
 
         if (Array.isArray(date)) {
-            date.forEach(d => {
-                this.selectDate(d)
+            date.forEach((d) => {
+                this.selectDate(d);
             });
             return;
         }
@@ -462,9 +461,9 @@ export default class Datepicker {
 
                 this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate,  date});
 
-                return true
+                return true;
             }
-        })
+        });
     }
 
     replaceDate(selectedDate, newDate) {
@@ -489,7 +488,7 @@ export default class Datepicker {
     }
 
     clear(){
-        this.selectedDates = []
+        this.selectedDates = [];
         this.rangeDateFrom = false;
         this.rangeDateTo = false;
 
@@ -504,7 +503,7 @@ export default class Datepicker {
         this.$scrollableParent = getClosestScrollableParent(this.$el);
 
         if (this.$scrollableParent && !this.$scrollableParent.matches('html')) {
-            this.$scrollableParent.addEventListener('scroll', this._onScrollParent)
+            this.$scrollableParent.addEventListener('scroll', this._onScrollParent);
         }
 
         let {onShow} = this.opts;
@@ -520,7 +519,7 @@ export default class Datepicker {
         this.visible = false;
 
         if (this.$scrollableParent) {
-            this.$scrollableParent.removeEventListener('scroll', this._onScrollParent)
+            this.$scrollableParent.removeEventListener('scroll', this._onScrollParent);
         }
 
         if (this.elIsInput) {
@@ -586,11 +585,11 @@ export default class Datepicker {
 
     setInputValue = () => {
         let {opts: {altFieldDateFormat, altField, multipleDatesSeparator}, selectedDates, $altField, locale} = this,
-            value = selectedDates.map(date => {
+            value = selectedDates.map((date) => {
                 if (typeof locale.dateFormat === 'function') {
                     return locale.dateFormat(date);
                 }
-                return this.formatDate(locale.dateFormat, date)
+                return this.formatDate(locale.dateFormat, date);
             }),
             altValues;
 
@@ -613,12 +612,12 @@ export default class Datepicker {
 
         if (selectedDates.length) {
             dates = selectedDates.map(copyDate);
-            formattedDates = dates.map(date => {
+            formattedDates = dates.map((date) => {
                 if (typeof locale.dateFormat === 'function') {
                     return locale.dateFormat(date);
                 }
 
-                return this.formatDate(locale.dateFormat, date)
+                return this.formatDate(locale.dateFormat, date);
             });
         }
 
@@ -640,17 +639,17 @@ export default class Datepicker {
     _checkIfDateIsSelected = (date, cellType=consts.days) =>{
         let alreadySelectedDate = false;
 
-        this.selectedDates.some(selectedDate=>{
+        this.selectedDates.some((selectedDate)=>{
             let same = isSameDate(date, selectedDate, cellType);
             alreadySelectedDate = same && selectedDate;
             return same;
-        })
+        });
 
-        return alreadySelectedDate
+        return alreadySelectedDate;
     }
 
     _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate){
-        let {range, toggleSelected, timepicker} = this.opts;
+        let {range, toggleSelected} = this.opts;
         if (range) {
             if (!toggleSelected) {
                 // Add possibility to select same date when range is true
@@ -666,7 +665,7 @@ export default class Datepicker {
 
         // Change last selected date to be able to change time when clicking on this cell
         if (!toggleSelected) {
-            this._updateLastSelectedDate(alreadySelectedDate)
+            this._updateLastSelectedDate(alreadySelectedDate);
         }
     }
 
@@ -678,7 +677,7 @@ export default class Datepicker {
         if (nextView < 0) nextView = 0;
 
         this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
-        this.setCurrentView(this.viewIndexes[nextView])
+        this.setCurrentView(this.viewIndexes[nextView]);
     }
 
     _handleRangeOnFocus(){
@@ -703,7 +702,7 @@ export default class Datepicker {
 
         this._onTransitionEnd = () => {
             cb(true);
-        }
+        };
 
         this.$datepicker.addEventListener('transitionend', this._onTransitionEnd, {once: true});
     }
@@ -712,7 +711,7 @@ export default class Datepicker {
      * Sets new view date of datepicker
      * @param {Date} date
      */
-    setViewDate = date => {
+    setViewDate = (date) => {
         if (isSameDate(date, this.viewDate)) return;
         this.viewDate = date;
         let {onChangeViewDate} = this.opts;
@@ -723,7 +722,7 @@ export default class Datepicker {
                 month,
                 year,
                 decade: this.curDecade
-            })
+            });
         }
 
         this.trigger(consts.eventChangeViewDate, date);
@@ -745,7 +744,7 @@ export default class Datepicker {
         this.trigger(consts.eventChangeFocusDate, date, params);
     }
 
-    setCurrentView = view => {
+    setCurrentView = (view) => {
         if (!this.viewIndexes.includes(view)) return;
 
         if (!this.views[view]) {
@@ -763,7 +762,7 @@ export default class Datepicker {
         if (this.elIsInput && this.visible) this.setPosition();
 
         if (this.opts.onChangeView) {
-            this.opts.onChangeView(view)
+            this.opts.onChangeView(view);
         }
 
         this.trigger(consts.eventChangeCurrentView, view);
@@ -773,7 +772,7 @@ export default class Datepicker {
      * Updates lastSelectedDate param and triggers corresponding event
      * @param {Date|Boolean} date - date or empty
      */
-    _updateLastSelectedDate = date =>{
+    _updateLastSelectedDate = (date) =>{
         this.lastSelectedDate = date;
         this.trigger(consts.eventChangeLastSelectedDate, date);
     }
@@ -793,8 +792,8 @@ export default class Datepicker {
 
         this.removeAllEvents();
 
-        this.$el.removeEventListener(this.opts.showEvent, this._onFocus)
-        this.$el.removeEventListener('blur', this._onBlur)
+        this.$el.removeEventListener(this.opts.showEvent, this._onFocus);
+        this.$el.removeEventListener('blur', this._onBlur);
 
         if (this.keyboardNav) {
             this.keyboardNav.destroy();
@@ -832,11 +831,11 @@ export default class Datepicker {
     _onChangeSelectedDate = () =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(() => {
-            this.setInputValue()
+            this.setInputValue();
             if (this.opts.onSelect) {
                 this._triggerOnSelect();
             }
-        })
+        });
     }
 
     _onChangeFocusedDate = (date, {viewDateTransition} = {}) =>{
@@ -892,16 +891,16 @@ export default class Datepicker {
         }
     }
 
-    _onMouseDown = e => {
+    _onMouseDown = (e) => {
         this.inFocus = true;
     }
 
-    _onMouseUp = e => {
+    _onMouseUp = (e) => {
         this.inFocus = false;
         this.$el.focus();
     }
 
-    _onScrollParent = e => {
+    _onScrollParent = (e) => {
         if (this.visible) {
             this.setPosition();
         }
@@ -915,7 +914,7 @@ export default class Datepicker {
     }
 
     get curDecade() {
-        return getDecade(this.viewDate)
+        return getDecade(this.viewDate);
     }
 
     get viewIndex(){
@@ -958,7 +957,7 @@ export default class Datepicker {
     static replacer(str, reg, data) {
         return str.replace(reg, function (match, p1,p2,p3) {
             return p1 + data + p3;
-        })
+        });
     }
 
     static defaults = defaults

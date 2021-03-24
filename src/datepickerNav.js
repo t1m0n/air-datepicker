@@ -1,5 +1,13 @@
-/* eslint-disable */
-import {closest, createElement, getEl, isDateBigger, toggleClass, removeClass, isDateSmaller, getDecade} from './utils';
+import {
+    closest,
+    createElement,
+    getEl,
+    isDateBigger,
+    toggleClass,
+    removeClass,
+    isDateSmaller,
+    getDecade
+} from './utils';
 
 import './datepickerNav.scss';
 import consts from './consts';
@@ -32,7 +40,7 @@ export default class DatepickerNav {
 
     _bindEvents(){
         this.$el.addEventListener('click', this.onClickNav);
-        this.$title.addEventListener('click', this.onClickNavTitle)
+        this.$title.addEventListener('click', this.onClickNavTitle);
     }
 
     _bindDatepickerEvents(){
@@ -44,11 +52,11 @@ export default class DatepickerNav {
         this.$el = createElement({
             tagName: 'nav',
             className: 'datepicker-nav'
-        })
+        });
     }
 
     _getTitle() {
-        return this.dp.formatDate(this.opts.navTitles[this.dp.currentView], this.dp.viewDate)
+        return this.dp.formatDate(this.opts.navTitles[this.dp.currentView], this.dp.viewDate);
     }
 
     _handleNavStatus() {
@@ -60,29 +68,30 @@ export default class DatepickerNav {
         switch (this.dp.currentView) {
             case consts.days:
                 if (minDate && isDateSmaller(new Date(year, month - 1, 1), minDate)) {
-                    this._disableNav('prev')
+                    this._disableNav('prev');
                 }
                 if (maxDate && isDateBigger(new Date(year, month + 1, 1), maxDate)) {
-                    this._disableNav('next')
+                    this._disableNav('next');
                 }
                 break;
             case consts.months:
                 if (minDate && isDateSmaller(new Date(year - 1, month, date), minDate)) {
-                    this._disableNav('prev')
+                    this._disableNav('prev');
                 }
                 if (maxDate && isDateBigger(new Date(year + 1, month, date), maxDate)) {
-                    this._disableNav('next')
+                    this._disableNav('next');
                 }
                 break;
-            case consts.years:
+            case consts.years: {
                 let decade = getDecade(this.dp.viewDate);
                 if (minDate && isDateSmaller(new Date(decade[0] - 1, 0, 1), minDate)) {
-                    this._disableNav('prev')
+                    this._disableNav('prev');
                 }
                 if (maxDate && isDateBigger(new Date(decade[1] + 1, 0, 1), maxDate)) {
-                    this._disableNav('next')
+                    this._disableNav('next');
                 }
                 break;
+            }
         }
     }
 
@@ -109,13 +118,13 @@ export default class DatepickerNav {
         this._handleNavStatus();
     }
 
-    onChangeCurrentView = view =>{
+    onChangeCurrentView = () =>{
         this.render();
         this._resetNavStatus();
         this._handleNavStatus();
     }
 
-    onClickNavTitle = e =>{
+    onClickNavTitle = (e) =>{
         if (this.dp.isFinalView) return;
         this.dp.up();
     }
@@ -123,9 +132,9 @@ export default class DatepickerNav {
     _buildBaseHtml(){
         let {prevHtml, nextHtml} = this.opts;
 
-        this.$el.innerHTML = `` +
+        this.$el.innerHTML = '' +
             `<div class="datepicker-nav--action" data-action="prev">${prevHtml}</div>` +
-            `<div class="datepicker-nav--title"></div>` +
+            '<div class="datepicker-nav--title"></div>' +
             `<div class="datepicker-nav--action" data-action="next">${nextHtml}</div>`;
     }
 
@@ -134,6 +143,6 @@ export default class DatepickerNav {
 
         toggleClass(this.$title, {
             '-disabled-': this.dp.isFinalView
-        })
+        });
     }
 }

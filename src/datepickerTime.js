@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
     addEventListener,
     clamp,
@@ -59,30 +58,30 @@ export default class DatepickerTime {
     }
 
     createElement(){
-        this.$el = createElement({className: classNames('datepicker-time', {'-am-pm-': dp.ampm,})});
+        this.$el = createElement({className: classNames('datepicker-time', {'-am-pm-': this.dp.ampm,})});
     }
 
-    buildHtml(data){
+    buildHtml(){
         let {
             hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dp, dayPeriod,
             opts: {hoursStep, minutesStep}
         } = this;
 
-        this.$el.innerHTML = `` +
-            `<div class="datepicker-time--current">` +
+        this.$el.innerHTML = '' +
+            '<div class="datepicker-time--current">' +
             `   <span class="datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
-            `   <span class="datepicker-time--current-colon">:</span>` +
+            '   <span class="datepicker-time--current-colon">:</span>' +
             `   <span class="datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
             `   ${dp.ampm ? `<span class='datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
-            `</div>` +
-            `<div class="datepicker-time--sliders">` +
-            `   <div class="datepicker-time--row">` +
+            '</div>' +
+            '<div class="datepicker-time--sliders">' +
+            '   <div class="datepicker-time--row">' +
             `      <input type="range" name="hours" value="${hours}" min="${minHours}" max="${maxHours}" step="${hoursStep}"/>` +
-            `   </div>` +
-            `   <div class="datepicker-time--row">` +
+            '   </div>' +
+            '   <div class="datepicker-time--row">' +
             `      <input type="range" name="minutes" value="${minutes}" min="${minMinutes}" max="${maxMinutes}" step="${minutesStep}"/>` +
-            `   </div>` +
-            `</div>`;
+            '   </div>' +
+            '</div>';
     }
 
     defineDOM(){
@@ -93,7 +92,7 @@ export default class DatepickerTime {
         this.$minutes = getElWithContext('[name="minutes"]');
         this.$hoursText = getElWithContext('.datepicker-time--current-hours');
         this.$minutesText = getElWithContext('.datepicker-time--current-minutes');
-        this.$ampm = getElWithContext('.datepicker-time--current-ampm')
+        this.$ampm = getElWithContext('.datepicker-time--current-ampm');
     }
 
 
@@ -202,7 +201,7 @@ export default class DatepickerTime {
         return {
             hours: hours,
             dayPeriod: dayPeriod
-        }
+        };
     }
 
     updateSliders(){
@@ -219,7 +218,7 @@ export default class DatepickerTime {
 
     updateText(){
         this.$hoursText.innerHTML = getLeadingZeroNum(this.displayHours);
-        this.$minutesText.innerHTML =  getLeadingZeroNum(this.minutes)
+        this.$minutesText.innerHTML =  getLeadingZeroNum(this.minutes);
 
         if (this.dp.ampm) {
             this.$ampm.innerHTML = this.dayPeriod;
@@ -260,7 +259,7 @@ export default class DatepickerTime {
 
     onMouseEnterLeave = (e) => {
         let name = e.target.getAttribute('name'),
-            $el = this.$minutesText
+            $el = this.$minutesText;
 
         if (name === 'hours') {
             $el = this.$hoursText;

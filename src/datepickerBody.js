@@ -1,4 +1,3 @@
-/* eslint-disable */
 import consts from './consts';
 import {
     getEl,
@@ -6,21 +5,20 @@ import {
     getDaysCount,
     getParsedDate,
     subDays,
-    addDays,
     getDecade,
     isSameDate,
     addEventListener,
-    insertAfter,
-    deepCopy,
-    closest, isDateBigger, isDateSmaller
+    closest,
+    isDateBigger,
+    isDateSmaller
 } from './utils';
 import DatepickerCell from './datepickerCell';
 
 import './datepickerBody.scss';
 
 let templates = {
-    [consts.days]:`` +
-        `<div class="datepicker-body--day-names"></div>` +
+    [consts.days]:'' +
+        '<div class="datepicker-body--day-names"></div>' +
         `<div class="datepicker-body--cells -${consts.days}-"></div>`,
     [consts.months]: `<div class="datepicker-body--cells -${consts.months}-"></div>`,
     [consts.years]: `<div class="datepicker-body--cells -${consts.years}-"></div>`
@@ -51,14 +49,14 @@ export default class DatepickerBody {
     _bindEvents(){
         let {range, dynamicRange} = this.opts;
 
-        addEventListener(this.$el, 'mouseover', this.onMouseOverCell)
-        addEventListener(this.$el, 'mouseout', this.onMouseOutCell)
-        addEventListener(this.$el, 'click', this.onClickCell)
+        addEventListener(this.$el, 'mouseover', this.onMouseOverCell);
+        addEventListener(this.$el, 'mouseout', this.onMouseOutCell);
+        addEventListener(this.$el, 'click', this.onClickCell);
 
         if (range && dynamicRange) {
-            addEventListener(this.$el, 'mousedown', this.onMouseDown)
-            addEventListener(this.$el, 'mousemove', this.onMouseMove)
-            addEventListener(window.document, 'mouseup', this.onMouseUp)
+            addEventListener(this.$el, 'mousedown', this.onMouseDown);
+            addEventListener(this.$el, 'mousemove', this.onMouseMove);
+            addEventListener(window.document, 'mouseup', this.onMouseUp);
         }
 
     }
@@ -158,7 +156,7 @@ export default class DatepickerBody {
             year = firstYear;
 
         while(year <= lastYear) {
-            this.cells.push(this._generateCell(new Date(year, 0)))
+            this.cells.push(this._generateCell(new Date(year, 0)));
             year++;
         }
     }
@@ -182,18 +180,18 @@ export default class DatepickerBody {
     }
 
     show() {
-        this.$el.classList.remove('-hidden-')
+        this.$el.classList.remove('-hidden-');
     }
 
     hide() {
-        this.$el.classList.add('-hidden-')
+        this.$el.classList.add('-hidden-');
     }
 
     destroyCells(){
-        this.cells.forEach(c=>c.destroy())
+        this.cells.forEach(c=>c.destroy());
     }
 
-    handleClick = e =>{
+    handleClick = (e) =>{
         let $cell = closest(e.target, '.datepicker-cell');
         if (!$cell) return;
         let cell = $cell.adpCell;
@@ -213,7 +211,7 @@ export default class DatepickerBody {
         }
     }
 
-    onChangeCurrentView = view =>{
+    onChangeCurrentView = (view) =>{
         if (view !== this.type) {
             this.hide();
         } else {
@@ -221,20 +219,20 @@ export default class DatepickerBody {
         }
     }
 
-    onMouseOverCell = e => {
+    onMouseOverCell = (e) => {
         let $cell = closest(e.target, '.datepicker-cell');
         this.dp.setFocusDate($cell ? $cell.adpCell.date : false);
     }
 
-    onMouseOutCell = e => {
+    onMouseOutCell = (e) => {
         this.dp.setFocusDate(false);
     }
 
-    onClickCell = e => {
+    onClickCell = (e) => {
         this.handleClick(e);
     }
 
-    onMouseDown = e =>{
+    onMouseDown = (e) =>{
         this.pressed = true;
 
         let $cell = closest(e.target, '.datepicker-cell'),
@@ -248,7 +246,7 @@ export default class DatepickerBody {
         }
     }
 
-    onMouseMove = e => {
+    onMouseMove = (e) => {
         if (!this.pressed || !this.dp.isMinViewReached) return;
         e.preventDefault();
 
@@ -282,7 +280,7 @@ export default class DatepickerBody {
         }
     }
 
-    onMouseUp = e => {
+    onMouseUp = (e) => {
         this.pressed = false;
         this.rangeFromFocused = false;
         this.rangeToFocused = false;
@@ -294,7 +292,7 @@ export default class DatepickerBody {
         this.$cells.innerHTML = '';
 
         this._generateCells();
-        this.cells.forEach(c=>{
+        this.cells.forEach((c)=>{
             this.$cells.appendChild(c.render());
         });
     }

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {classNames, createElement} from './utils';
 import buttonPresets from './buttonPresets';
 
@@ -24,7 +23,7 @@ export default class DatepickerButtons {
     generateButtons(){
         let {buttons} = this.opts;
 
-        buttons.forEach(b=>{
+        buttons.forEach((b)=>{
             let data = b;
 
             if (typeof b === 'string' && buttonPresets[b]) {
@@ -36,15 +35,15 @@ export default class DatepickerButtons {
                 this.attachEventToButton(button, data.onClick);
             }
 
-            this.$el.appendChild(button)
-        })
+            this.$el.appendChild(button);
+        });
 
     }
 
     attachEventToButton(button, onClick) {
         button.addEventListener('click', ()=>{
             onClick(this.dp);
-        })
+        });
     }
 
     /**
@@ -55,7 +54,7 @@ export default class DatepickerButtons {
      * @return HTMLElement
      */
     createButton({content, className, tagName='button'}){
-        let _content = typeof content === 'function' ? content({dp: this.dp, locale: this.dp.locale}) : content
+        let _content = typeof content === 'function' ? content({dp: this.dp, locale: this.dp.locale}) : content;
 
         return createElement({
             tagName,

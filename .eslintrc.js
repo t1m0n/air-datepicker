@@ -48,6 +48,15 @@ module.exports = {
                 varsIgnorePattern: '^_$',
             }
         ],
-        'max-len': ['error', {'code': 120, 'ignoreStrings': true}]
+        'max-len': [
+            'error',
+            {
+                'code': 120,
+                'ignoreStrings': true,
+                'ignoreTrailingComments': true,
+                'ignoreComments': true,
+                'ignoreTemplateLiterals': true
+            }
+        ]
     },
 };

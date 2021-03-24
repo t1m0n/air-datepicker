@@ -5,10 +5,11 @@ import Datepicker from 'datepicker';
 let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
-    inline: false,
+    inline: true,
     range: false ,
     toggleSelected: false,
     timepicker: true,
+    timeFormat: 'mm : hh aa',
     // buttons: ['today', 'clear'],
     multipleDatesSeparator: ',        ',
     onSelect({dates, formattedDates, datepicker}){

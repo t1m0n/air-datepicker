@@ -1,5 +1,5 @@
 import consts from './consts';
-import {getParsedDate, isDateBigger, isDateSmaller, getDaysCount} from './utils';
+import {getParsedDate, getDaysCount} from './utils';
 
 export default class DatepickerKeyboard {
     pressedKeys = new Set();
