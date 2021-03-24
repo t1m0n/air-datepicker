@@ -160,7 +160,7 @@ export function addDays(date, days) {
 export function classNames(...classes) {
     let classNames = [];
 
-    classes.forEach(c => {
+    classes.forEach((c) => {
         if (typeof c === 'object') {
             for(let cName in c) {
                 if (c[cName]) {
@@ -186,7 +186,7 @@ export function toggleClass(el, classes) {
 
 export function addClass(el, ...classes) {
     if (el.length) {
-        el.forEach(node=>{
+        el.forEach((node)=>{
             node.classList.add(...classes);
         });
     } else {
@@ -331,7 +331,7 @@ export function clamp(val, min, max,) {
  * @return {object|array}
  */
 export function deepMerge(target, ...objects) {
-    objects.forEach((obj) => {
+    objects.filter(o => o).forEach((obj) => {
         for (let [key, value] of Object.entries(obj)) {
             let arrayOrObject = value.toString() === ('[object Object]' || '[object Array]');
 
