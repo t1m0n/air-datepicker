@@ -33,6 +33,15 @@ export default class DatepickerKeyboard {
         $el.addEventListener('keydown', this.onKeyDown);
         $el.addEventListener('keyup', this.onKeyUp);
     }
+
+    destroy() {
+        let {$el} = this.dp;
+
+        $el.removeEventListener('keydown', this.onKeyDown);
+        $el.removeEventListener('keyup', this.onKeyUp);
+        this.hotKeys = null;
+        this.pressedKeys = null;
+    }
     
     getInitialFocusDate(){
         let {focusDate, currentView, selectedDates, parsedViewDate: {year, month}} = this.dp;

@@ -38,6 +38,11 @@ window.dp = new Datepicker($input, {
     // minDate: new Date(2020, 9, 5, 15, 45),
 });
 
+document.querySelector('#destr').addEventListener('click', () => {
+    dp.destroy();
+})
+
+
 if (module.hot) {
     module.hot.accept();
 }

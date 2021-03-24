@@ -18,11 +18,15 @@ let events = {
         this.__events[eventName] = this.__events[eventName].filter(h => h !== handler);
     },
 
+    removeAllEvents() {
+        this.__events = {};
+    },
+
     trigger(eventName, ...args){
         if (!this.__events) return;
         if (!this.__events[eventName]) return;
 
-        this.__events[eventName].forEach(handler => {
+        this.__events[eventName].forEach((handler) => {
             handler(...args);
         });
     }

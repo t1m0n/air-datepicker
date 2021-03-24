@@ -108,7 +108,7 @@ export default class Datepicker {
             }
 
             if (keyboardNav && !onlyTimepicker) {
-               new DatepickerKeyboard({dp: this, opts})
+               this.keyboardNav = new DatepickerKeyboard({dp: this, opts})
             }
         }
 
@@ -790,6 +790,18 @@ export default class Datepicker {
         if (parent) {
             parent.removeChild(this.$datepicker);
         }
+
+        this.removeAllEvents();
+
+        this.$el.removeEventListener(this.opts.showEvent, this._onFocus)
+        this.$el.removeEventListener('blur', this._onBlur)
+
+        if (this.keyboardNav) {
+            this.keyboardNav.destroy();
+        }
+
+        this.views = null;
+        this.nav = null;
     }
 
     //  Utils
