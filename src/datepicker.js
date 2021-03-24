@@ -35,9 +35,8 @@ let $body = '',
             '<div class="datepicker--content"></div>' +
         '</div>';
 
-function buildDatepickersContainer () {
+function buildDatepickersContainer (id) {
     containerBuilt = true;
-    let id = 'datepickers-container';
 
     $datepickersContainer = createElement({className: id, id});
     $body.appendChild($datepickersContainer);
@@ -46,6 +45,8 @@ function buildDatepickersContainer () {
 }
 
 export default class Datepicker {
+    static defaults = defaults
+    static defaultContainerId = 'datepickers-container'
     constructor(el, opts) {
         this.$el = getEl(el);
         this.opts = deepMerge({}, defaults, opts);
@@ -88,7 +89,7 @@ export default class Datepicker {
         let dp = this;
 
         if (!containerBuilt && !inline && this.elIsInput) {
-            buildDatepickersContainer();
+            buildDatepickersContainer(Datepicker.defaultContainerId);
         }
         this._buildBaseHtml();
         this._handleLocale();
@@ -960,7 +961,6 @@ export default class Datepicker {
         });
     }
 
-    static defaults = defaults
 
     static getWordBoundaryRegExp(sign){
         let symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';

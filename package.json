@@ -5,7 +5,8 @@
     "dev": "set NODE_ENV=development&& webpack",
     "dev:serve": "npm run browser&& set NODE_ENV=development&& node server-dev.js",
     "prod": "set NODE_ENV=production&& webpack",
-    "browser": "open-cli http://localhost:3000 -- 'chrome' "
+    "browser": "open-cli http://localhost:3000 -- 'chrome' ",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -19,6 +20,7 @@
     "eslint-loader": "^4.0.2",
     "express": "^4.17.1",
     "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.6.3",
     "node-sass": "^4.14.0",
     "open-cli": "^6.0.1",
     "postcss-loader": "^3.0.0",

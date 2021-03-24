@@ -48,17 +48,7 @@ let config = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules)/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: ['@babel/preset-env'],
-                            plugins: [
-                                ['@babel/plugin-proposal-class-properties', {loose: true}],
-                            ]
-                        }
-                    }
-                ]
+                use: ['babel-loader']
             },
             {
                 test: /\.scss$/,
