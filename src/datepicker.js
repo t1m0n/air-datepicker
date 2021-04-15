@@ -29,11 +29,9 @@ let $body = '',
     $datepickersContainer = '',
     containerBuilt = false,
     baseTemplate = '' +
-        '<div class="datepicker">' +
             '<i class="datepicker--pointer"></i>' +
             '<div class="datepicker--navigation"></div>' +
-            '<div class="datepicker--content"></div>' +
-        '</div>';
+            '<div class="datepicker--content"></div>';
 
 function buildDatepickersContainer (id) {
     containerBuilt = true;
@@ -49,6 +47,7 @@ export default class Datepicker {
     static defaultContainerId = 'datepickers-container'
     constructor(el, opts) {
         this.$el = getEl(el);
+        this.$datepicker = createElement({className: 'datepicker'});
         this.opts = deepMerge({}, defaults, opts);
 
         if (!$body) {
@@ -112,6 +111,10 @@ export default class Datepicker {
             }
         }
 
+        if (inline || !this.elIsInput) {
+            this.$datepicker.classList.add('-inline-');
+        }
+
         if (classes) {
             this.$datepicker.classList.add(...classes.split(' '));
         }
@@ -151,23 +154,20 @@ export default class Datepicker {
     }
 
     _buildBaseHtml() {
-        let $appendTarget,
-            $inline = createElement({className: 'datepicker-inline'}),
-            {buttons, timepicker} = this.opts;
+        let {buttons, timepicker, inline} = this.opts;
 
         if  (this.elIsInput) {
-            if (!this.opts.inline) {
-                $appendTarget = $datepickersContainer;
+            if (!inline) {
+                $datepickersContainer.appendChild(this.$datepicker);
             } else {
-                $appendTarget = insertAfter($inline, this.$el);
+                insertAfter(this.$datepicker, this.$el);
             }
         } else {
-            $appendTarget = this.$el.appendChild($inline);
+            this.$el.appendChild(this.$datepicker);
         }
 
-        $appendTarget.innerHTML = baseTemplate;
+        this.$datepicker.innerHTML = baseTemplate;
 
-        this.$datepicker = getEl('.datepicker', $appendTarget);
         this.$content = getEl('.datepicker--content',  this.$datepicker);
         this.$nav = getEl('.datepicker--navigation', this.$datepicker);
 
