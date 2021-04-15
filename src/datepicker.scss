@@ -42,21 +42,20 @@
       transform var(--adp-transition-duration) var(--adp-transition-ease),
       left 0s 0s;
   }
-}
 
-.datepicker-inline {
-  .datepicker {
+  &.-inline- {
     border-color: var(--adp-border-color-inline);
     box-shadow: none;
     position: static;
     left: auto;
     right: auto;
-    opacity: 1;
-    transform: none;
-  }
-
-  .datepicker--pointer {
+    opacity: 0;
     display: none;
+    transform: none;
+
+    .datepicker--pointer {
+      display: none;
+    }
   }
 }
 
