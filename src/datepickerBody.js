@@ -10,7 +10,8 @@ import {
     addEventListener,
     closest,
     isDateBigger,
-    isDateSmaller
+    isDateSmaller,
+    classNames,
 } from './utils';
 import DatepickerCell from './datepickerCell';
 
@@ -84,13 +85,16 @@ export default class DatepickerBody {
 
         while (i < 7) {
             let day = curDay % 7;
-            html += `<div class="datepicker-body--day-name ${isWeekend(day) ? consts.cssClassWeekend : ''}">
-                        ${this.dp.locale.daysMin[day]}
-                    </div>`;
+            let className = classNames('datepicker-body--day-name', {
+                [consts.cssClassWeekend]: isWeekend(day)
+            });
+            let dayName = this.dp.locale.daysMin[day];
+
+            html += `<div class="${className}">${dayName}</div>`;
+
             i++;
             curDay++;
         }
-
         return html;
     }
 
