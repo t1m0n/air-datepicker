@@ -5,7 +5,7 @@ import Datepicker from 'datepicker';
 let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
-    inline: true
+    inline: true,
 });
 
 document.querySelector('#destr').addEventListener('click', () => {
