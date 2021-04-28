@@ -357,8 +357,16 @@ export default class Datepicker {
         this._handleUpDownActions(date, 'up');
     }
 
-    selectDate(date, {updateTime} = {}) {
+    /**
+     * Selects date, if array is passed then selects dates one by one
+     * @param {Date|Date[]} date
+     * @param {object} [params] - extra parameters
+     * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
+     * @return {Promise<unknown>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise tobe able to get current input value
+     */
+    selectDate(date, params = {}) {
         let {currentView, parsedViewDate, selectedDates} = this;
+        let {updateTime} = params;
         let {
             moveToOtherMonthsOnSelect,
             moveToOtherYearsOnSelect,
@@ -373,7 +381,10 @@ export default class Datepicker {
             date.forEach((d) => {
                 this.selectDate(d);
             });
-            return;
+
+            return new Promise((resolve) => {
+                setTimeout(resolve);
+            });
         }
 
         if (!(date instanceof Date)) return;
@@ -440,6 +451,9 @@ export default class Datepicker {
             }
         }
 
+        return new Promise((resolve) => {
+            setTimeout(resolve);
+        });
     }
 
     unselect(date){
@@ -595,7 +609,13 @@ export default class Datepicker {
             altValues;
 
         if (altField && $altField) {
-            altValues = selectedDates.map(date => this.formatDate(altFieldDateFormat, date));
+            altValues = selectedDates.map((date) => {
+                if (typeof altFieldDateFormat === 'function') {
+                    return altFieldDateFormat(date);
+                }
+
+                return this.formatDate(altFieldDateFormat, date);
+            });
             altValues = altValues.join(multipleDatesSeparator);
             $altField.value = altValues;
         }
