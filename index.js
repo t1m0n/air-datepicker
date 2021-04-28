@@ -8,6 +8,7 @@ window.dp = new Datepicker($input, {
     inline: true,
 });
 
+
 document.querySelector('#destr').addEventListener('click', () => {
     dp.destroy();
 })

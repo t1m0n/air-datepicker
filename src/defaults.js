@@ -10,7 +10,7 @@ export default {
     weekends: [6, 0],
     dateFormat: '',
     altField: '',
-    altFieldDateFormat: '@',
+    altFieldDateFormat: 'T',
     toggleSelected: true,
     keyboardNav: true,
 
