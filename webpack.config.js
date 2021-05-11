@@ -2,7 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const dev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const NAME = 'air-datepicker';
 
 //  Plugins
 // -------------------------------------------------
@@ -19,6 +20,12 @@ let plugins = [
     new webpack.HotModuleReplacementPlugin()
 ];
 
+let buildPlugins = [
+    new MiniCssExtractPlugin({
+        filename: `${NAME}.css`,
+    }),
+]
+
 //  Entry
 // -------------------------------------------------
 
@@ -27,7 +34,7 @@ let entry = {
 };
 
 if (!dev) {
-    entry.index = './index.js';
+    entry.index = './src/datepicker.js';
 }
 
 //  Config
@@ -39,9 +46,11 @@ let config = {
     watch: dev,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'js/[name].js',
+        filename: dev ? 'js/[name].js' : `${NAME}.js`,
         publicPath: '/',
-        chunkFilename: 'js/[name].js'
+        chunkFilename: 'js/[name].js',
+        library: 'AirDatepicker',
+        libraryTarget: 'umd'
     },
     module: {
         rules: [
@@ -53,7 +62,7 @@ let config = {
             {
                 test: /\.scss$/,
                 use: [
-                    'style-loader',
+                    dev ? 'style-loader' : MiniCssExtractPlugin.loader,
                     {loader: 'css-loader', options: {sourceMap: dev}},
                     {loader:'postcss-loader', options: {sourceMap: dev}},
                     {loader: 'sass-loader', options: {sourceMap: dev}},
@@ -64,7 +73,7 @@ let config = {
     resolve: {
         modules: [`${__dirname}/src/js`, `${__dirname}/src`, 'node_modules']
     },
-    plugins: plugins,
+    plugins: dev ? plugins : buildPlugins,
 };
 
 if (dev) {
