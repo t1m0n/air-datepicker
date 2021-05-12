@@ -24,7 +24,7 @@ let buildPlugins = [
     new MiniCssExtractPlugin({
         filename: `${NAME}.css`,
     }),
-]
+];
 
 //  Entry
 // -------------------------------------------------
@@ -49,14 +49,15 @@ let config = {
         filename: dev ? 'js/[name].js' : `${NAME}.js`,
         publicPath: '/',
         chunkFilename: 'js/[name].js',
-        library: 'AirDatepicker',
-        libraryTarget: 'umd'
+        library: dev ? undefined : 'AirDatepicker',
+        libraryTarget: dev ? undefined : 'umd',
+        libraryExport: dev ? undefined : 'default'
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules)/,
+                exclude: /(node_modules)|dist/,
                 use: ['babel-loader']
             },
             {
@@ -71,7 +72,7 @@ let config = {
         ]
     },
     resolve: {
-        modules: [`${__dirname}/src/js`, `${__dirname}/src`, 'node_modules']
+        modules: [`${__dirname}/src/js`, `${__dirname}/src`, `${__dirname}/dist`, 'node_modules']
     },
     plugins: dev ? plugins : buildPlugins,
 };
