@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import Datepicker from 'datepicker';
-
 let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
