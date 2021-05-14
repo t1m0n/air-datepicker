@@ -15,7 +15,7 @@ let plugins = [
         }
     }),
     new HtmlWebpackPlugin({
-        template: './index.html'
+        template: './index-dev.html'
     }),
     new webpack.HotModuleReplacementPlugin()
 ];
@@ -30,7 +30,7 @@ let buildPlugins = [
 // -------------------------------------------------
 
 let entry = {
-    index: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', './index.js'],
+    index: './index-dev.js',
 };
 
 if (!dev) {
@@ -42,7 +42,7 @@ if (!dev) {
 let config = {
     mode: dev ? 'development' : 'production',
     entry: entry,
-    devtool: dev ? 'eval-source-map' : 'none',
+    devtool: dev ? 'eval-source-map' : false,
     watch: dev,
     output: {
         path: path.resolve(__dirname, 'dist'),

@@ -49,7 +49,6 @@ export default class Datepicker {
         this.$el = getEl(el);
         this.$datepicker = createElement({className: 'datepicker'});
         this.opts = deepMerge({}, defaults, opts);
-
         if (!$body) {
             $body = getEl('body');
         }
