@@ -1,0 +1,10 @@
+/* -------------------------------------------------
+    Container
+   ------------------------------------------------- */
+
+.el {
+  max-width: var(--container-max-width);
+  padding: 0 var(--container-offset);
+  margin: 0 auto;
+}
+

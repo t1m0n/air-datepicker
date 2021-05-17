@@ -1,0 +1,12 @@
+/* -------------------------------------------------
+    Typography styles
+   ------------------------------------------------- */
+
+html {
+    font-family: var(--base-font-family);
+    color: var(--base-color);
+}
+
+h1, h2, h3 {
+    line-height: 1.2;
+}

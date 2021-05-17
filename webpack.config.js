@@ -51,7 +51,8 @@ let config = {
         chunkFilename: 'js/[name].js',
         library: dev ? undefined : 'AirDatepicker',
         libraryTarget: dev ? undefined : 'umd',
-        libraryExport: dev ? undefined : 'default'
+        libraryExport: dev ? undefined : 'default',
+        globalObject: 'this',
     },
     module: {
         rules: [
