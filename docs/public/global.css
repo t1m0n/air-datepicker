@@ -11,8 +11,18 @@
 
 html {
     --base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --base-font-size: 16px;
+    --base-line-height: 1.35;
     --base-color: #333;
+
+    --color-secondary: #6d6d6d;
 
     --container-offset: 16px;
     --container-max-width: 1200px;
+    --layout-top-offset: 64px;
+
+    --ui-height: 40px;
+    --ui-height-promo: 60px;
+    --ui-border-radius: 6px;
+    --ui-font-size: 16px;
 }

@@ -1,0 +1,22 @@
+/* -------------------------------------------------
+    Button
+   ------------------------------------------------- */
+
+.el {
+  display: inline-flex;
+  height: var(--ui-height);
+  border-radius: var(--ui-border-radius);
+  border: none;
+  background: #26b9ff;
+  padding: 0 1em;
+  align-items: center;
+  font-size: var(--ui-font-size);
+  color: #fff;
+  cursor: pointer;
+}
+
+.promo {
+  border-radius: 30px;
+  justify-content: center;
+}
+
