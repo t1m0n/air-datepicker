@@ -1,0 +1,43 @@
+/* -------------------------------------------------
+    Home page
+   ------------------------------------------------- */
+
+.el {
+  padding-top: var(--layout-top-offset);
+}
+
+.dpHolder {
+  text-align: center;
+  margin: 48px 0 52px;
+}
+
+.dpPromo {
+  box-shadow: 0 10px 14px rgba(0, 0, 0, .1);
+
+}
+
+.promoHeader {
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+
+  h1 {
+    font-weight: 100;
+    font-size: 48px;
+    text-transform: uppercase;
+    margin-bottom: .2em;
+  }
+
+  strong {
+    font-weight: normal;
+  }
+}
+
+.nav {
+  display: grid;
+  grid-auto-columns: 160px;
+  justify-content: center;
+  grid-auto-flow: column;
+  grid-column-gap: 16px;
+  align-items: center;
+}

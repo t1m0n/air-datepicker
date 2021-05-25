@@ -8,6 +8,7 @@ module.exports = {
     'extends': [
         'eslint:recommended',
     ],
+    'ignorePatterns': ['docs'],
     'globals': {
         'module': 'readonly',
     },
