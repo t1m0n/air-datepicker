@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import css './<%= name %>.module.scss';
+import css from './<%= name %>.module.scss';
 
 export default class <%= Name %> extends React.Component {
     constructor() {

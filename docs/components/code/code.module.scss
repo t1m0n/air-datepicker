@@ -1,0 +1,24 @@
+/* -------------------------------------------------
+    Code
+   ------------------------------------------------- */
+
+.el {
+  padding: 12px 18px !important;
+  background: #fff !important;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, .02);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .08);
+
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 15px !important;
+
+  &:after,
+  &:before {
+    display: none !important;
+  }
+
+  .token.atrule, .token.attr-value, .token.keyword, .token.class-name {
+    color: red;
+  }
+}
+

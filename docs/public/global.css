@@ -18,8 +18,11 @@ html {
     --color-secondary: #6d6d6d;
 
     --container-offset: 16px;
-    --container-max-width: 1200px;
+    --container-max-width: 1000px;
     --layout-top-offset: 64px;
+
+    --section-offset: 40px;
+
 
     --ui-height: 40px;
     --ui-height-promo: 60px;

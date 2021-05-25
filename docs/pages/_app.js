@@ -1,8 +1,10 @@
 import {withRouter} from 'next/router';
+import Head from 'next/head';
 import React from 'react';
 import {IntlProvider} from 'react-intl'
 
 import 'air-datepicker/air-datepicker.css';
+import 'prismjs/themes/prism-coy.css'
 import 'public/global.css';
 import 'public/typography.css';
 
@@ -30,6 +32,11 @@ class MyApp extends React.Component {
 
         if (!loaded) return null;
         return <IntlProvider messages={messages} locale={locale} defaultLocale={defaultLocale}>
+            <Head>
+                <link rel="preconnect" href="https://fonts.gstatic.com" />
+                    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet" />
+                <script async defer src="https://buttons.github.io/buttons.js"></script>
+            </Head>
             <Component {...pageProps} />
         </IntlProvider>
 
