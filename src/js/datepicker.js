@@ -4,6 +4,7 @@
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
         containerBuilt = false,
+        isCustomAppend = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
             '<i class="datepicker--pointer"></i>' +
@@ -106,7 +107,15 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if ($body == undefined) {
+        if (this.opts.appendById) {
+            $body = $('#' + this.opts.appendById);
+            isCustomAppend = true;
+        }
+        else if (this.opts.appendByClass) {
+            $body = $('.' + this.opts.appendByClass);
+            isCustomAppend = true;
+        }
+        else {
             $body = $('body');
         }
 
@@ -262,8 +271,14 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
-            $datepickersContainer = $('#datepickers-container');
+            if (isCustomAppend) {
+                var customId = this.opts.appendById || this.opts.appendByClass;
+                $body.append('<div class="datepickers-container" id="datepickers-container-' + customId + '"></div>');
+                $datepickersContainer = $('#datepickers-container-' + customId);
+            } else {
+                $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
+                $datepickersContainer = $('#datepickers-container');
+            }
         },
 
         _buildBaseHtml: function () {
@@ -723,12 +738,14 @@
 
         _getDimensions: function ($el) {
             var offset = $el.offset();
+            var customOffsetLeft = $el.offset().left - $body.offset().left;
+            var customOffsetTop = $el.offset().top - $body.offset().top;
 
             return {
                 width: $el.outerWidth(),
                 height: $el.outerHeight(),
-                left: offset.left,
-                top: offset.top
+                left: isCustomAppend ? customOffsetLeft : offset.left,
+                top: isCustomAppend ? customOffsetTop : offset.top
             }
         },
 
