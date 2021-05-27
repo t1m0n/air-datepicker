@@ -5,6 +5,11 @@ let $input = document.querySelector('#dp');
 
 window.dp = new Datepicker($input, {
     inline: true,
+    onRenderCell({date}) {
+        return {
+            disabled: date.getDate() === 27
+        }
+    }
 });
 
 

@@ -77,6 +77,7 @@ export default class DatepickerCell {
         let {selectOtherMonths, selectOtherYears} = this.opts;
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
+        let {disabled} = this.customData;
 
         let classNameCommon = classNames(
             'datepicker-cell',
@@ -92,18 +93,18 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': this.isOtherMonth,
-                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange
+                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || disabled
                 });
                 break
             case consts.months:
                 classNameType = classNames({
-                    '-disabled-': isOutOfMinMaxRange
+                    '-disabled-': isOutOfMinMaxRange || disabled
                 });
                 break
             case consts.years:
                 classNameType = classNames({
                     '-other-decade-': this.isOtherDecade,
-                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears)
+                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears) || disabled
                 });
                 break
         }
