@@ -1,0 +1,38 @@
+/* -------------------------------------------------
+    Header
+   ------------------------------------------------- */
+
+.el {
+  height: var(--header-height);
+  box-shadow: 0 0 14px rgba(0, 0, 0, .1);
+  margin-bottom: var(--header-offset);
+  display: flex;
+}
+
+
+.nav {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  grid-column-gap: 16px;
+}
+
+.navItem {
+  color: var(--base-color);
+  text-decoration: none;
+  position: relative;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 .7em;
+  border-radius: 4px;
+  line-height: 1;
+  
+  &:hover {
+    color: #41bcfc;
+  }
+}
+
+.navItemActive {
+  color: #00b2ff;
+}

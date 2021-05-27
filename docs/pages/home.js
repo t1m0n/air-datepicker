@@ -30,7 +30,7 @@ export default class Home extends React.Component {
                         <AirDatepicker dpClassName={css.dpPromo} />
                     </div>
                     <nav className={css.nav}>
-                        <Button promo>Примеры</Button>
+                        <Button promo href={'examples'}>Примеры</Button>
                         <Button promo>Документация</Button>
                         <Button promo>API</Button>
                     </nav>

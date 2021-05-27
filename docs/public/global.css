@@ -19,10 +19,12 @@ html {
 
     --container-offset: 16px;
     --container-max-width: 1000px;
-    --layout-top-offset: 64px;
+    --layout-top-offset: 40px;
 
     --section-offset: 40px;
 
+    --header-height: 56px;
+    --header-offset: 32px;
 
     --ui-height: 40px;
     --ui-height-promo: 60px;
