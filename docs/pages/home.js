@@ -27,7 +27,7 @@ export default class Home extends React.Component {
                         <strong><FormattedMessage id={'promoNote'} /></strong>
                     </header>
                     <div className={css.dpHolder}>
-                        <AirDatepicker dpClassName={css.dpPromo} />
+                        <AirDatepicker dpClassName={css.dpPromo} inline />
                     </div>
                     <nav className={css.nav}>
                         <Button promo href={'examples'}>Примеры</Button>

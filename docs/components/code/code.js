@@ -13,7 +13,8 @@ export default class Code extends React.Component {
     }
 
     static propTypes = {
-        language: PropTypes.oneOf(['javascript', 'css', ''])
+        language: PropTypes.oneOf(['javascript', 'css', 'terminal']),
+        inline: PropTypes.bool
     }
 
     componentDidMount() {
@@ -21,9 +22,20 @@ export default class Code extends React.Component {
     }
 
     render() {
-        let {children, language = 'javascript'} = this.props;
+        let {children, inline, language = 'javascript'} = this.props;
+        let className = cn(`language-${language}`, css.el, {
+            [css.inline]: inline
+        })
+
+        if (inline) {
+            return <code className={className} ref={this.$el}>{children}</code>
+        }
+
         return (
-            <pre className={cn(`language-${language}`, css.el)} ref={this.$el}>
+            <pre
+                className={className}
+                ref={this.$el}
+            >
                 <code>
                     {children}
                 </code>

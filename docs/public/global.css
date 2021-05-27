@@ -15,6 +15,7 @@ html {
     --base-line-height: 1.35;
     --base-color: #333;
 
+    --color-accent: #26b9ff;
     --color-secondary: #6d6d6d;
 
     --container-offset: 16px;
@@ -26,8 +27,15 @@ html {
     --header-height: 56px;
     --header-offset: 32px;
 
+    --title-line-height: 1.2;
+
     --ui-height: 40px;
     --ui-height-promo: 60px;
-    --ui-border-radius: 6px;
+    --ui-border-radius: 4px;
+    --ui-border-color: #ddd;
+    --ui-border-color-focus: var(--color-accent);
     --ui-font-size: 16px;
+
+    --t-duration: .3s;
+    --t-easing: ease-out;
 }

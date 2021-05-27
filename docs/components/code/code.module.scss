@@ -6,6 +6,7 @@
   padding: 12px 18px !important;
   background: #fff !important;
   border-radius: 10px;
+  color: #000 !important;
   border: 1px solid rgba(0, 0, 0, .02);
   box-shadow: 0 6px 14px rgba(0, 0, 0, .08);
 
@@ -20,5 +21,13 @@
   .token.atrule, .token.attr-value, .token.keyword, .token.class-name {
     color: red;
   }
+}
+
+.inline {
+  display: inline-flex;
+  padding: 1px !important;
+  border: none !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
 }
 

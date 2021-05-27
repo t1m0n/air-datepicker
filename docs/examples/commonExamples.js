@@ -6,5 +6,34 @@ let basicUsage =
 new AirDatepicker(el, {...options})
 `;
 
+let basicInit = `new AirDatepicker('#input');`
 
-export {install, basicUsage}
+let rangeOption = `
+new AirDatepicker('#input', {
+    range: true,
+    multipleDatesSeparator: ' - '
+});`
+
+let timeOption = `
+new AirDatepicker('#input', {
+    timepicker: true,
+});
+`
+
+let customCellExample = `
+new AirDatepicker('#input', {
+    onRenderCell() {
+    
+    },
+});
+`
+
+
+export {
+    install,
+    basicUsage,
+    basicInit,
+    rangeOption,
+    timeOption,
+    customCellExample
+}
