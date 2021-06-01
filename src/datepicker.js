@@ -12,6 +12,7 @@ import {
     isDateSmaller,
     isSameDate,
     deepMerge,
+    createDate,
     getClosestScrollableParent,
 } from './utils';
 import DatepickerBody from './datepickerBody';
@@ -149,7 +150,7 @@ export default class Datepicker {
         this.$nav.appendChild(this.nav.$el);
 
         if (selectedDates) {
-            this.selectDate(selectedDates);
+            this.selectDate(selectedDates, {silent: true});
         }
     }
 
@@ -365,9 +366,10 @@ export default class Datepicker {
 
     /**
      * Selects date, if array is passed then selects dates one by one
-     * @param {Date|Date[]} date
+     * @param {Date|string|number|Array<Date|number|string>} date
      * @param {object} [params] - extra parameters
      * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
+     * @param {boolean} [params.silent] - if true, then onChange event wont be triggered
      * @return {Promise<unknown>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise tobe able to get current input value
      */
     selectDate(date, params = {}) {
@@ -385,13 +387,15 @@ export default class Datepicker {
 
         if (Array.isArray(date)) {
             date.forEach((d) => {
-                this.selectDate(d);
+                this.selectDate(d, params);
             });
 
             return new Promise((resolve) => {
                 setTimeout(resolve);
             });
         }
+
+        date = createDate(date);
 
         if (!(date instanceof Date)) return;
 
@@ -446,7 +450,12 @@ export default class Datepicker {
             this.selectedDates = [date];
         }
 
-        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionSelectDate, date, updateTime});
+        this.trigger(consts.eventChangeSelectedDate, {
+            action: consts.actionSelectDate,
+            silent: params?.silent,
+            date,
+            updateTime
+        });
         this._updateLastSelectedDate(date);
 
         if (autoClose && !this.timepickerIsActive) {
@@ -858,11 +867,11 @@ export default class Datepicker {
     //  Subscription events
     // -------------------------------------------------
 
-    _onChangeSelectedDate = () =>{
+    _onChangeSelectedDate = ({silent}) =>{
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(() => {
             this.setInputValue();
-            if (this.opts.onSelect) {
+            if (this.opts.onSelect && !silent) {
                 this._triggerOnSelect();
             }
         });

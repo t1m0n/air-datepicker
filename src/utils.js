@@ -357,3 +357,23 @@ export function deepMerge(target, ...objects) {
 
     return target;
 }
+
+/**
+ * Creates Date object from string or number. If passed param is instance of Date, then just returns it.
+ * @param {number|string|Date} date
+ * @return {Date | boolean}
+ */
+export function createDate(date) {
+    let resultDate = date;
+
+    if (!(date instanceof Date)) {
+        resultDate = new Date(date);
+    }
+
+    if (isNaN(resultDate.getTime())) {
+        console.log(`Unable to convert value "${date}" to Date object`);
+        resultDate = false;
+    }
+
+    return resultDate;
+}

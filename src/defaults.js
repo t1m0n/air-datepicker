@@ -13,6 +13,7 @@ export default {
     altFieldDateFormat: 'T',
     toggleSelected: true,
     keyboardNav: true,
+    selectedDates: false,
 
     position: 'bottom left',
     offset: 12,

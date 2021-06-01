@@ -16,6 +16,7 @@ export default {
      * @param {String} action
      * @param {Date} date
      * @param {Boolean} [updateTime] - if true, then timepicker will take time from passed date and save it to instance
+     * @param {Boolean} [silent] - if true, then onChange event wont be triggered
      */
     eventChangeSelectedDate: 'changeSelectedDate',
 
