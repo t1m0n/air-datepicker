@@ -20,6 +20,8 @@ export default class Examples extends React.Component {
     }
 
     render(){
+        let today = new Date();
+
         return (
             <div className='examples'>
                 <Container>
@@ -71,7 +73,10 @@ export default class Examples extends React.Component {
                                     id={'exampleCellContentNote_2'}
                                 />
                                 <Example>
-                                    <AirDatepicker inline onRenderCell={({date, type}) => {
+                                    <AirDatepicker
+                                        inline
+                                        selectedDates={new Date(today.getFullYear(), today.getMonth(), 10)}
+                                        onRenderCell={({date, type}) => {
                                         let dates = [1, 5, 7, 10, 15, 20, 25],
                                             emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
                                             isDay = type === 'day',

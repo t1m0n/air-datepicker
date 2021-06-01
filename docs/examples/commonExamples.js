@@ -21,24 +21,32 @@ let timeOption =
 `
 
 let customCellExample =
-`new AirDatepicker('#inline-div', {
-    let dates = [1, 5, 7, 10, 15, 20, 25],
-        emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
-        isDay = type === 'day',
-        _date = date.getDate(),
-        shouldChangeContent = isDay && dates.includes(_date),
-        randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
+`let today = new Date();
 
-    return {
-        html: shouldChangeContent ? randomEmoji : false,
-        classes: shouldChangeContent ? '-emoji-cell-' : false
-    }
+new AirDatepicker('#inline-div', {
+    // Handle render process
+    onRenderCell({date, cellType}) {
+        let dates = [1, 5, 7, 10, 15, 20, 25],
+            emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
+            isDay = cellType === 'day',
+            _date = date.getDate(),
+            shouldChangeContent = isDay && dates.includes(_date),
+            randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
+    
+        return {
+            html: shouldChangeContent ? randomEmoji : false,
+            classes: shouldChangeContent ? '-emoji-cell-' : false
+        }
+    },
+    
+    // Select 10th day of the month
+    selectedDates: new Date(today.getFullYear(), today.getMonth(), 10)
 });
 `
 let customCellExampleCss =
 `.-emoji-cell- {
     --adp-cell-background-color-selected: #ffb8ff;
-    --adp-cell-background-color-selected-hover: #ffb0ff;
+    --adp-cell-background-color-selected-hover: #fda5fd;
 }
 `
 
