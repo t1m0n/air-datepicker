@@ -488,8 +488,10 @@ export default class Datepicker {
     }
 
     replaceDate(selectedDate, newDate) {
-        //TODO изменить логику с indexOf на проверку даты
-        let index = this.selectedDates.indexOf(selectedDate);
+        let date = this.selectedDates.find((d) => {
+            return isSameDate(d, selectedDate, this.currentView);
+        });
+        let index = this.selectedDates.indexOf(date);
 
         if (index < 0) return;
 

@@ -8,6 +8,7 @@ window.dp = new Datepicker($input, {
     // selectedDates: [new Date('2021-06-01'), new Date('2021-06-05')],
     // multipleDates: true,
     range: true,
+    minView: 'months',
     // toggleSelected: false,
     onSelect(){
         console.log('on select');
