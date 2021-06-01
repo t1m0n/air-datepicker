@@ -7,7 +7,7 @@ import Section from 'components/section';
 import Example from 'components/example';
 import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
-import {basicInit, rangeOption, timeOption, customCellExample} from 'examples/commonExamples';
+import * as code from 'examples/commonExamples';
 import {FormattedMessage} from 'react-intl';
 
 export default class Examples extends React.Component {
@@ -30,7 +30,7 @@ export default class Examples extends React.Component {
                             <Section title='exampleBasicTitle'>
                                 <Example>
                                    <AirDatepicker />
-                                   <Code>{basicInit}</Code>
+                                   <Code>{code.basicInit}</Code>
                                 </Example>
                             </Section>
                             <Section title='exampleRangeTitle'>
@@ -41,7 +41,7 @@ export default class Examples extends React.Component {
                                 />
                                 <Example>
                                    <AirDatepicker range={true} multipleDatesSeparator={' - '} />
-                                   <Code>{rangeOption}</Code>
+                                   <Code>{code.rangeOption}</Code>
                                 </Example>
                             </Section>
                             <Section title='exampleTimeTitle'>
@@ -55,7 +55,7 @@ export default class Examples extends React.Component {
                                 />
                                 <Example>
                                    <AirDatepicker timepicker={true}/>
-                                   <Code>{timeOption}</Code>
+                                   <Code>{code.timeOption}</Code>
                                 </Example>
                             </Section>
                             <Section title='exampleCellContentTitle'>
@@ -63,16 +63,29 @@ export default class Examples extends React.Component {
                                     tagName={'p'}
                                     id={'exampleCellContentNote'}
                                     values={{
-                                        param: <Code inline>{`{onRenderCell: () => {})}`}</Code>,
+                                        param: <Code inline>{`{onRenderCell: ({date, cellType}) => {})}`}</Code>,
                                     }}
                                 />
+                                <FormattedMessage
+                                    tagName={'p'}
+                                    id={'exampleCellContentNote_2'}
+                                />
                                 <Example>
-                                   <AirDatepicker onRenderCell={({date, type}) => {
-                                       return {
-                                           isDisabled: true
-                                       }
-                                   }}/>
-                                   <Code>{customCellExample}</Code>
+                                    <AirDatepicker inline onRenderCell={({date, type}) => {
+                                        let dates = [1, 5, 7, 10, 15, 20, 25],
+                                            emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
+                                            isDay = type === 'day',
+                                            _date = date.getDate(),
+                                            shouldChangeContent = isDay && dates.includes(_date),
+                                            randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
+
+                                        return {
+                                            html: shouldChangeContent ? randomEmoji : false,
+                                            classes: shouldChangeContent ? '-emoji-cell-' : false
+                                        }
+                                    }}/>
+                                    <Code>{code.customCellExample}</Code>
+                                    <Code language='css'>{code.customCellExampleCss}</Code>
                                 </Example>
                             </Section>
                         </main>

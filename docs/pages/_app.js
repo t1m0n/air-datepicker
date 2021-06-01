@@ -8,6 +8,7 @@ import 'air-datepicker/air-datepicker.css';
 import 'prismjs/themes/prism-coy.css'
 import 'public/global.css';
 import 'public/typography.css';
+import 'public/dp-examples.css';
 
 
 class MyApp extends React.Component {

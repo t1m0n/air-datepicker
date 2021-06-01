@@ -116,7 +116,7 @@ export default class DatepickerCell {
         let {year, month, date} = getParsedDate(this.date);
         let {showOtherMonths, showOtherYears} = this.opts;
 
-        if (this.customData?.html !== undefined) {
+        if (this.customData?.html) {
             return this.customData.html;
         }
 
