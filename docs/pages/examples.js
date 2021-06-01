@@ -59,6 +59,7 @@ export default class Examples extends React.Component {
                                    <AirDatepicker timepicker={true}/>
                                    <Code>{code.timeOption}</Code>
                                 </Example>
+                                <Section.SubTitle titleId={'exampleTimeTitleFormat'} />
                             </Section>
                             <Section title='exampleCellContentTitle'>
                                 <FormattedMessage

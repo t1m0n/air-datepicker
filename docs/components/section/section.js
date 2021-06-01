@@ -23,9 +23,18 @@ function Section({title, isPrimary, children} = {}) {
     );
 }
 
+function SubTitle({titleId}) {
+    return <h3 className={css.subTitle}><FormattedMessage id={titleId} /></h3>
+}
+
+SubTitle.propTypes = {
+    title: PropTypes.string
+}
+
 Section.propTypes = {
     title: PropTypes.string,
     isPrimary: PropTypes.bool
 };
 
+Section.SubTitle = SubTitle;
 export default Section;
