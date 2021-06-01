@@ -83,7 +83,10 @@ export default class Datepicker {
     viewIndexes = [consts.days, consts.months, consts.years];
 
     init(){
-        let {opts, opts: {inline, timepicker, position, classes, altField, onlyTimepicker, keyboardNav}} = this;
+        let {
+            opts,
+            opts: {inline, selectedDates, timepicker, position, classes, altField, onlyTimepicker, keyboardNav}
+        } = this;
         let dp = this;
 
         if (!containerBuilt && !inline && this.elIsInput) {
@@ -144,6 +147,10 @@ export default class Datepicker {
 
         this.$content.appendChild(this.views[this.currentView].$el);
         this.$nav.appendChild(this.nav.$el);
+
+        if (selectedDates) {
+            this.selectDate(selectedDates);
+        }
     }
 
     _bindSubEvents(){
@@ -481,6 +488,7 @@ export default class Datepicker {
     }
 
     replaceDate(selectedDate, newDate) {
+        //TODO изменить логику с indexOf на проверку даты
         let index = this.selectedDates.indexOf(selectedDate);
 
         if (index < 0) return;
@@ -619,7 +627,7 @@ export default class Datepicker {
             $altField.value = altValues;
         }
 
-        value = value.join(this.opts.multipleDatesSeparator);
+        value = value.join(multipleDatesSeparator);
 
         this.$el.value = value;
     }
