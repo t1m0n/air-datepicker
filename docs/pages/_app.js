@@ -9,6 +9,7 @@ import 'prismjs/themes/prism-coy.css'
 import 'public/global.css';
 import 'public/typography.css';
 import 'public/dp-examples.css';
+import 'public/prism-custom.css';
 
 
 class MyApp extends React.Component {

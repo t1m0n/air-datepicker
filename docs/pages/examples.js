@@ -9,6 +9,7 @@ import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
 import * as code from 'examples/commonExamples';
 import {FormattedMessage} from 'react-intl';
+import {timeFormatOption} from "examples/commonExamples";
 
 export default class Examples extends React.Component {
     constructor() {
@@ -59,7 +60,28 @@ export default class Examples extends React.Component {
                                    <AirDatepicker timepicker={true}/>
                                    <Code>{code.timeOption}</Code>
                                 </Example>
+
                                 <Section.SubTitle titleId={'exampleTimeTitleFormat'} />
+                                <FormattedMessage
+                                    tagName={'p'}
+                                    id={'exampleTimeFormatNote'}
+                                    values={{
+                                        paramName: <Code inline>{`{timeFormat: '...'}`}</Code>,
+                                        dateFormataa: <Code inline>{`aa`}</Code>,
+                                        dateFormatAA: <Code inline>{`AA`}</Code>
+                                    }}
+                                />
+                                <Example>
+                                    <AirDatepicker
+                                        timepicker
+                                        selectedDates={new Date()}
+                                        timeFormat={'hh:mm AA'}
+                                    />
+                                    <Code>{code.timeFormatOption}</Code>
+                                </Example>
+
+                                <Section.SubTitle titleId={'exampleTimeRangeTitle'} />
+
                             </Section>
                             <Section title='exampleCellContentTitle'>
                                 <FormattedMessage

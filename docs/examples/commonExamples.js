@@ -19,6 +19,12 @@ let timeOption =
     timepicker: true,
 });
 `
+export let timeFormatOption =
+`new AirDatepicker('#input', {
+    timepicker: true,
+    timeFormat: 'hh:mm AA'
+});
+`
 
 let customCellExample =
 `let today = new Date();
