@@ -158,6 +158,9 @@
             if (!containerBuilt && !this.opts.inline && this.elIsInput) {
                 this._buildDatepickersContainer();
             }
+            else if (isCustomAppend) {
+                this._buildDatepickersContainer();
+            }
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
             this._syncWithMinMaxDates();
