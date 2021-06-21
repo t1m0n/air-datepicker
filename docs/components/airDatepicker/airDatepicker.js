@@ -23,13 +23,13 @@ export default class AirDatepicker extends React.Component {
     }
 
     render() {
-        let {inline, dpClassName} = this.props;
+        let {inline, dpClassName, placeholder} = this.props;
 
         return (
             <>
                 {inline
                     ? <div className={cn(css.inlineContainer, dpClassName)} ref={this.$el} />
-                    : <Input ref={this.$el}/>
+                    : <Input ref={this.$el} placeholder={placeholder}/>
                 }
             </>
         );

@@ -8,10 +8,10 @@ import Example from 'components/example';
 import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
 import * as code from 'examples/commonExamples';
-import {FormattedMessage} from 'react-intl';
-import {timeFormatOption} from "examples/commonExamples";
+import {FormattedMessage, injectIntl} from 'react-intl';
+import {timeFormatOption, timeRangeExample} from 'examples/commonExamples';
 
-export default class Examples extends React.Component {
+class Examples extends React.Component {
     constructor() {
         super();
     }
@@ -22,6 +22,7 @@ export default class Examples extends React.Component {
 
     render(){
         let today = new Date();
+        let {intl} = this.props;
 
         return (
             <div className='examples'>
@@ -32,8 +33,19 @@ export default class Examples extends React.Component {
                             <PageTitle titleId={'navExamples'} />
                             <Section title='exampleBasicTitle'>
                                 <Example>
-                                   <AirDatepicker />
+                                   <AirDatepicker placeholder={intl.messages.chooseDate} />
                                    <Code>{code.basicInit}</Code>
+                                </Example>
+
+                                <Section.SubTitle titleId='exampleBasicInlineTitle' />
+                                <FormattedMessage
+                                    tagName={'p'}
+                                    id={'exampleBasicInlineNote'}
+                                    values={{param: <Code inline>{`{inline: true}`}</Code>   }}
+                                />
+                                <Example>
+                                    <AirDatepicker inline/>
+                                    <Code>{code.basicInitInline}</Code>
                                 </Example>
                             </Section>
                             <Section title='exampleRangeTitle'>
@@ -81,7 +93,24 @@ export default class Examples extends React.Component {
                                 </Example>
 
                                 <Section.SubTitle titleId={'exampleTimeRangeTitle'} />
-
+                                <FormattedMessage
+                                    id={'exampleTimeRangeNote'}
+                                    tagName={'p'}
+                                    values={{
+                                        commonOptions: <Code inline>{`minHours, maxHours, minMinutes, maxMinutes`}</Code>,
+                                        stepOptions: <Code inline>{`hoursStep, minutesStep`}</Code>
+                                    }}
+                                />
+                                <FormattedMessage
+                                    id={'exampleTimeRangeNote2'}
+                                    tagName={'p'}
+                                />
+                                <Example>
+                                    <AirDatepicker inline timepicker minHours={9} maxHours={18} minutesStep={5}/>
+                                    <Example>
+                                        <Code>{code.timeRangeExample}</Code>
+                                    </Example>
+                                </Example>
                             </Section>
                             <Section title='exampleCellContentTitle'>
                                 <FormattedMessage
@@ -123,3 +152,5 @@ export default class Examples extends React.Component {
         );
     }
 }
+
+export default injectIntl(Examples)

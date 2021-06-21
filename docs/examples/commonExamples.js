@@ -8,6 +8,16 @@ new AirDatepicker(el, {...options})
 
 let basicInit = `new AirDatepicker('#input');`
 
+export let basicInitInline =
+`new AirDatepicker('#div');
+
+// Or init with {inline: true} on <input> or <div> elements
+
+new AirDatepicker('#input', {
+    inline: true
+})
+`;
+
 let rangeOption =
 `new AirDatepicker('#input', {
     range: true,
@@ -54,6 +64,17 @@ let customCellExampleCss =
     --adp-cell-background-color-selected: #ffb8ff;
     --adp-cell-background-color-selected-hover: #fda5fd;
 }
+`
+
+export let timeRangeExample =
+`
+new AirDatepicker({
+    inline: true,
+    timepicker: true,
+    minHours: 9,
+    maxHours: 18,
+    minutesStep: 5
+})
 `
 
 
