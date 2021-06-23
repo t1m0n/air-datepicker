@@ -67,7 +67,7 @@ export default class Datepicker {
         this.inited = false;
         this.visible = false;
 
-        this.viewDate = this.opts.startDate;
+        this.viewDate = createDate(this.opts.startDate);
         this.focusDate = false;
         this.currentView = view;
         this.selectedDates = [];
