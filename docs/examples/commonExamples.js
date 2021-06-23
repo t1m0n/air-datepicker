@@ -77,6 +77,15 @@ new AirDatepicker({
 })
 `
 
+export let optsLocaleBasic =
+`import AirDatepicker from 'air-datepicker';
+import localeEn from 'air-datepicker/locale/en';
+
+new AirDatepicker('#el', {
+    locale: localeEn
+})
+`
+
 
 export {
     install,

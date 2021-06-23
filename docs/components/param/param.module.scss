@@ -1,0 +1,43 @@
+/* -------------------------------------------------
+    Param
+   ------------------------------------------------- */
+
+.el {
+
+}
+
+.list {
+  .el {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.paramRow {
+  display: flex;
+  align-items: center;
+}
+
+.type {
+  background: #efefef;
+  padding: 0 3px;
+  border-radius: 4px;
+}
+
+.paramName {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: .5em;
+}
+
+.defaultValue {
+  margin-left: .5em;
+}
+
+.content {
+
+}
+

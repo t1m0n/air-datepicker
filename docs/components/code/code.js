@@ -14,6 +14,7 @@ export default class Code extends React.Component {
 
     static propTypes = {
         language: PropTypes.oneOf(['javascript', 'css', 'terminal']),
+        bgTransparent: PropTypes.bool,
         inline: PropTypes.bool
     }
 
@@ -22,9 +23,10 @@ export default class Code extends React.Component {
     }
 
     render() {
-        let {children, inline, language = 'javascript'} = this.props;
+        let {children, inline, bgTransparent, language = 'javascript'} = this.props;
         let className = cn(`language-${language}`, css.el, {
-            [css.inline]: inline
+            [css.inline]: inline,
+            [css.bgTransparent]: bgTransparent
         })
 
         if (inline) {

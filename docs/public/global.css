@@ -16,6 +16,7 @@ html {
     --base-color: #333;
 
     --color-accent: #26b9ff;
+    --color-accent-darker: #1e83b1;
     --color-secondary: #6d6d6d;
 
     --container-offset: 16px;
@@ -26,6 +27,9 @@ html {
 
     --header-height: 56px;
     --header-offset: 32px;
+
+    --link-color: var(--color-accent);
+    --link-color-hover: var(--color-accent-darker);
 
     --title-line-height: 1.2;
 

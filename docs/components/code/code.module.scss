@@ -21,8 +21,13 @@
 
 }
 
+.bgTransparent {
+  background: transparent !important;
+}
+
 .inline {
-  display: inline-flex;
+  display: inline-flex !important;
+  margin-bottom: 0 !important;
   padding: 1px !important;
   border: none !important;
   border-radius: 2px !important;

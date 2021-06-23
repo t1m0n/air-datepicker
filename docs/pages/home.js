@@ -31,7 +31,7 @@ export default class Home extends React.Component {
                     </div>
                     <nav className={css.nav}>
                         <Button promo href={'examples'}>Примеры</Button>
-                        <Button promo>Документация</Button>
+                        <Button promo href={'docs'}>Документация</Button>
                         <Button promo>API</Button>
                     </nav>
                     <Section>
