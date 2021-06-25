@@ -6,7 +6,7 @@ import {
     toggleClass,
     removeClass,
     isDateSmaller,
-    getDecade
+    getDecade, getParsedDate
 } from './utils';
 
 import './datepickerNav.scss';
@@ -27,7 +27,7 @@ export default class DatepickerNav {
 
         this.render();
 
-        this._handleNavStatus();
+        this.handleNavStatus();
         this._bindEvents();
         this._bindDatepickerEvents();
     }
@@ -59,35 +59,37 @@ export default class DatepickerNav {
         return this.dp.formatDate(this.opts.navTitles[this.dp.currentView], this.dp.viewDate);
     }
 
-    _handleNavStatus() {
+    handleNavStatus() {
         let {minDate, maxDate, disableNavWhenOutOfRange} = this.opts;
         if (!(minDate || maxDate) || !disableNavWhenOutOfRange) return;
 
-        let {year, month, date} = this.dp.parsedViewDate;
+        let {year, month} = this.dp.parsedViewDate;
+        let minDateParsed = minDate ? getParsedDate(minDate) : false;
+        let maxDateParsed = maxDate ? getParsedDate(maxDate) : false;
 
         switch (this.dp.currentView) {
             case consts.days:
-                if (minDate && isDateSmaller(new Date(year, month - 1, 1), minDate)) {
+                if (minDate && minDateParsed.month >= month) {
                     this._disableNav('prev');
                 }
-                if (maxDate && isDateBigger(new Date(year, month + 1, 1), maxDate)) {
+                if (maxDate && maxDateParsed.month <= month) {
                     this._disableNav('next');
                 }
                 break;
             case consts.months:
-                if (minDate && isDateSmaller(new Date(year - 1, month, date), minDate)) {
+                if (minDate && minDateParsed.year >= year) {
                     this._disableNav('prev');
                 }
-                if (maxDate && isDateBigger(new Date(year + 1, month, date), maxDate)) {
+                if (maxDate && maxDateParsed.year <= year) {
                     this._disableNav('next');
                 }
                 break;
             case consts.years: {
                 let decade = getDecade(this.dp.viewDate);
-                if (minDate && isDateSmaller(new Date(decade[0] - 1, 0, 1), minDate)) {
+                if (minDate && minDateParsed.year >= decade[0]) {
                     this._disableNav('prev');
                 }
-                if (maxDate && isDateBigger(new Date(decade[1] + 1, 0, 1), maxDate)) {
+                if (maxDate && maxDateParsed.year <= decade[1]) {
                     this._disableNav('next');
                 }
                 break;
@@ -115,13 +117,13 @@ export default class DatepickerNav {
     onChangeViewDate = () =>{
         this.render();
         this._resetNavStatus();
-        this._handleNavStatus();
+        this.handleNavStatus();
     }
 
     onChangeCurrentView = () =>{
         this.render();
         this._resetNavStatus();
-        this._handleNavStatus();
+        this.handleNavStatus();
     }
 
     onClickNavTitle = (e) =>{

@@ -340,4 +340,23 @@ describe('OPTIONS TESTS', () => {
             });
         });
     });
+
+    describe('minDate', () => {
+        test('"prev" button should be available', () => {
+            init({
+                startDate: new Date('2021-07-27'),
+                minDate: new Date('2021-06-27'),
+            });
+
+            expect($datepicker.querySelector('[data-action="prev"]')).not.toHaveClass('-disabled-');
+        });
+        test('"prev" button should be disabled in months view', () => {
+            init({
+                view: 'months',
+                minDate: new Date('2021-06-27'),
+            });
+
+            expect($datepicker.querySelector('[data-action="prev"]')).toHaveClass('-disabled-');
+        });
+    });
 });
