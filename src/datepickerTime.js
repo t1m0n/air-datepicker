@@ -61,6 +61,12 @@ export default class DatepickerTime {
         this.$el = createElement({className: classNames('datepicker-time', {'-am-pm-': this.dp.ampm,})});
     }
 
+    destroy() {
+        this.dp.off(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
+        this.dp.off(consts.eventChangeLastSelectedDate, this.onChangeLastSelectedDate);
+        this.$el.parentNode.removeChild(this.$el);
+    }
+
     buildHtml(){
         let {
             hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dp, dayPeriod,

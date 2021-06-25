@@ -34,7 +34,7 @@ export default {
     disableNavWhenOutOfRange: true,
 
     multipleDates: false, // Boolean or Number
-    multipleDatesSeparator: ',',
+    multipleDatesSeparator: ', ',
     range: false,
     dynamicRange: true,
     todayButton: false,

@@ -135,10 +135,8 @@ export default class Datepicker {
         this.nav = new DatepickerNav({dp,opts,});
 
         if (timepicker) {
-            this.timepicker = new DatepickerTime({dp,opts,});
-            this.$timepicker.appendChild(this.timepicker.$el);
+            this._addTimepicker();
         }
-
 
         if (this.$buttons) {
             this.buttons = new DatepickerButtons({dp,opts});
@@ -154,6 +152,13 @@ export default class Datepicker {
         }
     }
 
+    _addTimepicker() {
+        this.$timepicker = createElement({className: 'datepicker--time'});
+        this.$datepicker.appendChild(this.$timepicker);
+        this.timepicker = new DatepickerTime({dp: this, opts: this.opts});
+        this.$timepicker.appendChild(this.timepicker.$el);
+    }
+
     _bindSubEvents(){
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
         this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
@@ -161,7 +166,7 @@ export default class Datepicker {
     }
 
     _buildBaseHtml() {
-        let {buttons, timepicker, inline} = this.opts;
+        let {buttons, inline} = this.opts;
 
         if  (this.elIsInput) {
             if (!inline) {
@@ -178,11 +183,6 @@ export default class Datepicker {
         this.$content = getEl('.datepicker--content',  this.$datepicker);
         this.$nav = getEl('.datepicker--navigation', this.$datepicker);
 
-        if (timepicker) {
-            this.$timepicker = createElement({className: 'datepicker--time'});
-            this.$datepicker.appendChild(this.$timepicker);
-        }
-
         if (buttons && Array.isArray(buttons)) {
             this.$buttons = createElement({className: 'datepicker--buttons'});
             this.$datepicker.appendChild(this.$buttons);
@@ -196,17 +196,21 @@ export default class Datepicker {
         if (dateFormat) {
             this.locale.dateFormat = dateFormat;
         }
-
-        if (timeFormat) {
+        // Allow to remove time from formatted string
+        // e.g. if user wants to display mm:hh yyyy MMMM (time first) instead of hardcoded order - 'date time`
+        if (timeFormat !== undefined && timeFormat !== '') {
             this.locale.timeFormat = timeFormat;
         }
+
+        let {timeFormat: timeFormatInited} = this.locale;
 
         if (firstDay !== '') {
             this.locale.firstDay = firstDay;
         }
 
         if (timepicker && typeof dateFormat !== 'function') {
-            this.locale.dateFormat = [this.locale.dateFormat, this.locale.timeFormat].join(dateTimeSeparator);
+            let separator = timeFormatInited ? dateTimeSeparator : '';
+            this.locale.dateFormat = [this.locale.dateFormat, (timeFormatInited ? timeFormatInited : '')].join(separator);
         }
 
         if (onlyTimepicker) {
@@ -215,9 +219,7 @@ export default class Datepicker {
 
         let boundary = Datepicker.getWordBoundaryRegExp;
 
-        if (this.locale.timeFormat.match(boundary('aa')) ||
-            this.locale.timeFormat.match(boundary('AA'))
-        ) {
+        if (timeFormatInited && (timeFormatInited.match(boundary('aa')) || this.locale.timeFormat.match(boundary('AA')))) {
             this.ampm = true;
         }
 
@@ -822,14 +824,11 @@ export default class Datepicker {
         return this.$content.querySelector(`[data-year="${year}"][data-month="${month}"][data-date="${date}"]`);
     }
 
-    // TODO дописать destroy
     destroy = () =>{
         let parent = this.$datepicker.parentNode;
         if (parent) {
             parent.removeChild(this.$datepicker);
         }
-
-        this.removeAllEvents();
 
         this.$el.removeEventListener(this.opts.showEvent, this._onFocus);
         this.$el.removeEventListener('blur', this._onBlur);
@@ -840,6 +839,37 @@ export default class Datepicker {
 
         this.views = null;
         this.nav = null;
+    }
+
+    update = (newOpts) => {
+        let prevOpts = deepMerge({}, this.opts);
+        deepMerge(this.opts, newOpts);
+
+        let {timepicker, range} = this.opts;
+
+        if (prevOpts.range && !range) {
+            this.rangeDateTo = false;
+            this.rangeDateFrom = false;
+        } else if (!prevOpts.range && range) {
+            if (this.selectedDates.length) {
+                this.rangeDateFrom = this.selectedDates[0];
+                this.rangeDateTo = this.selectedDates[1];
+            }
+        }
+
+        if (prevOpts.timepicker && !timepicker) {
+            this.timepicker.destroy();
+            this.$timepicker.parentNode.removeChild(this.$timepicker);
+        } else if (!prevOpts.timepicker && timepicker) {
+            this._addTimepicker();
+        }
+
+        this._limitViewDateByMaxMinDates();
+        this._handleLocale();
+        this.nav.handleNavStatus();
+        this.nav.render();
+        this.views[this.currentView].render();
+        this.setInputValue();
     }
 
     //  Utils

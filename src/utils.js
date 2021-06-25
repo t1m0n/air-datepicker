@@ -230,7 +230,7 @@ export function isDateBigger(date, comparedDate) {
 }
 
 export function isDateSmaller(date, comparedDate) {
-    return copyDate(date, false).getTime() < copyDate(comparedDate, false).getTime();
+    return !isDateBigger(date, comparedDate);
 }
 
 /**
