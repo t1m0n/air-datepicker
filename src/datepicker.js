@@ -86,7 +86,17 @@ export default class Datepicker {
     init(){
         let {
             opts,
-            opts: {inline, selectedDates, timepicker, position, classes, altField, onlyTimepicker, keyboardNav}
+            opts: {
+                inline,
+                buttons,
+                selectedDates,
+                timepicker,
+                position,
+                classes,
+                altField,
+                onlyTimepicker,
+                keyboardNav
+            }
         } = this;
         let dp = this;
 
@@ -138,10 +148,8 @@ export default class Datepicker {
             this._addTimepicker();
         }
 
-        if (this.$buttons) {
-            this.buttons = new DatepickerButtons({dp,opts});
-
-            this.$buttons.appendChild(this.buttons.$el);
+        if (buttons && Array.isArray(buttons)) {
+            this._addButtons();
         }
 
         this.$content.appendChild(this.views[this.currentView].$el);
@@ -159,6 +167,13 @@ export default class Datepicker {
         this.$timepicker.appendChild(this.timepicker.$el);
     }
 
+    _addButtons() {
+        this.$buttons = createElement({className: 'datepicker--buttons'});
+        this.$datepicker.appendChild(this.$buttons);
+        this.buttons = new DatepickerButtons({dp: this, opts: this.opts});
+        this.$buttons.appendChild(this.buttons.$el);
+    }
+
     _bindSubEvents(){
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
         this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
@@ -166,7 +181,7 @@ export default class Datepicker {
     }
 
     _buildBaseHtml() {
-        let {buttons, inline} = this.opts;
+        let {inline} = this.opts;
 
         if  (this.elIsInput) {
             if (!inline) {
@@ -182,11 +197,6 @@ export default class Datepicker {
 
         this.$content = getEl('.datepicker--content',  this.$datepicker);
         this.$nav = getEl('.datepicker--navigation', this.$datepicker);
-
-        if (buttons && Array.isArray(buttons)) {
-            this.$buttons = createElement({className: 'datepicker--buttons'});
-            this.$datepicker.appendChild(this.$buttons);
-        }
     }
 
     _handleLocale(){
@@ -855,7 +865,7 @@ export default class Datepicker {
         let prevOpts = deepMerge({}, this.opts);
         deepMerge(this.opts, newOpts);
 
-        let {timepicker, range} = this.opts;
+        let {timepicker, buttons, range, selectedDates} = this.opts;
 
         if (prevOpts.range && !range) {
             this.rangeDateTo = false;
@@ -874,11 +884,28 @@ export default class Datepicker {
             this._addTimepicker();
         }
 
+        if (!prevOpts.buttons && buttons) {
+            this._addButtons();
+        } else if (prevOpts.buttons && !buttons) {
+            this.buttons.destroy();
+            this.$buttons.parentNode.removeChild(this.$buttons);
+        }
+
+        if (selectedDates) {
+            this.selectDate(selectedDates)
+        }
+
+        if (newOpts.view) {
+            this.setCurrentView(newOpts.view)
+        }
+
         this._limitViewDateByMaxMinDates();
         this._handleLocale();
-        this.nav.handleNavStatus();
-        this.nav.render();
+        this.nav.update();
         this.views[this.currentView].render();
+        if (this.currentView === consts.days) {
+            this.views[this.currentView].renderDayNames();
+        }
         this.setInputValue();
     }
 

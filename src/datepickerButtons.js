@@ -20,8 +20,16 @@ export default class DatepickerButtons {
         this.$el = createElement({className: 'datepicker-buttons'});
     }
 
+    destroy() {
+        this.$el.parentNode.removeChild(this.$el)
+    }
+
     generateButtons(){
         let {buttons} = this.opts;
+
+        if (!Array.isArray(buttons)) {
+            buttons = [buttons]
+        }
 
         buttons.forEach((b)=>{
             let data = b;

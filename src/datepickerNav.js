@@ -140,6 +140,16 @@ export default class DatepickerNav {
             `<div class="datepicker-nav--action" data-action="next">${nextHtml}</div>`;
     }
 
+    update = () => {
+        let {prevHtml, nextHtml} = this.opts;
+
+        this.$prev.innerHTML = prevHtml;
+        this.$next.innerHTML = nextHtml;
+
+        this.render();
+        this.handleNavStatus();
+    }
+
     render = () => {
         this.$title.innerHTML = this._getTitle();
 

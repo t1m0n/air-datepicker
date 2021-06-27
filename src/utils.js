@@ -338,7 +338,7 @@ export function clamp(val, min, max,) {
 export function deepMerge(target, ...objects) {
     objects.filter(o => o).forEach((obj) => {
         for (let [key, value] of Object.entries(obj)) {
-            let arrayOrObject = value.toString() === ('[object Object]' || '[object Array]');
+            let arrayOrObject = value !== undefined ? value.toString() === ('[object Object]' || '[object Array]') : false;
 
             if (arrayOrObject) {
                 let targetType = target[key] !== undefined ? target[key].toString() : undefined,

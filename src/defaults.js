@@ -37,14 +37,13 @@ export default {
     multipleDatesSeparator: ', ',
     range: false,
     dynamicRange: true,
-    todayButton: false,
-    clearButton: false,
+    buttons: false,
+    monthsField: 'monthsShort',
 
     showEvent: 'focus',
     autoClose: false,
 
     // navigation
-    monthsField: 'monthsShort',
     prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
     nextHtml: '<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>',
     navTitles: {

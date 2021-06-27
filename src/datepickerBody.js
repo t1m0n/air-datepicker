@@ -40,7 +40,7 @@ export default class DatepickerBody {
     init(){
         this._buildBaseHtml();
         if (this.type === consts.days) {
-            this._renderDayNames();
+            this.renderDayNames();
         }
         this.render();
         this._bindEvents();
@@ -165,7 +165,7 @@ export default class DatepickerBody {
         }
     }
 
-    _renderDayNames(){
+    renderDayNames(){
         this.$names.innerHTML =  this._getDayNamesHtml();
     }
 
