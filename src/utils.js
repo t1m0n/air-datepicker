@@ -225,12 +225,17 @@ export function isSameDate(date1, date2, cellType=consts.days) {
     return conditions[cellType];
 }
 
-export function isDateBigger(date, comparedDate) {
-    return copyDate(date, false).getTime() > copyDate(comparedDate, false).getTime();
+export function isDateBigger(date, comparedDate, loose) {
+    let d1 = copyDate(date, false).getTime(),
+        d2 = copyDate(comparedDate, false).getTime();
+
+    return loose
+        ? d1 >= d2
+        : d1 > d2
 }
 
 export function isDateSmaller(date, comparedDate) {
-    return !isDateBigger(date, comparedDate);
+    return !isDateBigger(date, comparedDate, true);
 }
 
 /**

@@ -2,6 +2,9 @@ export default {
     days: 'days',
     months: 'months',
     years: 'years',
+    day: 'day',
+    month: 'month',
+    year: 'year',
 
     eventChangeViewDate: 'changeViewDate',
     eventChangeCurrentView: 'changeCurrentView',

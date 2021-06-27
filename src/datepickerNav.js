@@ -69,10 +69,10 @@ export default class DatepickerNav {
 
         switch (this.dp.currentView) {
             case consts.days:
-                if (minDate && minDateParsed.month >= month) {
+                if (minDate && (minDateParsed.month >= month && minDateParsed.year >= year)) {
                     this._disableNav('prev');
                 }
-                if (maxDate && maxDateParsed.month <= month) {
+                if (maxDate && maxDateParsed.month <= month && maxDateParsed.year <= year) {
                     this._disableNav('next');
                 }
                 break;

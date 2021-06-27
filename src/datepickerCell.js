@@ -10,7 +10,7 @@ import {
     isDateBigger,
     isDateBetween,
     getDecade,
-    addClass
+    addClass, resetTime
 } from './utils';
 
 import './datepickerCell.scss';
@@ -132,18 +132,27 @@ export default class DatepickerCell {
 
     _isOutOfMinMaxRange() {
         let {minDate, maxDate} = this.opts;
-        let {date} = this;
+        let {type, date: cellDate} = this;
+        let {month, year, date} = getParsedDate(cellDate);
+        let isDay = type === consts.days;
+        let isYear = type === consts.years;
+
+        //Since in months cells date is set to the first day of month we should change it value to from min or max dates
+        //to be able to mark cell as disabled correctly
+        //Same goes to year cells
+        let cellMinDate = minDate ? new Date(year, isYear ? minDate.getMonth() : month, isDay ? date : minDate.getDate()) : false;
+        let cellMaxDate = maxDate ? new Date(year, isYear ? maxDate.getMonth() : month, isDay ? date : maxDate.getDate()) : false;
 
         if (minDate && maxDate) {
-            return isDateSmaller(date, minDate) || isDateBigger(date, maxDate)
+            return isDateSmaller(cellMinDate, minDate) || isDateBigger(cellMaxDate, maxDate)
         }
 
         if (minDate) {
-            return isDateSmaller(date, minDate)
+            return isDateSmaller(cellMinDate, minDate)
         }
 
         if (maxDate) {
-            return  isDateBigger(date, maxDate)
+            return isDateBigger(cellMaxDate, maxDate)
         }
     }
 

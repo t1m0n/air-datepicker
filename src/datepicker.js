@@ -818,10 +818,20 @@ export default class Datepicker {
         this.trigger(consts.eventChangeLastSelectedDate, date);
     }
 
-    getCell(jsDate) {
+    getCell(jsDate, cellType = consts.day) {
         let {year, month, date} = getParsedDate(jsDate);
 
-        return this.$content.querySelector(`[data-year="${year}"][data-month="${month}"][data-date="${date}"]`);
+        let yearQuery = `[data-year="${year}"]`,
+            monthQuery = `[data-month="${month}"]`,
+            dayQuery = `[data-date="${date}"]`;
+
+        let resultQuery = {
+            [consts.day]: `${yearQuery}${monthQuery}${dayQuery}`,
+            [consts.month]: `${yearQuery}${monthQuery}`,
+            [consts.year]: `${yearQuery}`,
+        }
+
+        return this.views[this.currentView].$el.querySelector(resultQuery[cellType]);
     }
 
     destroy = () =>{

@@ -350,6 +350,13 @@ describe('OPTIONS TESTS', () => {
 
             expect($datepicker.querySelector('[data-action="prev"]')).not.toHaveClass('-disabled-');
         });
+        test('"prev" buttons should be availabel if minDate is in past year', () => {
+            init({
+                minDate: new Date('2020-12-31'),
+            })
+
+            expect($datepicker.querySelector('[data-action="prev"]')).not.toHaveClass('-disabled-');
+        });
         test('"prev" button should be disabled in months view', () => {
             init({
                 view: 'months',
@@ -358,5 +365,53 @@ describe('OPTIONS TESTS', () => {
 
             expect($datepicker.querySelector('[data-action="prev"]')).toHaveClass('-disabled-');
         });
+
+        it('should not disable month which contains minDate', () => {
+            let year = 2021;
+            let minDate = new Date(`${year}-06-30`);
+
+            init({
+                startDate: minDate,
+                view: 'months',
+                minDate
+            });
+
+            let $cell = dp.getCell(minDate, 'month');
+
+            expect($cell).not.toHaveClass('-disabled-')
+        })
+
+        it('should not disable day which is equal to minDate', () => {
+            let year = 2021;
+            let minDate = new Date(`${year}-06-30`);
+
+            init({
+                startDate: minDate,
+                minDate
+            });
+
+            let $cell = dp.getCell(minDate);
+
+            expect($cell).not.toHaveClass('-disabled-')
+        })
+
+        it('should not disable months before min date in next year', () => {
+            let year = 2021;
+            let minDate = new Date(`${year}-06-30`);
+            let startDate = new Date(minDate.getTime());
+
+            startDate.setFullYear(2022);
+            startDate.setMonth(0);
+
+            init({
+                view: consts.months,
+                startDate,
+                minDate
+            });
+
+            let $cell = dp.getCell(startDate, 'month');
+
+            expect($cell).not.toHaveClass('-disabled-')
+        })
     });
 });
