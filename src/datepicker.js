@@ -148,7 +148,7 @@ export default class Datepicker {
             this._addTimepicker();
         }
 
-        if (buttons && Array.isArray(buttons)) {
+        if (buttons) {
             this._addButtons();
         }
 
