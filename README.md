@@ -33,9 +33,9 @@ $('.my-datepicker').datepicker([options])
         startDate: someDate,
         minDate: someDate,
         appendTarget: 'your target' //put here selector of your element (e.g. 'div.myClass' - <div> with class .myClass) or
-                                      id of element (e.g. '#myId' - some element with id="myId") or
-                                      class of element (e.g. '.myClass' - first element with class="myClass" will be taken) or
-                                      tag name of element(e.g. 'section' - first element <section> will be taken)
+                                    //id of element (e.g. '#myId' - some element with id="myId") or
+                                    //class of element (e.g. '.myClass' - first element with class="myClass" will be taken) or
+                                    //tag name of element(e.g. 'section' - first element <section> will be taken)
    });
  ```
 
