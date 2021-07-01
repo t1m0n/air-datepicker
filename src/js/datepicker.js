@@ -107,13 +107,36 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if (this.opts.appendById) {
-            $body = $('#' + this.opts.appendById);
-            isCustomAppend = true;
-        }
-        else if (this.opts.appendByClass) {
-            $body = $('.' + this.opts.appendByClass);
-            isCustomAppend = true;
+        if (this.opts.appendTarget) {
+            let elem = document.querySelector(this.opts.appendTarget);
+            if (elem != null) {
+                $body = elem;
+                isCustomAppend = true;
+            }
+            else {
+                elem = document.getElementById(this.opts.appendTarget);
+                if (elem != null) {
+                    $body = elem;
+                    isCustomAppend = true;
+                }
+                else {
+                    elem = document.getElementsByClassName(this.opts.appendTarget);
+                    if (elem != null || elem.length > 0) {
+                        $body = elem[0];
+                        isCustomAppend = true;
+                    }
+                    else {
+                        elem = document.getElementsByTagName(this.opts.appendTarget);
+                        if (elem != null || elem.length > 0) {
+                            $body = elem[0];
+                            isCustomAppend = true;
+                        }
+                        else {
+                            $body = $('body');
+                        }
+                    }
+                }
+            }
         }
         else {
             $body = $('body');
