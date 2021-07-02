@@ -121,13 +121,13 @@
                 }
                 else {
                     elem = document.getElementsByClassName(this.opts.appendTarget);
-                    if (elem != null || elem.length > 0) {
+                    if (elem.length > 0) {
                         $body = elem[0];
                         isCustomAppend = true;
                     }
                     else {
                         elem = document.getElementsByTagName(this.opts.appendTarget);
-                        if (elem != null || elem.length > 0) {
+                        if (elem.length > 0) {
                             $body = elem[0];
                             isCustomAppend = true;
                         }
