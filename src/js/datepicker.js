@@ -1,9 +1,10 @@
 ;(function () {
-    var VERSION = '2.2.3',
+    var VERSION = '2.3.0',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
         $body, $datepickersContainer,
         containerBuilt = false,
+        isCustomAppend = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
             '<i class="datepicker--pointer"></i>' +
@@ -106,7 +107,38 @@
 
         this.opts = $.extend(true, {}, defaults, options, this.$el.data());
 
-        if ($body == undefined) {
+        if (this.opts.appendTarget) {
+            let elem = document.querySelector(this.opts.appendTarget);
+            if (elem != null) {
+                $body = elem;
+                isCustomAppend = true;
+            }
+            else {
+                elem = document.getElementById(this.opts.appendTarget);
+                if (elem != null) {
+                    $body = elem;
+                    isCustomAppend = true;
+                }
+                else {
+                    elem = document.getElementsByClassName(this.opts.appendTarget);
+                    if (elem.length > 0) {
+                        $body = elem[0];
+                        isCustomAppend = true;
+                    }
+                    else {
+                        elem = document.getElementsByTagName(this.opts.appendTarget);
+                        if (elem.length > 0) {
+                            $body = elem[0];
+                            isCustomAppend = true;
+                        }
+                        else {
+                            $body = $('body');
+                        }
+                    }
+                }
+            }
+        }
+        else {
             $body = $('body');
         }
 
@@ -147,6 +179,9 @@
 
         init: function () {
             if (!containerBuilt && !this.opts.inline && this.elIsInput) {
+                this._buildDatepickersContainer();
+            }
+            else if (isCustomAppend) {
                 this._buildDatepickersContainer();
             }
             this._buildBaseHtml();
@@ -262,8 +297,14 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
-            $datepickersContainer = $('#datepickers-container');
+            if (isCustomAppend) {
+                var customId = this.opts.appendById || this.opts.appendByClass;
+                $body.append('<div class="datepickers-container" id="datepickers-container-' + customId + '"></div>');
+                $datepickersContainer = $('#datepickers-container-' + customId);
+            } else {
+                $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
+                $datepickersContainer = $('#datepickers-container');
+            }
         },
 
         _buildBaseHtml: function () {
@@ -723,12 +764,14 @@
 
         _getDimensions: function ($el) {
             var offset = $el.offset();
+            var customOffsetLeft = $el.offset().left - $body.offset().left;
+            var customOffsetTop = $el.offset().top - $body.offset().top;
 
             return {
                 width: $el.outerWidth(),
                 height: $el.outerHeight(),
-                left: offset.left,
-                top: offset.top
+                left: isCustomAppend ? customOffsetLeft : offset.left,
+                top: isCustomAppend ? customOffsetTop : offset.top
             }
         },
 

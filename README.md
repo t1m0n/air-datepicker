@@ -26,6 +26,19 @@ $('.my-datepicker').datepicker([options])
 
 ## Change log
 
+### v2.3.0
+* added appending the datepicker to custom containers or modals. Can be used as this:
+```javascript
+  $(this.dateInput.nativeElement).datepicker({
+        startDate: someDate,
+        minDate: someDate,
+        appendTarget: 'your target' //put here selector of your element (e.g. 'div.myClass' - <div> with class .myClass) or
+                                    //id of element (e.g. '#myId' - some element with id="myId") or
+                                    //class of element (e.g. '.myClass' - first element with class="myClass" will be taken) or
+                                    //tag name of element(e.g. 'section' - first element <section> will be taken)
+   });
+ ```
+
 ### v2.2.3
 * fixed min,max dates in decade mode
 
