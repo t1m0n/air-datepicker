@@ -23,11 +23,18 @@ function Section({title, isPrimary, children} = {}) {
     );
 }
 
-function SubTitle({titleId}) {
-    return <h3 className={css.subTitle}><FormattedMessage id={titleId} /></h3>
+function SubTitle({titleId, mini, secondary}) {
+    return <h3 className={cn(css.subTitle, {
+        [css.subTitleMini]: mini,
+        [css.subTitleSecondary]: secondary
+    })}>
+        <FormattedMessage id={titleId} />
+    </h3>
 }
 
 SubTitle.propTypes = {
+    mini: PropTypes.bool,
+    secondary: PropTypes.bool,
     title: PropTypes.string
 }
 

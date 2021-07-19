@@ -1,10 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import {FormattedMessage} from 'react-intl';
 
-function Paragraph({id, values, className} = {}) {
+import css from './paragraph.module.scss';
+
+function Paragraph({id, doubleOffset, values, className} = {}) {
     return (
-        <FormattedMessage className={className} tagName={'p'} id={id} values={values} />
+        <FormattedMessage
+            className={cn(className, {
+                [css.doubleOffset]: doubleOffset
+            })}
+            tagName={'p'}
+            id={id}
+            values={values}
+        />
     );
 }
 

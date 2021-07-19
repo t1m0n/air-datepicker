@@ -1,0 +1,23 @@
+/* -------------------------------------------------
+    D list
+   ------------------------------------------------- */
+
+.el {
+  margin: .7em 0;
+  .item {
+    margin-bottom: .3em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+.item {
+
+}
+
+.value {
+  font-style: italic;
+}

@@ -15,7 +15,9 @@ export default class Code extends React.Component {
     static propTypes = {
         language: PropTypes.oneOf(['javascript', 'css', 'terminal']),
         bgTransparent: PropTypes.bool,
-        inline: PropTypes.bool
+        isFieldName: PropTypes.bool,
+        inline: PropTypes.bool,
+        className: PropTypes.string,
     }
 
     componentDidMount() {
@@ -23,19 +25,20 @@ export default class Code extends React.Component {
     }
 
     render() {
-        let {children, inline, bgTransparent, language = 'javascript'} = this.props;
-        let className = cn(`language-${language}`, css.el, {
+        let {children, inline, bgTransparent, isFieldName, className, language = 'javascript'} = this.props;
+        let _className = cn(`language-${language}`, className, css.el, {
             [css.inline]: inline,
-            [css.bgTransparent]: bgTransparent
+            [css.bgTransparent]: bgTransparent,
+            [css.isFieldName]: isFieldName
         })
 
         if (inline) {
-            return <code className={className} ref={this.$el}>{children}</code>
+            return <code className={_className} ref={this.$el}>{children}</code>
         }
 
         return (
             <pre
-                className={className}
+                className={_className}
                 ref={this.$el}
             >
                 <code>

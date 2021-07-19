@@ -16,8 +16,11 @@ html {
     --base-color: #333;
 
     --color-accent: #26b9ff;
+    --color-accent-semi-transparent: rgba(38, 185, 255, .2);
     --color-accent-darker: #1e83b1;
     --color-secondary: #6d6d6d;
+
+    --paragraph-offset: .7em;
 
     --container-offset: 16px;
     --container-max-width: 1000px;
@@ -29,6 +32,7 @@ html {
     --header-offset: 32px;
 
     --link-color: var(--color-accent);
+    --link-border-color: var(--color-accent-semi-transparent);
     --link-color-hover: var(--color-accent-darker);
 
     --title-line-height: 1.2;

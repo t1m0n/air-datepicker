@@ -17,8 +17,6 @@
   &:before {
     display: none !important;
   }
-
-
 }
 
 .bgTransparent {
@@ -32,5 +30,9 @@
   border: none !important;
   border-radius: 2px !important;
   box-shadow: none !important;
+}
+
+.isFieldName {
+  color: #9e25be !important;
 }
 

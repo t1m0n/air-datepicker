@@ -6,7 +6,7 @@
   margin-bottom: var(--section-offset);
 
   p {
-    margin-bottom: .7em;
+    margin-bottom: var(--paragraph-offset);
   }
 }
 
@@ -18,7 +18,16 @@
 }
 
 .subTitle {
+  font-size: 18px;
   margin-bottom: .2em;
+}
+
+.subTitleMini {
+  font-size: 16px;
+}
+
+.subTitleSecondary {
+  color: var(--color-secondary);
 }
 
 .titlePrimary {

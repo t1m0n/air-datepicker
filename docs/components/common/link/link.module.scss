@@ -6,23 +6,12 @@
   color: var(--link-color);
   text-decoration: none;
   position: relative;
-  display: inline-flex;
+  border-bottom: 1px solid var(--link-border-color);
+  transition: border-color var(--t-duration) var(--t-easing);
 
-  &:after {
-    content: '';
-    position: absolute;
-    height: 1px;
-    top: 100%;
-    width: 100%;
-    background: currentColor;
-    opacity: .2;
-    transition: all var(--t-duration) var(--t-easing);
-  }
 
   &:hover {
-    &:after {
-      opacity: 1;
-    }
+    border-bottom-color: var(--link-color);
   }
 }
 
