@@ -13,6 +13,7 @@ import * as examples from 'examples/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import DList from 'components/common/dList';
+import {optsSelectedDatesExample} from "examples/commonExamples";
 
 
 function Docs({} = {}) {
@@ -72,7 +73,7 @@ function Docs({} = {}) {
                                             standardLink: <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>
                                         }}
                                     />
-                                    <Section.SubTitle secondary titleId={'optsDateFormatsTitle'} />
+                                    <strong><Paragraph id={'optsDateFormatsTitle'} /></strong>
                                     <DList>
                                         <DList.Item value={'T'} definition={'optsDateFormatT'} />
                                         <DList.Item value={'E'} definition={'optsDateFormatE'} values={{
@@ -98,10 +99,52 @@ function Docs({} = {}) {
                                     </DList>
                                 </Param>
                                 <Param name={'altField'} type={'string | DOMNode'} defaultValue={'""'}>
-
+                                    <Paragraph
+                                        id={'optsAltField'}
+                                        values={{
+                                            fieldName: <Code inline isFieldName>altFieldDateFormat</Code>
+                                        }}
+                                    />
                                 </Param>
-                                <Param name={'altFieldDateFormat'} type={'string'}>
-
+                                <Param name={'altFieldDateFormat'} type={'string'} defaultValue={'"T"'}>
+                                    <Paragraph id={'optsAltFieldDateFormat'} />
+                                </Param>
+                                <Param name={'toggleSelected'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph id={'optsToggleSelected'} values={{
+                                        true: <Code inline>true</Code>
+                                    }} />
+                                </Param>
+                                <Param name={'keyboardNav'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph id={'optsKeyboardNav'} />
+                                    <strong><Paragraph id={'optsKeyboardNavListTitle'} /></strong>
+                                    <DList>
+                                        <DList.Item value={'Ctrl + → | ↑'} definition={'optsKeyboardNavMonthForward'} />
+                                        <DList.Item value={'Ctrl + ← | ↓'} definition={'optsKeyboardNavMonthBackward'} />
+                                        <DList.Item value={'Shift + → | ↑'} definition={'optsKeyboardNavYearForward'} />
+                                        <DList.Item value={'Shift + ← | ↓'} definition={'optsKeyboardNavYearBackward'} />
+                                        <DList.Item value={'Alt + → | ↑'} definition={'optsKeyboardNavDecadeForward'} />
+                                        <DList.Item value={'Alt + ← | ↓'} definition={'optsKeyboardNavDecadeBackward'} />
+                                        <DList.Item value={'Ctrl + Shift + ↑'} definition={'optsKeyboardNavView'} />
+                                        <DList.Item value={'Esc'} definition={'optsKeyboardNavEsc'} />
+                                    </DList>
+                                </Param>
+                                <Param name={'selectedDates'} type={'Date[] | string[] | number[]'} defaultValue={'false'}>
+                                    <Paragraph id={'optsSelectedDates'} />
+                                    <Example>
+                                        <AirDatepicker
+                                            inline
+                                            multipleDates
+                                            startDate={new Date('2021-07-20')}
+                                            selectedDates={[[new Date('2021-07-20'), '2021-07-25', 1626307200000]]}
+                                        />
+                                        <Code>{examples.optsSelectedDatesExample}</Code>
+                                    </Example>
+                                </Param>
+                                <Param name={'position'} type={'string'} defaultValue={'"bottom left"'}>
+                                    <Paragraph id={'optsPosition'} />
+                                    <Paragraph id={'optsPosition2'} values={{
+                                        example: <Code inline>{`{position: 'top right'}`}</Code>
+                                    }} />
                                 </Param>
                             </Param.List>
                         </Section>

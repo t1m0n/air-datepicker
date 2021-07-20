@@ -86,6 +86,18 @@ new AirDatepicker('#el', {
 })
 `
 
+export let optsSelectedDatesExample =
+`import AirDatepicker from 'air-datepicker';
+
+let startDate = new Date('2021-07-20');
+
+new AirDatepicker('#el', {
+    startDate,
+    multipleDates: true,
+    selectedDates: [startDate, '2021-07-25', 1626307200000]
+})
+`
+
 
 export {
     install,

@@ -5,7 +5,7 @@
 .el {
   margin: .7em 0;
   .item {
-    margin-bottom: .3em;
+    margin-bottom: .5em;
 
     &:last-child {
       margin-bottom: 0;
@@ -15,9 +15,10 @@
 
 
 .item {
-
+  padding-left: 1em;
 }
 
 .value {
-  font-style: italic;
+  padding: 0 5px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .1) !important;
 }
