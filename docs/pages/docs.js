@@ -15,6 +15,8 @@ import Link from 'components/common/link';
 import DList from 'components/common/dList';
 import {optsSelectedDatesExample} from "examples/commonExamples";
 
+const trueField = (() => <Code inline>{'true'}</Code>)();
+
 
 function Docs({} = {}) {
     let {messages} = useIntl();
@@ -145,6 +147,70 @@ function Docs({} = {}) {
                                     <Paragraph id={'optsPosition2'} values={{
                                         example: <Code inline>{`{position: 'top right'}`}</Code>
                                     }} />
+                                </Param>
+                                <Param name={'view'} type={'string'} defaultValue={'"days"'}>
+                                    <Paragraph id={'optsView'} />
+                                    <DList>
+                                        <DList.Item value={'days'} definition={'optsViewDays'} />
+                                        <DList.Item value={'months'} definition={'optsViewMonths'} />
+                                        <DList.Item value={'years'} definition={'optsViewYears'} />
+                                    </DList>
+                                </Param>
+                                <Param name={'minView'} type={'string'} defaultValue={'"days"'}>
+                                    <Paragraph id={'optsMinView'} values={{
+                                        optsName: <Code inline isFieldName>{'view'}</Code>
+                                    }} />
+                                </Param>
+                                <Param name={'showOtherMonths'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph
+                                        id={'optsShowOtherMonths'}
+                                        values={{trueField}}
+                                    />
+                                </Param>
+                                <Param name={'selectOtherMonths'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph
+                                        id={'optsSelectOtherMonths'}
+                                        values={{trueField}}
+                                    />
+                                </Param>
+                                <Param name={'moveToOtherMonthsOnSelect'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph
+                                        id={'optsMoveToOtherMonthsOnSelect'}
+                                        values={{trueField}}
+                                    />
+                                </Param>
+                                <Param name={'minDate'} type={'Date | string | number'} defaultValue={'""'}>
+                                    <Paragraph id={'optsMinDate'} />
+                                </Param>
+                                <Param name={'maxDate'} type={'Date | string | number'} defaultValue={'""'}>
+                                    <Paragraph id={'optsMaxDate'} />
+                                </Param>
+                                <Param name={'disableNavWhenOutOfRange'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph id={'optsDisableNavWhenOutOfRange'} />
+                                    <Paragraph
+                                        id={'optsDisableNavWhenOutOfRange2'}
+                                        values={{trueField}}
+                                    />
+                                </Param>
+                                <Param name={'multipleDates'} type={'boolean | number'} defaultValue={'false'}>
+                                    <Paragraph id={'optsMultipleDates'} values={{trueField}} />
+                                </Param>
+                                <Param name={'multipleDatesSeparator'} type={'string'} defaultValue={'", "'}>
+                                    <Paragraph id={'optsMultipleDatesSeparator'} />
+                                </Param>
+                                <Param name={'range'} type={'boolean'} defaultValue={'false'}>
+                                    <Paragraph id={'optsRange'} values={{
+                                        fieldName: <Code inline isFieldName>multipleDatesSeparator</Code>
+                                    }} />
+                                </Param>
+                                <Param name={'dynamicRange'} type={'boolean'} defaultValue={'true'}>
+                                    <Paragraph id={'optsDynamicRange'} />
+                                </Param>
+                                <Param name={'buttons'} type={'array'} defaultValue={'false'}>
+                                    <Paragraph id={'optsButtons'} />
+                                </Param>
+                                <Param name={'monthsField'} type={'string'} defaultValue={'monthsShort'}>
+                                    <Paragraph id={'optsMonthsField'} />
                                 </Param>
                             </Param.List>
                         </Section>
