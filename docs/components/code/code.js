@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Prism from 'prismjs';
+import {highlightElement} from 'prismjs';
 import cn from 'classnames';
 
 import css from './code.module.scss';
@@ -13,7 +13,7 @@ export default class Code extends React.Component {
     }
 
     static propTypes = {
-        language: PropTypes.oneOf(['javascript', 'css', 'terminal']),
+        language: PropTypes.oneOf(['javascript', 'css', 'terminal', 'typescript']),
         bgTransparent: PropTypes.bool,
         isFieldName: PropTypes.bool,
         inline: PropTypes.bool,
@@ -21,7 +21,7 @@ export default class Code extends React.Component {
     }
 
     componentDidMount() {
-        Prism.highlightElement(this.$el.current)
+        highlightElement(this.$el.current)
     }
 
     render() {

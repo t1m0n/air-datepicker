@@ -98,6 +98,33 @@ new AirDatepicker('#el', {
 })
 `
 
+export let optsButtonsShape =
+`type ButtonShape = {
+    content: string | ({dpInstance, locale}) => string
+    tagName?: string
+    className?: string
+    onClick?: (dpInstance) => void
+}
+`
+
+export let optsButtonsExample =
+`import AirDatepicker from 'air-datepicker';
+
+let button = {
+    content: 'Select 2021-07-26',
+    className: 'custom-button-classname',
+    onClick: (dp) => {
+        let date = new Date('2021-07-26');
+        dp.selectDate(date);
+        dp.setViewDate(date);
+    }
+}
+
+new AirDatepicker('#el', {
+    buttons: [button, 'clear'] // Custom button, and pre-installed 'clear' button
+})
+`
+
 
 export {
     install,

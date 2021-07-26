@@ -26,7 +26,6 @@ class MyApp extends React.Component {
             loaded: true,
             messages: messages.default
         })
-
     }
 
     render() {

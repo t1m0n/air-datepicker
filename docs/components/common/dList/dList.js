@@ -16,7 +16,10 @@ function DList({children} = {}) {
 function DListItem({value, values, definition} = {}) {
     return (
         <div className={css.item}>
-            <Code inline className={css.value}>{value}</Code> - <FormattedMessage id={definition} values={values}/>
+            <span className={css.valueContainer}>
+                <Code inline className={css.value}>{value}</Code>&nbsp;&mdash;&nbsp;
+            </span>
+            <FormattedMessage id={definition} values={values}/>
         </div>
     )
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import css from './example.module.scss';
 
-function Example({children} = {}) {
+function Example({children, titleId} = {}) {
     return (
         <div className={css.el}>
             {children}

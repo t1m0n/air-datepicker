@@ -13,7 +13,7 @@ import * as examples from 'examples/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import DList from 'components/common/dList';
-import {optsSelectedDatesExample} from "examples/commonExamples";
+import {optsButtonsExample, optsButtonsShape, optsSelectedDatesExample} from 'examples/commonExamples';
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
 
@@ -204,14 +204,58 @@ function Docs({} = {}) {
                                     }} />
                                 </Param>
                                 <Param name={'dynamicRange'} type={'boolean'} defaultValue={'true'}>
-                                    <Paragraph id={'optsDynamicRange'} />
+                                    <Paragraph id={'optsDynamicRange'} values={{trueField}} />
                                 </Param>
-                                <Param name={'buttons'} type={'array'} defaultValue={'false'}>
+                                <Param name={'buttons'} type={'string | string[] | object[]'} defaultValue={'false'}>
                                     <Paragraph id={'optsButtons'} />
+                                    <Paragraph id={'optsButtons2'} />
+                                    <DList>
+                                        <DList.Item value='today' definition='optsButtonsToday' />
+                                        <DList.Item value='clear' definition='optsButtonsClear' />
+                                    </DList>
+                                    <Paragraph id='optsButtons3'/>
+                                    <Code language='typescript'>{examples.optsButtonsShape}</Code>
+                                    <Section.SubTitle titleId='optsButtons4'/>
+                                    <Example titleId={'example'}>
+                                        <AirDatepicker
+                                            placeholder={messages.chooseDate}
+                                            buttons={[
+                                                {
+                                                    content: 'Select 2021-07-26',
+                                                    onClick: (dp) => {
+                                                        let date = new Date('2021-07-26');
+                                                        dp.selectDate(date);
+                                                        dp.setViewDate(date);
+                                                    }
+                                                },
+                                                'clear'
+                                            ]}
+                                        />
+                                        <Code>{examples.optsButtonsExample}</Code>
+                                    </Example>
                                 </Param>
-                                <Param name={'monthsField'} type={'string'} defaultValue={'monthsShort'}>
-                                    <Paragraph id={'optsMonthsField'} />
+                                <Param name={'monthsField'} type={'string'} defaultValue={'"monthsShort"'}>
+                                    <Paragraph id={'optsMonthsField'} values={{
+                                        months: <Code isFieldName inline>{'months'}</Code>
+                                    }}/>
                                 </Param>
+                                <Param name='showEvent'>
+
+                                </Param>
+                                <Param name='autoClose'>
+
+                                </Param>
+                                <Param name='prevHtml'>
+
+                                </Param>
+
+                                <Param name='nextHtml'>
+
+                                </Param>
+                                <Param name='navTitles'>
+
+                                </Param>
+
                             </Param.List>
                         </Section>
                     </main>
