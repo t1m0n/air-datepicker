@@ -257,15 +257,16 @@ function Docs({} = {}) {
                                 <Param name='nextHtml' type={'string'} defaultValue={'"<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>"'}>
                                     <Paragraph id={'optsNextHtml'} />
                                 </Param>
-                                <Param name='navTitles' type={'object'}>
+                                <Param name='navTitles' type={'{[ "days" |"months" | "years" ]: string | function}'}>
                                     <Paragraph id={'optsNavTitles'} values={{
                                         formatDateField: <Code inline isFieldName>dateFormat</Code>
                                     }} />
                                     <Paragraph id={'optsNavTitles2'} />
+                                    <Paragraph id={'optsNavTitles3'} />
                                     <Example>
                                         <Code>{examples.optsNavTitlesDefaults}</Code>
                                     </Example>
-                                    <Paragraph id={'optsNavTitles3'} />
+                                    <Paragraph id={'optsNavTitles4'} />
                                     <Example>
                                         <Code>{examples.optsNavTitlesUsage}</Code>
                                     </Example>
