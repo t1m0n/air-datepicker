@@ -13,7 +13,12 @@ import * as examples from 'examples/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import DList from 'components/common/dList';
-import {optsButtonsExample, optsButtonsShape, optsSelectedDatesExample} from 'examples/commonExamples';
+import {
+    optsButtonsExample,
+    optsButtonsShape,
+    optsNavTitlesDefaults,
+    optsSelectedDatesExample
+} from 'examples/commonExamples';
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
 
@@ -239,21 +244,62 @@ function Docs({} = {}) {
                                         months: <Code isFieldName inline>{'months'}</Code>
                                     }}/>
                                 </Param>
-                                <Param name='showEvent'>
-
+                                <Param name='showEvent' type={'string'} defaultValue={'"focus"'}>
+                                    <Paragraph id={'optsShowEvent'} />
                                 </Param>
                                 <Param name='autoClose'>
-
+                                    <Paragraph id={'optsAutoClose'} values={{trueField}} />
                                 </Param>
-                                <Param name='prevHtml'>
-
+                                <Param name='prevHtml' type={'string'} defaultValue={'"<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>"'} >
+                                    <Paragraph id={'optsPrevHtml'}  />
                                 </Param>
 
-                                <Param name='nextHtml'>
-
+                                <Param name='nextHtml' type={'string'} defaultValue={'"<svg><path d="M 14,12 l 5,5 l -5,5"></path></svg>"'}>
+                                    <Paragraph id={'optsNextHtml'} />
                                 </Param>
-                                <Param name='navTitles'>
+                                <Param name='navTitles' type={'object'}>
+                                    <Paragraph id={'optsNavTitles'} values={{
+                                        formatDateField: <Code inline isFieldName>dateFormat</Code>
+                                    }} />
+                                    <Paragraph id={'optsNavTitles2'} />
+                                    <Example>
+                                        <Code>{examples.optsNavTitlesDefaults}</Code>
+                                    </Example>
+                                    <Paragraph id={'optsNavTitles3'} />
+                                    <Example>
+                                        <Code>{examples.optsNavTitlesUsage}</Code>
+                                    </Example>
+                                </Param>
 
+                                <Param name={'timepicker'}>
+                                    <Paragraph id={'optsTimepicker'}/>
+                                </Param>
+                                <Param name={'onlyTimepicker'}>
+                                    <Paragraph id={'optsOnlyTimepicker'}/>
+                                </Param>
+                                <Param name={'dateTimeSeparator'}>
+                                    <Paragraph id={'optsTimeFormat'}/>
+                                </Param>
+                                <Param name={'timeFormat'}>
+                                    <Paragraph id={'optsTimeFormat'}/>
+                                </Param>
+                                <Param name={'minHours'}>
+                                    <Paragraph id={'optsMinHours'}/>
+                                </Param>
+                                <Param name={'maxHours'}>
+                                    <Paragraph id={'optsMaxHours'}/>
+                                </Param>
+                                <Param name={'minMinutes'}>
+                                    <Paragraph id={'optsMinMinutes'}/>
+                                </Param>
+                                <Param name={'maxMinutes'}>
+                                    <Paragraph id={'optsMaxMinutes'}/>
+                                </Param>
+                                <Param name={'hoursStep'}>
+                                    <Paragraph id={'optsHoursStep'}/>
+                                </Param>
+                                <Param name={'minutesStep'}>
+                                    <Paragraph id={'optsMinutesStep'}/>
                                 </Param>
 
                             </Param.List>

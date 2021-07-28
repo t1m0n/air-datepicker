@@ -125,6 +125,19 @@ new AirDatepicker('#el', {
 })
 `
 
+export let optsNavTitlesDefaults =
+`let navTitlesDefaults = {
+    days: 'MMMM, <i>yyyy</i>',
+    months: 'yyyy',
+    years: 'yyyy1 - yyyy2'
+}`
+
+export let optsNavTitlesUsage =
+`new AirDatepicker('$el', {
+    navTitles: {
+        days: '<strong>Choose date</strong> MM, yyyy'
+    }
+})`
 
 export {
     install,
