@@ -46,6 +46,10 @@ export default class DatepickerNav {
     _bindDatepickerEvents(){
         this.dp.on(consts.eventChangeViewDate, this.onChangeViewDate);
         this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
+
+        if (this.isNavIsFunction) {
+            this.dp.on(consts.eventChangeSelectedDate, this.render);
+        }
     }
 
     _createElement(){
@@ -56,7 +60,14 @@ export default class DatepickerNav {
     }
 
     _getTitle() {
-        return this.dp.formatDate(this.opts.navTitles[this.dp.currentView], this.dp.viewDate);
+        let {dp, opts} = this;
+        let template = opts.navTitles[dp.currentView];
+
+        if (typeof template === 'function') {
+            return template(dp);
+        }
+
+        return dp.formatDate(template, dp.viewDate);
     }
 
     handleNavStatus() {
@@ -138,6 +149,14 @@ export default class DatepickerNav {
             `<div class="datepicker-nav--action" data-action="prev">${prevHtml}</div>` +
             '<div class="datepicker-nav--title"></div>' +
             `<div class="datepicker-nav--action" data-action="next">${nextHtml}</div>`;
+    }
+
+    get isNavIsFunction() {
+        let {navTitles} = this.opts;
+
+        return Object.keys(navTitles).find(view => {
+            return typeof navTitles[view] === 'function'
+        })
     }
 
     update = () => {
