@@ -21,6 +21,7 @@ import {
 } from 'examples/commonExamples';
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
+const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>;
 
 
 function Docs({} = {}) {
@@ -77,7 +78,7 @@ function Docs({} = {}) {
                                         doubleOffset
                                         id='optsDateFormat'
                                         values={{
-                                            standardLink: <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>
+                                            standardLink: UnicodeStandardLink
                                         }}
                                     />
                                     <strong><Paragraph id={'optsDateFormatsTitle'} /></strong>
@@ -275,11 +276,29 @@ function Docs({} = {}) {
                                 <Param name={'timepicker'}>
                                     <Paragraph id={'optsTimepicker'}/>
                                 </Param>
+                                <Param name={'dateTimeSeparator'}>
+                                    <Paragraph id={'optsDateTmeSeparator'}/>
+                                </Param>
                                 <Param name={'onlyTimepicker'}>
                                     <Paragraph id={'optsOnlyTimepicker'}/>
                                 </Param>
                                 <Param name={'dateTimeSeparator'}>
-                                    <Paragraph id={'optsTimeFormat'}/>
+                                    <Paragraph
+                                        id={'optsTimeFormat'}
+                                        values={{
+                                            dateFormatField: <Code inline isFieldName>{`dateFormat`}</Code>,
+                                            standardLink: UnicodeStandardLink
+                                        }}
+                                    />
+                                    <strong><Paragraph id={'possibleSymbols'} /></strong>
+                                    <DList>
+                                        <DList.Item value={'h'} definition={'optsTimeFormath'} />
+                                        <DList.Item value={'hh'} definition={'optsTimeFormathh'} />
+                                        <DList.Item value={'m'} definition={'optsTimeFormatm'} />
+                                        <DList.Item value={'mm'} definition={'optsTimeFormatmm'} />
+                                        <DList.Item value={'aa'} definition={'optsTimeFormataa'} />
+                                        <DList.Item value={'AA'} definition={'optsTimeFormatAA'} />
+                                    </DList>
                                 </Param>
                                 <Param name={'timeFormat'}>
                                     <Paragraph id={'optsTimeFormat'}/>
