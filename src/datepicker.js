@@ -13,6 +13,7 @@ import {
     isSameDate,
     deepMerge,
     createDate,
+    getWordBoundaryRegExp,
     getClosestScrollableParent,
 } from './utils';
 import DatepickerBody from './datepickerBody';
@@ -212,27 +213,20 @@ export default class Datepicker {
             this.locale.timeFormat = timeFormat;
         }
 
-        let {timeFormat: timeFormatInited} = this.locale;
+        let {timeFormat: timeFormatValidated} = this.locale;
 
         if (firstDay !== '') {
             this.locale.firstDay = firstDay;
         }
 
         if (timepicker && typeof dateFormat !== 'function') {
-            let separator = timeFormatInited ? dateTimeSeparator : '';
-            this.locale.dateFormat = [this.locale.dateFormat, (timeFormatInited ? timeFormatInited : '')].join(separator);
+            let separator = timeFormatValidated ? dateTimeSeparator : '';
+            this.locale.dateFormat = [this.locale.dateFormat, (timeFormatValidated ? timeFormatValidated : '')].join(separator);
         }
 
         if (onlyTimepicker) {
             this.locale.dateFormat = this.locale.timeFormat;
         }
-
-        let boundary = Datepicker.getWordBoundaryRegExp;
-
-        if (timeFormatInited && (timeFormatInited.match(boundary('aa')) || this.locale.timeFormat.match(boundary('AA')))) {
-            this.ampm = true;
-        }
-
     }
 
     _setPositionClasses(pos){
@@ -267,22 +261,14 @@ export default class Datepicker {
 
     formatDate(string, date=this.viewDate) {
         let result = string,
-            boundary = Datepicker.getWordBoundaryRegExp,
             locale = this.locale,
             parsedDate = getParsedDate(date),
             decade = getDecade(date),
-            fullHours = parsedDate.fullHours,
-            hours = parsedDate.hours,
             replacer = Datepicker.replacer,
-            ampm = string.match(boundary('aa')) || string.match(boundary('AA')),
-            dayPeriod = 'am',
-            validHours;
+            dayPeriod = 'am';
 
-        if (this.opts.timepicker && this.timepicker && ampm) {
-            validHours = this.timepicker.getValidHoursFromDate(date, ampm);
-            fullHours = getLeadingZeroNum(validHours.hours);
-            hours = validHours.hours;
-            dayPeriod = validHours.dayPeriod;
+        if (this.opts.timepicker && this.timepicker) {
+            dayPeriod = this.timepicker.getDayPeriod(date).dayPeriod;
         }
 
         let formats = {
@@ -294,8 +280,10 @@ export default class Datepicker {
             mm: parsedDate.fullMinutes,
 
             // Hours
-            h: hours,
-            hh: fullHours,
+            h: parsedDate.hours12,
+            hh: parsedDate.fullHours12,
+            H: parsedDate.hours,
+            HH: parsedDate.fullHours,
 
             // Day period
             aa: dayPeriod,
@@ -324,7 +312,7 @@ export default class Datepicker {
 
 
         for (let [format, data] of Object.entries(formats)) {
-            result = replacer(result, boundary(format), data);
+            result = replacer(result, getWordBoundaryRegExp(format), data);
         }
 
         return result;
@@ -1064,13 +1052,6 @@ export default class Datepicker {
         return str.replace(reg, function (match, p1,p2,p3) {
             return p1 + data + p3;
         });
-    }
-
-
-    static getWordBoundaryRegExp(sign){
-        let symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
-
-        return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
     }
 }
 

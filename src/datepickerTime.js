@@ -8,6 +8,7 @@ import {
     getParsedDate,
     isSameDate,
     setAttribute,
+    getWordBoundaryRegExp,
 } from './utils';
 
 import './datepickerTime.scss';
@@ -27,6 +28,12 @@ export default class DatepickerTime {
     constructor({opts, dp} = {}) {
         this.opts = opts;
         this.dp = dp;
+        let {timeFormat} = this.dp.locale;
+
+        if (timeFormat && (timeFormat.match(getWordBoundaryRegExp('h')) || timeFormat.match(getWordBoundaryRegExp('hh')))) {
+            this.ampm = true;
+        }
+
         this.init();
     }
 
@@ -69,7 +76,7 @@ export default class DatepickerTime {
 
     buildHtml(){
         let {
-            hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dp, dayPeriod,
+            ampm, hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dp, dayPeriod,
             opts: {hoursStep, minutesStep}
         } = this;
 
@@ -78,7 +85,7 @@ export default class DatepickerTime {
             `   <span class="datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
             '   <span class="datepicker-time--current-colon">:</span>' +
             `   <span class="datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
-            `   ${dp.ampm ? `<span class='datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
+            `   ${ampm ? `<span class='datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
             '</div>' +
             '<div class="datepicker-time--sliders">' +
             '   <div class="datepicker-time--row">' +
@@ -175,38 +182,34 @@ export default class DatepickerTime {
      * @param [ampm] {Boolean} - 12 hours mode
      * @returns {{hours: number, dayPeriod: string}}
      */
-    getValidHoursFromDate(date, ampm){
+    getDayPeriod(date, ampm){
         let _date = date,
-            hours = date;
+            hours = Number(date);
 
         if (date instanceof Date) {
             _date = getParsedDate(date);
-            hours = _date.hours;
+            hours = Number(_date.hours);
         }
 
-        let _ampm = ampm || this.dp.ampm,
+        let _ampm = ampm || this.ampm,
             dayPeriod = 'am';
 
         if (_ampm) {
             switch(true) {
-                case hours === 0:
-                    hours = 12;
-                    break;
                 case hours === 12:
                     dayPeriod = 'pm';
                     break;
                 case hours > 11:
-                    hours = hours - 12;
                     dayPeriod = 'pm';
                     break;
-                default:
-                    break;
             }
+
+            hours = hours % 12 === 0 ? 12 : hours % 12;
         }
 
         return {
-            hours: hours,
-            dayPeriod: dayPeriod
+            hours,
+            dayPeriod
         };
     }
 
@@ -226,7 +229,7 @@ export default class DatepickerTime {
         this.$hoursText.innerHTML = getLeadingZeroNum(this.displayHours);
         this.$minutesText.innerHTML =  getLeadingZeroNum(this.minutes);
 
-        if (this.dp.ampm) {
+        if (this.ampm) {
             this.$ampm.innerHTML = this.dayPeriod;
         }
     }
@@ -277,7 +280,7 @@ export default class DatepickerTime {
     set hours (val) {
         this._hours = val;
 
-        let {hours, dayPeriod} = this.getValidHoursFromDate(val);
+        let {hours, dayPeriod} = this.getDayPeriod(val);
 
         this.displayHours = hours;
         this.dayPeriod = dayPeriod;

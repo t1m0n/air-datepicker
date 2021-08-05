@@ -98,6 +98,9 @@ export function getDaysCount(date) {
  * }}
  */
 export function getParsedDate(date) {
+    let hours = date.getHours(),
+        hours12 = hours % 12 === 0 ? 12 : hours % 12;
+
     return {
         year: date.getFullYear(),
         month: date.getMonth(),
@@ -105,8 +108,10 @@ export function getParsedDate(date) {
         date: date.getDate(),
         fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
         day: date.getDay(),
-        hours: date.getHours(),
-        fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
+        hours,
+        fullHours: getLeadingZeroNum(hours),
+        hours12,
+        fullHours12: getLeadingZeroNum(hours12),
         minutes: date.getMinutes(),
         fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
     };
@@ -381,4 +386,10 @@ export function createDate(date) {
     }
 
     return resultDate;
+}
+
+export function getWordBoundaryRegExp(sign){
+    let symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
+
+    return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
 }
