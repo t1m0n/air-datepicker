@@ -116,4 +116,6 @@ export default {
     optsMaxMinutes: 'Максимально допустимое к выбору значение минут.',
     optsHoursStep: 'Шаг выбора часов.',
     optsMinutesStep: 'Шаг выбора минут.',
+
+    eventsTitle: 'События'
 };

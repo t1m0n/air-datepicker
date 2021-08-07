@@ -320,7 +320,13 @@ function Docs({} = {}) {
                                 <Param name={'minutesStep'} type={'number'} defaultValue={'1'}>
                                     <Paragraph id={'optsMinutesStep'}/>
                                 </Param>
+                            </Param.List>
+                        </Section>
+                        <Section title={'eventsTitle'}>
+                            <Param.List>
+                                <Param name={'onSelect'} type={'() => void'}>
 
+                                </Param>
                             </Param.List>
                         </Section>
                     </main>

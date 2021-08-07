@@ -647,7 +647,7 @@ export default class Datepicker {
         let dates = [],
             formattedDates = [],
             datepicker = this,
-            {selectedDates, locale, opts: {onSelect}} = datepicker;
+            {selectedDates, locale, opts: {onSelect, multipleDates}} = datepicker;
 
         if (selectedDates.length) {
             dates = selectedDates.map(copyDate);
@@ -661,8 +661,8 @@ export default class Datepicker {
         }
 
         onSelect({
-            dates,
-            formattedDates,
+            date: multipleDates ? dates : dates[0],
+            formattedDate: multipleDates ? formattedDates : formattedDates[0],
             datepicker
         });
     }

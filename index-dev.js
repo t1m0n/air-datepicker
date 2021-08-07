@@ -11,10 +11,12 @@ window.dp = new Datepicker($input, {
     // range: true,
     timepicker: true,
     // toggleSelected: false,
-    onSelect(){
-        console.log('on select');
+    onSelect({date}){
+        console.log(date);
     },
     timeFormat: 'HH:mm',
+
+    multipleDates: true,
     // view: 'months',
     // startDate: new Date('2023-07-27'),
     // minDate: new Date('2020-08-01'),
