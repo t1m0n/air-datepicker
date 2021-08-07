@@ -324,7 +324,23 @@ function Docs({} = {}) {
                         </Section>
                         <Section title={'eventsTitle'}>
                             <Param.List>
-                                <Param name={'onSelect'} type={'() => void'}>
+                                <Param name={'onSelect'} type={'({date, formattedDate, datepicker}) => void'}>
+                                    <Paragraph id={'eventsOnSelect'}/>
+                                    <Param.List nested>
+                                        <Param name={'date'} type={'Date | Date[]'} definition={'eventsOnSelectDate'}/>
+                                        <Param name={'formattedDate'} type={'string | string[]'} definition={'eventsOnSelectFormattedDate'} />
+                                        <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnSelectAirDatepicker'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'onChangeViewDate'} type={'({month, year, decade}) => void'}>
+                                    <Paragraph id={'eventsOnChangeViewDate'}/>
+                                    <Param.List nested>
+                                        <Param name={'month'} type={'number'} definition={'eventsOnChangeViewDateMonth'} />
+                                        <Param name={'year'} type={'number'} definition={'eventsOnChangeViewDateYear'} />
+                                        <Param name={'decade'} type={'number[]'} definition={'eventsOnChangeViewDateDecade'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'onChangeView'}>
 
                                 </Param>
                             </Param.List>

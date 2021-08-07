@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Code from 'components/code';
 import ParamType from './paramType';
+import {FormattedMessage} from 'react-intl';
+import cn from 'classnames';
 
 import css from './param.module.scss';
 
-function Param({name, type, defaultValue, children} = {}) {
+function Param({name, type, definition, defaultValue, children} = {}) {
     return (
         <div className={css.el}>
             <div className={css.paramRow}>
@@ -18,15 +20,26 @@ function Param({name, type, defaultValue, children} = {}) {
                     : ''
                 }
             </div>
+            {definition && <>
+                &nbsp;&mdash; <FormattedMessage id={definition} />
+            </>}
+            {children &&
             <div className={css.content}>
                 {children}
             </div>
+            }
         </div>
     );
 }
 
-function ParamList({children} = {}) {
-    return <div className={css.list}>{children}</div>
+function ParamList({children, nested} = {}) {
+    return <div
+        className={cn(css.list, {
+            [css.nestedList]: nested
+        })}
+    >
+        {children}
+    </div>
 }
 
 Param.List = ParamList;

@@ -14,24 +14,49 @@
       margin-bottom: 0;
     }
   }
+
+  .nestedList .el {
+    margin-bottom: 14px;
+  }
+}
+
+.nestedList {
+  margin-left: 32px;
 }
 
 .paramRow {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+
+  .nestedList & {
+    display: inline-flex;
+  }
 }
 
 .type {
-  background: #efefef;
+  background: #f1f1f1;
   display: inline-flex;
   padding: 0 3px;
   border-radius: 4px;
+
+  .nestedList & {
+    code {
+      font-size: 12px !important;
+    }
+  }
 }
 
 .paramName {
   font-weight: bold;
   font-size: 1.2rem;
   margin-right: .5em;
+
+  .nestedList & {
+    font-size: 1rem;
+    color: #000;
+    text-decoration: underline;
+    font-weight: normal;
+  }
 }
 
 .defaultValue {
