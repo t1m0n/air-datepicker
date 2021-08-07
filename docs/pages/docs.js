@@ -273,16 +273,16 @@ function Docs({} = {}) {
                                     </Example>
                                 </Param>
 
-                                <Param name={'timepicker'}>
+                                <Param name={'timepicker'} type={'boolean'} defaultValue={'false'}>
                                     <Paragraph id={'optsTimepicker'}/>
                                 </Param>
-                                <Param name={'dateTimeSeparator'}>
-                                    <Paragraph id={'optsDateTmeSeparator'}/>
-                                </Param>
-                                <Param name={'onlyTimepicker'}>
+                                <Param name={'onlyTimepicker'} type={'boolean'} defaultValue={'false'}>
                                     <Paragraph id={'optsOnlyTimepicker'}/>
                                 </Param>
-                                <Param name={'dateTimeSeparator'}>
+                                <Param name={'dateTimeSeparator'} type={'string'} defaultValue={'" "'}>
+                                    <Paragraph id={'optsDateTimeSeparator'} />
+                                </Param>
+                                <Param name={'timeFormat'} type={'string'}>
                                     <Paragraph
                                         id={'optsTimeFormat'}
                                         values={{
@@ -294,31 +294,30 @@ function Docs({} = {}) {
                                     <DList>
                                         <DList.Item value={'h'} definition={'optsTimeFormath'} />
                                         <DList.Item value={'hh'} definition={'optsTimeFormathh'} />
+                                        <DList.Item value={'H'} definition={'optsTimeFormatH'} />
+                                        <DList.Item value={'HH'} definition={'optsTimeFormatHH'} />
                                         <DList.Item value={'m'} definition={'optsTimeFormatm'} />
                                         <DList.Item value={'mm'} definition={'optsTimeFormatmm'} />
                                         <DList.Item value={'aa'} definition={'optsTimeFormataa'} />
                                         <DList.Item value={'AA'} definition={'optsTimeFormatAA'} />
                                     </DList>
                                 </Param>
-                                <Param name={'timeFormat'}>
-                                    <Paragraph id={'optsTimeFormat'}/>
-                                </Param>
-                                <Param name={'minHours'}>
+                                <Param name={'minHours'} type={'number'} defaultValue={'0'}>
                                     <Paragraph id={'optsMinHours'}/>
                                 </Param>
-                                <Param name={'maxHours'}>
+                                <Param name={'maxHours'} type={'number'} defaultValue={'24'}>
                                     <Paragraph id={'optsMaxHours'}/>
                                 </Param>
-                                <Param name={'minMinutes'}>
+                                <Param name={'minMinutes'} type={'number'} defaultValue={'0'}>
                                     <Paragraph id={'optsMinMinutes'}/>
                                 </Param>
-                                <Param name={'maxMinutes'}>
+                                <Param name={'maxMinutes'} type={'number'} defaultValue={'59'}>
                                     <Paragraph id={'optsMaxMinutes'}/>
                                 </Param>
-                                <Param name={'hoursStep'}>
+                                <Param name={'hoursStep'} type={'number'} defaultValue={'1'}>
                                     <Paragraph id={'optsHoursStep'}/>
                                 </Param>
-                                <Param name={'minutesStep'}>
+                                <Param name={'minutesStep'} type={'number'} defaultValue={'1'}>
                                     <Paragraph id={'optsMinutesStep'}/>
                                 </Param>
 

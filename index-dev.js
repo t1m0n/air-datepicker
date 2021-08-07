@@ -17,8 +17,8 @@ window.dp = new Datepicker($input, {
     timeFormat: 'HH:mm',
     // view: 'months',
     // startDate: new Date('2023-07-27'),
-    // minDate: new Date('2020-12-31'),
-    // maxDate: new Date('2031-06-27T20:59'),
+    // minDate: new Date('2020-08-01'),
+    // maxDate: new Date('2020-10-31'),
     // onRenderCell({date}) {
     //     return {
     //         disabled: date.getDate() === 27
