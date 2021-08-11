@@ -133,11 +133,26 @@ export let optsNavTitlesDefaults =
 }`
 
 export let optsNavTitlesUsage =
-`new AirDatepicker('$el', {
+`new AirDatepicker('#el', {
     navTitles: {
         days: '<strong>Choose date</strong> MM, yyyy'
     }
 })`
+
+export let eventsOnRenderCell =
+`new AirDatepicker('#el', {
+    onRenderCell({date, cellType}) {
+        // Disable all 12th dates in month
+        if (cellType === 'day') {
+            if (date.getDate() === 12) {
+                return {
+                    disabled: true
+                }
+            }
+        }
+    }
+})
+`
 
 export {
     install,

@@ -14,6 +14,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import DList from 'components/common/dList';
 import {
+    eventsOnRenderCell,
     optsButtonsExample,
     optsButtonsShape,
     optsNavTitlesDefaults,
@@ -340,8 +341,38 @@ function Docs({} = {}) {
                                         <Param name={'decade'} type={'number[]'} definition={'eventsOnChangeViewDateDecade'} />
                                     </Param.List>
                                 </Param>
-                                <Param name={'onChangeView'}>
-
+                                <Param name={'onChangeView'} type={'("days | months | years") => void'}>
+                                    <Paragraph id={'eventsOnChangeView'} />
+                                </Param>
+                                <Param name={'onRenderCell'} type={'({date, cellType, datepicker}) => {html, classes, disabled}'}>
+                                    <Paragraph id={'eventsOnRenderCell'} />
+                                    <Paragraph id={'eventsOnRenderCell2'} />
+                                    <Param.List nested>
+                                        <Param name={'date'} type={'Date'} definition={'eventsOnRenderCellDate'}/>
+                                        <Param name={'cellType'} type={'"day | month | year"'} definition={'eventsOnRenderCellCellType'} />
+                                        <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnRenderCellDatepicker'} />
+                                    </Param.List>
+                                    <Paragraph id={'eventsOnRenderCell3'} />
+                                    <Param.List nested>
+                                        <Param name={'html'} type={'string'} definition={'eventsOnRenderCellHtml'}/>
+                                        <Param name={'classes'} type={'string'} definition={'eventsOnRenderCellClasses'} />
+                                        <Param name={'disabled'} type={'boolean'} definition={'eventsOnRenderCellDisabled'} />
+                                    </Param.List>
+                                    <Example>
+                                        <Code>{examples.eventsOnRenderCell}</Code>
+                                    </Example>
+                                </Param>
+                                <Param name={'onShow'} type={'(isFinished) => void'}>
+                                    <Paragraph id={'eventsOnShow'}/>
+                                    <Param.List nested>
+                                        <Param name={'isFinished'} type={'boolean'} definition={'eventsOnShowArg'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'onHide'}>
+                                    <Paragraph id={'eventsOnHide'} type={'(isFinished) => void'}/>
+                                    <Param.List nested>
+                                        <Param name={'isFinished'} type={'boolean'} definition={'eventsOnHideArg'} />
+                                    </Param.List>
                                 </Param>
                             </Param.List>
                         </Section>
