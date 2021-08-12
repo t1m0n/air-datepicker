@@ -260,6 +260,10 @@ export default class Datepicker {
     }
 
     formatDate(string, date=this.viewDate) {
+        date = createDate(date);
+
+        if (!(date instanceof Date)) return;
+
         let result = string,
             locale = this.locale,
             parsedDate = getParsedDate(date),

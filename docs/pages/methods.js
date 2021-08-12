@@ -4,33 +4,18 @@ import ContentGrid from 'components/layout/contentGrid';
 import PageTitle from 'components/pageTitle';
 import Section from 'components/section';
 import NavBar from 'components/navBar';
-import Param, {ParamType} from 'components/param';
+import Param from 'components/param';
 import Example from 'components/example';
-import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
 import Paragraph from 'components/common/paragraph';
 import * as examples from 'examples/commonExamples';
-import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import dataTypes from 'data/dataTypes';
-import DList from 'components/common/dList';
-import {
-    apiAccess,
-    eventsOnRenderCell,
-    optsButtonsExample,
-    optsButtonsShape,
-    optsNavTitlesDefaults,
-    optsSelectedDatesExample
-} from 'examples/commonExamples';
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
 const falseField = (() => <Code inline>{'false'}</Code>)();
-const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>;
-
 
 function Methods({} = {}) {
-    let {messages} = useIntl();
-
     return (
         <div className='api'>
             <Container>
@@ -100,6 +85,13 @@ function Methods({} = {}) {
                                 <Param name={'clear()'}>
                                     <Paragraph id={'apiClear'} />
                                 </Param>
+                                <Param name={'formatDate(format, date)'}>
+                                    <Paragraph id={'apiFormatDate'} />
+                                    <Param.List nested>
+                                        <Param name={'format'} type={'string'} />
+                                        <Param name={'date'} type={dataTypes.date} />
+                                    </Param.List>
+                                </Param>
                                 <Param name={'destroy()'}>
                                     <Paragraph id={'apiDestroy'}/>
                                 </Param>
@@ -147,6 +139,7 @@ function Methods({} = {}) {
                                         <Param name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
                                     </Param.List>
                                 </Param>
+
 
                                 <Param name={'$datepicker'} type={"HTMLElement"}>
                                     <Paragraph id={'api$datepicker'}/>

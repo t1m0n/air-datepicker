@@ -9,6 +9,7 @@ import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
 import * as code from 'examples/commonExamples';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import Paragraph from 'components/common/paragraph';
 import {timeFormatOption, timeRangeExample} from 'examples/commonExamples';
 
 class Examples extends React.Component {
@@ -22,7 +23,7 @@ class Examples extends React.Component {
 
     render(){
         let today = new Date();
-        let {intl} = this.props;
+        let {intl: {messages}} = this.props;
 
         return (
             <div className='examples'>
@@ -33,7 +34,7 @@ class Examples extends React.Component {
                             <PageTitle titleId={'navExamples'} />
                             <Section title='exampleBasicTitle'>
                                 <Example>
-                                   <AirDatepicker placeholder={intl.messages.chooseDate} />
+                                   <AirDatepicker placeholder={messages.chooseDate} />
                                    <Code>{code.basicInit}</Code>
                                 </Example>
 
@@ -146,7 +147,23 @@ class Examples extends React.Component {
                                 </Example>
                             </Section>
                             <Section title={'exampleCustomTitleTitle'}>
-
+                                <Example>
+                                    <AirDatepicker
+                                        inline
+                                        navTitles={{
+                                            days(dp) {
+                                                if (dp.selectedDates.length) {
+                                                    return `<small>${messages
+                                                        .chosenDate
+                                                        .replace('{date}', dp.formatDate('dd MMMM yyyy', dp.selectedDates[0]))}
+                                                        </small>`
+                                                }
+                                                return messages.chooseDate
+                                            }
+                                        }}
+                                    />
+                                    <Code>{code.customTitleExample}</Code>
+                                </Example>
 
                             </Section>
                             <Section title={'exampleButtonsTitle'}>

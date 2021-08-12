@@ -66,6 +66,22 @@ let customCellExampleCss =
 }
 `
 
+export let customTitleExample =
+`new AirDatepicker('#el', {
+    navTitles: {
+        days(dp) {
+            if (dp.selectedDates.length) {
+                let date = dp.selectedDates[0];
+                return \`<small>
+                    You have chosen \${dp.formatDate('dd MMMM yyyy', date)}
+                </small>\`;
+            }
+            
+            return 'Choose date';
+        }
+    }
+})`
+
 export let timeRangeExample =
 `
 new AirDatepicker({
