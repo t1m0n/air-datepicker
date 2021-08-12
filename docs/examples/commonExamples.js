@@ -154,6 +154,12 @@ export let eventsOnRenderCell =
 })
 `
 
+export let apiAccess =
+`let dp = new AirDatepicker('#el');
+
+dp.show();
+`
+
 export {
     install,
     basicUsage,

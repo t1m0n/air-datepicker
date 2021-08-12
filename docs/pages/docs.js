@@ -35,6 +35,9 @@ function Docs({} = {}) {
                     <NavBar></NavBar>
                     <main role='main'>
                         <PageTitle titleId='navDoc' />
+                        <Section>
+                            <Paragraph id={'docsIntro'}/>
+                        </Section>
                         <Section title='docsOptionsTitle'>
                             <Param.List>
                                 <Param name={'classes'} type={'string'}>

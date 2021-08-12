@@ -471,9 +471,11 @@ export default class Datepicker {
         });
     }
 
-    unselect(date){
+    unselectDate(date){
         let selected = this.selectedDates,
             _this = this;
+
+        date = createDate(date);
 
         if (!(date instanceof Date)) return;
 
@@ -696,10 +698,10 @@ export default class Datepicker {
                     this.selectDate(newSelectedDate);
                 }
             } else {
-                this.unselect(newSelectedDate);
+                this.unselectDate(newSelectedDate);
             }
         } else if (toggleSelected){
-            this.unselect(newSelectedDate);
+            this.unselectDate(newSelectedDate);
         }
 
         // Change last selected date to be able to change time when clicking on this cell

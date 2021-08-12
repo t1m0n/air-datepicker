@@ -7,7 +7,7 @@ import cn from 'classnames';
 
 import css from './param.module.scss';
 
-function Param({name, type, definition, defaultValue, children} = {}) {
+function Param({name, type, definition, definitionValues, defaultValue, children} = {}) {
     return (
         <div className={css.el}>
             <div className={css.paramRow}>
@@ -21,7 +21,7 @@ function Param({name, type, definition, defaultValue, children} = {}) {
                 }
             </div>
             {definition && <>
-                &nbsp;&mdash; <FormattedMessage id={definition} />
+                &nbsp;&mdash; <FormattedMessage id={definition} values={definitionValues} />
             </>}
             {children &&
             <div className={css.content}>
@@ -47,7 +47,8 @@ Param.propTypes = {
     name: PropTypes.string,
     type: PropTypes.string,
     defaultValue: PropTypes.string,
-    children: PropTypes.any
+    children: PropTypes.any,
+    definitionValues: PropTypes.object,
 };
 
 export default Param;

@@ -145,6 +145,10 @@ class Examples extends React.Component {
                                     <Code language='css'>{code.customCellExampleCss}</Code>
                                 </Example>
                             </Section>
+                            <Section title={'exampleCustomTitleTitle'}>
+
+
+                            </Section>
                             <Section title={'exampleButtonsTitle'}>
 
 

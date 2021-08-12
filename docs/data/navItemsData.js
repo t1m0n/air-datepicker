@@ -9,6 +9,6 @@ export default [
     },
     {
         labelId: 'navApi',
-        href: '/api'
+        href: '/methods'
     }
 ]
