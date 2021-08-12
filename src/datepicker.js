@@ -711,7 +711,9 @@ export default class Datepicker {
     }
 
     _handleUpDownActions(date, dir) {
-        date = date || this.focusDate || this.viewDate;
+        date = createDate(date) || this.focusDate || this.viewDate;
+
+        if (!(date instanceof Date)) return;
 
         let nextView = dir === 'up' ? this.viewIndex + 1 : this.viewIndex - 1;
         if (nextView > 2) nextView = 2;
@@ -753,6 +755,10 @@ export default class Datepicker {
      * @param {Date} date
      */
     setViewDate = (date) => {
+        date = createDate(date);
+
+        if (!(date instanceof Date)) return;
+
         if (isSameDate(date, this.viewDate)) return;
         this.viewDate = date;
         let {onChangeViewDate} = this.opts;
@@ -776,6 +782,10 @@ export default class Datepicker {
      * @param {Boolean} params.viewDateTransition
      */
     setFocusDate = (date, params = {}) => {
+        date = createDate(date);
+
+        if (!(date instanceof Date)) return;
+
         this.focusDate = date;
 
         if (this.opts.range && date) {

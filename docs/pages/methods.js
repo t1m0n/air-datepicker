@@ -12,6 +12,7 @@ import Paragraph from 'components/common/paragraph';
 import * as examples from 'examples/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
+import dataTypes from 'data/dataTypes';
 import DList from 'components/common/dList';
 import {
     apiAccess,
@@ -57,12 +58,12 @@ function Methods({} = {}) {
                                 <Param name={'prev()'}>
                                     <Paragraph id={'apiPrev'} />
                                 </Param>
-                                <Param name={'selectDate(date | date[] [, opts])'}>
+                                <Param name={'selectDate(date | date[], opts?)'}>
                                     <Paragraph id={'apiSelectDate'} />
                                     <Param.List nested>
                                         <Param
                                             name={'date'}
-                                            type={'Date | string | number'}
+                                            type={dataTypes.date}
                                             definition={'apiSelectDateDate'}
                                             definitionValues={{
                                                 jsDate: <Code inline>{`Date`}</Code>
@@ -92,15 +93,75 @@ function Methods({} = {}) {
                                 <Param name={'unselectDate(date)'}>
                                     <Paragraph id={'apiUnselectDate'} />
                                     <Param.List nested>
-                                        <Param name={'date'} type={'Date | string | number'} definition={'apiUnselectDateDate'} />
+                                        <Param name={'date'} type={dataTypes.date} definition={'apiUnselectDateDate'} />
                                     </Param.List>
                                 </Param>
 
                                 <Param name={'clear()'}>
-
+                                    <Paragraph id={'apiClear'} />
                                 </Param>
                                 <Param name={'destroy()'}>
+                                    <Paragraph id={'apiDestroy'}/>
+                                </Param>
+                                <Param name={'update(newOpts)'}>
+                                    <Paragraph id={'apiUpdate'} />
+                                    <Param.List nested>
+                                        <Param name={'newOpts'} type={'object'} definition={'apiUpdateNewOpts'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'setCurrentView(view)'}>
+                                    <Paragraph id={'apiSetCurrentView'} />
+                                    <Param.List nested>
+                                        <Param name={'view'} type={'"days" | "months" | "years"'} definition={'apiSetCurrentViewView'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'setViewDate(date)'}>
+                                    <Paragraph id={'apiSetViewDate'}/>
+                                    <Param.List nested>
+                                        <Param name={'date'} type={dataTypes.date} definition={'apiSetViewDateDate'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'setFocusDate(date, opts?)'}>
+                                    <Paragraph id={'apiSetFocusDate'} />
+                                    <Param.List nested>
+                                        <Param name={'date'} type={dataTypes.date} definition={'apiSetViewDateDate'} />
+                                        <Param
+                                            name={'opts.viewDateTransition'}
+                                            type={'boolean'}
+                                            definition={'apiSetFocusDateDateViewTransition'}
+                                            definitionValues={{
+                                                trueField
+                                            }}
+                                        />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'up(date?)'}>
+                                    <Paragraph  id={'apiUp'}/>
+                                    <Param.List nested>
+                                        <Param name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'down(date?)'}>
+                                    <Paragraph  id={'apiDown'}/>
+                                    <Param.List nested>
+                                        <Param name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
+                                    </Param.List>
+                                </Param>
 
+                                <Param name={'$datepicker'} type={"HTMLElement"}>
+                                    <Paragraph id={'api$datepicker'}/>
+                                </Param>
+                                <Param name={'viewDate'} type={'Date'}>
+                                    <Paragraph id={'apiViewDate'}/>
+                                </Param>
+                                <Param name={'currentView'} type={dataTypes.views}>
+                                    <Paragraph id={'apiCurrentView'}/>
+                                </Param>
+                                <Param name={'selectedDates'} type={'Date[]'}>
+                                    <Paragraph id={'apiSelectedDates'}/>
+                                </Param>
+                                <Param name={'focusDate'} type={'Date | false'}>
+                                    <Paragraph id={'apiFocusDate'} />
                                 </Param>
                             </Param.List>
                         </Section>
