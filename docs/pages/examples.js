@@ -209,7 +209,16 @@ class Examples extends React.Component {
                                                         : messages.exampleButtonsAdvanceTurnOn
                                                 },
                                                 onClick(dp) {
-                                                    dp.update({timepicker: !dp.opts.timepicker})
+                                                    let viewDate = dp.viewDate;
+                                                    let today = new Date();
+
+                                                    viewDate.setHours(today.getHours());
+                                                    viewDate.setMinutes(today.getMinutes());
+
+                                                    dp.update({
+                                                        timepicker: !dp.opts.timepicker,
+                                                        viewDate
+                                                    })
                                                 }
                                             }
                                         ]}

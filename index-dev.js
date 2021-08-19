@@ -12,34 +12,25 @@ window.dp = new Datepicker($input, {
     timepicker: true,
     // toggleSelected: false,
     onSelect({date}){
-        // console.log(date);
+        console.log(date);
     },
     buttons: [
         {
-            content({dp}) {
-                console.log(dp);
+            content(dp) {
                 return dp.opts.timepicker ? 'Off' : 'On'
             },
             onClick(dp) {
-                dp.update({timepicker: !dp.opts.timepicker})
+                dp.update({
+                    timepicker: !dp.opts.timepicker,
+                    viewDate: vd
+                })
             }
         }
     ],
     timeFormat: 'HH:mm',
-    navTitles: {
-        days(dp) {
-            if (dp.selectedDates.length) {
-                console.log(dp.selectedDates[0]);
-                return dp.formatDate('HH:mm', dp.selectedDates[0])
-            }
-
-            return 'date'
-        }
-    },
 
     multipleDates: true,
     // view: 'months',
-    // startDate: new Date('2023-07-27'),
     // minDate: new Date('2020-08-01'),
     // maxDate: new Date('2020-10-31'),
     // onRenderCell({date}) {

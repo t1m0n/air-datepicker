@@ -147,7 +147,18 @@ export let exampleButtonsAdvance = (messages) =>
                     : '${messages.exampleButtonsAdvanceTurnOn}'
             },
             onClick(dp) {
-                dp.update({timepicker: !dp.opts.timepicker})
+                let viewDate = dp.viewDate;
+                let today = new Date();
+                
+                // Since timepicker takes initial time from 'viewDate', set up time here, 
+                // otherwise time will be equal to 00:00 if user navigated through datepicker
+                viewDate.setHours(today.getHours());
+                viewDate.setMinutes(today.getMinutes());
+
+                dp.update({
+                    timepicker: !dp.opts.timepicker,
+                    viewDate
+                })
             }
         }
     ]
