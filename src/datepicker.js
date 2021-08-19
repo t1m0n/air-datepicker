@@ -715,7 +715,7 @@ export default class Datepicker {
     }
 
     _handleUpDownActions(date, dir) {
-        date = createDate(date) || this.focusDate || this.viewDate;
+        date = createDate(date || this.focusDate || this.viewDate);
 
         if (!(date instanceof Date)) return;
 
@@ -786,9 +786,11 @@ export default class Datepicker {
      * @param {Boolean} params.viewDateTransition
      */
     setFocusDate = (date, params = {}) => {
-        date = createDate(date);
+        if (date) {
+            date = createDate(date);
 
-        if (!(date instanceof Date)) return;
+            if (!(date instanceof Date)) return;
+        }
 
         this.focusDate = date;
 
@@ -843,7 +845,7 @@ export default class Datepicker {
             [consts.day]: `${yearQuery}${monthQuery}${dayQuery}`,
             [consts.month]: `${yearQuery}${monthQuery}`,
             [consts.year]: `${yearQuery}`,
-        }
+        };
 
         return this.views[this.currentView].$el.querySelector(resultQuery[cellType]);
     }
@@ -896,11 +898,11 @@ export default class Datepicker {
         }
 
         if (selectedDates) {
-            this.selectDate(selectedDates)
+            this.selectDate(selectedDates);
         }
 
         if (newOpts.view) {
-            this.setCurrentView(newOpts.view)
+            this.setCurrentView(newOpts.view);
         }
 
         this._limitViewDateByMaxMinDates();

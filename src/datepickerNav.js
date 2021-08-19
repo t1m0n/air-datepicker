@@ -154,9 +154,9 @@ export default class DatepickerNav {
     get isNavIsFunction() {
         let {navTitles} = this.opts;
 
-        return Object.keys(navTitles).find(view => {
-            return typeof navTitles[view] === 'function'
-        })
+        return Object.keys(navTitles).find((view) => {
+            return typeof navTitles[view] === 'function';
+        });
     }
 
     update = () => {
