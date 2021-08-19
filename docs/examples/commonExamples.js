@@ -66,18 +66,27 @@ let customCellExampleCss =
 }
 `
 
-export let customTitleExample =
+export let customTitleBasicExample =
+`new AirDatepicker('#el', {
+    navTitles: {
+        days: '<strong>yyyy</strong> <i>MMMM</i>',
+        months: 'Select month of <strong>yyyy</strong>'    
+    }
+})
+`
+
+export let customTitleExample = (messages) =>
 `new AirDatepicker('#el', {
     navTitles: {
         days(dp) {
             if (dp.selectedDates.length) {
                 let date = dp.selectedDates[0];
                 return \`<small>
-                    You have chosen \${dp.formatDate('dd MMMM yyyy', date)}
+                   ${messages.chosenDate.replace('{date}', '')} \${dp.formatDate('dd MMMM yyyy', date)}
                 </small>\`;
             }
             
-            return 'Choose date';
+            return '${messages.chooseDate}';
         }
     }
 })`

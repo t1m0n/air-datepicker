@@ -10,7 +10,7 @@ import Code from 'components/code';
 import * as code from 'examples/commonExamples';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import Paragraph from 'components/common/paragraph';
-import {timeFormatOption, timeRangeExample} from 'examples/commonExamples';
+import {customTitleBasicExample, timeFormatOption, timeRangeExample} from 'examples/commonExamples';
 
 class Examples extends React.Component {
     constructor() {
@@ -146,7 +146,20 @@ class Examples extends React.Component {
                                     <Code language='css'>{code.customCellExampleCss}</Code>
                                 </Example>
                             </Section>
-                            <Section title={'exampleCustomTitleTitle'}>
+                            <Section title={'exampleTitlesTitle'}>
+                                <Paragraph id='exampleTitlesNote' />
+                                <Section.SubTitle titleId={'exampleTitlesBasic'} />
+                                <Example>
+                                    <AirDatepicker
+                                        inline
+                                        navTitles={{
+                                            days: '<strong>yyyy</strong> <i>MMMM</i>',
+                                            months: 'Select month of <i>yyyy</i>'
+                                        }}
+                                    />
+                                    <Code>{code.customTitleBasicExample}</Code>
+                                </Example>
+                                <Section.SubTitle titleId={'exampleTitlesCustomTitle'} />
                                 <Example>
                                     <AirDatepicker
                                         inline
@@ -162,7 +175,7 @@ class Examples extends React.Component {
                                             }
                                         }}
                                     />
-                                    <Code>{code.customTitleExample}</Code>
+                                    <Code>{code.customTitleExample(messages)}</Code>
                                 </Example>
 
                             </Section>
