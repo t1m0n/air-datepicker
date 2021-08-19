@@ -21,14 +21,19 @@ export default class DatepickerButtons {
     }
 
     destroy() {
-        this.$el.parentNode.removeChild(this.$el)
+        this.$el.parentNode.removeChild(this.$el);
+    }
+
+    clearHtml() {
+        this.$el.innerHTML = '';
+        return this;
     }
 
     generateButtons(){
         let {buttons} = this.opts;
 
         if (!Array.isArray(buttons)) {
-            buttons = [buttons]
+            buttons = [buttons];
         }
 
         buttons.forEach((b)=>{

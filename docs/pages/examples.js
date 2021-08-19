@@ -10,7 +10,8 @@ import Code from 'components/code';
 import * as code from 'examples/commonExamples';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import Paragraph from 'components/common/paragraph';
-import {customTitleBasicExample, timeFormatOption, timeRangeExample} from 'examples/commonExamples';
+import Link from 'components/common/link';
+import {exampleButtonsAdvance, exampleButtonsBasic} from 'examples/commonExamples';
 
 class Examples extends React.Component {
     constructor() {
@@ -180,8 +181,41 @@ class Examples extends React.Component {
 
                             </Section>
                             <Section title={'exampleButtonsTitle'}>
+                                <Paragraph id='exampleButtonsNote' values={{
+                                    link: <Link href={'/docs#buttons'}>{messages.inDocsSection}</Link>
+                                }}/>
+                                <Section.SubTitle titleId={'exampleButtonsBasicTitle'} />
+                                <Paragraph id='exampleButtonsBasicNote' values={{
+                                    optsName: <Code inline isFieldName>{`buttons`}</Code>,
+                                }} />
+                                <Example>
+                                    <AirDatepicker
+                                        inline
+                                        buttons={['today', 'clear']}
+                                    />
+                                    <Code>{code.exampleButtonsBasic}</Code>
+                                </Example>
+                                <Section.SubTitle titleId={'exampleButtonsAdvanceTitle'} />
+                                <Example>
+                                    <AirDatepicker
+                                        inline
+                                        buttons={[
+                                            {
+                                                content(dp) {
+                                                    if (dp.timepicker) {
+                                                        return 'Turn off timepicker'
+                                                    }
 
-
+                                                    return 'Turn on timepicker'
+                                                },
+                                                onClick(dp) {
+                                                    dp.update({timepicker: !dp.timepicker})
+                                                }
+                                            }
+                                        ]}
+                                    />
+                                    <Code>{code.exampleButtonsAdvance}</Code>
+                                </Example>
                             </Section>
                         </main>
                     </ContentGrid>

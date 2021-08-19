@@ -132,6 +132,23 @@ export let optsButtonsShape =
 }
 `
 
+export let exampleButtonsBasic =
+`new AirDatepicker('#el', {
+    buttons: ['today', 'clear']
+})`
+
+export let exampleButtonsAdvance =
+`new AirDatepicker('#el', {
+    buttons: [
+        {
+            content: 'Select 19th of August',
+             onClick(dp) {
+                dp.selectDate('2021-08-19');
+            }
+        }
+    ]
+})`
+
 export let optsButtonsExample =
 `import AirDatepicker from 'air-datepicker';
 

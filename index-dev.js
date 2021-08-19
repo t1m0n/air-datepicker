@@ -14,6 +14,17 @@ window.dp = new Datepicker($input, {
     onSelect({date}){
         // console.log(date);
     },
+    buttons: [
+        {
+            content({dp}) {
+                console.log(dp);
+                return dp.opts.timepicker ? 'Off' : 'On'
+            },
+            onClick(dp) {
+                dp.update({timepicker: !dp.opts.timepicker})
+            }
+        }
+    ],
     timeFormat: 'HH:mm',
     navTitles: {
         days(dp) {

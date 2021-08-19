@@ -895,6 +895,10 @@ export default class Datepicker {
         } else if (prevOpts.buttons && !buttons) {
             this.buttons.destroy();
             this.$buttons.parentNode.removeChild(this.$buttons);
+        } else {
+            if (prevOpts.buttons && buttons) {
+                this.buttons.clearHtml().render();
+            }
         }
 
         if (selectedDates) {

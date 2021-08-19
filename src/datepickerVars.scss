@@ -8,6 +8,11 @@
   --adp-width: 246px; // Day cell width will be equal to 34px
   --adp-z-index: 100;
   --adp-padding: 4px;
+  --adp-grid-areas:
+    'nav'
+    'body'
+    'timepicker'
+    'buttons';
 
   --adp-transition-duration: .3s;
   --adp-transition-ease: ease-out;
