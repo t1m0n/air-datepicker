@@ -196,25 +196,25 @@ class Examples extends React.Component {
                                     <Code>{code.exampleButtonsBasic}</Code>
                                 </Example>
                                 <Section.SubTitle titleId={'exampleButtonsAdvanceTitle'} />
+                                <Paragraph id='exampleButtonsAdvanceNote'/>
                                 <Example>
                                     <AirDatepicker
-                                        inline
+                                        inlineInput
+                                        selectedDates={[new Date()]}
                                         buttons={[
                                             {
                                                 content(dp) {
-                                                    if (dp.timepicker) {
-                                                        return 'Turn off timepicker'
-                                                    }
-
-                                                    return 'Turn on timepicker'
+                                                    return dp.opts.timepicker
+                                                        ? messages.exampleButtonsAdvanceTurnOff
+                                                        : messages.exampleButtonsAdvanceTurnOn
                                                 },
                                                 onClick(dp) {
-                                                    dp.update({timepicker: !dp.timepicker})
+                                                    dp.update({timepicker: !dp.opts.timepicker})
                                                 }
                                             }
                                         ]}
                                     />
-                                    <Code>{code.exampleButtonsAdvance}</Code>
+                                    <Code>{code.exampleButtonsAdvance(messages)}</Code>
                                 </Example>
                             </Section>
                         </main>

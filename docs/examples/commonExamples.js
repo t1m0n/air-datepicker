@@ -125,7 +125,7 @@ new AirDatepicker('#el', {
 
 export let optsButtonsShape =
 `type ButtonShape = {
-    content: string | ({dpInstance, locale}) => string
+    content: string | (dpInstance) => string
     tagName?: string
     className?: string
     onClick?: (dpInstance) => void
@@ -137,13 +137,17 @@ export let exampleButtonsBasic =
     buttons: ['today', 'clear']
 })`
 
-export let exampleButtonsAdvance =
+export let exampleButtonsAdvance = (messages) =>
 `new AirDatepicker('#el', {
     buttons: [
         {
-            content: 'Select 19th of August',
-             onClick(dp) {
-                dp.selectDate('2021-08-19');
+            content(dp) {
+                return dp.opts.timepicker 
+                    ? '${messages.exampleButtonsAdvanceTurnOff}'
+                    : '${messages.exampleButtonsAdvanceTurnOn}'
+            },
+            onClick(dp) {
+                dp.update({timepicker: !dp.opts.timepicker})
             }
         }
     ]

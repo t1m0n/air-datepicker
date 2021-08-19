@@ -67,7 +67,7 @@ export default class DatepickerButtons {
      * @return HTMLElement
      */
     createButton({content, className, tagName='button'}){
-        let _content = typeof content === 'function' ? content({dp: this.dp, locale: this.dp.locale}) : content;
+        let _content = typeof content === 'function' ? content(this.dp) : content;
 
         return createElement({
             tagName,

@@ -901,7 +901,7 @@ export default class Datepicker {
             }
         }
 
-        if (selectedDates) {
+        if (!prevOpts.selectedDates && selectedDates) {
             this.selectDate(selectedDates);
         }
 

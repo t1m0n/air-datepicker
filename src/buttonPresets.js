@@ -1,10 +1,10 @@
 export default {
     today: {
-        content: ({locale}) => locale.today,
+        content: dp => dp.locale.today,
         onClick: dp => dp.setViewDate(new Date()),
     },
     clear: {
-        content: ({locale}) => locale.clear,
+        content: dp => dp.locale.clear,
         onClick: dp => dp.clear()
     }
 };
