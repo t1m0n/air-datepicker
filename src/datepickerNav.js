@@ -48,7 +48,14 @@ export default class DatepickerNav {
         this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
 
         if (this.isNavIsFunction) {
-            this.dp.on(consts.eventChangeSelectedDate, this.render);
+            this.dp.on(consts.eventChangeSelectedDate, () => {
+                // Wait till time is added to date
+                setTimeout(this.render);
+            });
+
+            if (this.dp.opts.timepicker) {
+                this.dp.on(consts.eventChangeTime, this.render);
+            }
         }
     }
 

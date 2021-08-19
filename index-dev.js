@@ -12,9 +12,19 @@ window.dp = new Datepicker($input, {
     timepicker: true,
     // toggleSelected: false,
     onSelect({date}){
-        console.log(date);
+        // console.log(date);
     },
     timeFormat: 'HH:mm',
+    navTitles: {
+        days(dp) {
+            if (dp.selectedDates.length) {
+                console.log(dp.selectedDates[0]);
+                return dp.formatDate('HH:mm', dp.selectedDates[0])
+            }
+
+            return 'date'
+        }
+    },
 
     multipleDates: true,
     // view: 'months',
