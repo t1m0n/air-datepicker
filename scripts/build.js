@@ -10,6 +10,7 @@ const writeFile = util.promisify(fs.writeFile);
 const rimraf = require('rimraf');
 const copyPackageFiles = require('./copyPackageFiles');
 
+let babelConfig = path.resolve(__dirname, '../babel.config.js');
 let srcPath = path.resolve('./src');
 let distPath = path.resolve('./dist');
 
@@ -36,6 +37,13 @@ async function run() {
         log.success('Bundle compiled successfully');
     } catch (e) {
         log.error(`Bundle compilation error: ${e}`);
+    }
+
+    try {
+        await execAsync(`babel ${srcPath}/locale --out-dir ${distPath}/locale --config-file ${babelConfig}`);
+        log.success('Localization files compiled');
+    } catch (e) {
+        log.error('Error, while handling localization files');
     }
 
     try {
