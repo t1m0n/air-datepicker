@@ -27,9 +27,23 @@
 .paramRow {
   display: flex;
   align-items: baseline;
+  position: relative;
 
   .nestedList & {
     display: inline-flex;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    border-radius: 4px;
+    background: var(--color-accent-almost-transparent);
+    opacity: 0;
+    z-index: -1;
+    left: -4px;
+    top: -4px;
+    right: -4px;
+    bottom: -4px;
   }
 }
 
@@ -59,6 +73,14 @@
   }
 }
 
+.paramActive {
+  .paramRow {
+    &:after {
+      animation: blink 1s infinite linear;
+    }
+  }
+}
+
 .defaultValue {
   margin-left: .5em;
 }
@@ -67,3 +89,14 @@
 
 }
 
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

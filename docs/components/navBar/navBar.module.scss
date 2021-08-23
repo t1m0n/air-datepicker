@@ -1,8 +1,52 @@
+@import "../../public/mixins";
+
 /* -------------------------------------------------
     Nav bar
    ------------------------------------------------- */
 
 .el {
+  height: calc(100vh - var(--header-height) - var(--header-offset) - 32px);
+  overflow: auto;
+  position: sticky;
+  top: var(--header-offset);
+  padding-right: 8px;
+  transition: opacity var(--t-duration) var(--t-easing);
+  opacity: .4;
 
+  @include scrollbars(rgba(0, 0, 0, .05), 6px);
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
+.section {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.sectionParams {
+}
+
+.sectionParam {
+}
+
+.sectionParamLink {
+  display: block;
+  text-decoration: none;
+  color: var(--link-color);
+  padding: .1em .2em .2em .5em;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--color-accent-almost-transparent);
+  }
+}

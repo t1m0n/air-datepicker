@@ -22,17 +22,26 @@ import {
     optsSelectedDatesExample
 } from 'examples/commonExamples';
 
+import paramCSS from 'components/param/param.module.scss';
+import sectionCSS from 'components/section/section.module.scss';
+
 const trueField = (() => <Code inline>{'true'}</Code>)();
 const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>;
 
-function Docs({} = {}) {
+    function Docs({} = {}) {
     let {messages} = useIntl();
 
     return (
         <div className='docs'>
             <Container>
                 <ContentGrid>
-                    <NavBar></NavBar>
+                    <NavBar
+                        sectionSelector={`.${sectionCSS.el}`}
+                        sectionTitleSelector={`.${sectionCSS.title}`}
+                        paramSelector={`.${sectionCSS.el} > .${paramCSS.list} > .${paramCSS.el}`}
+                        paramNameSelector={`.${paramCSS.paramName}`}
+                        activeClass={paramCSS.paramActive}
+                    />
                     <main role='main'>
                         <PageTitle titleId='navDoc' />
                         <Section>
