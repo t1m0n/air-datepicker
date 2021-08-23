@@ -123,6 +123,17 @@ new AirDatepicker('#el', {
 })
 `
 
+export let optsDateFormatFunc =
+`new AirDatepicker('#el', {
+    dateFormat(date) {
+        return date.toLocaleString('ja', {
+            year: 'numeric',
+            day: '2-digit',
+            month: 'long'
+        });
+    }
+})`
+
 export let optsButtonsShape =
 `type ButtonShape = {
     content: string | (dpInstance) => string

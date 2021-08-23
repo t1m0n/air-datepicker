@@ -16,7 +16,7 @@ import DList from 'components/common/dList';
 import {
     eventsOnRenderCell,
     optsButtonsExample,
-    optsButtonsShape,
+    optsButtonsShape, optsDateFormatFunc,
     optsNavTitlesDefaults,
     optsSelectedDatesExample
 } from 'examples/commonExamples';
@@ -77,7 +77,7 @@ function Docs({} = {}) {
                                         }}
                                     />
                                 </Param>
-                                <Param name='dateFormat' type={'string'} defaultValue={'""'} >
+                                <Param name='dateFormat' type={'string | (date) => string'} defaultValue={'""'} >
                                     <Paragraph
                                         doubleOffset
                                         id='optsDateFormat'
@@ -109,6 +109,19 @@ function Docs({} = {}) {
                                         <DList.Item value={'yyyy1'} definition={'optsDateFormatyyyy1'} />
                                         <DList.Item value={'yyyy2'} definition={'optsDateFormatyyyy2'} />
                                     </DList>
+                                    <Paragraph id='optsDateFormatFuncNote'/>
+                                    <Example>
+                                        <AirDatepicker
+                                            dateFormat={(date) => {
+                                                return date.toLocaleString('ja', {
+                                                    year: 'numeric',
+                                                    day: '2-digit',
+                                                    month: 'long'
+                                                });
+                                            }}
+                                        />
+                                        <Code>{examples.optsDateFormatFunc}</Code>
+                                    </Example>
                                 </Param>
                                 <Param name={'altField'} type={'string | DOMNode'} defaultValue={'""'}>
                                     <Paragraph
@@ -118,7 +131,7 @@ function Docs({} = {}) {
                                         }}
                                     />
                                 </Param>
-                                <Param name={'altFieldDateFormat'} type={'string'} defaultValue={'"T"'}>
+                                <Param name={'altFieldDateFormat'} type={'string | (date) => string'} defaultValue={'"T"'}>
                                     <Paragraph id={'optsAltFieldDateFormat'} />
                                 </Param>
                                 <Param name={'toggleSelected'} type={'boolean'} defaultValue={'true'}>
