@@ -24,7 +24,9 @@ html {
     --paragraph-offset: .7em;
 
     --container-offset: 16px;
-    --container-max-width: 1000px;
+    --container-max-width: 1050px;
+    --content-nav-col-width: 256px;
+    --content-col-gap: 32px;
     --layout-top-offset: 40px;
 
     --section-offset: 40px;

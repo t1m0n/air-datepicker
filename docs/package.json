@@ -9,6 +9,7 @@
   "dependencies": {
     "air-datepicker": "file:../dist",
     "classnames": "^2.2.6",
+    "date-fns": "^2.23.0",
     "next": "10.2.0",
     "prismjs": "^1.23.0",
     "react": "17.0.2",
@@ -21,6 +22,7 @@
     "eslint": "^7.27.0",
     "eslint-plugin-react": "^7.23.2",
     "hygen": "^6.1.0",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "raw-loader": "^4.0.2"
   }
 }
