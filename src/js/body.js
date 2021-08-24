@@ -220,8 +220,8 @@
 
         _getYearHtml: function (date) {
             var content = this._getCellContents(date, 'year');
-
-            return '<div class="' + content.classes + '" data-year="' + date.getFullYear() + '">' + content.html + '</div>'
+            var year = content.html + (this.opts.isBuddhistYear ? 543 : 0);
+            return '<div class="' + content.classes + '" data-year="' + date.getFullYear() + '">' + year + '</div>'
         },
 
         _renderTypes: {

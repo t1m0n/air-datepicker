@@ -12,6 +12,7 @@
             '</div>',
         defaults = {
             classes: '',
+            isBuddhistYear: false,
             inline: false,
             language: 'ru',
             startDate: new Date(),
@@ -220,6 +221,9 @@
         },
 
         _defineLocale: function (lang) {
+            if("th-TH".indexOf(lang) > -1) {
+                this.opts.isBuddhistYear = true;    
+            }
             if (typeof lang == 'string') {
                 this.loc = $.fn.datepicker.language[lang];
                 if (!this.loc) {
@@ -419,13 +423,17 @@
                 case /h/.test(result):
                     result = replacer(result, boundary('h'), hours);
                 case /yyyy/.test(result):
-                    result = replacer(result, boundary('yyyy'), d.year);
+                    var year = d.year + (this.opts.isBuddhistYear ? 543 : 0);
+                    result = replacer(result, boundary('yyyy'), year);
                 case /yyyy1/.test(result):
-                    result = replacer(result, boundary('yyyy1'), decade[0]);
+                    var decade0 = decade[0] + (this.opts.isBuddhistYear ? 543 : 0);
+                    result = replacer(result, boundary('yyyy1'), decade0);
                 case /yyyy2/.test(result):
-                    result = replacer(result, boundary('yyyy2'), decade[1]);
+                    var decade1 = decade[1] + (this.opts.isBuddhistYear ? 543 : 0);
+                    result = replacer(result, boundary('yyyy2'), decade1);
                 case /yy/.test(result):
-                    result = replacer(result, boundary('yy'), d.year.toString().slice(-2));
+                    var year = d.year + (this.opts.isBuddhistYear ? 543 : 0);
+                    result = replacer(result, boundary('yy'), year.toString().slice(-2));
             }
 
             return result;
