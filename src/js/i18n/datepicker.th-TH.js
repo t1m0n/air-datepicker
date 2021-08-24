@@ -1,4 +1,4 @@
-;(function ($) { $.fn.datepicker.language['th-TH'] = {
+$.fn.datepicker.language['th-TH'] = {
     days: ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัส', 'วันศุกร์', 'วันเสาร์'],
     daysShort: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์', 'เสาร์'],
     daysMin: ['อ', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
@@ -9,4 +9,4 @@
     dateFormat: 'dd/mm/yyyy',
     timeFormat: 'hh:ii',
     firstDay: 0
-}; })(jQuery);
+};
