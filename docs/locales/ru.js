@@ -11,6 +11,8 @@ export default {
     inSection: 'разделе',
     inDocsSection: 'в разделе документации',
     possibleSymbols: 'Возможные символы:',
+    searchPlaceholder: 'Поиск',
+    notFound: 'Ничего не найдено',
 
     exampleBasicTitle: 'Инициализация с опциями по умолчанию',
     exampleBasicInlineTitle: 'Статичный календарь',

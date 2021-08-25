@@ -18,6 +18,10 @@
   &:hover {
     opacity: 1;
   }
+
+  &:focus-within {
+    opacity: 1;
+  }
 }
 
 .section {
@@ -28,9 +32,38 @@
   }
 }
 
+.searchInput {
+  margin-bottom: 16px;
+  margin-right: 8px;
+  width: 100%;
+}
+
 .sectionTitle {
   margin-bottom: 4px;
+  color: var(--base-color);
+  display: block;
+  font-weight: bold;
+  font-size: 24px   ;
+  cursor: pointer;
   line-height: 1.1;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    outline: none;
+  }
+}
+
+.notFound {
+  min-height: 50px;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sectionParams {
@@ -46,7 +79,9 @@
   padding: .1em .2em .2em .5em;
   border-radius: 4px;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: var(--color-accent-almost-transparent);
+    outline: none;
   }
 }

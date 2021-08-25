@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import anime from 'animejs';
+import Input from 'components/form/input';
+import {injectIntl} from 'react-intl';
+import cloneDeep from 'clone-deep';
+import fuzzysearch from 'fuzzysearch';
+import cn from 'classnames';
 
 import css from './navBar.module.scss';
 
-export default class NavBar extends React.Component {
+class NavBar extends React.Component {
     constructor() {
         super();
     }
@@ -14,6 +19,8 @@ export default class NavBar extends React.Component {
 
     state = {
         sections: [],
+        filteredSections: [],
+        searchQuery: '',
         activeParam: ''
     }
 
@@ -28,6 +35,30 @@ export default class NavBar extends React.Component {
         this.setState({
             sections: this.calculatesSection()
         });
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let filteredSections = [];
+        let {searchQuery} = this.state;
+
+        if (prevState.searchQuery !== searchQuery) {
+            this.setState({
+                filteredSections: this.getFilteredSections()
+            })
+        }
+    }
+
+    getFilteredSections() {
+        let sections = cloneDeep(this.state.sections);
+        let {searchQuery} = this.state;
+
+        return sections.map(s => {
+            s.params = s.params.filter(param => {
+                return fuzzysearch(searchQuery.toLowerCase(), param.content.toLowerCase())
+            })
+
+            return s;
+        })
     }
 
     calculatesSection() {
@@ -55,6 +86,7 @@ export default class NavBar extends React.Component {
 
             return {
                 content: $paramName.innerText,
+                visible: true,
                 $param,
                 $paramName
             }
@@ -94,15 +126,44 @@ export default class NavBar extends React.Component {
         this.scrollTo(param.$param);
     }
 
-    render() {
-        let {sections} = this.state;
+    onClickTitle = (title) => (e) => {
+        e.preventDefault();
+        this.scrollTo(title.$title);
+    }
 
+    onChangeSearch = (e) => {
+        this.setState({
+            searchQuery: e.target.value
+        })
+    }
+
+    render() {
+        let {sections, searchQuery, filteredSections, searchIsFocused} = this.state;
+        let {intl: {messages}} = this.props;
         return (
             <aside className={css.el}>
-                {sections.map(({title, params}) => {
+                <Input
+                    className={css.searchInput}
+                    onChange={this.onChangeSearch}
+                    onFocus={this.onFocusSearch}
+                    onBlur={this.onBlurSearch}
+                    placeholder={messages.searchPlaceholder}
+                    value={searchQuery}
+                />
+                {(searchQuery ? filteredSections : sections).map((titleObj) => {
+                    let {title, params} = titleObj;
                     return <div key={title} className={css.section}>
-                        <h1 className={css.sectionTitle}>{title}</h1>
+                        <a
+                            href={'#'}
+                            className={css.sectionTitle}
+                            onClick={this.onClickTitle(titleObj)}
+                        >
+                            {title}
+                        </a>
                         <div className={css.sectionParams}>
+                            {searchQuery && params.length === 0 && <div className={css.notFound}>
+                                {messages.notFound}
+                            </div>}
                             {params.map((param) => {
                                 return <div className={css.sectionParam} key={`${title}${param.content}`}>
                                     <a
@@ -122,3 +183,4 @@ export default class NavBar extends React.Component {
     }
 }
 
+export default injectIntl(NavBar);
