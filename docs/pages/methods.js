@@ -12,6 +12,7 @@ import * as examples from 'examples/commonExamples';
 import Link from 'components/common/link';
 import dataTypes from 'data/dataTypes';
 
+
 const trueField = (() => <Code inline>{'true'}</Code>)();
 const falseField = (() => <Code inline>{'false'}</Code>)();
 
@@ -20,7 +21,7 @@ function Methods({} = {}) {
         <div className='api'>
             <Container>
                 <ContentGrid>
-                    <NavBar></NavBar>
+                    <NavBar />
                     <main role='main'>
                         <PageTitle titleId='navApi' />
                         <Section>
@@ -29,7 +30,7 @@ function Methods({} = {}) {
                                 <Code>{examples.apiAccess}</Code>
                             </Example>
                         </Section>
-                        <Section>
+                        <Section title={'apiMethodsTitle'}>
                             <Param.List>
                                 <Param name={'show()'}>
                                     <Paragraph id={'apiShow'} />
@@ -139,8 +140,11 @@ function Methods({} = {}) {
                                         <Param name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
                                     </Param.List>
                                 </Param>
+                            </Param.List>
+                        </Section>
 
-
+                        <Section title={'apiPropertiesTitle'}>
+                            <Param.List>
                                 <Param name={'$datepicker'} type={"HTMLElement"}>
                                     <Paragraph id={'api$datepicker'}/>
                                 </Param>

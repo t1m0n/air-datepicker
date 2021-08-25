@@ -7,6 +7,9 @@ import cloneDeep from 'clone-deep';
 import fuzzysearch from 'fuzzysearch';
 import cn from 'classnames';
 
+import paramCSS from 'components/param/param.module.scss';
+import sectionCSS from 'components/section/section.module.scss';
+
 import css from './navBar.module.scss';
 
 class NavBar extends React.Component {
@@ -25,10 +28,21 @@ class NavBar extends React.Component {
     }
 
     static propTypes = {
+        showSearch: PropTypes.bool,
         sectionSelector: PropTypes.string,
         sectionTitleSelector: PropTypes.string,
         paramNameSelector: PropTypes.string,
         paramSelector: PropTypes.string,
+        activeClass: PropTypes.string,
+    }
+
+    static defaultProps = {
+        showSearch: true,
+        sectionSelector:`.${sectionCSS.el}`,
+        sectionTitleSelector:`.${sectionCSS.title}`,
+        paramSelector:`.${sectionCSS.el} > .${paramCSS.list} > .${paramCSS.el}`,
+        paramNameSelector:`.${paramCSS.paramName}`,
+        activeClass: paramCSS.paramActive
     }
 
     componentDidMount() {
@@ -139,9 +153,10 @@ class NavBar extends React.Component {
 
     render() {
         let {sections, searchQuery, filteredSections, searchIsFocused} = this.state;
-        let {intl: {messages}} = this.props;
+        let {intl: {messages}, showSearch} = this.props;
         return (
             <aside className={css.el}>
+                {showSearch &&
                 <Input
                     className={css.searchInput}
                     onChange={this.onChangeSearch}
@@ -150,11 +165,13 @@ class NavBar extends React.Component {
                     placeholder={messages.searchPlaceholder}
                     value={searchQuery}
                 />
+                }
                 {(searchQuery ? filteredSections : sections).map((titleObj) => {
                     let {title, params} = titleObj;
                     return <div key={title} className={css.section}>
                         <a
                             href={'#'}
+                            title={title}
                             className={css.sectionTitle}
                             onClick={this.onClickTitle(titleObj)}
                         >

@@ -11,7 +11,8 @@ import * as code from 'examples/commonExamples';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import Paragraph from 'components/common/paragraph';
 import Link from 'components/common/link';
-import {exampleButtonsAdvance, exampleButtonsBasic} from 'examples/commonExamples';
+import sectionCSS from 'components/section/section.module.scss';
+
 
 class Examples extends React.Component {
     constructor() {
@@ -30,25 +31,31 @@ class Examples extends React.Component {
             <div className='examples'>
                 <Container>
                     <ContentGrid>
-                        <NavBar />
+                        <NavBar
+                            showSearch={false}
+                            activeClass={sectionCSS.subSectionActive}
+                            paramSelector={`.${sectionCSS.subSection}`}
+                            paramNameSelector={`.${sectionCSS.subTitle}`}
+                        />
                         <main role='main'>
                             <PageTitle titleId={'navExamples'} />
                             <Section title='exampleBasicTitle'>
                                 <Example>
-                                   <AirDatepicker placeholder={messages.chooseDate} />
-                                   <Code>{code.basicInit}</Code>
+                                    <AirDatepicker placeholder={messages.chooseDate} />
+                                    <Code>{code.basicInit}</Code>
                                 </Example>
 
-                                <Section.SubTitle titleId='exampleBasicInlineTitle' />
-                                <FormattedMessage
-                                    tagName={'p'}
-                                    id={'exampleBasicInlineNote'}
-                                    values={{param: <Code inline>{`{inline: true}`}</Code>   }}
-                                />
-                                <Example>
-                                    <AirDatepicker inline/>
-                                    <Code>{code.basicInitInline}</Code>
-                                </Example>
+                                <Section.SubSection titleId={'exampleBasicInlineTitle'}>
+                                    <FormattedMessage
+                                        tagName={'p'}
+                                        id={'exampleBasicInlineNote'}
+                                        values={{param: <Code inline>{`{inline: true}`}</Code>   }}
+                                    />
+                                    <Example>
+                                        <AirDatepicker inline/>
+                                        <Code>{code.basicInitInline}</Code>
+                                    </Example>
+                                </Section.SubSection>
                             </Section>
                             <Section title='exampleRangeTitle'>
                                 <FormattedMessage
@@ -57,8 +64,8 @@ class Examples extends React.Component {
                                     values={{param: <Code inline>{`{range: true}`}</Code>}}
                                 />
                                 <Example>
-                                   <AirDatepicker range={true} multipleDatesSeparator={' - '} />
-                                   <Code>{code.rangeOption}</Code>
+                                    <AirDatepicker range={true} multipleDatesSeparator={' - '} />
+                                    <Code>{code.rangeOption}</Code>
                                 </Example>
                             </Section>
                             <Section title='exampleTimeTitle'>
@@ -71,48 +78,49 @@ class Examples extends React.Component {
                                     }}
                                 />
                                 <Example>
-                                   <AirDatepicker timepicker={true}/>
-                                   <Code>{code.timeOption}</Code>
+                                    <AirDatepicker timepicker={true}/>
+                                    <Code>{code.timeOption}</Code>
                                 </Example>
 
-                                <Section.SubTitle titleId={'exampleTimeTitleFormat'} />
-                                <FormattedMessage
-                                    tagName={'p'}
-                                    id={'exampleTimeFormatNote'}
-                                    values={{
-                                        paramName: <Code inline>{`{timeFormat: '...'}`}</Code>,
-                                        dateFormataa: <Code inline>{`aa`}</Code>,
-                                        dateFormatAA: <Code inline>{`AA`}</Code>
-                                    }}
-                                />
-                                <Example>
-                                    <AirDatepicker
-                                        timepicker
-                                        selectedDates={new Date()}
-                                        timeFormat={'hh:mm AA'}
+                                <Section.SubSection titleId={'exampleTimeTitleFormat'}>
+                                    <FormattedMessage
+                                        tagName={'p'}
+                                        id={'exampleTimeFormatNote'}
+                                        values={{
+                                            paramName: <Code inline>{`{timeFormat: '...'}`}</Code>,
+                                            dateFormataa: <Code inline>{`aa`}</Code>,
+                                            dateFormatAA: <Code inline>{`AA`}</Code>
+                                        }}
                                     />
-                                    <Code>{code.timeFormatOption}</Code>
-                                </Example>
-
-                                <Section.SubTitle titleId={'exampleTimeRangeTitle'} />
-                                <FormattedMessage
-                                    id={'exampleTimeRangeNote'}
-                                    tagName={'p'}
-                                    values={{
-                                        commonOptions: <Code inline>{`minHours, maxHours, minMinutes, maxMinutes`}</Code>,
-                                        stepOptions: <Code inline>{`hoursStep, minutesStep`}</Code>
-                                    }}
-                                />
-                                <FormattedMessage
-                                    id={'exampleTimeRangeNote2'}
-                                    tagName={'p'}
-                                />
-                                <Example>
-                                    <AirDatepicker inline timepicker minHours={9} maxHours={18} minutesStep={5}/>
                                     <Example>
-                                        <Code>{code.timeRangeExample}</Code>
+                                        <AirDatepicker
+                                            timepicker
+                                            selectedDates={new Date()}
+                                            timeFormat={'hh:mm AA'}
+                                        />
+                                        <Code>{code.timeFormatOption}</Code>
                                     </Example>
-                                </Example>
+                                </Section.SubSection>
+                                <Section.SubSection titleId={'exampleTimeRangeTitle'}>
+                                    <FormattedMessage
+                                        id={'exampleTimeRangeNote'}
+                                        tagName={'p'}
+                                        values={{
+                                            commonOptions: <Code inline>{`minHours, maxHours, minMinutes, maxMinutes`}</Code>,
+                                            stepOptions: <Code inline>{`hoursStep, minutesStep`}</Code>
+                                        }}
+                                    />
+                                    <FormattedMessage
+                                        id={'exampleTimeRangeNote2'}
+                                        tagName={'p'}
+                                    />
+                                    <Example>
+                                        <AirDatepicker inline timepicker minHours={9} maxHours={18} minutesStep={5}/>
+                                        <Example>
+                                            <Code>{code.timeRangeExample}</Code>
+                                        </Example>
+                                    </Example>
+                                </Section.SubSection>
                             </Section>
                             <Section title='exampleCellContentTitle'>
                                 <FormattedMessage
@@ -131,100 +139,104 @@ class Examples extends React.Component {
                                         inline
                                         selectedDates={new Date(today.getFullYear(), today.getMonth(), 10)}
                                         onRenderCell={({date, type}) => {
-                                        let dates = [1, 5, 7, 10, 15, 20, 25],
-                                            emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
-                                            isDay = type === 'day',
-                                            _date = date.getDate(),
-                                            shouldChangeContent = isDay && dates.includes(_date),
-                                            randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
+                                            let dates = [1, 5, 7, 10, 15, 20, 25],
+                                                emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
+                                                isDay = type === 'day',
+                                                _date = date.getDate(),
+                                                shouldChangeContent = isDay && dates.includes(_date),
+                                                randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
 
-                                        return {
-                                            html: shouldChangeContent ? randomEmoji : false,
-                                            classes: shouldChangeContent ? '-emoji-cell-' : false
-                                        }
-                                    }}/>
+                                            return {
+                                                html: shouldChangeContent ? randomEmoji : false,
+                                                classes: shouldChangeContent ? '-emoji-cell-' : false
+                                            }
+                                        }}/>
                                     <Code>{code.customCellExample}</Code>
                                     <Code language='css'>{code.customCellExampleCss}</Code>
                                 </Example>
                             </Section>
                             <Section title={'exampleTitlesTitle'}>
                                 <Paragraph id='exampleTitlesNote' />
-                                <Section.SubTitle titleId={'exampleTitlesBasic'} />
-                                <Example>
-                                    <AirDatepicker
-                                        inline
-                                        navTitles={{
-                                            days: '<strong>yyyy</strong> <i>MMMM</i>',
-                                            months: 'Select month of <i>yyyy</i>'
-                                        }}
-                                    />
-                                    <Code>{code.customTitleBasicExample}</Code>
-                                </Example>
-                                <Section.SubTitle titleId={'exampleTitlesCustomTitle'} />
-                                <Example>
-                                    <AirDatepicker
-                                        inline
-                                        navTitles={{
-                                            days(dp) {
-                                                if (dp.selectedDates.length) {
-                                                    return `<small>${messages
-                                                        .chosenDate
-                                                        .replace('{date}', dp.formatDate('dd MMMM yyyy', dp.selectedDates[0]))}
+                                <Section.SubSection titleId={'exampleTitlesBasic'}>
+                                    <Example>
+                                        <AirDatepicker
+                                            inline
+                                            navTitles={{
+                                                days: '<strong>yyyy</strong> <i>MMMM</i>',
+                                                months: 'Select month of <i>yyyy</i>'
+                                            }}
+                                        />
+                                        <Code>{code.customTitleBasicExample}</Code>
+                                    </Example>
+                                </Section.SubSection>
+                                <Section.SubSection titleId={'exampleTitlesCustomTitle'}>
+                                    <Example>
+                                        <AirDatepicker
+                                            inline
+                                            navTitles={{
+                                                days(dp) {
+                                                    if (dp.selectedDates.length) {
+                                                        return `<small>${messages
+                                                            .chosenDate
+                                                            .replace('{date}', dp.formatDate('dd MMMM yyyy', dp.selectedDates[0]))}
                                                         </small>`
+                                                    }
+                                                    return messages.chooseDate
                                                 }
-                                                return messages.chooseDate
-                                            }
-                                        }}
-                                    />
-                                    <Code>{code.customTitleExample(messages)}</Code>
-                                </Example>
-
+                                            }}
+                                        />
+                                        <Code>{code.customTitleExample(messages)}</Code>
+                                    </Example>
+                                </Section.SubSection>
                             </Section>
                             <Section title={'exampleButtonsTitle'}>
                                 <Paragraph id='exampleButtonsNote' values={{
                                     link: <Link href={'/docs#buttons'}>{messages.inDocsSection}</Link>
                                 }}/>
-                                <Section.SubTitle titleId={'exampleButtonsBasicTitle'} />
-                                <Paragraph id='exampleButtonsBasicNote' values={{
-                                    optsName: <Code inline isFieldName>{`buttons`}</Code>,
-                                }} />
-                                <Example>
-                                    <AirDatepicker
-                                        inline
-                                        buttons={['today', 'clear']}
-                                    />
-                                    <Code>{code.exampleButtonsBasic}</Code>
-                                </Example>
-                                <Section.SubTitle titleId={'exampleButtonsAdvanceTitle'} />
-                                <Paragraph id='exampleButtonsAdvanceNote'/>
-                                <Example>
-                                    <AirDatepicker
-                                        inlineInput
-                                        selectedDates={[new Date()]}
-                                        buttons={[
-                                            {
-                                                content(dp) {
-                                                    return dp.opts.timepicker
-                                                        ? messages.exampleButtonsAdvanceTurnOff
-                                                        : messages.exampleButtonsAdvanceTurnOn
-                                                },
-                                                onClick(dp) {
-                                                    let viewDate = dp.viewDate;
-                                                    let today = new Date();
+                                <Section.SubSection titleId={'exampleButtonsBasicTitle'}>
+                                    <Paragraph id='exampleButtonsBasicNote' values={{
+                                        optsName: <Code inline isFieldName>{`buttons`}</Code>,
+                                    }} />
+                                    <Example>
+                                        <AirDatepicker
+                                            inline
+                                            buttons={['today', 'clear']}
+                                        />
+                                        <Code>{code.exampleButtonsBasic}</Code>
+                                    </Example>
+                                </Section.SubSection>
+                                <Section.SubSection titleId={'exampleButtonsAdvanceTitle'}>
 
-                                                    viewDate.setHours(today.getHours());
-                                                    viewDate.setMinutes(today.getMinutes());
+                                    <Paragraph id='exampleButtonsAdvanceNote'/>
+                                    <Example>
+                                        <AirDatepicker
+                                            inlineInput
+                                            selectedDates={[new Date()]}
+                                            buttons={[
+                                                {
+                                                    content(dp) {
+                                                        return dp.opts.timepicker
+                                                            ? messages.exampleButtonsAdvanceTurnOff
+                                                            : messages.exampleButtonsAdvanceTurnOn
+                                                    },
+                                                    onClick(dp) {
+                                                        let viewDate = dp.viewDate;
+                                                        let today = new Date();
 
-                                                    dp.update({
-                                                        timepicker: !dp.opts.timepicker,
-                                                        viewDate
-                                                    })
+                                                        viewDate.setHours(today.getHours());
+                                                        viewDate.setMinutes(today.getMinutes());
+
+                                                        dp.update({
+                                                            timepicker: !dp.opts.timepicker,
+                                                            viewDate
+                                                        })
+                                                    }
                                                 }
-                                            }
-                                        ]}
-                                    />
-                                    <Code>{code.exampleButtonsAdvance(messages)}</Code>
-                                </Example>
+                                            ]}
+                                        />
+                                        <Code>{code.exampleButtonsAdvance(messages)}</Code>
+                                    </Example>
+                                </Section.SubSection>
                             </Section>
                         </main>
                     </ContentGrid>

@@ -5,11 +5,12 @@ import {FormattedMessage} from 'react-intl';
 
 import css from './section.module.scss';
 
-function Section({title, isPrimary, children} = {}) {
+function Section({title, titleHidden, isPrimary, children} = {}) {
     return (
         <section
             className={cn(css.el, {
-                [css.isPrimary]: isPrimary
+                [css.isPrimary]: isPrimary,
+                [css.titleHidden]: titleHidden
             })}
         >
             {title && <>
@@ -26,16 +27,24 @@ function Section({title, isPrimary, children} = {}) {
 function SubTitle({titleId, mini, secondary}) {
     return <h3 className={cn(css.subTitle, {
         [css.subTitleMini]: mini,
-        [css.subTitleSecondary]: secondary
+        [css.subTitleSecondary]: secondary,
     })}>
         <FormattedMessage id={titleId} />
     </h3>
 }
 
+function SubSection(props) {
+    return <div className={css.subSection}>
+        <SubTitle {...props} />
+        {props.children}
+    </div>
+}
+
 SubTitle.propTypes = {
     mini: PropTypes.bool,
     secondary: PropTypes.bool,
-    title: PropTypes.string
+    title: PropTypes.string,
+    titleHidden: PropTypes.bool, // For NavBar purpose
 }
 
 Section.propTypes = {
@@ -44,4 +53,5 @@ Section.propTypes = {
 };
 
 Section.SubTitle = SubTitle;
+Section.SubSection = SubSection;
 export default Section;
