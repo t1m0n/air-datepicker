@@ -18,7 +18,7 @@
 }
 
 .navItem {
-  color: var(--base-color);
+  color: var(--link-color);
   text-decoration: none;
   position: relative;
   height: 100%;
@@ -29,10 +29,11 @@
   line-height: 1;
   
   &:hover {
-    color: #41bcfc;
+    color: var(--link-color-hover);
   }
 }
 
 .navItemActive {
-  color: #00b2ff;
+  color: var(--base-color);
+  pointer-events: none;
 }
