@@ -1,10 +1,11 @@
 import React from 'react';
+import cn from 'classnames';
 
 import css from './container.module.scss';
 
-function Container({children} = {}) {
+function Container({children, className} = {}) {
     return (
-        <div className={css.el}>
+        <div className={cn(css.el, className)}>
             {children}
         </div>
     );

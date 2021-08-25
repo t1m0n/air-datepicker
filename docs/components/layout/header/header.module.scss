@@ -9,6 +9,20 @@
   display: flex;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: var(--content-nav-col-width) 1fr;
+  grid-column-gap: var(--content-col-gap);
+  align-items: center;
+}
+
+.logo {
+  text-transform: uppercase;
+  color: var(--base-color);
+  text-decoration: none;
+  font-size: 24px;
+}
+
 
 .nav {
   height: 100%;
@@ -24,8 +38,8 @@
   height: 100%;
   display: inline-flex;
   align-items: center;
-  padding: 0 .7em;
   border-radius: 4px;
+  margin-right: .7em;
   line-height: 1;
   
   &:hover {
