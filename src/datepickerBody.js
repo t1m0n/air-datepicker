@@ -63,7 +63,7 @@ export default class DatepickerBody {
     }
 
     _bindDatepickerEvents(){
-        this.dp.on(consts.eventChangeViewDate, this.render);
+        this.dp.on(consts.eventChangeViewDate, this.onChangeViewDate);
         this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
     }
 
@@ -288,6 +288,24 @@ export default class DatepickerBody {
         this.pressed = false;
         this.rangeFromFocused = false;
         this.rangeToFocused = false;
+    }
+
+    onChangeViewDate = (date, oldViewDate) => {
+        // Prevent unnecessary cell rendering when going up to next view
+        switch (this.dp.currentView) {
+            case (consts.days):
+                if (isSameDate(date, oldViewDate, consts.months)) {
+                    return;
+                }
+                break;
+            case (consts.months):
+                if (isSameDate(date, oldViewDate, consts.years)) {
+                    return;
+                }
+                break;
+        }
+
+        this.render();
     }
 
     render = () => {

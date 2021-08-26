@@ -764,6 +764,7 @@ export default class Datepicker {
         if (!(date instanceof Date)) return;
 
         if (isSameDate(date, this.viewDate)) return;
+        let oldViewDate = this.viewDate;
         this.viewDate = date;
         let {onChangeViewDate} = this.opts;
 
@@ -776,7 +777,7 @@ export default class Datepicker {
             });
         }
 
-        this.trigger(consts.eventChangeViewDate, date);
+        this.trigger(consts.eventChangeViewDate, date, oldViewDate);
     }
 
     /**
