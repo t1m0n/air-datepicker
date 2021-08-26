@@ -11,6 +11,7 @@ import paramCSS from 'components/param/param.module.scss';
 import sectionCSS from 'components/section/section.module.scss';
 
 import css from './navBar.module.scss';
+import * as QueryString from "querystring";
 
 class NavBar extends React.Component {
     constructor() {
@@ -49,6 +50,18 @@ class NavBar extends React.Component {
         this.setState({
             sections: this.calculatesSection()
         });
+
+        let query = new URLSearchParams(window.location.search);
+        let scrollTo = query.get('scrollTo');
+
+        if (scrollTo) {
+            let $el = document.querySelector(`#${scrollTo}`);
+            if ($el) {
+                setTimeout(() => {
+                    this.scrollTo($el)
+                }, 200)
+            }
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -108,9 +121,12 @@ class NavBar extends React.Component {
     }
     
     scrollTo = ($el) => {
+        let headerHeight = 56,
+            headerOffset = 32;
+
         anime({
             targets: ['html', 'body'],
-            scrollTop: $el.offsetTop - 16,
+            scrollTop: $el.offsetTop - headerHeight - headerOffset,
             duration: 600,
             easing: 'easeInOutCubic',
             complete: () => {

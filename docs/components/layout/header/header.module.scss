@@ -4,8 +4,12 @@
 
 .el {
   height: var(--header-height);
+  background: #fff;
   box-shadow: 0 0 14px rgba(0, 0, 0, .1);
   margin-bottom: var(--header-offset);
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
 }
 

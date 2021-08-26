@@ -11,6 +11,13 @@ function Example({children, titleId} = {}) {
     );
 }
 
+function DoubleSection({children}) {
+    return <div className={css.doubleSection}>
+        {children}
+    </div>
+}
+
 Example.propTypes = {};
 
+Example.DoubleSection = DoubleSection;
 export default Example;

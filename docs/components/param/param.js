@@ -7,10 +7,10 @@ import cn from 'classnames';
 
 import css from './param.module.scss';
 
-function Param({name, type, definition, definitionValues, defaultValue, children} = {}) {
+function Param({name, addId = true, type, definition, definitionValues, defaultValue, children} = {}) {
     return (
         <div className={css.el}>
-            <div className={css.paramRow}>
+            <div className={css.paramRow} id={addId ? name : undefined}>
                 <div className={css.paramName}>{name}</div>
                 <ParamType>{type}</ParamType>
                 {defaultValue

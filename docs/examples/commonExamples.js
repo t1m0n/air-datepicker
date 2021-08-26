@@ -18,11 +18,44 @@ new AirDatepicker('#input', {
 })
 `;
 
+export let basicSelectedDate =
+`new AirDatepicker('#el', {
+    selectedDates: [new Date()]
+})`;
+
+export let basicMinView =
+`new AirDatepicker('#el', {
+    view: 'months',
+    minView: 'months',
+    dateFormat: 'MMMM yyyy'
+})`;
+
+
 let rangeOption =
 `new AirDatepicker('#input', {
     range: true,
     multipleDatesSeparator: ' - '
 });`
+
+export let rangeMinMax =
+`let dpMin, dpMax;
+
+dpMin = new AirDatepicker('#el1', {
+    onSelect({date}) {
+        dpMax.update({
+            minDate: date
+        })
+    }
+})
+
+dpMax = new AirDatepicker('#el2', {
+    onSelect({date}) {
+        dpMin.update({
+            maxDate: date
+        })
+    }
+})
+`
 
 let timeOption =
 `new AirDatepicker('#input', {

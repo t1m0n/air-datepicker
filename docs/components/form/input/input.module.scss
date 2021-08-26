@@ -12,7 +12,12 @@
   transition: all var(--t-duration) var(--t-easing);
   padding: 0 .7em;
 
+  &:hover {
+    background: var(--ui-bg-hover);
+  }
+
   &:focus {
+    background: #fff;
     border-color: var(--ui-border-color-focus);
     outline: none;
   }

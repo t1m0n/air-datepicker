@@ -45,6 +45,7 @@ html {
     --ui-height-promo: 60px;
     --ui-border-radius: 4px;
     --ui-border-color: #ddd;
+    --ui-bg-hover: #f1f1f1;
     --ui-border-color-focus: var(--color-accent);
     --ui-font-size: 16px;
 
