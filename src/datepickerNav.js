@@ -120,7 +120,7 @@ export default class DatepickerNav {
     }
 
     _resetNavStatus(){
-        removeClass(document.querySelectorAll('.datepicker-nav--action'), '-disabled-');
+        getEl('.datepicker-nav--action', this.$el).classList.remove('-disabled-');
     }
 
     onClickNav = (e) =>{
