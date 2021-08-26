@@ -172,6 +172,7 @@ export default class DatepickerNav {
         this.$prev.innerHTML = prevHtml;
         this.$next.innerHTML = nextHtml;
 
+        this._resetNavStatus();
         this.render();
         this.handleNavStatus();
     }

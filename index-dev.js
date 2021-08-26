@@ -17,7 +17,9 @@ window.dp2 = new Datepicker($input2, {
     inline: true,
     minDate: new Date(),
     onSelect({date}) {
-
+        dp1.update({
+            maxDate: date
+        })
     }
 });
 
