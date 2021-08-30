@@ -11,6 +11,11 @@
   margin: 48px 0 52px;
 }
 
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
 .dpPromo {
   opacity: 0;
   display: inline-block;

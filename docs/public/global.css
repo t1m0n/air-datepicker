@@ -55,6 +55,8 @@ html {
     --ui-border-color-focus: var(--color-accent);
     --ui-font-size: 16px;
 
-    --t-duration: .3s;
+    --nav-link-border-radius: 4px;
+
+    --t-duration: .2s;
     --t-easing: ease-out;
 }

@@ -80,7 +80,7 @@
   text-decoration: none;
   color: var(--link-color);
   padding: .1em .2em .2em .5em;
-  border-radius: 4px;
+  border-radius: var(--nav-link-border-radius);
 
   &:hover,
   &:focus {

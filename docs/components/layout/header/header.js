@@ -15,7 +15,9 @@ function Header({} = {}) {
     return (
         <div className={css.el}>
             <Container className={css.container}>
-                <Link href={'/'}><a className={css.logo}>Air Datepicker</a></Link>
+                <div>
+                    <Link href={'/'}><a className={css.logo}>Air Datepicker</a></Link>
+                </div>
                 <nav className={css.nav}>
                     {navItemsData.map(({labelId, href}) => {
                         let isActive = href === route;

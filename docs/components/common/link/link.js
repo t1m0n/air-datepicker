@@ -4,9 +4,9 @@ import {default as NextLink} from 'next/link';
 
 import css from './link.module.scss';
 
-function Link({href, children} = {}) {
+function Link({href, children, ...rest} = {}) {
     return (
-        <NextLink href={href}>
+        <NextLink href={href} {...rest}>
             <a className={css.el}>{children}</a>
         </NextLink>
     );

@@ -10,6 +10,7 @@ import anime from 'animejs';
 
 import css from './home.module.scss';
 import navItemsData from '../data/navItemsData';
+import Language from 'components/language';
 import Link from 'next/link';
 import cn from 'classnames';
 
@@ -28,13 +29,13 @@ export default function Home() {
         tl
             .add({
                 targets: `.${css.mainTitle} span`,
-                duration: 800,
+                duration: 700,
                 opacity: 1,
                 delay: anime.stagger(50, {from: 'center'})
             })
             .add({
                 targets: [`.${css.dpPromo}`],
-                duration: 1000,
+                duration: 900,
                 boxShadow: [
                     '0 20px 50px rgba(0, 0, 0, .1)',
                     '0 10px 14px rgba(0, 0, 0, .1)',
@@ -56,6 +57,19 @@ export default function Home() {
     return (
         <div className={css.el}>
             <Container>
+                <div className={cn(css.top, css.transition)} >
+                    <a
+                        className="github-button"
+                        href="https://github.com/t1m0n/air-datepicker"
+                        data-icon="octicon-star"
+                        data-size="large"
+                        data-show-count="true"
+                        aria-label="Star air-datepicker on GitHub"
+                    >
+                        Star
+                    </a>
+                    <Language />
+                </div>
                 <header className={css.promoHeader}>
                     <h1 className={cn(css.mainTitle)}>
                         {adpArray.map((letter, i) => {
