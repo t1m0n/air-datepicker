@@ -5,10 +5,10 @@ import cn from 'classnames';
 
 import css from './button.module.scss';
 
-function Button({children, promo, Component = 'button', href} = {}) {
+function Button({children, className, promo, Component = 'button', href} = {}) {
 
     let button = <Component
-        className={cn(css.el, {
+        className={cn(css.el, className, {
             [css.promo]: promo
         })}
     >
@@ -23,7 +23,8 @@ function Button({children, promo, Component = 'button', href} = {}) {
 }
 
 Button.propTypes = {
-    promo: PropTypes.bool
+    promo: PropTypes.bool,
+    className: PropTypes.string
 };
 
 export default Button;

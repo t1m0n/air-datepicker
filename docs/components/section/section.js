@@ -5,10 +5,10 @@ import {FormattedMessage} from 'react-intl';
 
 import css from './section.module.scss';
 
-function Section({title, titleHidden, isPrimary, children} = {}) {
+function Section({title, titleHidden, isPrimary, children, className} = {}) {
     return (
         <section
-            className={cn(css.el, {
+            className={cn(css.el, className, {
                 [css.isPrimary]: isPrimary,
                 [css.titleHidden]: titleHidden
             })}
@@ -49,7 +49,8 @@ SubTitle.propTypes = {
 
 Section.propTypes = {
     title: PropTypes.string,
-    isPrimary: PropTypes.bool
+    isPrimary: PropTypes.bool,
+    className: PropTypes.string
 };
 
 Section.SubTitle = SubTitle;

@@ -13,7 +13,7 @@
   font-size: var(--ui-font-size);
   color: var(--btn-color);
   cursor: pointer;
-  transition: all .2s var(--t-easing);
+  transition: background-color .2s var(--t-easing);
 
   &:hover {
     background: var(--btn-bg-hover);
