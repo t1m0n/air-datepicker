@@ -22,6 +22,12 @@ html {
     --color-secondary: #6d6d6d;
     --color-purple: #9e25be;
 
+    --btn-bg: rgba(38, 185, 255, 0.1);
+    --btn-bg-hover: rgba(38, 185, 255, 0.2);
+    --btn-bg-active: rgba(38, 185, 255, 0.3);
+    --btn-color: var(--color-accent);
+    --btn-color-hover: #14a7ee;
+
     --paragraph-offset: .7em;
 
     --container-offset: 16px;

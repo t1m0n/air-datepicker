@@ -6,17 +6,27 @@
   display: inline-flex;
   height: var(--ui-height);
   border-radius: var(--ui-border-radius);
-  border: none;
-  background: #26b9ff;
+  border: 1px solid var(--btn-color);
+  background: var(--btn-bg);
   padding: 0 1em;
   align-items: center;
   font-size: var(--ui-font-size);
-  color: #fff;
+  color: var(--btn-color);
   cursor: pointer;
+  transition: all .2s var(--t-easing);
+
+  &:hover {
+    background: var(--btn-bg-hover);
+  }
+
+  &:active {
+    background: var(--btn-bg-active);
+  }
 }
 
 .promo {
   border-radius: 30px;
+  height: 46px;
   justify-content: center;
 }
 
