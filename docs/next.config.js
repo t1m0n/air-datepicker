@@ -19,6 +19,11 @@ module.exports = {
             include: path.resolve(__dirname, 'examples/locales/'),
             use: ['raw-loader']
         })
+        config.module.rules.push({
+            test: /\.svg$/,
+            include: path.resolve(__dirname, 'img/'),
+            use: ['@svgr/webpack']
+        })
 
         return config;
     }

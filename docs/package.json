@@ -13,6 +13,7 @@
     "clone-deep": "^4.0.1",
     "date-fns": "^2.23.0",
     "fuzzysearch": "^1.0.3",
+    "github-buttons": "^2.18.1",
     "next": "10.2.0",
     "prismjs": "^1.23.0",
     "react": "17.0.2",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@svgr/webpack": "^5.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.27.0",
     "eslint-plugin-react": "^7.23.2",

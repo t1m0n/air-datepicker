@@ -7,6 +7,7 @@ import Section from 'components/section';
 import Code from 'components/code';
 import {install, basicUsage} from 'examples/commonExamples';
 import anime from 'animejs';
+import Head from 'next/head';
 
 import css from './home.module.scss';
 import navItemsData from '../data/navItemsData';
@@ -56,6 +57,10 @@ export default function Home() {
 
     return (
         <div className={css.el}>
+            <Head>
+                <title>Air Datepicker</title>
+                <script async defer src="https://buttons.github.io/buttons.js" />
+            </Head>
             <Container>
                 <div className={cn(css.top, css.transition)} >
                     <a
@@ -85,7 +90,7 @@ export default function Home() {
                 </div>
                 <nav className={cn(css.nav, css.transition)}>
                     {navItemsData.map(({labelId, href}) => {
-                        return <Button key={labelId} href={href} promo>
+                        return <Button key={labelId} href={href} bordered promo>
                             {messages[labelId]}
                         </Button>
                     })}

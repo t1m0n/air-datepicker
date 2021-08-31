@@ -6,7 +6,7 @@
   display: inline-flex;
   height: var(--ui-height);
   border-radius: var(--ui-border-radius);
-  border: 1px solid var(--btn-color);
+  border: none;
   background: var(--btn-bg);
   padding: 0 1em;
   align-items: center;
@@ -24,9 +24,22 @@
   }
 }
 
+.active {
+  background: var(--btn-bg-active);
+}
+
 .promo {
   border-radius: 30px;
   height: 46px;
   justify-content: center;
+}
+
+.bordered {
+  border: 1px solid var(--btn-color);
+}
+
+.sizeS {
+  height: 28px;
+  font-size: 13px;
 }
 

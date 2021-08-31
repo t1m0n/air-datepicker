@@ -36,9 +36,9 @@ class MyApp extends React.Component {
 
         return <IntlProvider messages={messages} locale={locale} defaultLocale={defaultLocale}>
             <Head>
+                <title>Air Datepicker</title>
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet" />
-                <script async defer src="https://buttons.github.io/buttons.js"></script>
             </Head>
             {route !== '/home' ? <Header /> : ''}
             <Component {...pageProps} />

@@ -5,12 +5,16 @@ import cn from 'classnames';
 
 import css from './button.module.scss';
 
-function Button({children, className, promo, Component = 'button', href} = {}) {
+function Button({children, active, size, bordered, className, promo, onClick, Component = 'button', href} = {}) {
 
     let button = <Component
         className={cn(css.el, className, {
-            [css.promo]: promo
+            [css.sizeS]: size === 's',
+            [css.bordered]: bordered,
+            [css.promo]: promo,
+            [css.active]: active,
         })}
+        onClick={onClick}
     >
         {children}
     </Component>
@@ -24,6 +28,9 @@ function Button({children, className, promo, Component = 'button', href} = {}) {
 
 Button.propTypes = {
     promo: PropTypes.bool,
+    size: PropTypes.oneOf(['s']),
+    bordered: PropTypes.bool,
+    active: PropTypes.bool,
     className: PropTypes.string
 };
 
