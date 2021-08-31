@@ -14,6 +14,11 @@
   color: var(--btn-color);
   cursor: pointer;
   transition: background-color .2s var(--t-easing);
+  outline: none;
+
+  &:focus {
+    background: var(--btn-bg-hover);
+  }
 
   &:hover {
     background: var(--btn-bg-hover);
@@ -24,7 +29,8 @@
   }
 }
 
-.active {
+.active,
+.active:focus {
   background: var(--btn-bg-active);
 }
 
@@ -39,7 +45,7 @@
 }
 
 .sizeS {
-  height: 28px;
+  height: var(--ui-height-small);
   font-size: 13px;
 }
 

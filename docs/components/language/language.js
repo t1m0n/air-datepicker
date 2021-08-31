@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Image from 'next/image';
-import Link from 'components/common/link';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Ru from 'img/flags/ru.svg';
 import En from 'img/flags/gb.svg';
@@ -46,10 +46,13 @@ function Language({} = {}) {
     }, []);
 
     let onClickWindow = useCallback((e) => {
-        console.log('click');
         if (!closest(e.target, `.${css.el}`)) {
             closeMenu();
         }
+    }, []);
+
+    let onClickMenu = useCallback((e) => {
+        closeMenu();
     }, []);
 
     return (
@@ -67,17 +70,20 @@ function Language({} = {}) {
                 className={cn(css.menu, {
                     [css.menuActive]: isActive
                 })}
+                onClick={onClickMenu}
             >
                 {locales.map(l => {
                     let item = items[l];
                     if (!item) return null;
 
-                    return <div className={cn(css.menuItem)} key={l}>
+                    return <Link locale={l} href={'.'} key={l}>
+                        <div className={cn(css.menuItem)} >
                         <span className={css.flagHolder}>
                             <item.Icon width={16} />
                         </span>
                         {item.label}
                     </div>
+                    </Link>
                 })}
             </div>
         </div>

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import navItemsData from 'data/navItemsData';
 import cn from 'classnames';
 import {useRouter} from 'next/router';
+import Language from 'components/language';
 
 import css from './header.module.scss';
 
@@ -32,6 +33,7 @@ function Header({} = {}) {
                         </Link>
                     })}
                 </nav>
+                <Language />
             </Container>
         </div>
     );

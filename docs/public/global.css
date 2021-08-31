@@ -34,7 +34,7 @@ html {
     --container-max-width: 1050px;
     --content-nav-col-width: 256px;
     --content-col-gap: 32px;
-    --layout-top-offset: 40px;
+    --layout-top-offset: 32px;
 
     --section-offset: 40px;
 
@@ -48,6 +48,7 @@ html {
     --title-line-height: 1.2;
 
     --ui-height: 40px;
+    --ui-height-small: 28px;
     --ui-height-promo: 60px;
     --ui-border-radius: 4px;
     --ui-border-color: #ddd;
@@ -59,4 +60,7 @@ html {
 
     --t-duration: .2s;
     --t-easing: ease-out;
+
+    --z-header: 10;
+    --z-language: 11;
 }

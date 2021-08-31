@@ -14,8 +14,9 @@
 
 .menu {
   right: 0;
-  top: 100%;
+  top: calc(100% + 8px);
   width: 128px;
+  background: #fff;
   border-radius: var(--ui-border-radius);
   position: absolute;
   box-shadow: 0 4px 14px rgba(0, 0, 0, .1);

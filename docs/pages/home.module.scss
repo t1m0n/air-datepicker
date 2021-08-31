@@ -8,16 +8,17 @@
 
 .dpHolder {
   text-align: center;
-  margin: 48px 0 52px;
+  margin: 42px 0 52px;
   transform-style: preserve-3d;
   perspective: 800px;
 }
 
 .top {
   display: flex;
+  align-items: center;
+  height: var(--ui-height-small);
   justify-content: space-between;
-  height: 32px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 .dpPromo {

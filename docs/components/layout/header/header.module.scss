@@ -9,13 +9,13 @@
   margin-bottom: var(--header-offset);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: var(--z-header);
   display: flex;
 }
 
 .container {
   display: grid;
-  grid-template-columns: var(--content-nav-col-width) 1fr;
+  grid-template-columns: var(--content-nav-col-width) 1fr max-content;
   grid-column-gap: var(--content-col-gap);
   align-items: center;
 }
