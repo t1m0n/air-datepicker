@@ -9,6 +9,8 @@
 .dpHolder {
   text-align: center;
   margin: 48px 0 52px;
+  transform-style: preserve-3d;
+  perspective: 800px;
 }
 
 .top {
@@ -19,6 +21,7 @@
 .dpPromo {
   opacity: 0;
   display: inline-block;
+  border-radius: var(--adp-border-radius);
 }
 
 .promoHeader {

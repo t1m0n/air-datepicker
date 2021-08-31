@@ -35,12 +35,12 @@ export default function Home() {
             })
             .add({
                 targets: [`.${css.dpPromo}`],
-                duration: 900,
+                duration: 1000,
                 boxShadow: [
-                    '0 20px 50px rgba(0, 0, 0, .1)',
+                    '0 30px 80px rgba(0, 0, 0, .2)',
                     '0 10px 14px rgba(0, 0, 0, .1)',
                 ],
-                translateY: [-12, 0],
+                translateZ: [64, 0],
                 opacity: 1
             }, 0)
             .add({
