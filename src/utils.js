@@ -301,25 +301,6 @@ export function closest(target, selector) {
 }
 
 /**
- * Finds closest parent that is scrollable
- * @param el {HTMLElement} - target el
- * @return {boolean|HTMLElement}
- */
-export function getClosestScrollableParent(el) {
-    let $scrollableParent = false;
-    let $parent = el.parentNode;
-
-    while(!$scrollableParent && $parent) {
-        if ($parent.scrollHeight > $parent.clientHeight) {
-            $scrollableParent = $parent;
-        }
-        $parent = $parent.parentNode;
-    }
-
-    return $scrollableParent;
-}
-
-/**
  * Clamps number between min and max
  * @param {Number} val
  * @param {Number} min

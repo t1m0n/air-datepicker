@@ -14,7 +14,6 @@ import {
     deepMerge,
     createDate,
     getWordBoundaryRegExp,
-    getClosestScrollableParent,
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
@@ -49,8 +48,13 @@ export default class Datepicker {
     static defaultContainerId = 'datepickers-container'
     constructor(el, opts) {
         this.$el = getEl(el);
+
+        if (!this.$el) return;
+
         this.$datepicker = createElement({className: 'datepicker'});
         this.opts = deepMerge({}, defaults, opts);
+        this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
+
         if (!$body) {
             $body = getEl('body');
         }
@@ -77,7 +81,6 @@ export default class Datepicker {
         this.rangeDateFrom = '';
         this.rangeDateTo = '';
         this._prevOnSelectValue = '';
-        this.$scrollableParent = false;
 
         this.init();
     }
@@ -183,10 +186,11 @@ export default class Datepicker {
 
     _buildBaseHtml() {
         let {inline} = this.opts;
+        let $container = this.$customContainer || $datepickersContainer;
 
         if  (this.elIsInput) {
             if (!inline) {
-                $datepickersContainer.appendChild(this.$datepicker);
+                $container.appendChild(this.$datepicker);
             } else {
                 insertAfter(this.$datepicker, this.$el);
             }
@@ -539,12 +543,6 @@ export default class Datepicker {
         this.$datepicker.classList.add('-active-');
         this.visible = true;
 
-        this.$scrollableParent = getClosestScrollableParent(this.$el);
-
-        if (this.$scrollableParent && !this.$scrollableParent.matches('html')) {
-            this.$scrollableParent.addEventListener('scroll', this._onScrollParent);
-        }
-
         let {onShow} = this.opts;
 
         if (onShow) {
@@ -556,10 +554,6 @@ export default class Datepicker {
         this.$datepicker.classList.remove('-active-');
         this.$datepicker.style.left = '-10000px';
         this.visible = false;
-
-        if (this.$scrollableParent) {
-            this.$scrollableParent.removeEventListener('scroll', this._onScrollParent);
-        }
 
         if (this.elIsInput) {
             this.$el.blur();
@@ -575,13 +569,47 @@ export default class Datepicker {
     setPosition = (position) => {
         position = position || this.opts.position;
 
-        let dims = this.$el.getBoundingClientRect(),
+        let vpDims = this.$el.getBoundingClientRect(),
+            dims = this.$el.getBoundingClientRect(),
+            $dpOffset = this.$datepicker.offsetParent,
+            $elOffset = this.$el.offsetParent,
             selfDims = this.$datepicker.getBoundingClientRect(),
             pos = position.split(' '),
             top, left,
+            scrollTop = window.scrollY,
+            scrollLeft = window.scrollX,
             offset = this.opts.offset,
             main = pos[0],
             secondary = pos[1];
+
+        // If datepicker's container is the same with target element
+        if ($dpOffset === $elOffset && $dpOffset !== document.body) {
+            dims = {
+                top: this.$el.offsetTop,
+                left: this.$el.offsetLeft,
+                width: vpDims.width,
+                height: this.$el.offsetHeight
+            }
+
+            scrollTop = 0;
+            scrollLeft = 0;
+        }
+
+        // If dp container is different from target offset parent
+        // and dp offset parent has position not static (default case)
+        if ($dpOffset !== $elOffset && $dpOffset !== document.body) {
+            let dpOffsetDims = $dpOffset.getBoundingClientRect();
+
+            dims = {
+                top: vpDims.top - dpOffsetDims.top,
+                left: vpDims.left - dpOffsetDims.left,
+                width: vpDims.width,
+                height: vpDims.height
+            }
+
+            scrollTop = 0;
+            scrollLeft = 0;
+        }
 
         switch (main) {
             case 'top':
@@ -619,7 +647,7 @@ export default class Datepicker {
                 }
         }
 
-        this.$datepicker.style.cssText = `left: ${left + window.scrollX}px; top: ${top + window.scrollY}px`;
+        this.$datepicker.style.cssText = `left: ${left + scrollLeft}px; top: ${top + scrollTop}px`;
     }
 
     setInputValue = () => {
@@ -1015,12 +1043,6 @@ export default class Datepicker {
     _onMouseUp = (e) => {
         this.inFocus = false;
         this.$el.focus();
-    }
-
-    _onScrollParent = (e) => {
-        if (this.visible) {
-            this.setPosition();
-        }
     }
 
     //  Helpers

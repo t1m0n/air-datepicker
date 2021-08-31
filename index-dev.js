@@ -6,12 +6,6 @@ let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
 
 window.dp1 = new Datepicker($input1, {
-    inline: true,
-    onSelect({date}) {
-        dp2.update({
-            minDate: date
-        })
-    }
 });
 window.dp2 = new Datepicker($input2, {
     inline: true,
