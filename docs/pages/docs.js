@@ -165,6 +165,14 @@ const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr
                                         <Code>{examples.optsSelectedDatesExample}</Code>
                                     </Example>
                                 </Param>
+                                <Param name={'container'} type={'string | HTMLElement'} defaultValue={'""'}>
+                                    <Paragraph
+                                        id={'optsContainer'}
+                                        values={{
+                                            className: <Code language={'css'} inline>{'.datepickers-container'}</Code>
+                                        }}
+                                    />
+                                </Param>
                                 <Param name={'position'} type={'string'} defaultValue={'"bottom left"'}>
                                     <Paragraph id={'optsPosition'} />
                                     <Paragraph id={'optsPosition2'} values={{
