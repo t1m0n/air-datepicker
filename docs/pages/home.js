@@ -23,7 +23,7 @@ export default function Home() {
     useEffect(() => {
         let tl = anime.timeline({
             easing: 'easeInOutCubic',
-            duration: 500,
+            duration: 1000,
         })
         let mainContentDelay = 700;
 
@@ -52,7 +52,6 @@ export default function Home() {
                 targets: `.${css.transition}`,
                 opacity: 1,
             }, mainContentDelay)
-
     }, [])
 
     return (
