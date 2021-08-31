@@ -157,8 +157,10 @@ export default function Examples() {
                                     id={'exampleTimeFormatNote'}
                                     values={{
                                         paramName: <Code inline>{`{timeFormat: '...'}`}</Code>,
-                                        dateFormataa: <Code inline>{`aa`}</Code>,
-                                        dateFormatAA: <Code inline>{`AA`}</Code>
+                                        dateFormataa: <Code inline>{`'aa'`}</Code>,
+                                        dateFormatAA: <Code inline>{`'AA'`}</Code>,
+                                        hSym: <Code inline>{`'h'`}</Code>,
+                                        hhSym: <Code inline>{`'hh'`}</Code>
                                     }}
                                 />
                                 <Example>
@@ -181,6 +183,11 @@ export default function Examples() {
                                 />
                                 <FormattedMessage
                                     id={'exampleTimeRangeNote2'}
+                                    values={{
+                                        from: '8',
+                                        to: '19',
+                                        step: '5',
+                                    }}
                                     tagName={'p'}
                                 />
                                 <Example>
