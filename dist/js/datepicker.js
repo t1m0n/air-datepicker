@@ -151,6 +151,13 @@
             }
             this._buildBaseHtml();
             this._defineLocale(this.opts.language);
+            
+            var overrides = this.loc.defaultOverrides;
+            
+            if(overrides) {
+              this.opts = $.extend(true, this.opts, overrides);
+            }
+                        
             this._syncWithMinMaxDates();
 
             if (this.elIsInput) {
@@ -825,9 +832,7 @@
 
             this.$datepicker
                 .removeClass('active')
-                .css({
-                    left: '-100000px'
-                });
+                .removeAttr("style");
 
             this.focused = '';
             this.keys = [];
@@ -2149,27 +2154,29 @@
          */
         _getValidHoursFromDate: function (date, ampm) {
             var d = date,
-                hours = date;
-
+                hours = date,
+                locale = $.fn.datepicker.language[this.opts.language];
+                
             if (date instanceof Date) {
                 d = dp.getParsedDate(date);
                 hours = d.hours;
             }
 
             var _ampm = ampm || this.d.ampm,
-                dayPeriod = 'am';
-
+                dayPeriod = locale.am || 'am';
+                
+            
             if (_ampm) {
                 switch(true) {
                     case hours == 0:
                         hours = 12;
                         break;
                     case hours == 12:
-                        dayPeriod = 'pm';
+                        dayPeriod = locale.pm || 'pm';
                         break;
                     case hours > 11:
                         hours = hours - 12;
-                        dayPeriod = 'pm';
+                        dayPeriod = locale.pm || 'pm';
                         break;
                     default:
                         break;

@@ -95,6 +95,10 @@ $rangeThumbBg: #dedede;
   font-size: 14px;
   text-align: center;
   margin: 0 0 0 10px;
+  
+  html[dir="rtl"] & {
+    flex-direction: row-reverse;
+  }
 }
 
 .datepicker--time-current-colon {
@@ -137,6 +141,12 @@ $rangeThumbBg: #dedede;
   margin-left: 6px;
   font-size: 11px;
   margin-bottom: 1px;
+  
+  html[dir=rtl] & {
+    order: -1;
+    margin-left: 0;
+    margin-right: 6px;
+  }
 }
 
 .datepicker--time-row {
