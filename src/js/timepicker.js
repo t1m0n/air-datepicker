@@ -161,7 +161,7 @@
             this.$minutes.attr({
                 min: this.minMinutes,
                 max: this.maxMinutes
-            }).val(this.minutes)
+            }).val(this.minutes);
         },
 
         /**
@@ -227,7 +227,7 @@
             return {
                 hours: hours,
                 dayPeriod: dayPeriod
-            }
+            };
         },
 
         set hours (val) {
@@ -257,7 +257,7 @@
             this.d._trigger('timeChange', [this.hours, this.minutes]);
 
             this._handleDate(this.d.lastSelectedDate);
-            this.update()
+            this.update();
         },
 
         _onSelectDate: function (e, data) {
