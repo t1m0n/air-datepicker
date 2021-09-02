@@ -11,12 +11,15 @@ import Paragraph from 'components/common/paragraph';
 import * as examples from 'examples/commonExamples';
 import Link from 'components/common/link';
 import dataTypes from 'data/dataTypes';
+import {useIntl} from 'react-intl';
 
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
 const falseField = (() => <Code inline>{'false'}</Code>)();
 
 function Methods({} = {}) {
+    let {messages} = useIntl();
+
     return (
         <div className='api'>
             <Container>
@@ -89,8 +92,21 @@ function Methods({} = {}) {
                                 <Param name={'formatDate(format, date)'}>
                                     <Paragraph id={'apiFormatDate'} />
                                     <Param.List nested>
-                                        <Param name={'format'} type={'string'} />
-                                        <Param name={'date'} type={dataTypes.date} />
+                                        <Param
+                                            name={'format'}
+                                            type={'string'}
+                                            definition={'apiFormatDateFormat'}
+                                            definitionValues={{
+                                                dateFormat: <Code inline isFieldName>{`dateFormat`}</Code>,
+                                                link: <Link href={'/docs?scrollTo=dateFormat'}>{messages.inDocsSection}</Link>
+                                            }}
+                                        />
+                                        <Param
+                                            name={'date'}
+                                            type={dataTypes.date}
+                                            definition={'apiFormatDateDate'}
+
+                                        />
                                     </Param.List>
                                 </Param>
                                 <Param name={'destroy()'}>
