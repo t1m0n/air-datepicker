@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import anime from 'animejs';
 import Input from 'components/form/input';
 import {injectIntl} from 'react-intl';
+import {withRouter} from 'next/router';
 import cloneDeep from 'clone-deep';
 import fuzzysearch from 'fuzzysearch';
-import cn from 'classnames';
+import {withApp} from 'context/appContext';
 
 import paramCSS from 'components/param/param.module.scss';
 import sectionCSS from 'components/section/section.module.scss';
 
 import css from './navBar.module.scss';
-import * as QueryString from "querystring";
 
 class NavBar extends React.Component {
     constructor() {
@@ -72,6 +72,12 @@ class NavBar extends React.Component {
             this.setState({
                 filteredSections: this.getFilteredSections()
             })
+        }
+
+        if (prevProps.context.loadingLocales && !this.props.context.loadingLocales) {
+            this.setState({
+                sections: this.calculatesSection()
+            });
         }
     }
 
@@ -216,4 +222,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default injectIntl(NavBar);
+export default injectIntl(withRouter(withApp(NavBar)));

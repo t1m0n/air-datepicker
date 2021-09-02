@@ -126,7 +126,7 @@ export default {
     optsButtons4: 'Example of custom button',
     optsMonthsField: 'A field from the localization object that will be used to display the names of the month in the {months} view.',
     optsShowEvent: 'DOM event on which calendar will be shown.',
-    optsAutoClose: 'If {true Field}, the calendar will be hidden after selecting the date.',
+    optsAutoClose: 'If {trueField}, the calendar will be hidden after selecting the date.',
     optsPrevHtml: '"Previous" button content.',
     optsNextHtml: '"Next" button content.',
     optsNavTitles: 'Title templates in the calendar navigation. You can use HTML tags and tokens from {formatDateField}. You can also pass the function as a value - it will receive an instance of the calendar as an argument, and should return a string.',

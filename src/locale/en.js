@@ -6,7 +6,7 @@ export default {
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     today: 'Today',
     clear: 'Clear',
-    dateFormat: 'mm/dd/yyyy',
-    timeFormat: 'hh:ii aa',
+    dateFormat: 'MM/dd/yyyy',
+    timeFormat: 'hh:mm aa',
     firstDay: 0
 };

@@ -23,7 +23,7 @@ let items = {
 import css from './language.module.scss';
 
 function Language({} = {}) {
-    let {locale, locales} = useRouter();
+    let {locale, locales, pathname} = useRouter();
     let [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
@@ -76,7 +76,7 @@ function Language({} = {}) {
                     let item = items[l];
                     if (!item) return null;
 
-                    return <Link locale={l} href={'.'} key={l}>
+                    return <Link locale={l} href={pathname} key={l}>
                         <div className={cn(css.menuItem)} >
                         <span className={css.flagHolder}>
                             <item.Icon width={16} />

@@ -4,10 +4,13 @@ import Datepicker from 'air-datepicker';
 import cn from 'classnames';
 import Input from 'components/form/input';
 import isEqual from 'react-fast-compare';
+import enLocale from 'air-datepicker/locale/en';
+import ruLocale from 'air-datepicker/locale/ru';
+import {withRouter} from 'next/router';
 
 import css from './airDatepicker.module.scss';
 
-export default class AirDatepicker extends React.Component {
+class AirDatepicker extends React.Component {
     $el = React.createRef();
 
     constructor() {
@@ -29,7 +32,9 @@ export default class AirDatepicker extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (!isEqual(prevProps, this.props)) {
-            this.dp.update(this.props);
+            this.dp.update({...this.props,
+                locale: this.props.router.locale === 'ru' ? ruLocale : enLocale
+            });
         }
     }
 
@@ -49,3 +54,5 @@ export default class AirDatepicker extends React.Component {
         );
     }
 }
+
+export default withRouter(AirDatepicker);
