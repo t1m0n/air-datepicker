@@ -47,3 +47,5 @@ window.dp2 = new Datepicker($input2, {
 if (module.hot) {
     module.hot.accept();
 }
+
+

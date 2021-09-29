@@ -1,23 +1,23 @@
+> :tada: New version released! :tada:
+
 # Air Datepicker
 
-Lightweight customizable cross-browser jQuery datepicker, built with es5 and css-flexbox. Works in all modern desktop and mobile browsers (tested on Android 4.4+ and iOS8+).
+Lightweight, **dependency free**, fast, customizable datepicker written in pure JavaScript. Works in all modern browsers which supports native css variables.
 
 ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img-time.png)
 
 ## Install
 
-### bower
 ```
-bower i --save air-datepicker
-```
-### npm
-```
-npm i --save air-datepicker
+npm i air-datepicker
 ```
 
 ## Usage
 ```javascript
-$('.my-datepicker').datepicker([options])
+import AirDatepicker from 'air-datepicker'
+import 'air-datepicker/air-datepicker.css'
+
+new AirDatepicker('#el' [, options]);
 ```
 
 ## Demo and docs
@@ -25,6 +25,28 @@ $('.my-datepicker').datepicker([options])
 * [In Russian](http://t1m0n.name/air-datepicker/docs/index-ru.html)
 
 ## Change log
+
+### v3.0.0
+It is been a long time since last release, a lot of work has been done, and I can finally present a new version of the Air Datepicker.
+
+The main goal was to remove jQuery dependency, and I'm happy to announce that Air Datepicker is no longer needs any dependency, hurray! :partying_face:  
+
+Now it's written in ES6, uses native css variables for easy customization, and it's all built with webpack.
+
+Soooo, here's the full list of changes:
+
+* no more jQuery
+* improve rendering process - remove redundant cell render when selecting date. Which gave a large speed boost compared to an old version
+* date format tokens now uses [Unicode Technical Standard](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table)
+* added possibility to create custom buttons
+* now one could change selected range by dragging dates
+* added `container` option which allows you to place datepicker in custom element
+* `navTitles` can receive a function and could change dynamically
+* `dateFormat` now can receive a function
+* `onSelect` and `onRenderCell` callbacks are now receives a single object as an argument instead of multiple parameters
+* `selectDate` now receives second parameter with options
+* `onChangeMonth`, `onChangeYear`, `onChangeDecades` are replaced with single option `onChangeViewDate`
+* localization now must be provided as an object instead of string as it was before
 
 ### v2.2.3
 * fixed min,max dates in decade mode
