@@ -2,7 +2,7 @@
     Datepicker
    ------------------------------------------------- */
 
-.datepicker {
+.air-datepicker {
   background: var(--adp-background-color);
   border: 1px solid var(--adp-border-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
@@ -56,19 +56,19 @@
     opacity: 1;
     transform: none;
 
-    .datepicker--pointer {
+    .air-datepicker--pointer {
       display: none;
     }
   }
 }
 
-.datepickers-container {
+.air-datepicker-global-container {
   position: absolute;
   left: 0;
   top: 0;
 }
 
-.datepicker--pointer {
+.air-datepicker--pointer {
   --pointer-half-size: calc(var(--adp-pointer-size) / 2);
 
   position: absolute;
@@ -128,11 +128,11 @@
 }
 
 
-.datepicker--navigation {
+.air-datepicker--navigation {
   grid-area: nav;
 }
 
-.datepicker--content {
+.air-datepicker--content {
   box-sizing: content-box;
   padding: var(--adp-padding);
   grid-area: body;
@@ -142,16 +142,16 @@
   }
 }
 
-.datepicker--time {
+.air-datepicker--time {
   grid-area: timepicker;
 }
 
-.datepicker--buttons {
+.air-datepicker--buttons {
   grid-area: buttons;
 }
 
-.datepicker--buttons,
-.datepicker--time {
+.air-datepicker--buttons,
+.air-datepicker--time {
   padding: var(--adp-padding);
   border-top: 1px solid var(--adp-border-color-inner);
 }

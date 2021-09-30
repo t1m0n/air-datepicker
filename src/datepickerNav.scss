@@ -2,7 +2,7 @@
     Datepicker nav
    ------------------------------------------------- */
 
-.datepicker-nav {
+.air-datepicker-nav {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid var(--adp-border-color-inner);
@@ -13,8 +13,8 @@
     display: none;
   }
 }
-.datepicker-nav--title,
-.datepicker-nav--action {
+.air-datepicker-nav--title,
+.air-datepicker-nav--action {
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -24,7 +24,7 @@
 /*  Navigation action
    ------------------------------------------------- */
 
-.datepicker-nav--action {
+.air-datepicker-nav--action {
   width: var(--adp-day-cell-width);
   border-radius: var(--adp-border-radius);
   user-select: none;
@@ -56,7 +56,7 @@
 /*  Navigation title
    ------------------------------------------------- */
 
-.datepicker-nav--title {
+.air-datepicker-nav--title {
   border-radius: var(--adp-border-radius);
   padding: 0 8px;
 

@@ -19,10 +19,10 @@ import './datepickerBody.scss';
 
 let templates = {
     [consts.days]:'' +
-        '<div class="datepicker-body--day-names"></div>' +
-        `<div class="datepicker-body--cells -${consts.days}-"></div>`,
-    [consts.months]: `<div class="datepicker-body--cells -${consts.months}-"></div>`,
-    [consts.years]: `<div class="datepicker-body--cells -${consts.years}-"></div>`
+        '<div class="air-datepicker-body--day-names"></div>' +
+        `<div class="air-datepicker-body--cells -${consts.days}-"></div>`,
+    [consts.months]: `<div class="air-datepicker-body--cells -${consts.months}-"></div>`,
+    [consts.years]: `<div class="air-datepicker-body--cells -${consts.years}-"></div>`
 };
 
 export default class DatepickerBody {
@@ -69,12 +69,12 @@ export default class DatepickerBody {
 
     _buildBaseHtml() {
         this.$el = createElement({
-            className: `datepicker-body -${this.type}-`,
+            className: `air-datepicker-body -${this.type}-`,
             innerHtml: templates[this.type]
         });
 
-        this.$names = getEl('.datepicker-body--day-names', this.$el);
-        this.$cells = getEl('.datepicker-body--cells', this.$el);
+        this.$names = getEl('.air-datepicker-body--day-names', this.$el);
+        this.$cells = getEl('.air-datepicker-body--cells', this.$el);
     }
 
     _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
@@ -85,7 +85,7 @@ export default class DatepickerBody {
 
         while (i < 7) {
             let day = curDay % 7;
-            let className = classNames('datepicker-body--day-name', {
+            let className = classNames('air-datepicker-body--day-name', {
                 [consts.cssClassWeekend]: isWeekend(day)
             });
             let dayName = this.dp.locale.daysMin[day];
@@ -196,7 +196,7 @@ export default class DatepickerBody {
     }
 
     handleClick = (e) =>{
-        let $cell = closest(e.target, '.datepicker-cell');
+        let $cell = closest(e.target, '.air-datepicker-cell');
         if (!$cell) return;
         let cell = $cell.adpCell;
         if (cell.isDisabled) return;
@@ -224,7 +224,7 @@ export default class DatepickerBody {
     }
 
     onMouseOverCell = (e) => {
-        let $cell = closest(e.target, '.datepicker-cell');
+        let $cell = closest(e.target, '.air-datepicker-cell');
         this.dp.setFocusDate($cell ? $cell.adpCell.date : false);
     }
 
@@ -239,7 +239,7 @@ export default class DatepickerBody {
     onMouseDown = (e) =>{
         this.pressed = true;
 
-        let $cell = closest(e.target, '.datepicker-cell'),
+        let $cell = closest(e.target, '.air-datepicker-cell'),
             cell = $cell && $cell.adpCell;
 
         if (isSameDate(cell.date, this.dp.rangeDateFrom)) {
@@ -254,7 +254,7 @@ export default class DatepickerBody {
         if (!this.pressed || !this.dp.isMinViewReached) return;
         e.preventDefault();
 
-        let $cell = closest(e.target, '.datepicker-cell'),
+        let $cell = closest(e.target, '.air-datepicker-cell'),
             cell = $cell && $cell.adpCell,
             {selectedDates, rangeDateTo, rangeDateFrom} = this.dp;
 

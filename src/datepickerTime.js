@@ -65,7 +65,7 @@ export default class DatepickerTime {
     }
 
     createElement(){
-        this.$el = createElement({className: classNames('datepicker-time', {'-am-pm-': this.dp.ampm,})});
+        this.$el = createElement({className: classNames('air-datepicker-time', {'-am-pm-': this.dp.ampm,})});
     }
 
     destroy() {
@@ -81,17 +81,17 @@ export default class DatepickerTime {
         } = this;
 
         this.$el.innerHTML = '' +
-            '<div class="datepicker-time--current">' +
-            `   <span class="datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
-            '   <span class="datepicker-time--current-colon">:</span>' +
-            `   <span class="datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
+            '<div class="air-datepicker-time--current">' +
+            `   <span class="air-datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
+            '   <span class="air-datepicker-time--current-colon">:</span>' +
+            `   <span class="air-datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
             `   ${ampm ? `<span class='datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
             '</div>' +
-            '<div class="datepicker-time--sliders">' +
-            '   <div class="datepicker-time--row">' +
+            '<div class="air-datepicker-time--sliders">' +
+            '   <div class="air-datepicker-time--row">' +
             `      <input type="range" name="hours" value="${hours}" min="${minHours}" max="${maxHours}" step="${hoursStep}"/>` +
             '   </div>' +
-            '   <div class="datepicker-time--row">' +
+            '   <div class="air-datepicker-time--row">' +
             `      <input type="range" name="minutes" value="${minutes}" min="${minMinutes}" max="${maxMinutes}" step="${minutesStep}"/>` +
             '   </div>' +
             '</div>';

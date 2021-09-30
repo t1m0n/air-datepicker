@@ -29,9 +29,9 @@ let $body = '',
     $datepickersContainer = '',
     containerBuilt = false,
     baseTemplate = '' +
-            '<i class="datepicker--pointer"></i>' +
-            '<div class="datepicker--navigation"></div>' +
-            '<div class="datepicker--content"></div>';
+            '<i class="air-datepicker--pointer"></i>' +
+            '<div class="air-datepicker--navigation"></div>' +
+            '<div class="air-datepicker--content"></div>';
 
 function buildDatepickersContainer (id) {
     containerBuilt = true;
@@ -44,13 +44,13 @@ function buildDatepickersContainer (id) {
 
 export default class Datepicker {
     static defaults = defaults
-    static defaultContainerId = 'datepickers-container'
+    static defaultContainerId = 'air-datepicker-global-container'
     constructor(el, opts) {
         this.$el = getEl(el);
 
         if (!this.$el) return;
 
-        this.$datepicker = createElement({className: 'datepicker'});
+        this.$datepicker = createElement({className: 'air-datepicker'});
         this.opts = deepMerge({}, defaults, opts);
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
 
@@ -164,14 +164,14 @@ export default class Datepicker {
     }
 
     _addTimepicker() {
-        this.$timepicker = createElement({className: 'datepicker--time'});
+        this.$timepicker = createElement({className: 'air-datepicker--time'});
         this.$datepicker.appendChild(this.$timepicker);
         this.timepicker = new DatepickerTime({dp: this, opts: this.opts});
         this.$timepicker.appendChild(this.timepicker.$el);
     }
 
     _addButtons() {
-        this.$buttons = createElement({className: 'datepicker--buttons'});
+        this.$buttons = createElement({className: 'air-datepicker--buttons'});
         this.$datepicker.appendChild(this.$buttons);
         this.buttons = new DatepickerButtons({dp: this, opts: this.opts});
         this.$buttons.appendChild(this.buttons.$el);
@@ -199,8 +199,8 @@ export default class Datepicker {
 
         this.$datepicker.innerHTML = baseTemplate;
 
-        this.$content = getEl('.datepicker--content',  this.$datepicker);
-        this.$nav = getEl('.datepicker--navigation', this.$datepicker);
+        this.$content = getEl('.air-datepicker--content',  this.$datepicker);
+        this.$nav = getEl('.air-datepicker--navigation', this.$datepicker);
     }
 
     _handleLocale(){
@@ -236,7 +236,7 @@ export default class Datepicker {
         pos = pos.split(' ');
         let main = pos[0],
             sec = pos[1],
-            classes = `datepicker -${main}-${sec}- -from-${main}-`;
+            classes = `air-datepicker -${main}-${sec}- -from-${main}-`;
 
         if (this.visible) classes += ' active';
 

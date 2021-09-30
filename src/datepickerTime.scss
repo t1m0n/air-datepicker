@@ -53,7 +53,7 @@ $rangeThumbSize: 12px;
   background: transparent;
 }
 
-.datepicker-time {
+.air-datepicker-time {
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-column-gap: 12px;
@@ -66,10 +66,10 @@ $rangeThumbSize: 12px;
   }
 }
 
-.datepicker-time--sliders {
+.air-datepicker-time--sliders {
 }
 
-.datepicker-time--current {
+.air-datepicker-time--current {
   display: flex;
   align-items: center;
   flex: 1;
@@ -77,13 +77,13 @@ $rangeThumbSize: 12px;
   text-align: center;
 }
 
-.datepicker-time--current-colon {
+.air-datepicker-time--current-colon {
   margin: 0 2px 3px;
   line-height: 1;
 }
 
-.datepicker-time--current-hours,
-.datepicker-time--current-minutes {
+.air-datepicker-time--current-hours,
+.air-datepicker-time--current-minutes {
   line-height: 1;
   font-size: 19px;
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
@@ -110,7 +110,7 @@ $rangeThumbSize: 12px;
   }
 }
 
-.datepicker-time--current-ampm {
+.air-datepicker-time--current-ampm {
   text-transform: uppercase;
   align-self: flex-end;
   color: var(--adp-time-day-period-color);
@@ -119,7 +119,7 @@ $rangeThumbSize: 12px;
   margin-bottom: 1px;
 }
 
-.datepicker-time--row {
+.air-datepicker-time--row {
   display: flex;
   align-items: center;
   font-size: 11px;

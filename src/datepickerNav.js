@@ -30,7 +30,7 @@ export default class DatepickerNav {
     }
 
     _defineDOM(){
-        this.$title = getEl('.datepicker-nav--title', this.$el);
+        this.$title = getEl('.air-datepicker-nav--title', this.$el);
         this.$prev = getEl('[data-action="prev"]', this.$el);
         this.$next = getEl('[data-action="next"]', this.$el);
     }
@@ -59,7 +59,7 @@ export default class DatepickerNav {
     _createElement(){
         this.$el = createElement({
             tagName: 'nav',
-            className: 'datepicker-nav'
+            className: 'air-datepicker-nav'
         });
     }
 
@@ -117,11 +117,11 @@ export default class DatepickerNav {
     }
 
     _resetNavStatus(){
-        getEl('.datepicker-nav--action', this.$el).classList.remove('-disabled-');
+        getEl('.air-datepicker-nav--action', this.$el).classList.remove('-disabled-');
     }
 
     onClickNav = (e) =>{
-        let $item = closest(e.target, '.datepicker-nav--action');
+        let $item = closest(e.target, '.air-datepicker-nav--action');
         if (!$item) return;
 
         let actionName = $item.dataset.action;
@@ -150,9 +150,9 @@ export default class DatepickerNav {
         let {prevHtml, nextHtml} = this.opts;
 
         this.$el.innerHTML = '' +
-            `<div class="datepicker-nav--action" data-action="prev">${prevHtml}</div>` +
-            '<div class="datepicker-nav--title"></div>' +
-            `<div class="datepicker-nav--action" data-action="next">${nextHtml}</div>`;
+            `<div class="air-datepicker-nav--action" data-action="prev">${prevHtml}</div>` +
+            '<div class="air-datepicker-nav--title"></div>' +
+            `<div class="air-datepicker-nav--action" data-action="next">${nextHtml}</div>`;
     }
 
     get isNavIsFunction() {

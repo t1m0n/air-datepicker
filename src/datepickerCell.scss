@@ -4,7 +4,7 @@
     Datepicker cell
    ------------------------------------------------- */
 
-.datepicker-cell {
+.air-datepicker-cell {
   border-radius: var(--adp-cell-border-radius);
   box-sizing: border-box;
   cursor: pointer;
@@ -93,7 +93,7 @@
 /*  Day cell
    ------------------------------------------------- */
 
-.datepicker-cell.-day- {
+.air-datepicker-cell.-day- {
   &.-other-month-, {
     @extend %otherMonth;
   }
@@ -102,7 +102,7 @@
 /*  Year cell
    ------------------------------------------------- */
 
-.datepicker-cell.-year- {
+.air-datepicker-cell.-year- {
   &.-other-decade-, {
     @extend %otherMonth;
   }

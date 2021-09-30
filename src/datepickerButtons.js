@@ -17,7 +17,7 @@ export default class DatepickerButtons {
     }
 
     createElement(){
-        this.$el = createElement({className: 'datepicker-buttons'});
+        this.$el = createElement({className: 'air-datepicker-buttons'});
     }
 
     destroy() {
@@ -72,7 +72,7 @@ export default class DatepickerButtons {
         return createElement({
             tagName,
             innerHtml: `<span tabindex='-1'>${_content}</span>`,
-            className: classNames('datepicker-button', className)
+            className: classNames('air-datepicker-button', className)
         });
     }
 
