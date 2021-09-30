@@ -38,6 +38,7 @@ Soooo, here is the full list of changes:
 * no more jQuery
 * improve rendering process - remove redundant cell render when selecting date, which gave a large speed boost compared to the old version
 * date format tokens now use [Unicode Technical Standard](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table)
+* TypeScript support
 * added a possibility to create custom buttons
 * now one could change selected range by dragging dates
 * added `container` option which allows you to place datepicker in a custom element

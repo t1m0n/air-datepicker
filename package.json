@@ -41,8 +41,9 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-hot-middleware": "^2.25.0"
   },
-  "description": "Lightweight, fast, super customizable, zero dependency datepicker. \r ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)",
+  "description": "Lightweight, dependency free, fast, customizable datepicker written in pure JavaScript. \r ![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img.png)",
   "main": "air-datepicker.js",
+  "types": "air-datepicker.d.ts",
   "module": "index.es.js",
   "repository": {
     "type": "git",

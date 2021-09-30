@@ -7,7 +7,8 @@ let $input2 = document.querySelector('#dp2');
 let $bntDestroy = document.querySelector('#destroy')
 
 let opts = {
-    minDate: Date.now()
+    // minDate: Date.now(),
+    inline: true
 
 }
 
