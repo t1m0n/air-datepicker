@@ -23,7 +23,7 @@ export declare type AirDatepickerDecade = [number, number];
 export declare type AirDatepickerOptions = {
     classes: string
     inline: boolean,
-    locale: AirDatepickerLocale,
+    locale: Partial<AirDatepickerLocale>,
     startDate: AirDatepickerDate,
     firstDay: number,
     weekends: [number, number],
@@ -80,14 +80,14 @@ export declare type AirDatepickerOptions = {
         disabled?: boolean,
         classes?: string,
         html?: string
-    } | false),
+    } | void),
     onShow: (isAnimationComplete: boolean) => void,
     onHide: (isAnimationComplete: boolean) => void,
 }
 
 
 declare class AirDatepicker {
-    constructor(el: AirDatepickerSelector, opts? : Partial<AirDatepickerOptions>)
+    constructor(el: string | HTMLElement, opts? : Partial<AirDatepickerOptions>)
     show: () => void
     hide: () => void
     next: () => void
