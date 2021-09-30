@@ -98,7 +98,7 @@ export default class Datepicker {
                 classes,
                 altField,
                 onlyTimepicker,
-                keyboardNav
+                keyboardNav,
             }
         } = this;
         let dp = this;
@@ -109,6 +109,7 @@ export default class Datepicker {
         this._buildBaseHtml();
         this._handleLocale();
         this._bindSubEvents();
+        this._createMinMaxDates();
 
         if (altField) {
             this.$altField = getEl(altField);
@@ -161,6 +162,13 @@ export default class Datepicker {
         if (selectedDates) {
             this.selectDate(selectedDates, {silent: true});
         }
+    }
+
+    _createMinMaxDates() {
+        let {minDate, maxDate} = this.opts;
+
+        this.minDate = minDate ? createDate(minDate) : false;
+        this.maxDate = maxDate ? createDate(maxDate) : false;
     }
 
     _addTimepicker() {
@@ -252,7 +260,7 @@ export default class Datepicker {
     }
 
     _limitViewDateByMaxMinDates(){
-        let {viewDate, opts: {minDate, maxDate}} = this;
+        let {viewDate, minDate, maxDate} = this;
 
         if (maxDate && isDateBigger(viewDate, maxDate)) {
             this.setViewDate(maxDate);
@@ -912,6 +920,8 @@ export default class Datepicker {
 
         let {timepicker, buttons, range, selectedDates} = this.opts;
 
+        this._createMinMaxDates();
+
         if (prevOpts.range && !range) {
             this.rangeDateTo = false;
             this.rangeDateFrom = false;
@@ -1091,7 +1101,7 @@ export default class Datepicker {
      * @param {Date} date
      */
     getClampedDate = (date) => {
-        let {minDate, maxDate} = this.opts,
+        let {minDate, maxDate} = this,
             newDate = date;
 
         if (maxDate && isDateBigger(date, maxDate)) {

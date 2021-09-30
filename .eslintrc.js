@@ -8,7 +8,7 @@ module.exports = {
     'extends': [
         'eslint:recommended',
     ],
-    'ignorePatterns': ['docs'],
+    'ignorePatterns': ['docs', '*.ts'],
     'globals': {
         'module': 'readonly',
     },

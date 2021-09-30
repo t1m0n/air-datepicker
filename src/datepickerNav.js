@@ -75,7 +75,8 @@ export default class DatepickerNav {
     }
 
     handleNavStatus() {
-        let {minDate, maxDate, disableNavWhenOutOfRange} = this.opts;
+        let {disableNavWhenOutOfRange} = this.opts;
+        let {minDate, maxDate} = this.dp;
         if (!(minDate || maxDate) || !disableNavWhenOutOfRange) return;
 
         let {year, month} = this.dp.parsedViewDate;

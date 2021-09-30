@@ -124,7 +124,7 @@ export default class DatepickerTime {
         this.setMinMaxTimeFromOptions();
 
         if (date) {
-            let {minDate, maxDate} = this.opts;
+            let {minDate, maxDate} = this.dp;
             if (minDate && isSameDate(date, minDate)) {
                 this.setMinTimeFromMinDate(minDate);
             }

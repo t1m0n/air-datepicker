@@ -128,7 +128,7 @@ export default class DatepickerCell {
     }
 
     _isOutOfMinMaxRange() {
-        let {minDate, maxDate} = this.opts;
+        let {minDate, maxDate} = this.dp;
         let {type, date: cellDate} = this;
         let {month, year, date} = getParsedDate(cellDate);
         let isDay = type === consts.days;
