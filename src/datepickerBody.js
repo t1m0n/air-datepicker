@@ -228,7 +228,7 @@ export default class DatepickerBody {
         this.dp.setFocusDate($cell ? $cell.adpCell.date : false);
     }
 
-    onMouseOutCell = (e) => {
+    onMouseOutCell = () => {
         this.dp.setFocusDate(false);
     }
 
@@ -284,7 +284,7 @@ export default class DatepickerBody {
         }
     }
 
-    onMouseUp = (e) => {
+    onMouseUp = () => {
         this.pressed = false;
         this.rangeFromFocused = false;
         this.rangeToFocused = false;

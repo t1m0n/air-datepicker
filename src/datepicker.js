@@ -6,7 +6,6 @@ import {
     getDecade,
     getEl,
     getParsedDate,
-    getLeadingZeroNum,
     insertAfter,
     isDateBigger,
     isDateSmaller,
@@ -589,7 +588,7 @@ export default class Datepicker {
                 left: this.$el.offsetLeft,
                 width: vpDims.width,
                 height: this.$el.offsetHeight
-            }
+            };
 
             scrollTop = 0;
             scrollLeft = 0;
@@ -605,7 +604,7 @@ export default class Datepicker {
                 left: vpDims.left - dpOffsetDims.left,
                 width: vpDims.width,
                 height: vpDims.height
-            }
+            };
 
             scrollTop = 0;
             scrollLeft = 0;
@@ -894,6 +893,17 @@ export default class Datepicker {
 
         this.views = null;
         this.nav = null;
+
+        this.$datepicker = null;
+        this.opts = null;
+        this.$customContainer = null;
+
+        this.viewDate = null;
+        this.focusDate = null;
+        this.selectedDates = null;
+        this.rangeDateFrom = null;
+        this.rangeDateTo = null;
+        this._prevOnSelectValue = null;
     }
 
     update = (newOpts) => {

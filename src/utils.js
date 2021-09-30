@@ -236,7 +236,7 @@ export function isDateBigger(date, comparedDate, loose) {
 
     return loose
         ? d1 >= d2
-        : d1 > d2
+        : d1 > d2;
 }
 
 export function isDateSmaller(date, comparedDate) {

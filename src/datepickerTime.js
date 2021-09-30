@@ -76,7 +76,7 @@ export default class DatepickerTime {
 
     buildHtml(){
         let {
-            ampm, hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dp, dayPeriod,
+            ampm, hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dayPeriod,
             opts: {hoursStep, minutesStep}
         } = this;
 

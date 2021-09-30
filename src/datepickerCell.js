@@ -1,7 +1,5 @@
-/* eslint-disable */
 import consts from './consts';
 import {
-    getEl,
     createElement,
     classNames,
     getParsedDate,
@@ -9,8 +7,6 @@ import {
     isDateSmaller,
     isDateBigger,
     isDateBetween,
-    getDecade,
-    addClass, resetTime
 } from './utils';
 
 import './datepickerCell.scss';
@@ -70,7 +66,7 @@ export default class DatepickerCell {
                 'data-month': month,
                 'data-date': date
             }
-        })
+        });
     }
 
     _getClassName(){
@@ -86,7 +82,7 @@ export default class DatepickerCell {
             {
                 '-current-': isSameDate(currentDate, this.date, this.type),
             }
-        )
+        );
         let classNameType = '';
 
         switch (this.type) {
@@ -96,18 +92,18 @@ export default class DatepickerCell {
                     '-other-month-': this.isOtherMonth,
                     '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || disabled
                 });
-                break
+                break;
             case consts.months:
                 classNameType = classNames({
                     '-disabled-': isOutOfMinMaxRange || disabled
                 });
-                break
+                break;
             case consts.years:
                 classNameType = classNames({
                     '-other-decade-': this.isOtherDecade,
                     '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears) || disabled
                 });
-                break
+                break;
         }
 
         return classNames(classNameCommon, classNameType, this.customData?.classes);
@@ -141,19 +137,23 @@ export default class DatepickerCell {
         //Since in months cells date is set to the first day of month we should change it value to from min or max dates
         //to be able to mark cell as disabled correctly
         //Same goes to year cells
-        let cellMinDate = minDate ? new Date(year, isYear ? minDate.getMonth() : month, isDay ? date : minDate.getDate()) : false;
-        let cellMaxDate = maxDate ? new Date(year, isYear ? maxDate.getMonth() : month, isDay ? date : maxDate.getDate()) : false;
+        let cellMinDate = minDate
+            ? new Date(year, isYear ? minDate.getMonth() : month, isDay ? date : minDate.getDate())
+            : false;
+        let cellMaxDate = maxDate
+            ? new Date(year, isYear ? maxDate.getMonth() : month, isDay ? date : maxDate.getDate())
+            : false;
 
         if (minDate && maxDate) {
-            return isDateSmaller(cellMinDate, minDate) || isDateBigger(cellMaxDate, maxDate)
+            return isDateSmaller(cellMinDate, minDate) || isDateBigger(cellMaxDate, maxDate);
         }
 
         if (minDate) {
-            return isDateSmaller(cellMinDate, minDate)
+            return isDateSmaller(cellMinDate, minDate);
         }
 
         if (maxDate) {
-            return isDateBigger(cellMaxDate, maxDate)
+            return isDateBigger(cellMaxDate, maxDate);
         }
     }
 
@@ -161,12 +161,12 @@ export default class DatepickerCell {
         this.unbindDatepickerEvents();
     }
 
-    focus = e =>{
+    focus = () =>{
         this.$cell.classList.add('-focus-');
         this.focused = true;
     }
 
-    removeFocus = e =>{
+    removeFocus = () =>{
         this.$cell.classList.remove('-focus-');
         this.focused = false;
     }
@@ -225,16 +225,16 @@ export default class DatepickerCell {
         return this.dp.isOtherDecade(this.date);
     }
 
-    onChangeSelectedDate = ({action, date}) =>{
+    onChangeSelectedDate = () =>{
         if (this.isDisabled) return;
 
         this._handleSelectedStatus();
         if (this.opts.range) {
-            this._handleRangeStatus()
+            this._handleRangeStatus();
         }
     }
 
-    onChangeFocusDate = date =>{
+    onChangeFocusDate = (date) =>{
         if (!date) {
             if (this.focused) {
                 this.removeFocus();
@@ -247,11 +247,11 @@ export default class DatepickerCell {
         if (datesAreSame) {
             this.focus();
         } else if (!datesAreSame && this.focused) {
-            this.removeFocus()
+            this.removeFocus();
         }
 
         if (this.opts.range) {
-            this._handleRangeStatus()
+            this._handleRangeStatus();
         }
     }
 

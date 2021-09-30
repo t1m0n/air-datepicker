@@ -14,7 +14,7 @@ export default {
     toggleSelected: true,
     keyboardNav: true,
     selectedDates: false,
-    container: "",
+    container: '',
 
     position: 'bottom left',
     offset: 12,

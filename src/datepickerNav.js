@@ -2,10 +2,7 @@ import {
     closest,
     createElement,
     getEl,
-    isDateBigger,
     toggleClass,
-    removeClass,
-    isDateSmaller,
     getDecade, getParsedDate
 } from './utils';
 
@@ -144,7 +141,7 @@ export default class DatepickerNav {
         this.handleNavStatus();
     }
 
-    onClickNavTitle = (e) =>{
+    onClickNavTitle = () =>{
         if (this.dp.isFinalView) return;
         this.dp.up();
     }
