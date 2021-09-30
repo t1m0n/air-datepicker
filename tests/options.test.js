@@ -45,7 +45,7 @@ describe('OPTIONS TESTS', () => {
         it('should change locale to "en"', () => {
             init({locale: en});
             let currentMonthName = en.months[new Date().getMonth()];
-            let $navMonth = $datepicker.querySelector('.datepicker-nav--title');
+            let $navMonth = $datepicker.querySelector('.air-datepicker-nav--title');
 
             expect($navMonth).toHaveTextContent(currentMonthName);
         });
@@ -66,7 +66,7 @@ describe('OPTIONS TESTS', () => {
                 }
             });
 
-            let arrayFromHtml = [...$datepicker.querySelectorAll('.datepicker-body--day-name')].map(el => el.innerHTML);
+            let arrayFromHtml = [...$datepicker.querySelectorAll('.air-datepicker-body--day-name')].map(el => el.innerHTML);
 
             expect(arrayFromHtml).toEqual(daysMin);
         });
@@ -77,7 +77,7 @@ describe('OPTIONS TESTS', () => {
             let startDate = new Date('2021-02-04');
             init({startDate});
 
-            let $navMonth = $datepicker.querySelector('.datepicker-nav--title');
+            let $navMonth = $datepicker.querySelector('.air-datepicker-nav--title');
 
             expect($navMonth).toHaveTextContent('Февраль');
             expect(dp.viewDate).toEqual(startDate);
@@ -90,7 +90,7 @@ describe('OPTIONS TESTS', () => {
                 firstDay: 2
             });
 
-            let $day = $datepicker.querySelectorAll('.datepicker-body--day-name')[0];
+            let $day = $datepicker.querySelectorAll('.air-datepicker-body--day-name')[0];
 
             expect($day).toHaveTextContent('Вт');
         });
@@ -104,7 +104,7 @@ describe('OPTIONS TESTS', () => {
                 firstDay: 0
             });
 
-            let $dayNames = $datepicker.querySelectorAll('.datepicker-body--day-name');
+            let $dayNames = $datepicker.querySelectorAll('.air-datepicker-body--day-name');
 
             expect($dayNames[0]).toHaveClass(consts.cssClassWeekend);
             expect($dayNames[2]).toHaveClass(consts.cssClassWeekend);
@@ -118,8 +118,8 @@ describe('OPTIONS TESTS', () => {
                 'T': date.getTime().toString(),
                 'aa': 'am',
                 'AA': 'AM',
-                'h': '23',
-                'hh': '23',
+                'H': '23',
+                'HH': '23',
                 'm': '5',
                 'mm': '05',
                 'dd': '28',
@@ -353,7 +353,7 @@ describe('OPTIONS TESTS', () => {
         test('"prev" buttons should be availabel if minDate is in past year', () => {
             init({
                 minDate: new Date('2020-12-31'),
-            })
+            });
 
             expect($datepicker.querySelector('[data-action="prev"]')).not.toHaveClass('-disabled-');
         });
@@ -378,8 +378,8 @@ describe('OPTIONS TESTS', () => {
 
             let $cell = dp.getCell(minDate, 'month');
 
-            expect($cell).not.toHaveClass('-disabled-')
-        })
+            expect($cell).not.toHaveClass('-disabled-');
+        });
 
         it('should not disable day which is equal to minDate', () => {
             let year = 2021;
@@ -392,8 +392,8 @@ describe('OPTIONS TESTS', () => {
 
             let $cell = dp.getCell(minDate);
 
-            expect($cell).not.toHaveClass('-disabled-')
-        })
+            expect($cell).not.toHaveClass('-disabled-');
+        });
 
         it('should not disable months before min date in next year', () => {
             let year = 2021;
@@ -411,7 +411,7 @@ describe('OPTIONS TESTS', () => {
 
             let $cell = dp.getCell(startDate, 'month');
 
-            expect($cell).not.toHaveClass('-disabled-')
-        })
+            expect($cell).not.toHaveClass('-disabled-');
+        });
     });
 });
