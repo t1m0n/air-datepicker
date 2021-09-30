@@ -89,9 +89,15 @@ function Methods({} = {}) {
                                 <Param name={'clear()'}>
                                     <Paragraph id={'apiClear'} />
                                 </Param>
-                                <Param name={'formatDate(format, date)'}>
+                                <Param name={'formatDate(date, format)'}>
                                     <Paragraph id={'apiFormatDate'} />
                                     <Param.List nested>
+                                        <Param
+                                            name={'date'}
+                                            type={dataTypes.date}
+                                            definition={'apiFormatDateDate'}
+
+                                        />
                                         <Param
                                             name={'format'}
                                             type={'string'}
@@ -100,12 +106,6 @@ function Methods({} = {}) {
                                                 dateFormat: <Code inline isFieldName>{`dateFormat`}</Code>,
                                                 link: <Link href={'/docs?scrollTo=dateFormat'}>{messages.inDocsSection}</Link>
                                             }}
-                                        />
-                                        <Param
-                                            name={'date'}
-                                            type={dataTypes.date}
-                                            definition={'apiFormatDateDate'}
-
                                         />
                                     </Param.List>
                                 </Param>

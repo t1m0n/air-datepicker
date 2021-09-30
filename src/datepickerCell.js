@@ -74,7 +74,7 @@ export default class DatepickerCell {
         let {selectOtherMonths, selectOtherYears} = this.opts;
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
-        let {disabled} = this.customData;
+        let disabled = this.customData?.disabled;
 
         let classNameCommon = classNames(
             'air-datepicker-cell',

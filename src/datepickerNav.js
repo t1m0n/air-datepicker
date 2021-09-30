@@ -71,7 +71,7 @@ export default class DatepickerNav {
             return template(dp);
         }
 
-        return dp.formatDate(template, dp.viewDate);
+        return dp.formatDate(dp.viewDate, template);
     }
 
     handleNavStatus() {

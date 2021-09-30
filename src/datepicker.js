@@ -270,7 +270,7 @@ export default class Datepicker {
         }
     }
 
-    formatDate(string, date=this.viewDate) {
+    formatDate(date = this.viewDate, string) {
         date = createDate(date);
 
         if (!(date instanceof Date)) return;
@@ -663,7 +663,7 @@ export default class Datepicker {
                 if (typeof locale.dateFormat === 'function') {
                     return locale.dateFormat(date);
                 }
-                return this.formatDate(locale.dateFormat, date);
+                return this.formatDate(date, locale.dateFormat);
             }),
             altValues;
 
@@ -673,7 +673,7 @@ export default class Datepicker {
                     return altFieldDateFormat(date);
                 }
 
-                return this.formatDate(altFieldDateFormat, date);
+                return this.formatDate(date, altFieldDateFormat);
             });
             altValues = altValues.join(multipleDatesSeparator);
             $altField.value = altValues;
@@ -697,7 +697,7 @@ export default class Datepicker {
                     return locale.dateFormat(date);
                 }
 
-                return this.formatDate(locale.dateFormat, date);
+                return this.formatDate(date, locale.dateFormat);
             });
         }
 
