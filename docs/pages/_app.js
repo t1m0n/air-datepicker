@@ -5,7 +5,7 @@ import {IntlProvider} from 'react-intl'
 import Header from 'components/layout/header';
 import {AppProvider} from 'context/appContext';
 
-import 'air-datepicker/air-datepicker.css';
+import '../../dist/air-datepicker.css';
 import 'prismjs/themes/prism-coy.css'
 import 'public/global.css';
 import 'public/typography.css';

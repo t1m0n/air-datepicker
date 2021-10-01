@@ -85,7 +85,7 @@ export default class DatepickerTime {
             `   <span class="air-datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
             '   <span class="air-datepicker-time--current-colon">:</span>' +
             `   <span class="air-datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
-            `   ${ampm ? `<span class='datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
+            `   ${ampm ? `<span class='air-datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
             '</div>' +
             '<div class="air-datepicker-time--sliders">' +
             '   <div class="air-datepicker-time--row">' +

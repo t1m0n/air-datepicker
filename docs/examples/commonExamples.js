@@ -115,7 +115,7 @@ export let customTitleExample = (messages) =>
             if (dp.selectedDates.length) {
                 let date = dp.selectedDates[0];
                 return \`<small>
-                   ${messages.chosenDate.replace('{date}', '')} \${dp.formatDate('dd MMMM yyyy', date)}
+                   ${messages.chosenDate.replace('{date}', '')} \${dp.formatDate(date, 'dd MMMM yyyy')}
                 </small>\`;
             }
             

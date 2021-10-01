@@ -254,7 +254,7 @@ export default function Examples() {
                                                 if (dp.selectedDates.length) {
                                                     return `<small>${messages
                                                         .chosenDate
-                                                        .replace('{date}', dp.formatDate('dd MMMM yyyy', dp.selectedDates[0]))}
+                                                        .replace('{date}', dp.formatDate(dp.selectedDates[0], 'dd MMMM yyyy'))}
                                                         </small>`
                                                 }
                                                 return messages.chooseDate

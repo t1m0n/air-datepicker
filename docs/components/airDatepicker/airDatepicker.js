@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Datepicker from 'air-datepicker';
+import Datepicker from '../../../dist';
 import cn from 'classnames';
 import Input from 'components/form/input';
 import isEqual from 'react-fast-compare';
-import enLocale from 'air-datepicker/locale/en';
-import ruLocale from 'air-datepicker/locale/ru';
+import enLocale from '../../../dist/locale/en';
+import ruLocale from '../../../dist/locale/ru';
 import {withRouter} from 'next/router';
 
 import css from './airDatepicker.module.scss';

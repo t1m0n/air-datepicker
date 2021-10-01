@@ -7,7 +7,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "air-datepicker": "file:../dist",
     "animejs": "^3.2.1",
     "classnames": "^2.2.6",
     "clone-deep": "^4.0.1",
