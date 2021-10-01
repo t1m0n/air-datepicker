@@ -13,13 +13,12 @@ let templatePath = path.resolve(__dirname, './localeTypeContent.ejs');
 module.exports = async () => {
     let fileNames = await readdir(path.resolve(srcPath, 'locale'));
     let template = await readFile(templatePath, 'UTF-8');
-    let promises = fileNames.map((fileName) => {
+
+    return fileNames.map((fileName) => {
         let localeName = fileName.replace(/\.js/, '');
         let typeName = `${localeName}.d.ts`;
         return writeFile(path.join(distPath, typeName), ejs.render(template, {locale: localeName}));
     });
-    //
-    // return Promise.all(promises);
 };
 
 
