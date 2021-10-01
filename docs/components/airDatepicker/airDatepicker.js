@@ -26,6 +26,7 @@ class AirDatepicker extends React.Component {
     componentDidMount(){
         this.dp = new Datepicker(this.$el.current, {
             inline: this.props.inline || this.props.inlineInput,
+            locale: this.props.router.locale === 'ru' ? ruLocale : enLocale,
             ...this.props
         });
     }

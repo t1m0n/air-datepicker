@@ -169,7 +169,7 @@ const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr
                                     <Paragraph
                                         id={'optsContainer'}
                                         values={{
-                                            className: <Code language={'css'} inline>{'.datepickers-container'}</Code>
+                                            className: <Code language={'css'} inline>{'.air-datepicker-global-container'}</Code>
                                         }}
                                     />
                                 </Param>

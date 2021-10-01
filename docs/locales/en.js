@@ -99,6 +99,7 @@ export default {
     optsKeyboardNavView: 'change calendar view, from dates to decades',
     optsKeyboardNavEsc: 'closes calendar',
     optsSelectedDates: 'Array of active dates. Accepts both separate data types and mixed data types. If an invalid date format is passed, this value will be ignored',
+    optsContainer: 'Parent element for the calendar. By default all calendars are placed in element with class name {className}.',
     optsPosition: 'Position of the calendar relative to the text field. The first value is set to the main positioning axis, the second is the position on that axis.',
     optsPosition2: ' For example, {example} - set the calendar position to the top right of the text field.',
     optsOffset: 'The offset from the text field along the main axis.',
