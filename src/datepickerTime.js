@@ -103,9 +103,9 @@ export default class DatepickerTime {
         this.$ranges = this.$el.querySelectorAll('[type="range"]');
         this.$hours = getElWithContext('[name="hours"]');
         this.$minutes = getElWithContext('[name="minutes"]');
-        this.$hoursText = getElWithContext('.datepicker-time--current-hours');
-        this.$minutesText = getElWithContext('.datepicker-time--current-minutes');
-        this.$ampm = getElWithContext('.datepicker-time--current-ampm');
+        this.$hoursText = getElWithContext('.air-datepicker-time--current-hours');
+        this.$minutesText = getElWithContext('.air-datepicker-time--current-minutes');
+        this.$ampm = getElWithContext('.air-datepicker-time--current-ampm');
     }
 
 

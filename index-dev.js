@@ -8,8 +8,8 @@ let $bntDestroy = document.querySelector('#destroy')
 
 let opts = {
     // minDate: Date.now(),
-    inline: true
-
+    inline: true,
+    timepicker: true,
 }
 
 window.dp1 = new Datepicker($input1, opts);
