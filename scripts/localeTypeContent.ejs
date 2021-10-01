@@ -1,6 +1,6 @@
 declare module 'air-datepicker/locale/<%= locale %>' {
-    import <%= locale %> from 'air-datepicker/locale/<%= locale %>';
     import {AirDatepickerLocale} from 'air-datepicker';
+    const <%= locale %>: AirDatepickerLocale;
 
-    export default <%= locale %> as AirDatepickerLocale;
+    export default <%= locale %>;
 }
