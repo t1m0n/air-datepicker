@@ -29,6 +29,8 @@
     "eslint-plugin-react": "^7.23.2",
     "hygen": "^6.1.0",
     "prop-types": "^15.7.2",
-    "raw-loader": "^4.0.2"
+    "raw-loader": "^4.0.2",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0"
   }
 }
