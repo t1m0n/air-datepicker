@@ -215,7 +215,7 @@ export default {
     apiViewDate: 'Current view date',
     apiCurrentView: 'Current view of the calendar.',
     apiSelectedDates: 'An array of selected dates.',
-    apiFocusDate: 'An focused date.'
+    apiFocusDate: 'A focused date.'
 
 };
 
