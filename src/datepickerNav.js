@@ -3,7 +3,8 @@ import {
     createElement,
     getEl,
     toggleClass,
-    getDecade, getParsedDate
+    getDecade, getParsedDate,
+    removeClass
 } from './utils';
 
 import './datepickerNav.scss';
@@ -118,7 +119,7 @@ export default class DatepickerNav {
     }
 
     _resetNavStatus(){
-        getEl('.air-datepicker-nav--action', this.$el).classList.remove('-disabled-');
+        removeClass(this.$el.querySelectorAll('.air-datepicker-nav--action'), '-disabled-');
     }
 
     onClickNav = (e) =>{

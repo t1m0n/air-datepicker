@@ -9,7 +9,11 @@ let $bntDestroy = document.querySelector('#destroy')
 let opts = {
     // minDate: Date.now(),
     inline: true,
-    timepicker: true,
+    // timepicker: true,
+    maxDate: new Date(),
+    onRenderCell({type}) {
+        console.log(type);
+    }
 }
 
 window.dp1 = new Datepicker($input1, opts);
