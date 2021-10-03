@@ -88,6 +88,7 @@ export declare type AirDatepickerOptions = {
 
 declare class AirDatepicker {
     constructor(el: string | HTMLElement, opts? : Partial<AirDatepickerOptions>)
+    static version: string
     show: () => void
     hide: () => void
     next: () => void
