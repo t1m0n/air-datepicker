@@ -24,7 +24,7 @@
 .dpPromo {
   opacity: 0;
   display: inline-block;
-  border-radius: var(--adp-border-radius);
+  border-radius: 4px;
 }
 
 .promoHeader {
@@ -38,12 +38,19 @@
   opacity: 0;
 }
 
+.promoHeaderVersion {
+  position: absolute;
+  bottom: 9px;
+  margin-left: 4px;
+}
+
 .mainTitle {
   font-weight: 100;
   font-size: 48px;
   text-transform: uppercase;
   margin-bottom: .2em;
   white-space: pre;
+  position: relative;
 
   span {
     display: inline-block;

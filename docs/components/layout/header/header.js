@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Version from 'components/common/version';
 import Container from 'components/layout/container';
 import {FormattedMessage} from 'react-intl';
 import Link from 'next/link';
@@ -18,6 +19,7 @@ function Header({} = {}) {
             <Container className={css.container}>
                 <div>
                     <Link href={'/'}><a className={css.logo}>Air Datepicker</a></Link>
+                    <Version className={css.version} />
                 </div>
                 <nav className={css.nav}>
                     {navItemsData.map(({labelId, href}) => {

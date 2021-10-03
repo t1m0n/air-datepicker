@@ -9,6 +9,7 @@ import {install, basicUsage} from 'examples/commonExamples';
 import anime from 'animejs';
 import Head from 'next/head';
 import usePageTitle from 'hooks/usePageTitle';
+import Version from 'components/common/version';
 
 import css from './home.module.scss';
 import navItemsData from '../data/navItemsData';
@@ -17,6 +18,7 @@ import Link from 'next/link';
 import cn from 'classnames';
 
 let adpArray = 'Air Datepicker'.split('');
+
 
 export default function Home() {
     let {messages} = useIntl();
@@ -67,7 +69,6 @@ export default function Home() {
                     <a
                         className="github-button"
                         href="https://github.com/t1m0n/air-datepicker"
-                        data-icon="octicon-star"
                         data-size="large"
                         data-show-count="true"
                         aria-label="Star air-datepicker on GitHub"
@@ -81,6 +82,7 @@ export default function Home() {
                         {adpArray.map((letter, i) => {
                             return <span key={i}>{letter}</span>
                         })}
+                        <Version className={cn(css.promoHeaderVersion, css.transition)} />
                     </h1>
                     <strong className={cn(css.promoHeaderNote)}>
                         <FormattedMessage id={'promoNote'} />

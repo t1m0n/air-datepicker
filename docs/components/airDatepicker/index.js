@@ -1,2 +1,3 @@
-import AirDatepicker from './airDatepicker';
+import AirDatepicker, {version} from './airDatepicker';
+export {version};
 export default AirDatepicker;

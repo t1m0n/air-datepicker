@@ -10,6 +10,7 @@ import {withRouter} from 'next/router';
 
 import css from './airDatepicker.module.scss';
 
+
 class AirDatepicker extends React.Component {
     $el = React.createRef();
 
@@ -55,5 +56,9 @@ class AirDatepicker extends React.Component {
         );
     }
 }
+
+
+let version = Datepicker.version;
+export {version};
 
 export default withRouter(AirDatepicker);
