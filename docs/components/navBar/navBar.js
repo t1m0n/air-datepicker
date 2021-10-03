@@ -55,7 +55,7 @@ class NavBar extends React.Component {
         let scrollTo = query.get('scrollTo');
 
         if (scrollTo) {
-            let $el = document.querySelector(`#${scrollTo}`);
+            let $el = document.querySelector(`#${scrollTo}`).parentNode;
             if ($el) {
                 setTimeout(() => {
                     this.scrollTo($el)
