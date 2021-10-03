@@ -2,8 +2,9 @@ let install = `npm i air-datepicker -S`;
 
 let basicUsage =
 `import AirDatepicker from 'air-datepicker';
+import 'air-datepicker/air-datepicker.css';
 
-new AirDatepicker('#my-element', {...options})
+new AirDatepicker('#my-element'[, options])
 `;
 
 let basicInit = `new AirDatepicker('#input');`

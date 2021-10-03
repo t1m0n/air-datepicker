@@ -21,8 +21,8 @@ new AirDatepicker('#el' [, options]);
 ```
 
 ## Demo and docs
-* [In English](http://t1m0n.name/air-datepicker/docs/)
-* [In Russian](http://t1m0n.name/air-datepicker/docs/index-ru.html)
+* [In English](https://air-datepicker.com)
+* [In Russian](https://air-datepicker.com/ru)
 
 ## Change log
 
@@ -39,6 +39,7 @@ Soooo, here is the full list of changes:
 * improve rendering process - remove redundant cell render when selecting date, which gave a large speed boost compared to the old version
 * date format tokens now use [Unicode Technical Standard](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table)
 * TypeScript support
+* added `selectedDates` option, to be able to select dates from the start
 * added a possibility to create custom buttons
 * now one could change selected range by dragging dates
 * added `container` option which allows you to place datepicker in a custom element
