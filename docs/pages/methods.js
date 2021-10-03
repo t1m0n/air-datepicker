@@ -12,6 +12,8 @@ import * as examples from 'examples/commonExamples';
 import Link from 'components/common/link';
 import dataTypes from 'data/dataTypes';
 import {useIntl} from 'react-intl';
+import Head from 'next/head';
+import usePageTitle from 'hooks/usePageTitle';
 
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
@@ -19,9 +21,13 @@ const falseField = (() => <Code inline>{'false'}</Code>)();
 
 function Methods({} = {}) {
     let {messages} = useIntl();
+    let {pageTitle} = usePageTitle('navApi');
 
     return (
         <div className='api'>
+            <Head>
+                <title>{pageTitle}</title>
+            </Head>
             <Container>
                 <ContentGrid>
                     <NavBar />

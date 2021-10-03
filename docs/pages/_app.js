@@ -4,6 +4,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {IntlProvider} from 'react-intl'
 import Header from 'components/layout/header';
 import {AppProvider} from 'context/appContext';
+import {baseName} from 'hooks/usePageTitle';
 
 import '../../dist/air-datepicker.css';
 import 'prismjs/themes/prism-coy.css'
@@ -50,7 +51,7 @@ const MyApp = ({Component, pageProps}) => {
     }}>
         <IntlProvider messages={messages} locale={locale} defaultLocale={defaultLocale}>
             <Head>
-                <title>Air Datepicker</title>
+                <title>{baseName}</title>
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

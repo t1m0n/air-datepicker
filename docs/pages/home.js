@@ -8,6 +8,7 @@ import Code from 'components/code';
 import {install, basicUsage} from 'examples/commonExamples';
 import anime from 'animejs';
 import Head from 'next/head';
+import usePageTitle from 'hooks/usePageTitle';
 
 import css from './home.module.scss';
 import navItemsData from '../data/navItemsData';
@@ -19,6 +20,7 @@ let adpArray = 'Air Datepicker'.split('');
 
 export default function Home() {
     let {messages} = useIntl();
+    let {pageTitle} = usePageTitle();
 
     useEffect(() => {
         let tl = anime.timeline({
@@ -57,7 +59,7 @@ export default function Home() {
     return (
         <div className={css.el}>
             <Head>
-                <title>Air Datepicker</title>
+                <title>{pageTitle}</title>
                 <script async defer src="https://buttons.github.io/buttons.js" />
             </Head>
             <Container>

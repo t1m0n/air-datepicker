@@ -14,6 +14,8 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import DList from 'components/common/dList';
 import ruLocaleText from 'examples/locales/ru';
+import Head from 'next/head';
+import usePageTitle from 'hooks/usePageTitle';
 import {
     eventsOnRenderCell,
     optsButtonsExample,
@@ -25,11 +27,15 @@ import {
 const trueField = (() => <Code inline>{'true'}</Code>)();
 const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>;
 
-    function Docs({} = {}) {
+function Docs({} = {}) {
     let {messages} = useIntl();
+    let {pageTitle} = usePageTitle('navDoc');
 
     return (
         <div className='docs'>
+            <Head>
+                <title>{pageTitle}</title>
+            </Head>
             <Container>
                 <ContentGrid>
                     <NavBar />
@@ -348,9 +354,9 @@ const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr
                             </Param.List>
                         </Section>
                         <Section title='localeTitle'>
-                           <Paragraph id='localeNote' values={{
-                               dirName: <Code inline>{`'locales/'`}</Code>
-                           }} />
+                            <Paragraph id='localeNote' values={{
+                                dirName: <Code inline>{`'locales/'`}</Code>
+                            }} />
                             <Section.SubTitle titleId={'localeShapeTitle'} />
                             <Example>
                                 <Code>{ruLocaleText}</Code>

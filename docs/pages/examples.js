@@ -11,18 +11,24 @@ import * as code from 'examples/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Paragraph from 'components/common/paragraph';
 import Link from 'components/common/link';
+import Head from 'next/head';
+import usePageTitle from 'hooks/usePageTitle';
+
 import sectionCSS from 'components/section/section.module.scss';
-import {rangeMinMax} from "examples/commonExamples";
 
 export default function Examples() {
     let [minDate, setMinDate] = useState();
     let [maxDate, setMaxDate] = useState();
     let today = new Date();
     let {messages} = useIntl();
+    let {pageTitle} = usePageTitle('navExamples');
 
 
     return (
         <div className='examples'>
+            <Head>
+                <title>{pageTitle}</title>
+            </Head>
             <Container>
                 <ContentGrid>
                     <NavBar
