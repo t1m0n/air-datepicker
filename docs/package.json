@@ -23,11 +23,15 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@svgr/webpack": "^5.5.0",
+    "autoprefixer": "^10.3.6",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.27.0",
     "eslint-plugin-react": "^7.23.2",
     "hygen": "^6.1.0",
+    "node-sass": "^5.0.0",
     "prop-types": "^15.7.2",
-    "raw-loader": "^4.0.2"
+    "raw-loader": "^4.0.2",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0"
   }
 }
