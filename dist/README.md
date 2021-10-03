@@ -21,8 +21,9 @@ new AirDatepicker('#el' [, options]);
 ```
 
 ## Demo and docs
-* [In English](https://air-datepicker.com)
-* [In Russian](https://air-datepicker.com/ru)
+* [Version 3](https://air-datepicker.com)
+* [Version 2](http://t1m0n.name/air-datepicker/docs/)
+
 
 ## Change log
 
