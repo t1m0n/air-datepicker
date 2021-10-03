@@ -4,7 +4,7 @@
 
 Lightweight, **dependency free**, fast, customizable datepicker written in pure JavaScript. Works in all modern browsers which supports native css variables.
 
-![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/docs/img/promo-img-time.png)
+![air datepicker image](https://github.com/t1m0n/air-datepicker/raw/master/promo-img.png)
 
 ## Install
 
