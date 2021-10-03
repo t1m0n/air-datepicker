@@ -14,7 +14,7 @@
     "fuzzysearch": "^1.0.3",
     "github-buttons": "^2.18.1",
     "next": "10.2.0",
-    "prismjs": "^1.23.0",
+    "prismjs": "^1.25.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-fast-compare": "^3.2.0",
