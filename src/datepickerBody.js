@@ -33,6 +33,7 @@ export default class DatepickerBody {
         this.cells = [];
         this.$el = '';
         this.pressed = false;
+        this.isVisible = true;
 
         this.init();
     }
@@ -184,10 +185,12 @@ export default class DatepickerBody {
     }
 
     show() {
+        this.isVisible = true;
         this.$el.classList.remove('-hidden-');
     }
 
     hide() {
+        this.isVisible = false;
         this.$el.classList.add('-hidden-');
     }
 
@@ -220,6 +223,7 @@ export default class DatepickerBody {
             this.hide();
         } else {
             this.show();
+            this.render();
         }
     }
 
@@ -291,7 +295,13 @@ export default class DatepickerBody {
     }
 
     onChangeViewDate = (date, oldViewDate) => {
-        // Prevent unnecessary cell rendering when going up to next view
+        // Handle only visible views
+        if (!this.isVisible) return;
+
+        let decade1 = getDecade(date),
+            decade2 = getDecade(oldViewDate);
+
+        // Prevent unnecessary cell rendering when going up or down to next view
         switch (this.dp.currentView) {
             case (consts.days):
                 if (isSameDate(date, oldViewDate, consts.months)) {
@@ -303,12 +313,25 @@ export default class DatepickerBody {
                     return;
                 }
                 break;
+            case (consts.years):
+                if (decade1[0] === decade2[0] && decade1[1] === decade2[1]) {
+                    return;
+                }
+                break;
         }
 
         this.render();
     }
 
+    /**
+     * When going up or down between views we are changing both `viewDate` and `view`,
+     * here we preventing unnecessary rendering while reacting to both events - onChangeViewDate and onChangeCurrentView
+     */
     render = () => {
+        if (this.isRendering) return;
+
+        this.isRendering = true;
+
         this.destroyCells();
         this.cells = [];
         this.$cells.innerHTML = '';
@@ -316,6 +339,10 @@ export default class DatepickerBody {
         this._generateCells();
         this.cells.forEach((c)=>{
             this.$cells.appendChild(c.render());
+        });
+
+        setTimeout(() => {
+            this.isRendering = false;
         });
     }
 }
