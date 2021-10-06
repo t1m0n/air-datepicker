@@ -6,19 +6,24 @@ let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
 let $bntDestroy = document.querySelector('#destroy')
 
+let mDate = new Date();
+
 let opts = {
     // minDate: Date.now(),
     inline: true,
     // timepicker: true,
-    maxDate: new Date(),
+    maxDate: mDate,
+    onChangeView(view) {
+        console.log(dp1.getCell('2021-01-01', 'month'))
+    },
     onRenderCell({type}) {
-        console.log(type);
+        // console.log(type);
     }
 }
 
 window.dp1 = new Datepicker($input1, opts);
 
-console.log(opts);
+
 // window.dp2 = new Datepicker($input2, {
 //     inline: true,
 //     onSelect({date}) {
