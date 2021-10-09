@@ -44,7 +44,7 @@ function buildDatepickersContainer (id) {
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.0.0'
+    static version = '3.0.1'
     static defaultContainerId = 'air-datepicker-global-container'
     constructor(el, opts) {
         this.$el = getEl(el);
@@ -382,7 +382,7 @@ export default class Datepicker {
 
     /**
      * Selects date, if array is passed then selects dates one by one
-     * @param {Date|string|number|Array<Date|number|string>} date
+     * @param {DateLike|Array<DateLike>} date
      * @param {object} [params] - extra parameters
      * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
      * @param {boolean} [params.silent] - if true, then onChange event wont be triggered
@@ -792,7 +792,7 @@ export default class Datepicker {
 
     /**
      * Sets new view date of datepicker
-     * @param {Date} date
+     * @param {DateLike} date
      */
     setViewDate = (date) => {
         date = createDate(date);
@@ -838,8 +838,19 @@ export default class Datepicker {
         this.trigger(consts.eventChangeFocusDate, date, params);
     }
 
+    /**
+     * Sets new datepicker view
+     * @param {ViewType} view
+     */
     setCurrentView = (view) => {
         if (!this.viewIndexes.includes(view)) return;
+
+        this.currentView = view;
+
+        if (this.elIsInput && this.visible) this.setPosition();
+
+        // Trigger inner event before new view is inited, to avoid multiple render calls in datepicker body
+        this.trigger(consts.eventChangeCurrentView, view);
 
         if (!this.views[view]) {
             let newView = this.views[view] = new DatepickerBody({
@@ -851,15 +862,10 @@ export default class Datepicker {
             this.$content.appendChild(newView.$el);
         }
 
-        this.currentView = view;
-
-        if (this.elIsInput && this.visible) this.setPosition();
-
+        // Trigger user event after, to be able to use datepicker api on rendered view
         if (this.opts.onChangeView) {
             this.opts.onChangeView(view);
         }
-
-        this.trigger(consts.eventChangeCurrentView, view);
     }
 
     /**
@@ -871,8 +877,18 @@ export default class Datepicker {
         this.trigger(consts.eventChangeLastSelectedDate, date);
     }
 
-    getCell(jsDate, cellType = consts.day) {
-        let {year, month, date} = getParsedDate(jsDate);
+    /**
+     * Finds cell HTML element
+     * @param {DateLike} cellDate
+     * @param {CellType} cellType
+     * @return {HTMLElement | null}
+     */
+    getCell(cellDate, cellType = consts.day) {
+        date = createDate(cellDate);
+
+        if (!(date instanceof Date)) return;
+
+        let {year, month, date} = getParsedDate(date);
 
         let yearQuery = `[data-year="${year}"]`,
             monthQuery = `[data-month="${month}"]`,

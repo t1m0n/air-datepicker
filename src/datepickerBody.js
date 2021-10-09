@@ -323,15 +323,7 @@ export default class DatepickerBody {
         this.render();
     }
 
-    /**
-     * When going up or down between views we are changing both `viewDate` and `view`,
-     * here we preventing unnecessary rendering while reacting to both events - onChangeViewDate and onChangeCurrentView
-     */
     render = () => {
-        if (this.isRendering) return;
-
-        this.isRendering = true;
-
         this.destroyCells();
         this.cells = [];
         this.$cells.innerHTML = '';
@@ -339,10 +331,6 @@ export default class DatepickerBody {
         this._generateCells();
         this.cells.forEach((c)=>{
             this.$cells.appendChild(c.render());
-        });
-
-        setTimeout(() => {
-            this.isRendering = false;
         });
     }
 }

@@ -72,6 +72,7 @@ export default class DatepickerCell {
     _getClassName(){
         let currentDate = new Date();
         let {selectOtherMonths, selectOtherYears} = this.opts;
+        let {minDate, maxDate} = this.dp;
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
         let disabled = this.customData?.disabled;
@@ -81,6 +82,8 @@ export default class DatepickerCell {
             `-${this.singleType}-`, // days -> day etc.'`
             {
                 '-current-': isSameDate(currentDate, this.date, this.type),
+                '-min-date-': minDate && isSameDate(minDate, this.date, this.type),
+                '-max-date-': maxDate && isSameDate(maxDate, this.date, this.type),
             }
         );
         let classNameType = '';

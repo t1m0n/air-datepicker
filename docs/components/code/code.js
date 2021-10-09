@@ -20,8 +20,29 @@ export default class Code extends React.Component {
         className: PropTypes.string,
     }
 
+    state = {
+        fakeLoading: false
+    }
+
     componentDidMount() {
         highlightElement(this.$el.current)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // Set fake loading to re render prism js
+        if (prevProps.children !== this.props.children) {
+            this.setState({
+                fakeLoading: true
+            }, () => {
+                this.setState({
+                    fakeLoading: false
+                })
+            })
+        }
+
+        if (prevState.fakeLoading && !this.state.fakeLoading) {
+            highlightElement(this.$el.current)
+        }
     }
 
     render() {
@@ -31,6 +52,11 @@ export default class Code extends React.Component {
             [css.bgTransparent]: bgTransparent,
             [css.isFieldName]: isFieldName
         })
+        let {fakeLoading} = this.state;
+
+        if (fakeLoading) {
+            return null;
+        }
 
         if (inline) {
             return <code className={_className} ref={this.$el}>{children}</code>

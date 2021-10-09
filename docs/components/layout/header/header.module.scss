@@ -7,6 +7,7 @@
   background: #fff;
   box-shadow: 0 0 14px rgba(0, 0, 0, .1);
   margin-bottom: var(--header-offset);
+  min-width: var(--container-min-width);
   position: sticky;
   top: 0;
   z-index: var(--z-header);

@@ -5,6 +5,8 @@ import {IntlProvider} from 'react-intl'
 import Header from 'components/layout/header';
 import {AppProvider} from 'context/appContext';
 import {baseName} from 'hooks/usePageTitle';
+import enLocale from 'locales/en';
+import ruLocale from 'locales/ru';
 
 import '../../dist/air-datepicker.css';
 import 'prismjs/themes/prism-coy.css'
@@ -13,38 +15,26 @@ import 'public/typography.css';
 import 'public/dp-examples.css';
 import 'public/prism-custom.css';
 
+let localeMessages = {
+    ru: ruLocale,
+    en: enLocale
+}
 
 const MyApp = ({Component, pageProps}) => {
-    let [loaded, setLoaded] = useState(false);
-    let [loadingLocales, setLoadingLocales] = useState(false);
-    let [messages, setMessages] = useState(false);
     let {route, locale, defaultLocale} = useRouter();
+    let [loadingLocales, setLoadingLocales] = useState(false);
+    let [messages, setMessages] = useState(localeMessages[locale] || enLocale);
 
     useEffect(() => {
-        async function init() {
-            setLoadingLocales(true);
+        // Simulate localization loading for navBar update
+        setLoadingLocales(true);
 
-            let msgs = await loadMessages(locale);
+        setMessages(localeMessages[locale] || enLocale)
 
-            setMessages(msgs)
-            setLoaded(true);
+        setTimeout(() => {
             setLoadingLocales(false);
-        }
-        init();
+        })
     }, [locale])
-
-    async function loadMessages(locale) {
-        let fetchedMessages;
-        try {
-            fetchedMessages = await import(`locales/${locale}`)
-        } catch (e) {
-            throw e
-        }
-
-        return fetchedMessages.default;
-    }
-
-    if (!loaded) return null;
 
     return <AppProvider value={{
         loadingLocales
@@ -52,6 +42,14 @@ const MyApp = ({Component, pageProps}) => {
         <IntlProvider messages={messages} locale={locale} defaultLocale={defaultLocale}>
             <Head>
                 <title>{baseName}</title>
+                <meta name='description' content={messages.promoNote} />
+                <meta name='keywords' content={'datepicker, calendar, js calendar, plain js datepicker, timepicker, dependency free, lightweight, customizable'} />
+                <meta property="og:title" content={baseName} />
+                <meta property="og:type" content={'website'} />
+                <meta property="og:description" content={messages.promoNote} />
+                <meta property="twitter:title" content={baseName} />
+                <meta property="twitter:description" content={messages.promoNote} />
+                <meta property="twitter:type" content={'website'} />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
