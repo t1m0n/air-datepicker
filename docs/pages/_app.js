@@ -44,6 +44,12 @@ const MyApp = ({Component, pageProps}) => {
                 <title>{baseName}</title>
                 <meta name='description' content={messages.promoNote} />
                 <meta name='keywords' content={'datepicker, calendar, js calendar, plain js datepicker, timepicker, dependency free, lightweight, customizable'} />
+                <meta property="og:title" content={baseName} />
+                <meta property="og:type" content={'website'} />
+                <meta property="og:description" content={messages.promoNote} />
+                <meta property="twitter:title" content={baseName} />
+                <meta property="twitter:description" content={messages.promoNote} />
+                <meta property="twitter:type" content={'website'} />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
