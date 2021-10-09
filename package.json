@@ -1,6 +1,6 @@
 {
   "name": "air-datepicker",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "scripts": {
     "dev": "set NODE_ENV=development&& webpack",
     "dev:serve": "npm run browser&& set NODE_ENV=development&& webpack serve",
@@ -53,6 +53,8 @@
   },
   "keywords": [
     "datepicker",
+    "plain js datepicker",
+    "calendar",
     "timepicker",
     "lightweight"
   ],
