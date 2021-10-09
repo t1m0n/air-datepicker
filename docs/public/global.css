@@ -32,6 +32,7 @@ html {
 
     --container-offset: 16px;
     --container-max-width: 1050px;
+    --container-min-width: 1050px;
     --content-nav-col-width: 256px;
     --content-col-gap: 32px;
     --layout-top-offset: 32px;
