@@ -20,9 +20,7 @@ let localeMessages = {
     en: enLocale
 }
 
-
 const MyApp = ({Component, pageProps}) => {
-    let [loaded, setLoaded] = useState(false);
     let {route, locale, defaultLocale} = useRouter();
     let [loadingLocales, setLoadingLocales] = useState(false);
     let [messages, setMessages] = useState(localeMessages[locale] || enLocale);
@@ -44,6 +42,8 @@ const MyApp = ({Component, pageProps}) => {
         <IntlProvider messages={messages} locale={locale} defaultLocale={defaultLocale}>
             <Head>
                 <title>{baseName}</title>
+                <meta name='description' content={messages.promoNote} />
+                <meta name='keywords' content={'datepicker, calendar, js calendar, plain js datepicker, timepicker, dependency free, lightweight, customizable'} />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
