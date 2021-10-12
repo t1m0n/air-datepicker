@@ -6,17 +6,17 @@ import './datepickerButtons.scss';
 export default class DatepickerButtons {
     constructor({dp, opts}) {
         this.dp = dp;
-        this.opts= opts;
+        this.opts = opts;
 
         this.init();
     }
 
-    init(){
+    init() {
         this.createElement();
         this.render();
     }
 
-    createElement(){
+    createElement() {
         this.$el = createElement({className: 'air-datepicker-buttons'});
     }
 
@@ -29,14 +29,14 @@ export default class DatepickerButtons {
         return this;
     }
 
-    generateButtons(){
+    generateButtons() {
         let {buttons} = this.opts;
 
         if (!Array.isArray(buttons)) {
             buttons = [buttons];
         }
 
-        buttons.forEach((b)=>{
+        buttons.forEach((b) => {
             let data = b;
 
             if (typeof b === 'string' && buttonPresets[b]) {
@@ -54,7 +54,7 @@ export default class DatepickerButtons {
     }
 
     attachEventToButton(button, onClick) {
-        button.addEventListener('click', ()=>{
+        button.addEventListener('click', () => {
             onClick(this.dp);
         });
     }
@@ -66,7 +66,7 @@ export default class DatepickerButtons {
      * @param {String} [tagName=button]
      * @return HTMLElement
      */
-    createButton({content, className, tagName='button'}){
+    createButton({content, className, tagName = 'button'}) {
         let _content = typeof content === 'function' ? content(this.dp) : content;
 
         return createElement({
@@ -76,7 +76,7 @@ export default class DatepickerButtons {
         });
     }
 
-    render(){
+    render() {
         this.generateButtons();
     }
 }

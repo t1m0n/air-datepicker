@@ -23,7 +23,7 @@ module.exports = {
     },
     plugins: ['react'],
     rules: {
-        indent: ['error', tabSize,  {ignoredNodes: ['TemplateLiteral']}], // игнорируем string template из-за ошибки в пакетах
+        indent: ['error', tabSize,  {ignoredNodes: ['TemplateLiteral'], SwitchCase: 1}], // игнорируем string template из-за ошибки в пакетах
         quotes: ['error', 'single'],
         semi: ['warn', 'always'],
         curly: ['error', 'multi-line'],

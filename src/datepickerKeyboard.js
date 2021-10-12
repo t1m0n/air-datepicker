@@ -6,12 +6,12 @@ export default class DatepickerKeyboard {
     
     hotKeys = new Map(
         [
-            [[['Control', 'ArrowRight'],['Control', 'ArrowUp']], dateParts =>  dateParts.month++],
-            [[['Control', 'ArrowLeft'],['Control', 'ArrowDown']], dateParts =>  dateParts.month--],
-            [[['Shift', 'ArrowRight'],['Shift', 'ArrowUp']], dateParts =>  dateParts.year++],
-            [[['Shift', 'ArrowLeft'],['Shift', 'ArrowDown']], dateParts =>  dateParts.year--],
-            [[['Alt', 'ArrowRight'],['Alt', 'ArrowUp']], dateParts =>  dateParts.year+= 10],
-            [[['Alt', 'ArrowLeft'],['Alt', 'ArrowDown']], dateParts =>  dateParts.year-= 10],
+            [[['Control', 'ArrowRight'], ['Control', 'ArrowUp']], dateParts =>  dateParts.month++],
+            [[['Control', 'ArrowLeft'], ['Control', 'ArrowDown']], dateParts =>  dateParts.month--],
+            [[['Shift', 'ArrowRight'], ['Shift', 'ArrowUp']], dateParts =>  dateParts.year++],
+            [[['Shift', 'ArrowLeft'], ['Shift', 'ArrowDown']], dateParts =>  dateParts.year--],
+            [[['Alt', 'ArrowRight'], ['Alt', 'ArrowUp']], dateParts =>  dateParts.year += 10],
+            [[['Alt', 'ArrowLeft'], ['Alt', 'ArrowDown']], dateParts =>  dateParts.year -= 10],
             [['Control', 'Shift', 'ArrowUp'], (dateParts, dp) =>  dp.up()],
         ]
     )
@@ -23,11 +23,11 @@ export default class DatepickerKeyboard {
         this.init();
     }
 
-    init(){
+    init() {
         this.bindKeyboardEvents();
     }
 
-    bindKeyboardEvents(){
+    bindKeyboardEvents() {
         let {$el} = this.dp;
 
         $el.addEventListener('keydown', this.onKeyDown);
@@ -43,7 +43,7 @@ export default class DatepickerKeyboard {
         this.pressedKeys = null;
     }
     
-    getInitialFocusDate(){
+    getInitialFocusDate() {
         let {focusDate, currentView, selectedDates, parsedViewDate: {year, month}} = this.dp;
         let potentialFocused  = focusDate || selectedDates[selectedDates.length - 1];
 
@@ -73,7 +73,7 @@ export default class DatepickerKeyboard {
             m = parsedFocusDate.month,
             d = parsedFocusDate.date;
 
-        switch(keyName) {
+        switch (keyName) {
             case 'ArrowLeft':
                 currentView === days ? (d -= 1) : '';
                 currentView === months ? (m -= 1) : '';
@@ -108,7 +108,7 @@ export default class DatepickerKeyboard {
         this.pressedKeys.delete(keyName);
     }
 
-    handleHotKey = (combination) =>{
+    handleHotKey = (combination) => {
         let fn = this.hotKeys.get(combination),
             dateParts = getParsedDate(this.getInitialFocusDate());
 

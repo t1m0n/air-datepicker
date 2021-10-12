@@ -7,6 +7,7 @@
     "prod": "set NODE_ENV=production&& webpack",
     "browser": "open-cli http://localhost:8080 -- 'chrome' ",
     "build": "node scripts/build.js",
+    "lint-js": "eslint --fix ./src/*.js",
     "test": "jest"
   },
   "devDependencies": {
@@ -22,7 +23,7 @@
     "chalk": "^4.1.1",
     "css-loader": "^3.5.3",
     "ejs": "^3.1.6",
-    "eslint": "^6.8.0",
+    "eslint": "^7.32.0",
     "eslint-loader": "^4.0.2",
     "express": "^4.17.1",
     "glob": "^7.1.7",

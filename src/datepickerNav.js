@@ -18,7 +18,7 @@ export default class DatepickerNav {
         this.init();
     }
 
-    init(){
+    init() {
         this._createElement();
         this._buildBaseHtml();
         this._defineDOM();
@@ -30,18 +30,18 @@ export default class DatepickerNav {
         this._bindDatepickerEvents();
     }
 
-    _defineDOM(){
+    _defineDOM() {
         this.$title = getEl('.air-datepicker-nav--title', this.$el);
         this.$prev = getEl('[data-action="prev"]', this.$el);
         this.$next = getEl('[data-action="next"]', this.$el);
     }
 
-    _bindEvents(){
+    _bindEvents() {
         this.$el.addEventListener('click', this.onClickNav);
         this.$title.addEventListener('click', this.onClickNavTitle);
     }
 
-    _bindDatepickerEvents(){
+    _bindDatepickerEvents() {
         this.dp.on(consts.eventChangeViewDate, this.onChangeViewDate);
         this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
 
@@ -57,7 +57,7 @@ export default class DatepickerNav {
         }
     }
 
-    _createElement(){
+    _createElement() {
         this.$el = createElement({
             tagName: 'nav',
             className: 'air-datepicker-nav'
@@ -118,11 +118,11 @@ export default class DatepickerNav {
         getEl('[data-action="' + actionName + '"]', this.$el).classList.add('-disabled-');
     }
 
-    _resetNavStatus(){
+    _resetNavStatus() {
         removeClass(this.$el.querySelectorAll('.air-datepicker-nav--action'), '-disabled-');
     }
 
-    onClickNav = (e) =>{
+    onClickNav = (e) => {
         let $item = closest(e.target, '.air-datepicker-nav--action');
         if (!$item) return;
 
@@ -131,24 +131,24 @@ export default class DatepickerNav {
         this.dp[actionName]();
     }
 
-    onChangeViewDate = () =>{
+    onChangeViewDate = () => {
         this.render();
         this._resetNavStatus();
         this.handleNavStatus();
     }
 
-    onChangeCurrentView = () =>{
+    onChangeCurrentView = () => {
         this.render();
         this._resetNavStatus();
         this.handleNavStatus();
     }
 
-    onClickNavTitle = () =>{
+    onClickNavTitle = () => {
         if (this.dp.isFinalView) return;
         this.dp.up();
     }
 
-    _buildBaseHtml(){
+    _buildBaseHtml() {
         let {prevHtml, nextHtml} = this.opts;
 
         this.$el.innerHTML = '' +
