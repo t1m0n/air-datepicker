@@ -1,18 +1,18 @@
 import defaults from './defaults';
 import {
     copyDate,
+    createDate,
     createElement,
     deepCopy,
+    deepMerge,
     getDecade,
     getEl,
     getParsedDate,
+    getWordBoundaryRegExp,
     insertAfter,
     isDateBigger,
     isDateSmaller,
     isSameDate,
-    deepMerge,
-    createDate,
-    getWordBoundaryRegExp,
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
@@ -29,11 +29,11 @@ let $body = '',
     $datepickersContainer = '',
     containerBuilt = false,
     baseTemplate = '' +
-            '<i class="air-datepicker--pointer"></i>' +
-            '<div class="air-datepicker--navigation"></div>' +
-            '<div class="air-datepicker--content"></div>';
+        '<i class="air-datepicker--pointer"></i>' +
+        '<div class="air-datepicker--navigation"></div>' +
+        '<div class="air-datepicker--content"></div>';
 
-function buildDatepickersContainer (id) {
+function buildDatepickersContainer(id) {
     containerBuilt = true;
 
     $datepickersContainer = createElement({className: id, id});
@@ -87,7 +87,7 @@ export default class Datepicker {
 
     viewIndexes = [consts.days, consts.months, consts.years];
 
-    init(){
+    init() {
         let {
             opts,
             opts: {
@@ -147,7 +147,7 @@ export default class Datepicker {
             opts
         });
 
-        this.nav = new DatepickerNav({dp,opts,});
+        this.nav = new DatepickerNav({dp, opts});
 
         if (timepicker) {
             this._addTimepicker();
@@ -186,7 +186,7 @@ export default class Datepicker {
         this.$buttons.appendChild(this.buttons.$el);
     }
 
-    _bindSubEvents(){
+    _bindSubEvents() {
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
         this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
         this.on(consts.eventChangeTime, this._onChangeTime);
@@ -212,7 +212,7 @@ export default class Datepicker {
         this.$nav = getEl('.air-datepicker--navigation', this.$datepicker);
     }
 
-    _handleLocale(){
+    _handleLocale() {
         let {locale, dateFormat, firstDay, timepicker, onlyTimepicker, timeFormat, dateTimeSeparator} = this.opts;
         this.locale = deepCopy(locale);
 
@@ -241,7 +241,7 @@ export default class Datepicker {
         }
     }
 
-    _setPositionClasses(pos){
+    _setPositionClasses(pos) {
         pos = pos.split(' ');
         let main = pos[0],
             sec = pos[1],
@@ -253,14 +253,14 @@ export default class Datepicker {
         this.$datepicker.classList.add(...classes.split(' '));
     }
 
-    _bindEvents(){
+    _bindEvents() {
         this.$el.addEventListener(this.opts.showEvent, this._onFocus);
         this.$el.addEventListener('blur', this._onBlur);
         this.$datepicker.addEventListener('mousedown', this._onMouseDown);
         this.$datepicker.addEventListener('mouseup', this._onMouseUp);
     }
 
-    _limitViewDateByMaxMinDates(){
+    _limitViewDateByMaxMinDates() {
         let {viewDate, minDate, maxDate} = this;
 
         if (maxDate && isDateBigger(viewDate, maxDate)) {
@@ -443,7 +443,7 @@ export default class Datepicker {
                 case 1:
                     selectedDates.push(date);
                     // Need to define this manually if call selectDate programmatically
-                    if (!this.rangeDateTo){
+                    if (!this.rangeDateTo) {
                         this.rangeDateTo = date;
                     }
                     // Swap dates if they were selected via dp.selectDate() and second date was smaller then first
@@ -487,7 +487,7 @@ export default class Datepicker {
         });
     }
 
-    unselectDate(date){
+    unselectDate(date) {
         let selected = this.selectedDates,
             _this = this;
 
@@ -538,7 +538,7 @@ export default class Datepicker {
         this._updateLastSelectedDate(newDate);
     }
 
-    clear(){
+    clear() {
         this.selectedDates = [];
         this.rangeDateFrom = false;
         this.rangeDateTo = false;
@@ -546,7 +546,7 @@ export default class Datepicker {
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate});
     }
 
-    show(){
+    show() {
         this.setPosition(this.opts.position);
         this.$datepicker.classList.add('-active-');
         this.visible = true;
@@ -558,7 +558,7 @@ export default class Datepicker {
         }
     }
 
-    hide(){
+    hide() {
         this.$datepicker.classList.remove('-active-');
         this.$datepicker.style.left = '-10000px';
         this.visible = false;
@@ -634,7 +634,7 @@ export default class Datepicker {
                 break;
         }
 
-        switch(secondary) {
+        switch (secondary) {
             case 'top':
                 top = dims.top;
                 break;
@@ -649,43 +649,48 @@ export default class Datepicker {
                 break;
             case 'center':
                 if (/left|right/.test(main)) {
-                    top = dims.top + dims.height/2 - selfDims.height/2;
+                    top = dims.top + dims.height / 2 - selfDims.height / 2;
                 } else {
-                    left = dims.left + dims.width/2 - selfDims.width/2;
+                    left = dims.left + dims.width / 2 - selfDims.width / 2;
                 }
         }
 
         this.$datepicker.style.cssText = `left: ${left + scrollLeft}px; top: ${top + scrollTop}px`;
     }
 
-    setInputValue = () => {
-        let {opts: {altFieldDateFormat, altField, multipleDatesSeparator}, selectedDates, $altField, locale} = this,
-            value = selectedDates.map((date) => {
-                if (typeof locale.dateFormat === 'function') {
-                    return locale.dateFormat(date);
-                }
-                return this.formatDate(date, locale.dateFormat);
-            }),
-            altValues;
+    _setInputValue = () => {
+        let {opts, $altField, locale: {dateFormat}} = this,
+            {altFieldDateFormat, altField} = opts;
 
         if (altField && $altField) {
-            altValues = selectedDates.map((date) => {
-                if (typeof altFieldDateFormat === 'function') {
-                    return altFieldDateFormat(date);
-                }
-
-                return this.formatDate(date, altFieldDateFormat);
-            });
-            altValues = altValues.join(multipleDatesSeparator);
-            $altField.value = altValues;
+            $altField.value = this._getInputValue(altFieldDateFormat);
         }
 
-        value = value.join(multipleDatesSeparator);
-
-        this.$el.value = value;
+        this.$el.value = this._getInputValue(dateFormat);
     }
 
-    _triggerOnSelect(){
+    _getInputValue = (dateFormat) => {
+        let {selectedDates, opts} = this,
+            {multipleDates, multipleDatesSeparator} = opts;
+
+        if (!selectedDates.length) return '';
+
+        let formatIsFunction = typeof dateFormat === 'function';
+
+        let value = formatIsFunction
+            ? dateFormat(multipleDates ? selectedDates : selectedDates[0])
+            : selectedDates.map((date) => {
+                return this.formatDate(date, dateFormat);
+            });
+
+        value = formatIsFunction
+            ? value
+            : value.join(multipleDatesSeparator);
+
+        return value;
+    }
+
+    _triggerOnSelect() {
         let dates = [],
             formattedDates = [],
             datepicker = this,
@@ -717,10 +722,10 @@ export default class Datepicker {
      * @return {boolean|Date}
      * @private
      */
-    _checkIfDateIsSelected = (date, cellType=consts.days) =>{
+    _checkIfDateIsSelected = (date, cellType = consts.days) => {
         let alreadySelectedDate = false;
 
-        this.selectedDates.some((selectedDate)=>{
+        this.selectedDates.some((selectedDate) => {
             let same = isSameDate(date, selectedDate, cellType);
             alreadySelectedDate = same && selectedDate;
             return same;
@@ -729,7 +734,7 @@ export default class Datepicker {
         return alreadySelectedDate;
     }
 
-    _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate){
+    _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate) {
         let {range, toggleSelected} = this.opts;
         if (range) {
             if (!toggleSelected) {
@@ -740,7 +745,7 @@ export default class Datepicker {
             } else {
                 this.unselectDate(newSelectedDate);
             }
-        } else if (toggleSelected){
+        } else if (toggleSelected) {
             this.unselectDate(newSelectedDate);
         }
 
@@ -751,19 +756,22 @@ export default class Datepicker {
     }
 
     _handleUpDownActions(date, dir) {
+        let maxViewIndex = 2,
+            minViewIndex = 0;
+
         date = createDate(date || this.focusDate || this.viewDate);
 
         if (!(date instanceof Date)) return;
 
         let nextView = dir === 'up' ? this.viewIndex + 1 : this.viewIndex - 1;
-        if (nextView > 2) nextView = 2;
-        if (nextView < 0) nextView = 0;
+        if (nextView > maxViewIndex) nextView = maxViewIndex;
+        if (nextView < minViewIndex) nextView = minViewIndex;
 
         this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
         this.setCurrentView(this.viewIndexes[nextView]);
     }
 
-    _handleRangeOnFocus(){
+    _handleRangeOnFocus() {
         if (this.selectedDates.length === 1) {
             let selectedDate = this.selectedDates[0];
             if (isDateBigger(selectedDate, this.focusDate)) {
@@ -872,7 +880,7 @@ export default class Datepicker {
      * Updates lastSelectedDate param and triggers corresponding event
      * @param {Date|Boolean} date - date or empty
      */
-    _updateLastSelectedDate = (date) =>{
+    _updateLastSelectedDate = (date) => {
         this.lastSelectedDate = date;
         this.trigger(consts.eventChangeLastSelectedDate, date);
     }
@@ -903,7 +911,7 @@ export default class Datepicker {
         return this.views[this.currentView].$el.querySelector(resultQuery[cellType]);
     }
 
-    destroy = () =>{
+    destroy = () => {
         let parent = this.$datepicker.parentNode;
         if (parent) {
             parent.removeChild(this.$datepicker);
@@ -982,7 +990,7 @@ export default class Datepicker {
         if (this.currentView === consts.days) {
             this.views[this.currentView].renderDayNames();
         }
-        this.setInputValue();
+        this._setInputValue();
     }
 
     //  Utils
@@ -1010,17 +1018,17 @@ export default class Datepicker {
     //  Subscription events
     // -------------------------------------------------
 
-    _onChangeSelectedDate = ({silent}) =>{
+    _onChangeSelectedDate = ({silent}) => {
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(() => {
-            this.setInputValue();
+            this._setInputValue();
             if (this.opts.onSelect && !silent) {
                 this._triggerOnSelect();
             }
         });
     }
 
-    _onChangeFocusedDate = (date, {viewDateTransition} = {}) =>{
+    _onChangeFocusedDate = (date, {viewDateTransition} = {}) => {
         if (!date) return;
         let shouldPerformTransition = false;
 
@@ -1034,7 +1042,7 @@ export default class Datepicker {
 
     }
 
-    _onChangeTime = ({hours, minutes}) =>{
+    _onChangeTime = ({hours, minutes}) => {
         let today = new Date();
         let {lastSelectedDate, opts: {onSelect}} = this;
         let targetDate = lastSelectedDate;
@@ -1054,7 +1062,7 @@ export default class Datepicker {
         if (!lastSelectedDate) {
             this.selectDate(targetDate);
         } else {
-            this.setInputValue();
+            this._setInputValue();
             if (onSelect) {
                 this._triggerOnSelect();
             }
@@ -1085,7 +1093,7 @@ export default class Datepicker {
     //  Helpers
     // -------------------------------------------------
 
-    get parsedViewDate(){
+    get parsedViewDate() {
         return getParsedDate(this.viewDate);
     }
 
@@ -1093,19 +1101,19 @@ export default class Datepicker {
         return getDecade(this.viewDate);
     }
 
-    get viewIndex(){
+    get viewIndex() {
         return this.viewIndexes.indexOf(this.currentView);
     }
 
-    get isFinalView(){
+    get isFinalView() {
         return this.currentView === consts.years;
     }
 
-    get hasSelectedDates(){
+    get hasSelectedDates() {
         return this.selectedDates.length > 0;
     }
 
-    get isMinViewReached(){
+    get isMinViewReached() {
         return this.currentView === this.opts.minView || this.currentView === consts.days;
     }
 
@@ -1131,7 +1139,7 @@ export default class Datepicker {
     }
 
     static replacer(str, reg, data) {
-        return str.replace(reg, function (match, p1,p2,p3) {
+        return str.replace(reg, function (match, p1, p2, p3) {
             return p1 + data + p3;
         });
     }

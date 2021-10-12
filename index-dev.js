@@ -13,8 +13,15 @@ let opts = {
     inline: true,
     // timepicker: true,
     maxDate: mDate,
+    multipleDates: false,
     onChangeView(view) {
         console.log(dp1.getCell('2021-01-01', 'month'))
+    },
+    onSelect({date}) {
+        console.log(date);
+    },
+    dateFormat(d) {
+        return d.toLocaleString();
     },
     onRenderCell({type}) {
         // console.log(type);
