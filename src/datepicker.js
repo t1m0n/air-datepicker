@@ -27,6 +27,7 @@ import './datepicker.scss';
 
 let $body = '',
     $datepickersContainer = '',
+    $datepickerOverlay = '',
     containerBuilt = false,
     baseTemplate = '' +
         '<i class="air-datepicker--pointer"></i>' +
@@ -99,6 +100,7 @@ export default class Datepicker {
                 classes,
                 altField,
                 onlyTimepicker,
+                isMobile,
                 keyboardNav,
             }
         } = this;
@@ -106,6 +108,10 @@ export default class Datepicker {
 
         if (!containerBuilt && !inline && this.elIsInput) {
             buildDatepickersContainer(Datepicker.defaultContainerId);
+        }
+        if (isMobile && !$datepickerOverlay) {
+            $datepickerOverlay = createElement({className: 'air-datepicker-overlay'});
+            $datepickersContainer.appendChild($datepickerOverlay);
         }
         this._buildBaseHtml();
         this._handleLocale();
@@ -139,6 +145,10 @@ export default class Datepicker {
 
         if (onlyTimepicker) {
             this.$datepicker.classList.add('-only-timepicker-');
+        }
+
+        if (isMobile) {
+            this.$datepicker.classList.add('-is-mobile-');
         }
 
         this.views[this.currentView] = new DatepickerBody({
@@ -547,18 +557,26 @@ export default class Datepicker {
     }
 
     show() {
+        let {onShow, isMobile} = this.opts;
+
         this.setPosition(this.opts.position);
+
         this.$datepicker.classList.add('-active-');
         this.visible = true;
 
-        let {onShow} = this.opts;
 
         if (onShow) {
             this._handleVisibilityEvents(onShow);
         }
+
+        if (isMobile) {
+            $datepickerOverlay.classList.add('-active-');
+        }
     }
 
     hide() {
+        let {onHide, isMobile} = this.opts;
+
         this.$datepicker.classList.remove('-active-');
         this.$datepicker.style.left = '-10000px';
         this.visible = false;
@@ -567,10 +585,13 @@ export default class Datepicker {
             this.$el.blur();
         }
 
-        let {onHide} = this.opts;
 
         if (onHide) {
             this._handleVisibilityEvents(onHide);
+        }
+
+        if (isMobile) {
+            $datepickerOverlay.classList.remove('-active-');
         }
     }
 
@@ -588,7 +609,13 @@ export default class Datepicker {
             scrollLeft = window.scrollX,
             offset = this.opts.offset,
             main = pos[0],
-            secondary = pos[1];
+            secondary = pos[1],
+            {isMobile} = this.opts;
+
+        if (isMobile) {
+            this.$datepicker.style.cssText = 'left: 50%; top: 50%';
+            return;
+        }
 
         // If datepicker's container is the same with target element
         if ($dpOffset === $elOffset && $dpOffset !== document.body) {
@@ -1076,7 +1103,7 @@ export default class Datepicker {
     }
 
     _onBlur = (e) => {
-        if (!this.inFocus && this.visible) {
+        if (!this.inFocus && this.visible && !this.opts.isMobile) {
             this.hide();
         }
     }

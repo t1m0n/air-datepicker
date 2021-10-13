@@ -10,9 +10,10 @@ let mDate = new Date();
 
 let opts = {
     // minDate: Date.now(),
-    inline: true,
+    inline: false,
     // timepicker: true,
-    maxDate: mDate,
+    // maxDate: mDate,
+    isMobile: true,
     multipleDates: false,
     onChangeView(view) {
         console.log(dp1.getCell('2021-01-01', 'month'))

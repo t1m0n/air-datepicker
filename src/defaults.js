@@ -15,6 +15,7 @@ export default {
     keyboardNav: true,
     selectedDates: false,
     container: '',
+    isMobile: false,
 
     position: 'bottom left',
     offset: 12,

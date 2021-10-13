@@ -20,9 +20,9 @@
   left: -100000px;
   opacity: 0;
   transition:
-    opacity var(--adp-transition-duration) var(--adp-transition-ease),
-    transform var(--adp-transition-duration) var(--adp-transition-ease),
-    left 0s var(--adp-transition-duration);
+          opacity var(--adp-transition-duration) var(--adp-transition-ease),
+          transform var(--adp-transition-duration) var(--adp-transition-ease),
+          left 0s var(--adp-transition-duration);
   z-index: var(--adp-z-index);
 
   &.-from-top- {
@@ -42,9 +42,9 @@
     opacity: 1;
     transform: translate(0);
     transition:
-      opacity var(--adp-transition-duration) var(--adp-transition-ease),
-      transform var(--adp-transition-duration) var(--adp-transition-ease),
-      left 0s 0s;
+            opacity var(--adp-transition-duration) var(--adp-transition-ease),
+            transform var(--adp-transition-duration) var(--adp-transition-ease),
+            left 0s 0s;
   }
 
   &.-inline- {
@@ -58,6 +58,27 @@
 
     .air-datepicker--pointer {
       display: none;
+    }
+  }
+
+  &.-is-mobile- {
+    position: fixed;
+    transform: translate(-50%, calc(-50% + var(--adp-transition-offset)));
+    width: var(--adp-mobile-width);
+    max-width: var(--adp-mobile-max-width);
+    min-width: var(--adp-width);
+    border: none;
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .air-datepicker--pointer {
+      display: none;
+    }
+
+    &.-active- {
+      transform: translate(-50%, -50%);
     }
   }
 }
@@ -154,4 +175,40 @@
 .air-datepicker--time {
   padding: var(--adp-padding);
   border-top: 1px solid var(--adp-border-color-inner);
+}
+
+
+/*  Overlay
+   ------------------------------------------------- */
+
+.air-datepicker-overlay {
+  position: fixed;
+  background: var(--adp-overlay-background-color);
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition:
+          opacity var(--adp-overlay-transition-duration) var(--adp-overlay-transition-ease),
+          left 0s,
+          height 0s,
+          width 0s;
+  transition-delay:
+          0s,
+          var(--adp-overlay-transition-duration),
+          var(--adp-overlay-transition-duration),
+          var(--adp-overlay-transition-duration);
+
+
+  &.-active- {
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+
+    transition:
+            opacity var(--adp-overlay-transition-duration) var(--adp-overlay-transition-ease),
+            height 0s,
+            width 0s;
+  }
 }

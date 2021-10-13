@@ -6,6 +6,8 @@
   --adp-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --adp-font-size: 14px;
   --adp-width: 246px; // Day cell width will be equal to 34px
+  --adp-mobile-width: 90vw;
+  --adp-mobile-max-width: 400px;
   --adp-z-index: 100;
   --adp-padding: 4px;
   --adp-grid-areas:
@@ -74,4 +76,11 @@
   --adp-time-thumb-size: 12px;
   --adp-time-padding-inner: 10px;
   --adp-time-day-period-color: var(--adp-color-secondary);
+}
+
+.air-datepicker-overlay {
+  --adp-overlay-background-color: rgba(0, 0, 0, .3);
+  --adp-overlay-transition-duration: .3s;
+  --adp-overlay-transition-ease: ease-out;
+
 }
