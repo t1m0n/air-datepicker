@@ -49,6 +49,14 @@ Soooo, here is the full list of changes:
 * `onChangeMonth`, `onChangeYear`, `onChangeDecades` are replaced with single option `onChangeViewDate`
 * localization now must be provided as an object instead of string as it was before
 
+## Contribution
+
+* To run project run `npm i`, then `npm run dev:serve`.
+* If you want to report an issue, please provide steps, code or live example that fully reproduces it.
+* If you have a question please ask it on [StackOverflow](https://stackoverflow.com/questions/ask) with tag `air-datepicker`
+* If you have a proposal or PR please submit it to the [main branch](https://github.com/t1m0n/air-datepicker/tree/v3) - please follow code style according to .eslint configuration.
+Also make sure that your effort is aligned with project roadmap - my goal is to keep datepicker clean and lightweight without overcomplications or narrowly focused features
+
 ## License
 
 Air Datepicker is MIT licensed.
