@@ -2,6 +2,7 @@
 
 import Datepicker from 'datepicker';
 import en from 'locale/en';
+import {createPopper} from '@popperjs/core';
 let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
 let $bntDestroy = document.querySelector('#destroy');
@@ -15,6 +16,21 @@ let opts = {
     // timepicker: true,
     // maxDate: mDate,
     isMobile: false,
+    onShow(isVisible) {
+        if (isVisible) {
+            createPopper($input1, dp1.$datepicker, {
+                placement: 'right',
+                modifiers:[
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [20, 20]
+                        }
+                    }
+                ]
+            })
+        }
+    },
     multipleDates: false,
     onChangeView(view) {
         console.log(dp1.getCell('2021-01-01', 'month'))
@@ -31,7 +47,6 @@ let opts = {
 }
 
 window.dp1 = new Datepicker($input1, opts);
-
 
 
 window.dp2 = new Datepicker($input2, {
