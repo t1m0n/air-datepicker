@@ -17,7 +17,6 @@ let plugins = [
     new HtmlWebpackPlugin({
         template: './index-dev.html'
     }),
-    new webpack.HotModuleReplacementPlugin()
 ];
 
 let buildPlugins = [
@@ -43,7 +42,6 @@ let config = {
     mode: dev ? 'development' : 'production',
     entry: entry,
     devtool: dev ? 'eval-source-map' : false,
-    watch: dev,
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: dev ? 'js/[name].js' : `${NAME}.js`,
@@ -80,7 +78,6 @@ let config = {
 
 if (dev) {
     config.devServer = {
-        contentBase: './dist',
         hot: true
     };
 }
