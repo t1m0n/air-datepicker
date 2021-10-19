@@ -1,5 +1,9 @@
 # Changelog
 
+### v3.1.0
+* added `isMobile` option, which allows to show Air Datepicker as modal window
+* `dateFormat` as function now handles all dates at once, instead of each date separately
+
 ### v3.0.1
 * fixed `update` method issue when some changes did not apply immediately 
 

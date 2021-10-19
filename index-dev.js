@@ -4,7 +4,8 @@ import Datepicker from 'datepicker';
 import en from 'locale/en';
 let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
-let $bntDestroy = document.querySelector('#destroy')
+let $bntDestroy = document.querySelector('#destroy');
+let $btnUpdate = document.querySelector('#update');
 
 let mDate = new Date();
 
@@ -13,7 +14,7 @@ let opts = {
     inline: false,
     // timepicker: true,
     // maxDate: mDate,
-    isMobile: true,
+    isMobile: false,
     multipleDates: false,
     onChangeView(view) {
         console.log(dp1.getCell('2021-01-01', 'month'))
@@ -32,16 +33,18 @@ let opts = {
 window.dp1 = new Datepicker($input1, opts);
 
 
-// window.dp2 = new Datepicker($input2, {
-//     inline: true,
-//     onSelect({date}) {
-//         dp1.update({
-//             maxDate: date
-//         })
-//     }
-// });
+
+window.dp2 = new Datepicker($input2, {
+    isMobile: true,
+    autoClose: true,
+});
 
 $bntDestroy.addEventListener('click', dp1.destroy)
+$btnUpdate.addEventListener('click', () => {
+    dp1.update({
+        isMobile: false
+    })
+})
 
 // dp.selectDate(new Date('2021-06-01'))
 // dp.selectDate(new Date('2021-06-05'))

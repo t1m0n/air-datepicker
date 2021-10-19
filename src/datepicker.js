@@ -75,6 +75,7 @@ export default class Datepicker {
 
         this.viewDate = createDate(this.opts.startDate);
         this.focusDate = false;
+        this.initialReadonly = this.$el.getAttribute('readonly');
         this.currentView = view;
         this.selectedDates = [];
         this.views = {};
@@ -148,7 +149,7 @@ export default class Datepicker {
         }
 
         if (isMobile) {
-            this.$datepicker.classList.add('-is-mobile-');
+            this._addMobileAttributes();
         }
 
         this.views[this.currentView] = new DatepickerBody({
@@ -172,6 +173,23 @@ export default class Datepicker {
 
         if (selectedDates) {
             this.selectDate(selectedDates, {silent: true});
+        }
+    }
+
+    _addMobileAttributes() {
+        $datepickerOverlay.addEventListener('click', this._onClickOverlay);
+
+        this.$datepicker.classList.add('-is-mobile-');
+        this.$el.setAttribute('readonly', true);
+    }
+
+    _removeMobileAttributes() {
+        $datepickerOverlay.removeEventListener('click', this._onClickOverlay);
+
+        this.$datepicker.classList.remove('-is-mobile-');
+
+        if (!this.initialReadonly && this.initialReadonly !== '') {
+            this.$el.removeAttribute('readonly');
         }
     }
 
@@ -939,13 +957,18 @@ export default class Datepicker {
     }
 
     destroy = () => {
+        let {showEvent, isMobile} = this.opts;
+
         let parent = this.$datepicker.parentNode;
         if (parent) {
             parent.removeChild(this.$datepicker);
         }
 
-        this.$el.removeEventListener(this.opts.showEvent, this._onFocus);
+        this.$el.removeEventListener(showEvent, this._onFocus);
         this.$el.removeEventListener('blur', this._onBlur);
+        if (isMobile) {
+            this._removeMobileAttributes();
+        }
 
         if (this.keyboardNav) {
             this.keyboardNav.destroy();
@@ -970,7 +993,7 @@ export default class Datepicker {
         let prevOpts = deepMerge({}, this.opts);
         deepMerge(this.opts, newOpts);
 
-        let {timepicker, buttons, range, selectedDates} = this.opts;
+        let {timepicker, buttons, range, selectedDates, isMobile} = this.opts;
 
         this._createMinMaxDates();
 
@@ -1000,6 +1023,12 @@ export default class Datepicker {
             if (prevOpts.buttons && buttons) {
                 this.buttons.clearHtml().render();
             }
+        }
+
+        if (!prevOpts.isMobile && isMobile) {
+            this._addMobileAttributes();
+        } else if (prevOpts.isMobile && !isMobile) {
+            this._removeMobileAttributes();
         }
 
         if (!prevOpts.selectedDates && selectedDates) {
@@ -1096,7 +1125,7 @@ export default class Datepicker {
         }
     }
 
-    _onFocus = () => {
+    _onFocus = (e) => {
         if (!this.visible) {
             this.show();
         }
@@ -1115,6 +1144,12 @@ export default class Datepicker {
     _onMouseUp = (e) => {
         this.inFocus = false;
         this.$el.focus();
+    }
+
+    _onClickOverlay = () => {
+        if (this.visible) {
+            this.hide();
+        }
     }
 
     //  Helpers
