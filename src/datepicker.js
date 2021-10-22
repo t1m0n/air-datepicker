@@ -237,6 +237,7 @@ export default class Datepicker {
         this.$datepicker.innerHTML = baseTemplate;
 
         this.$content = getEl('.air-datepicker--content',  this.$datepicker);
+        this.$pointer = getEl('.air-datepicker--pointer', this.$datepicker);
         this.$nav = getEl('.air-datepicker--navigation', this.$datepicker);
     }
 
@@ -270,14 +271,17 @@ export default class Datepicker {
     }
 
     _setPositionClasses(pos) {
+        if (typeof pos === 'function') {
+            this.$datepicker.classList.add('-custom-position-');
+
+            return;
+        }
+
         pos = pos.split(' ');
         let main = pos[0],
             sec = pos[1],
             classes = `air-datepicker -${main}-${sec}- -from-${main}-`;
 
-        if (this.visible) classes += ' active';
-
-        this.$datepicker.removeAttribute('class');
         this.$datepicker.classList.add(...classes.split(' '));
     }
 
@@ -616,6 +620,22 @@ export default class Datepicker {
     setPosition = (position) => {
         position = position || this.opts.position;
 
+        if (typeof position === 'function') {
+            position({
+                $datepicker: this.$datepicker,
+                $target: this.$el,
+                $pointer: this.$pointer
+            });
+            return;
+        }
+
+        let  {isMobile} = this.opts;
+
+        if (isMobile) {
+            this.$datepicker.style.cssText = 'left: 50%; top: 50%';
+            return;
+        }
+
         let vpDims = this.$el.getBoundingClientRect(),
             dims = this.$el.getBoundingClientRect(),
             $dpOffset = this.$datepicker.offsetParent,
@@ -627,13 +647,7 @@ export default class Datepicker {
             scrollLeft = window.scrollX,
             offset = this.opts.offset,
             main = pos[0],
-            secondary = pos[1],
-            {isMobile} = this.opts;
-
-        if (isMobile) {
-            this.$datepicker.style.cssText = 'left: 50%; top: 50%';
-            return;
-        }
+            secondary = pos[1];
 
         // If datepicker's container is the same with target element
         if ($dpOffset === $elOffset && $dpOffset !== document.body) {
@@ -1133,7 +1147,7 @@ export default class Datepicker {
 
     _onBlur = (e) => {
         if (!this.inFocus && this.visible && !this.opts.isMobile) {
-            this.hide();
+            // this.hide();
         }
     }
 
