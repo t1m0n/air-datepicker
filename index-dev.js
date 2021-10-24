@@ -16,26 +16,26 @@ let opts = {
     // timepicker: true,
     // maxDate: mDate,
     isMobile: false,
-    position: 'bottom center',
-    // position({$datepicker, $target, $pointer}) {
-    //     createPopper($target, $datepicker, {
-    //         placement: 'right',
-    //         modifiers: [
-    //             {
-    //                 name: 'offset',
-    //                 options: {
-    //                     offset: [0, 20]
-    //                 }
-    //             },
-    //             {
-    //                 name: 'arrow',
-    //                 options: {
-    //                     element: $pointer
-    //                 }
-    //             }
-    //         ]
-    //     });
-    // },
+    // position: 'bottom left',
+    position({$datepicker, $target, $pointer}) {
+        createPopper($target, $datepicker, {
+            placement: 'top-start',
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 20]
+                    }
+                },
+                {
+                    name: 'arrow',
+                    options: {
+                        element: $pointer,
+                    }
+                }
+            ]
+        });
+    },
     multipleDates: false,
     onChangeView(view) {
         console.log(dp1.getCell('2021-01-01', 'month'))

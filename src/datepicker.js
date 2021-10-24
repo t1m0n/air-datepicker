@@ -1147,7 +1147,7 @@ export default class Datepicker {
 
     _onBlur = (e) => {
         if (!this.inFocus && this.visible && !this.opts.isMobile) {
-            // this.hide();
+            this.hide();
         }
     }
 

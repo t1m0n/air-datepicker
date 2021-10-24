@@ -45,6 +45,12 @@
             opacity var(--adp-transition-duration) var(--adp-transition-ease),
             transform var(--adp-transition-duration) var(--adp-transition-ease),
             left 0s 0s;
+
+    &.-custom-position- {
+      transition:
+        opacity var(--adp-transition-duration) var(--adp-transition-ease),
+        left 0s 0s;
+    }
   }
 
   &.-inline- {
@@ -85,9 +91,10 @@
   }
 
   &.-custom-position- {
-    opacity: 1;
     transform: translate(0);
-    transition: unset;
+    transition:
+      opacity var(--adp-transition-duration) var(--adp-transition-ease),
+      left 0s var(--adp-transition-duration);
   }
 }
 
@@ -111,7 +118,7 @@
     background: #fff;
     border-top: 1px solid var(--adp-border-color-inline);
     border-right: 1px solid var(--adp-border-color-inline);
-    border-top-right-radius: 2px;
+    border-top-right-radius: var(--adp-poiner-border-radius);
     width: var(--adp-pointer-size);
     height: var(--adp-pointer-size);
     box-sizing: border-box;
@@ -120,28 +127,40 @@
   //  Main axis
   // -------------------------
 
-  .-top-left- &, .-top-center- &, .-top-right- & {
+  .-top-left- &,
+  .-top-center- &,
+  .-top-right- &,
+  [data-popper-placement^='top'] & {
     top: calc(100% - var(--pointer-half-size) + 1px);
     &:after {
       transform: rotate(135deg);
     }
   }
 
-  .-right-top- &, .-right-center- &, .-right-bottom- & {
+  .-right-top- &,
+  .-right-center- &,
+  .-right-bottom- &,
+  [data-popper-placement^='right'] & {
     right: calc(100% - var(--pointer-half-size) + 1px);
     &:after {
       transform: rotate(225deg);
     }
   }
 
-  .-bottom-left- &, .-bottom-center- &, .-bottom-right- & {
+  .-bottom-left- &,
+  .-bottom-center- &,
+  .-bottom-right- &,
+  [data-popper-placement^='bottom'] & {
     bottom: calc(100% - var(--pointer-half-size) + 1px);
     &:after {
       transform: rotate(315deg);
     }
   }
 
-  .-left-top- &, .-left-center- &, .-left-bottom- & {
+  .-left-top- &,
+  .-left-center- &,
+  .-left-bottom- &,
+  [data-popper-placement^='left'] & {
     left: calc(100% - var(--pointer-half-size) + 1px);
     &:after {
       transform: rotate(45deg);
