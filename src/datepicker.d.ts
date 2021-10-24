@@ -26,6 +26,7 @@ export declare type AirDatepickerOptions = {
     locale: Partial<AirDatepickerLocale>,
     startDate: AirDatepickerDate,
     firstDay: number,
+    isMobile: boolean,
     weekends: [number, number],
     dateFormat: string | ((d: Date) => string),
     altField: AirDatepickerSelector,
