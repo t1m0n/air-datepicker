@@ -12,25 +12,14 @@ let mDate = new Date();
 
 let opts = {
     // minDate: Date.now(),
-    inline: false,
+    inline: true,
     // timepicker: true,
     // maxDate: mDate,
     isMobile: false,
     onShow(isVisible) {
-        if (isVisible) {
-            createPopper($input1, dp1.$datepicker, {
-                placement: 'right',
-                modifiers:[
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [20, 20]
-                        }
-                    }
-                ]
-            })
-        }
+
     },
+    timepicker: true,
     multipleDates: false,
     onChangeView(view) {
         console.log(dp1.getCell('2021-01-01', 'month'))
@@ -38,9 +27,9 @@ let opts = {
     onSelect({date}) {
         console.log(date);
     },
-    dateFormat(d) {
-        return d.toLocaleString();
-    },
+    // dateFormat(d) {
+    //     return d.toLocaleString();
+    // },
     onRenderCell({type}) {
         // console.log(type);
     }
@@ -56,9 +45,10 @@ window.dp2 = new Datepicker($input2, {
 
 $bntDestroy.addEventListener('click', dp1.destroy)
 $btnUpdate.addEventListener('click', () => {
-    dp1.update({
-        isMobile: false
-    })
+    dp1.selectDate(new Date()).then(() => {
+
+    console.log(dp1.$el.value);
+    });
 })
 
 // dp.selectDate(new Date('2021-06-01'))

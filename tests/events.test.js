@@ -27,6 +27,47 @@ function init(opts) {
 
 
 describe('EVENTS TEST', () => {
+    describe('onSelect', () => {
+        it('should be called when date is selected', (done) => {
+            let selectedDate = new Date();
+
+            init();
+
+            dp.selectDate(selectedDate).then(() => {
+                expect(dp.selectedDates).toHaveLength(1);
+
+                done();
+            });
+        });
+
+        it('should be called with fields {date, formattedDate, datepicker}', (done) => {
+            let selectedDate = new Date(),
+                format = 'dd.MM.yyyy',
+                date,
+                formattedDate,
+                datepicker;
+
+            selectedDate.setHours(0, 0, 0, 0);
+
+            init({
+                dateFormat: format,
+                onSelect(data) {
+                    date = data.date;
+                    formattedDate = data.formattedDate;
+                    datepicker = data.datepicker;
+                }
+            });
+
+            dp.selectDate(selectedDate).then(() => {
+                expect(date.getTime()).toBe(selectedDate.getTime());
+                expect(formattedDate).toBe(dp.formatDate(selectedDate, format));
+                expect(datepicker).toBeInstanceOf(Datepicker);
+
+                done();
+            });
+        });
+    });
+
     describe('onRenderCell', () => {
         it('should called with fields {date, cellType, datepicker}', () => {
             let date,
