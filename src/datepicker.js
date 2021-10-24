@@ -76,6 +76,7 @@ export default class Datepicker {
         this.viewDate = createDate(this.opts.startDate);
         this.focusDate = false;
         this.initialReadonly = this.$el.getAttribute('readonly');
+        this.customHide = false;
         this.currentView = view;
         this.selectedDates = [];
         this.views = {};
@@ -599,8 +600,14 @@ export default class Datepicker {
     hide() {
         let {onHide, isMobile} = this.opts;
 
+        if (this.customHide) {
+            this.customHide();
+        }
+
         this.$datepicker.classList.remove('-active-');
-        this.$datepicker.style.left = '-10000px';
+        if (!this.customHide) {
+            this.$datepicker.style.left = '-100000px';
+        }
         this.visible = false;
 
         if (this.elIsInput) {
@@ -621,7 +628,7 @@ export default class Datepicker {
         position = position || this.opts.position;
 
         if (typeof position === 'function') {
-            position({
+            this.customHide = position({
                 $datepicker: this.$datepicker,
                 $target: this.$el,
                 $pointer: this.$pointer

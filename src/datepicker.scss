@@ -47,9 +47,7 @@
             left 0s 0s;
 
     &.-custom-position- {
-      transition:
-        opacity var(--adp-transition-duration) var(--adp-transition-ease),
-        left 0s 0s;
+      transition: none
     }
   }
 
@@ -91,10 +89,7 @@
   }
 
   &.-custom-position- {
-    transform: translate(0);
-    transition:
-      opacity var(--adp-transition-duration) var(--adp-transition-ease),
-      left 0s var(--adp-transition-duration);
+    transition: none;
   }
 }
 
