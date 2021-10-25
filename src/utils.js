@@ -293,6 +293,8 @@ export function addEventListener(el, type, listener) {
 export function closest(target, selector) {
     if (!target || target === document) return false;
 
+    if (typeof target.matches !== 'function') return false;
+
     if (target.matches(selector)) {
         return target;
     }
