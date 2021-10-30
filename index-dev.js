@@ -20,18 +20,18 @@ let opts = {
     // container: '.container',
     // isMobile: true,
     timepicker: false,
-    position({$datepicker, $target, $pointer}) {
+    position({$datepicker, $target, $pointer, done}) {
         let popper = createPopper($target, $datepicker, {
             placement: 'top',
             onFirstUpdate: state => {
-                // anime.remove($datepicker);
-                //
-                // anime({
-                //     targets: $datepicker,
-                //     opacity: [0, 1],
-                //     scale: [.1, 1],
-                //     translateY: [-20, 0]
-                // })
+                anime.remove($datepicker);
+
+                anime({
+                    targets: $datepicker,
+                    opacity: [0, 1],
+                    scale: [.1, 1],
+                    translateY: [-20, 0]
+                })
             },
             modifiers: [
                 {
@@ -55,28 +55,20 @@ let opts = {
             ]
         });
 
-        // anime({
-        //     targets: $datepicker,
-        //     opacity: [0, 1],
-        //     scale: [.5, 1],
-        // })
-
         return () => {
-            // anime({
-            //     targets: $datepicker,
-            //     opacity: 0,
-            //     scale: .5,
-            //     translateY: -20
-            // }).finished.then(() => {
-            //     $datepicker.style.left = '-100000px';
-            //     popper.destroy();
-            // })
+            anime({
+                targets: $datepicker,
+                opacity: 0,
+                scale: .5,
+                translateY: -20
+            }).finished.then(() => {
+                popper.destroy();
+                done();
+            })
 
-            $datepicker.style.left = '-100000px';
-            popper.destroy();
         }
     },
-    position: 'bottom left',
+    // position: 'bottom left',
     // classes: '-anime-',
     selectedDates: [new Date()],
     onChangeView(view) {

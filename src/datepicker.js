@@ -645,10 +645,12 @@ export default class Datepicker {
         }
 
         this._scheduleCallAfterTransition((isAnimationCompleted) => {
-            if ((isAnimationCompleted && hasTransition) || (!hasTransition && !isAnimationCompleted)) {
-                this.hideAnimation = false;
-                this._destroyComponents();
-                this.$container.removeChild(this.$datepicker);
+            if (
+                !this.customHide &&
+                ((isAnimationCompleted && hasTransition) ||
+                (!isAnimationCompleted && !hasTransition))
+            ) {
+                this._finishHide();
             }
             onHide && onHide(isAnimationCompleted);
         });
@@ -658,14 +660,24 @@ export default class Datepicker {
         }
     }
 
+    _finishHide = () => {
+        this.hideAnimation = false;
+        this._destroyComponents();
+        this.$container.removeChild(this.$datepicker);
+    }
+
     setPosition = (position) => {
         position = position || this.opts.position;
 
         if (typeof position === 'function') {
-            this.customHide = position({
-                $datepicker: this.$datepicker,
-                $target: this.$el,
-                $pointer: this.$pointer
+            // Wait till all components are appended to DOM and styles are applied
+            setTimeout(() => {
+                this.customHide = position({
+                    $datepicker: this.$datepicker,
+                    $target: this.$el,
+                    $pointer: this.$pointer,
+                    done: this._finishHide
+                });
             });
             return;
         }
@@ -1111,7 +1123,7 @@ export default class Datepicker {
     _hasTransition() {
         let transition = window.getComputedStyle(this.$datepicker).getPropertyValue('transition-duration');
         let props = transition.split(', ');
-        
+
         return props.reduce((sum, item) => {
             return parseFloat(item) + sum;
         }, 0) > 0;
