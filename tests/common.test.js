@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 function init(opts) {
-    dp = new Datepicker($input, opts);
+    dp = new Datepicker($input, {visible: true, ...opts});
     $datepicker = dp.$datepicker;
 }
 

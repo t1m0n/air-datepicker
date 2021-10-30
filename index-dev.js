@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import Datepicker from 'datepicker';
+import {closest} from './src/utils';
 import en from 'locale/en';
 import {createPopper} from '@popperjs/core';
 let $input1 = document.querySelector('#dp1');
@@ -18,6 +19,7 @@ let opts = {
     // maxDate: mDate,
     // container: '.container',
     // isMobile: true,
+    timepicker: false,
     position({$datepicker, $target, $pointer}) {
         let popper = createPopper($target, $datepicker, {
             placement: 'top',
@@ -74,37 +76,34 @@ let opts = {
             popper.destroy();
         }
     },
-    // position: 'bottom left',
+    position: 'bottom left',
     // classes: '-anime-',
-    multipleDates: false,
+    selectedDates: [new Date()],
     onChangeView(view) {
-        console.log(dp1.getCell('2021-01-01', 'month'))
+        // console.log(dp1.getCell('2021-01-01', 'month'))
     },
     onSelect({date}) {
         console.log(date);
     },
-    dateFormat(d) {
-        return d.toLocaleString();
-    },
-    onRenderCell({type}) {
-        // console.log(type);
-    }
+    // dateFormat(d) {
+    //     return d.toLocaleString();
+    // },
+    // onRenderCell({type}) {
+    //     console.log('render', type);
+    // },
+    // visible: true
 }
 
+console.time('init');
 window.dp1 = new Datepicker($input1, opts);
-
+console.timeEnd('init');
 
 window.dp2 = new Datepicker($input2, {
-    isMobile: true,
+    inline: false,
     autoClose: true,
 });
 
 $bntDestroy.addEventListener('click', dp1.destroy)
-$btnUpdate.addEventListener('click', () => {
-    dp1.update({
-        isMobile: false
-    })
-})
 
 // dp.selectDate(new Date('2021-06-01'))
 // dp.selectDate(new Date('2021-06-05'))
@@ -116,12 +115,12 @@ $btnUpdate.addEventListener('click', () => {
 //
 // let dates = [new Date(), new Date('2021-06-10'), new Date('2021-06-15')];
 // let toggle = true;
-document.querySelector('#update').addEventListener('click', () => {
+$btnUpdate.addEventListener('click', () => {
     dp1.update({
         // view: 'years',
         // prevHtml: 'prev',
         // range: !dp.opts.range,
-        minDate: false,
+        minDate: new Date(),
         // maxDate: new Date('2021-06-27'),
         // locale: en,
         // buttons: toggle ? ['clear'] : false,

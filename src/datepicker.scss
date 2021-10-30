@@ -17,7 +17,6 @@
   color: var(--adp-color);
   width: var(--adp-width);
   position: absolute;
-  left: -100000px;
   opacity: 0;
   transition:
           opacity var(--adp-transition-duration) var(--adp-transition-ease),

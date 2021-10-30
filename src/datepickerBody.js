@@ -196,6 +196,14 @@ export default class DatepickerBody {
 
     destroyCells() {
         this.cells.forEach(c => c.destroy());
+        this.cells = [];
+        this.$cells.innerHTML = '';
+    }
+
+    destroy() {
+        this.destroyCells();
+        this.dp.off(consts.eventChangeViewDate, this.onChangeViewDate);
+        this.dp.off(consts.eventChangeCurrentView, this.onChangeCurrentView);
     }
 
     handleClick = (e) => {
@@ -325,8 +333,7 @@ export default class DatepickerBody {
 
     render = () => {
         this.destroyCells();
-        this.cells = [];
-        this.$cells.innerHTML = '';
+
 
         this._generateCells();
         this.cells.forEach((c) => {
