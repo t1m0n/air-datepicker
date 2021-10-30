@@ -37,4 +37,12 @@ describe('COMMON TESTS', () => {
 
         expect($datepicker.parentNode).toEqual($container);
     });
+    test('datepicker should be removed from container after hide', () => {
+        init();
+        let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
+
+        dp.hide();
+
+        expect($container).not.toContainElement(dp.$datepicker);
+    });
 });

@@ -15,6 +15,7 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
+    container: '.container',
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
