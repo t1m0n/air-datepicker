@@ -19,6 +19,18 @@ export declare type AirDatepickerViewsSingle = 'day' | 'month' | 'year';
 export declare type AirDatepickerDate = string | number | Date;
 export declare type AirDatepickerNavEntry = string | ((dp: AirDatepicker) => string);
 export declare type AirDatepickerDecade = [number, number];
+export declare type AirDatepickerPositionCallback = (
+    {
+        $datepicker,
+        $target,
+        $pointer,
+        done
+    }: {
+        $datepicker: HTMLDivElement,
+        $target: HTMLInputElement,
+        $pointer: HTMLElement,
+        done: () => void
+    }) => void | (() => void)
 
 export declare type AirDatepickerOptions = {
     classes: string
@@ -27,6 +39,7 @@ export declare type AirDatepickerOptions = {
     startDate: AirDatepickerDate,
     firstDay: number,
     isMobile: boolean,
+    visible: boolean,
     weekends: [number, number],
     dateFormat: string | ((d: Date) => string),
     altField: AirDatepickerSelector,
@@ -35,7 +48,7 @@ export declare type AirDatepickerOptions = {
     keyboardNav: boolean,
     selectedDates: AirDatepickerDate[] | false,
     container: AirDatepickerSelector,
-    position: AirDatepickerPosition,
+    position: AirDatepickerPosition | AirDatepickerPositionCallback,
     offset: number,
     view: AirDatepickerViews,
     minView: AirDatepickerViews,

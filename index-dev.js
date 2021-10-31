@@ -115,7 +115,7 @@ $btnUpdate.addEventListener('click', () => {
         // view: 'years',
         // prevHtml: 'prev',
         // range: !dp.opts.range,
-        minDate: new Date(),
+        // minDate: new Date(),
         // maxDate: new Date('2021-06-27'),
         // locale: en,
         // buttons: toggle ? ['clear'] : false,
