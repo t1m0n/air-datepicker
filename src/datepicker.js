@@ -613,18 +613,21 @@ export default class Datepicker {
             this._createComponents();
         }
 
-        this.setPosition(this.opts.position);
+        // Wait till all components are added to DOM and styles are applied
+        setTimeout(() => {
+            this.setPosition(this.opts.position);
 
-        this.$datepicker.classList.add('-active-');
-        this.visible = true;
+            this.$datepicker.classList.add('-active-');
+            this.visible = true;
 
-        if (onShow) {
-            this._scheduleCallAfterTransition(onShow);
-        }
+            if (onShow) {
+                this._scheduleCallAfterTransition(onShow);
+            }
 
-        if (isMobile) {
-            $datepickerOverlay.classList.add('-active-');
-        }
+            if (isMobile) {
+                $datepickerOverlay.classList.add('-active-');
+            }
+        });
     }
 
     hide() {
@@ -670,14 +673,11 @@ export default class Datepicker {
         position = position || this.opts.position;
 
         if (typeof position === 'function') {
-            // Wait till all components are appended to DOM and styles are applied
-            setTimeout(() => {
-                this.customHide = position({
-                    $datepicker: this.$datepicker,
-                    $target: this.$el,
-                    $pointer: this.$pointer,
-                    done: this._finishHide
-                });
+            this.customHide = position({
+                $datepicker: this.$datepicker,
+                $target: this.$el,
+                $pointer: this.$pointer,
+                done: this._finishHide
             });
             return;
         }

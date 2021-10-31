@@ -15,60 +15,13 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
-    container: '.container',
+    // container: '.container',
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
-    // isMobile: true,
+    isMobile: false,
     timepicker: false,
-    position({$datepicker, $target, $pointer, done}) {
-        let popper = createPopper($target, $datepicker, {
-            placement: 'top',
-            onFirstUpdate: state => {
-                anime.remove($datepicker);
-
-                anime({
-                    targets: $datepicker,
-                    opacity: [0, 1],
-                    scale: [.1, 1],
-                    translateY: [-20, 0]
-                })
-            },
-            modifiers: [
-                {
-                    name: 'offset',
-                    options: {
-                        offset: [0, 20]
-                    }
-                },
-                {
-                    name: 'arrow',
-                    options: {
-                        element: $pointer,
-                    }
-                },
-                {
-                    name: 'computeStyles',
-                    options: {
-                        gpuAcceleration: false,
-                    },
-                },
-            ]
-        });
-
-        return () => {
-            anime({
-                targets: $datepicker,
-                opacity: 0,
-                scale: .5,
-                translateY: -20
-            }).finished.then(() => {
-                popper.destroy();
-                done();
-            })
-
-        }
-    },
+    // position: customPosition,
     // position: 'bottom left',
     // classes: '-anime-',
     selectedDates: [new Date()],
@@ -85,6 +38,55 @@ let opts = {
     //     console.log('render', type);
     // },
     // visible: true
+}
+
+function customPosition({$datepicker, $target, $pointer, done}){
+    let popper = createPopper($target, $datepicker, {
+        placement: 'top',
+        onFirstUpdate: state => {
+            anime.remove($datepicker);
+
+            anime({
+                targets: $datepicker,
+                opacity: [0, 1],
+                scale: [.1, 1],
+                translateY: [-20, 0]
+            })
+        },
+        modifiers: [
+            {
+                name: 'offset',
+                options: {
+                    offset: [0, 20]
+                }
+            },
+            {
+                name: 'arrow',
+                options: {
+                    element: $pointer,
+                }
+            },
+            {
+                name: 'computeStyles',
+                options: {
+                    gpuAcceleration: false,
+                },
+            },
+        ]
+    });
+
+    return () => {
+        anime({
+            targets: $datepicker,
+            opacity: 0,
+            scale: .5,
+            translateY: -20
+        }).finished.then(() => {
+            popper.destroy();
+            done();
+        })
+
+    }
 }
 
 console.time('init');

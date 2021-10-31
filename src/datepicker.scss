@@ -70,7 +70,6 @@
     --adp-nav-height: var(--adp-mobile-nav-height);
 
     position: fixed;
-    transform: translate(-50%, calc(-50% + var(--adp-transition-offset)));
     width: var(--adp-mobile-width);
     border: none;
 
@@ -83,7 +82,13 @@
     }
 
     &.-active- {
-      transform: translate(-50%, -50%);
+      &:not(.-custom-position-) {
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &:not(.-custom-position-) {
+      transform: translate(-50%, calc(-50% + var(--adp-transition-offset)));
     }
   }
 
