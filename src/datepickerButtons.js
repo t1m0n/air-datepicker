@@ -73,7 +73,7 @@ export default class DatepickerButtons {
         return createElement({
             tagName,
             innerHtml: `<span tabindex='-1'>${_content}</span>`,
-            className: classNames('air-datepicker-button', className)
+            className: classNames('air-datepicker-button', className),
             attrs
         });
     }
