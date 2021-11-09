@@ -97,6 +97,23 @@ export default function Examples() {
 
                             </Section.SubSection>
                         </Section>
+
+                        <Section title='examplePositionTitle'>
+                            <Paragraph id='examplePositionNote' values={{
+                                position: <Code inline isFieldName>{`position`}</Code>
+                            }} />
+                            <Section.SubSection titleId={'examplePositionBasicTitle'}>
+
+                            </Section.SubSection>
+                            <Section.SubSection titleId={'examplePositionPopperTitle'}>
+
+                            </Section.SubSection>
+                            <Section.SubSection titleId={'examplePositionAnimeTitle'}>
+
+                            </Section.SubSection>
+
+                        </Section>
+
                         <Section title='exampleRangeTitle'>
                             <FormattedMessage
                                 tagName={'p'}

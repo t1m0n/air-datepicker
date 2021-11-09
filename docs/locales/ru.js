@@ -58,7 +58,11 @@ export default {
     exampleButtonsAdvanceNote: 'Для создания своих кнопок нужно передать структуру, описывающую контент кнопки и ее поведение. Давайте создадим кнопку, которая включает и выключает модуль выбора времени:',
     exampleButtonsAdvanceTurnOn: 'Включить выбор времени',
     exampleButtonsAdvanceTurnOff: 'Выключить выбор времени',
-
+    examplePositionTitle: 'Позиционирование',
+    examplePositionNote: 'Позиция календаря задается с помощью параметра {position} - он может быть как строкой так и функцией.',
+    examplePositionBasicTitle: 'Простое позиционирование',
+    examplePositionPopperTitle: 'Использование Popper.js',
+    examplePositionAnimeTitle: 'Создание анимации появления и скрытия',
 
     docsOptionsTitle: 'Опции',
     docsIntro: 'AirDatepicker обладает большим количеством опций, что позволяет его настроить под свои нужды. В данном разделе представлены все параметры с подробным описанием, которые принимает календарь.',
