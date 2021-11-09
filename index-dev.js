@@ -15,6 +15,7 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
+    visible: false,
     // container: '.container',
     // timepicker: true,
     // maxDate: mDate,
@@ -89,14 +90,14 @@ function customPosition({$datepicker, $target, $pointer, done}){
     }
 }
 
-console.time('init');
+// console.time('init');
 window.dp1 = new Datepicker($input1, opts);
-console.timeEnd('init');
-
-window.dp2 = new Datepicker($input2, {
-    inline: false,
-    autoClose: true,
-});
+// console.timeEnd('init');
+//
+// window.dp2 = new Datepicker($input2, {
+//     inline: false,
+//     autoClose: true,
+// });
 
 $bntDestroy.addEventListener('click', dp1.destroy)
 
@@ -123,7 +124,6 @@ $btnUpdate.addEventListener('click', () => {
         // timepicker: !dp.opts.timepicker,
     })
 })
-
 
 if (module.hot) {
     module.hot.accept();

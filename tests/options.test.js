@@ -37,6 +37,8 @@ describe('OPTIONS TESTS', () => {
     describe('inline', () => {
         test('if datepicker has proper class', () => {
             init({inline: true});
+
+            expect($input.nextSibling).toBe($datepicker);
             expect($datepicker).toHaveClass('-inline-');
         });
     });

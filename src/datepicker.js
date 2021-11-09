@@ -24,6 +24,7 @@ import consts from './consts';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
+import de from './locale/de';
 
 let $body = '',
     $datepickersContainer = '',
@@ -84,6 +85,8 @@ export default class Datepicker {
         this.keys = [];
         this.rangeDateFrom = '';
         this.rangeDateTo = '';
+        this.treatAsInline = this.opts.inline || !this.elIsInput;
+
         this.init();
     }
 
@@ -92,6 +95,7 @@ export default class Datepicker {
     init() {
         let {
             opts,
+            treatAsInline,
             opts: {
                 inline,
                 isMobile,
@@ -105,7 +109,7 @@ export default class Datepicker {
             buildDatepickersContainer(Datepicker.defaultContainerId);
         }
 
-        if (isMobile && !$datepickerOverlay) {
+        if (isMobile && !$datepickerOverlay && !treatAsInline) {
             $datepickerOverlay = createElement({className: 'air-datepicker-overlay'});
             $datepickersContainer.appendChild($datepickerOverlay);
         }
@@ -129,14 +133,19 @@ export default class Datepicker {
             this.selectDate(selectedDates, {silent: true});
         }
 
-        if (this.opts.visible && this.elIsInput) {
+        if (this.opts.visible && !treatAsInline) {
             this.show();
+        }
+
+        if (treatAsInline) {
+            this._createComponents();
         }
     }
 
     _createComponents() {
         let {
             opts,
+            treatAsInline,
             opts: {
                 inline,
                 buttons,
@@ -169,7 +178,7 @@ export default class Datepicker {
             this.$datepicker.classList.add('-only-timepicker-');
         }
 
-        if (isMobile) {
+        if (isMobile && !treatAsInline) {
             this._addMobileAttributes();
         }
 
