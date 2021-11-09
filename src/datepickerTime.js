@@ -38,7 +38,7 @@ export default class DatepickerTime {
     }
 
     init() {
-        this.setTime(this.dp.viewDate);
+        this.setTime(this.dp.lastSelectedDate || this.dp.viewDate);
         this.createElement();
         this.buildHtml();
         this.defineDOM();

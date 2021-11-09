@@ -1,28 +1,33 @@
 /* eslint-disable */
 
 import Datepicker from 'datepicker';
+import {closest} from './src/utils';
 import en from 'locale/en';
 import {createPopper} from '@popperjs/core';
 let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
 let $bntDestroy = document.querySelector('#destroy');
 let $btnUpdate = document.querySelector('#update');
+import anime from 'animejs';
 
 let mDate = new Date();
 
 let opts = {
     // minDate: Date.now(),
-    inline: true,
+    inline: false,
+    visible: false,
+    // container: '.container',
     // timepicker: true,
     // maxDate: mDate,
+    // container: '.container',
     isMobile: false,
-    onShow(isVisible) {
-
-    },
-    timepicker: true,
-    multipleDates: false,
+    timepicker: false,
+    // position: customPosition,
+    // position: 'bottom left',
+    // classes: '-anime-',
+    selectedDates: [new Date()],
     onChangeView(view) {
-        console.log(dp1.getCell('2021-01-01', 'month'))
+        // console.log(dp1.getCell('2021-01-01', 'month'))
     },
     onSelect({date}) {
         console.log(date);
@@ -30,26 +35,71 @@ let opts = {
     // dateFormat(d) {
     //     return d.toLocaleString();
     // },
-    onRenderCell({type}) {
-        // console.log(type);
+    // onRenderCell({type}) {
+    //     console.log('render', type);
+    // },
+    // visible: true
+}
+
+function customPosition({$datepicker, $target, $pointer, done}){
+    let popper = createPopper($target, $datepicker, {
+        placement: 'top',
+        onFirstUpdate: state => {
+            anime.remove($datepicker);
+
+            anime({
+                targets: $datepicker,
+                opacity: [0, 1],
+                scale: [.1, 1],
+                translateY: [-20, 0]
+            })
+        },
+        modifiers: [
+            {
+                name: 'offset',
+                options: {
+                    offset: [0, 20]
+                }
+            },
+            {
+                name: 'arrow',
+                options: {
+                    element: $pointer,
+                }
+            },
+            {
+                name: 'computeStyles',
+                options: {
+                    gpuAcceleration: false,
+                },
+            },
+        ]
+    });
+
+    return () => {
+        anime({
+            targets: $datepicker,
+            opacity: 0,
+            scale: .5,
+            translateY: -20
+        }).finished.then(() => {
+            popper.destroy();
+            done();
+        })
+
     }
 }
 
+// console.time('init');
 window.dp1 = new Datepicker($input1, opts);
-
-
-window.dp2 = new Datepicker($input2, {
-    isMobile: true,
-    autoClose: true,
-});
+// console.timeEnd('init');
+//
+// window.dp2 = new Datepicker($input2, {
+//     inline: false,
+//     autoClose: true,
+// });
 
 $bntDestroy.addEventListener('click', dp1.destroy)
-$btnUpdate.addEventListener('click', () => {
-    dp1.selectDate(new Date()).then(() => {
-
-    console.log(dp1.$el.value);
-    });
-})
 
 // dp.selectDate(new Date('2021-06-01'))
 // dp.selectDate(new Date('2021-06-05'))
@@ -61,12 +111,12 @@ $btnUpdate.addEventListener('click', () => {
 //
 // let dates = [new Date(), new Date('2021-06-10'), new Date('2021-06-15')];
 // let toggle = true;
-document.querySelector('#update').addEventListener('click', () => {
+$btnUpdate.addEventListener('click', () => {
     dp1.update({
         // view: 'years',
         // prevHtml: 'prev',
         // range: !dp.opts.range,
-        minDate: false,
+        // minDate: new Date(),
         // maxDate: new Date('2021-06-27'),
         // locale: en,
         // buttons: toggle ? ['clear'] : false,
@@ -74,7 +124,6 @@ document.querySelector('#update').addEventListener('click', () => {
         // timepicker: !dp.opts.timepicker,
     })
 })
-
 
 if (module.hot) {
     module.hot.accept();

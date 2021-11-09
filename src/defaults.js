@@ -16,6 +16,7 @@ export default {
     selectedDates: false,
     container: '',
     isMobile: false,
+    visible: false,
 
     position: 'bottom left',
     offset: 12,

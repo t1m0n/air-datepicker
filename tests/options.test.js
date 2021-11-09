@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 function init(opts) {
-    dp = new Datepicker($input, opts);
+    dp = new Datepicker($input, {visible: true, ...opts});
     $datepicker = dp.$datepicker;
 }
 
@@ -37,6 +37,8 @@ describe('OPTIONS TESTS', () => {
     describe('inline', () => {
         test('if datepicker has proper class', () => {
             init({inline: true});
+
+            expect($input.nextSibling).toBe($datepicker);
             expect($datepicker).toHaveClass('-inline-');
         });
     });
