@@ -84,6 +84,12 @@ function Docs({} = {}) {
                                         }}
                                     />
                                 </Param>
+                                <Param name='isMobile' type='boolean' defaultValue='false'>
+                                    <Paragraph id='optsIsMobile' values={{trueField}} />
+                                </Param>
+                                <Param name='visible' type='boolean' defaultValue='false'>
+                                    <Paragraph id='optsVisible' values={{trueField}} />
+                                </Param>
                                 <Param name='dateFormat' type={'string | (date) => string'} defaultValue={'""'} >
                                     <Paragraph
                                         doubleOffset
@@ -180,11 +186,47 @@ function Docs({} = {}) {
                                         }}
                                     />
                                 </Param>
-                                <Param name={'position'} type={'string'} defaultValue={'"bottom left"'}>
+                                <Param name={'position'} type={'string | function'} defaultValue={'"bottom left"'}>
                                     <Paragraph id={'optsPosition'} />
                                     <Paragraph id={'optsPosition2'} values={{
                                         example: <Code inline>{`{position: 'top right'}`}</Code>
                                     }} />
+                                    <Paragraph id='optsPosition3' values={{
+                                        show: <Code inline>{`show()`}</Code>,
+                                    }} />
+                                    <Param.List nested>
+                                        <Param name='$datepicker' type={'HTMLDivElement'} definition={'optsPosition$datepicker'} />
+                                        <Param name='$target' type='HTMLInputElement' definition={'optsPosition$target'} />
+                                        <Param name='$pointer' type='HTMLElement' definition={'optsPosition$pointer'} />
+                                        <Param name='done' type='() => void' definition={'optsPositionDone'} />
+                                    </Param.List>
+                                    <Paragraph id='optsPosition4' values={{
+                                        position: <Code inline isFieldName>{`position`}</Code>,
+                                        hide: <Code inline >{`hide()`}</Code>,
+                                        done: <Code inline isFieldName>{`done`}</Code>,
+                                    }} />
+                                    <Paragraph id='optsPosition5' />
+                                    <Example>
+                                        <AirDatepicker
+                                            autoClose
+                                            position={({$target, $datepicker, $pointer}) => {
+                                                let coords = $target.getBoundingClientRect(),
+                                                    dpHeight = $datepicker.clientHeight,
+                                                    dpWidth = $datepicker.clientWidth;
+
+                                                let top = coords.y + coords.height / 2 + window.scrollY - dpHeight / 2;
+                                                let left = coords.x + coords.width / 2 - dpWidth / 2;
+
+                                                $datepicker.style.left = `${left}px`;
+                                                $datepicker.style.top = `${top}px`;
+
+                                                $pointer.style.display = 'none';
+                                            }}
+                                        />
+                                        <Code>
+                                            {examples.basicPositionCallback}
+                                        </Code>
+                                    </Example>
                                 </Param>
                                 <Param name={'view'} type={'string'} defaultValue={'"days"'}>
                                     <Paragraph id={'optsView'} />

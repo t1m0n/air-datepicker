@@ -24,6 +24,7 @@ let opts = {
     timepicker: false,
     // position: customPosition,
     // position: 'bottom left',
+    position: manualPosition,
     // classes: '-anime-',
     selectedDates: [new Date()],
     onChangeView(view) {
@@ -39,6 +40,21 @@ let opts = {
     //     console.log('render', type);
     // },
     // visible: true
+}
+
+function manualPosition({$datepicker, $target, $pointer, done}) {
+    let coords = $target.getBoundingClientRect(),
+        dpHeight = $datepicker.clientHeight,
+        dpWidth = $datepicker.clientWidth;
+
+    let top = coords.y + coords.height / 2 + window.scrollY - dpHeight / 2;
+    let left = coords.x + coords.width / 2 - dpWidth / 2;
+
+    $datepicker.style.left = `${left}px`;
+    $datepicker.style.top = `${top}px`;
+
+    $pointer.style.display = 'none';
+
 }
 
 function customPosition({$datepicker, $target, $pointer, done}){
