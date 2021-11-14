@@ -623,35 +623,32 @@ export default class Datepicker {
             this._createComponents();
         }
 
-        // Wait till all components are added to DOM and styles are applied
-        setTimeout(() => {
-            this.setPosition(this.opts.position);
+        this.setPosition(this.opts.position);
 
-            this.$datepicker.classList.add('-active-');
-            this.visible = true;
+        this.$datepicker.classList.add('-active-');
+        this.visible = true;
 
-            if (onShow) {
-                this._scheduleCallAfterTransition(onShow);
-            }
+        if (onShow) {
+            this._scheduleCallAfterTransition(onShow);
+        }
 
-            if (isMobile) {
-                $datepickerOverlay.classList.add('-active-');
-            }
-        });
+        if (isMobile) {
+            $datepickerOverlay.classList.add('-active-');
+        }
     }
 
     hide() {
         let {onHide, isMobile} = this.opts;
         let hasTransition = this._hasTransition();
 
-        if (this.customHide) {
-            this.customHide();
-        }
-
         this.visible = false;
         this.hideAnimation = true;
 
         this.$datepicker.classList.remove('-active-');
+
+        if (this.customHide) {
+            this.customHide();
+        }
 
         if (this.elIsInput) {
             this.$el.blur();

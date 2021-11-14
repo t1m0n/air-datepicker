@@ -17,12 +17,15 @@
   color: var(--adp-color);
   width: var(--adp-width);
   position: absolute;
-  opacity: 0;
   transition:
           opacity var(--adp-transition-duration) var(--adp-transition-ease),
           transform var(--adp-transition-duration) var(--adp-transition-ease),
           left 0s var(--adp-transition-duration);
   z-index: var(--adp-z-index);
+
+  &:not(.-custom-position-) {
+    opacity: 0;
+  }
 
   &.-from-top- {
     transform: translateY(calc(var(--adp-transition-offset) * -1));
@@ -38,12 +41,15 @@
   }
 
   &.-active- {
-    opacity: 1;
     transform: translate(0);
     transition:
             opacity var(--adp-transition-duration) var(--adp-transition-ease),
             transform var(--adp-transition-duration) var(--adp-transition-ease),
             left 0s 0s;
+
+    &:not(.-custom-position-) {
+      opacity: 1;
+    }
 
     &.-custom-position- {
       transition: none
