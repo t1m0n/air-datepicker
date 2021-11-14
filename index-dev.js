@@ -59,17 +59,19 @@ function manualPosition({$datepicker, $target, $pointer, done}) {
 
 function customPosition({$datepicker, $target, $pointer, done}){
     let popper = createPopper($target, $datepicker, {
-        placement: 'top',
-        // onFirstUpdate: state => {
-        //     anime.remove($datepicker);
-        //
-        //     anime({
-        //         targets: $datepicker,
-        //         opacity: [0, 1],
-        //         scale: [.1, 1],
-        //         translateY: [-20, 0]
-        //     })
-        // },
+        placement: 'bottom',
+        onFirstUpdate: state => {
+            anime.remove($datepicker);
+
+            $datepicker.style.transformOrigin = 'center top';
+
+            anime({
+                targets: $datepicker,
+                opacity: [0, 1],
+                rotateX: [-90, 0],
+                easing: 'spring(1.3, 80, 5, 0)',
+            })
+        },
         modifiers: [
             {
                 name: 'offset',
@@ -93,16 +95,14 @@ function customPosition({$datepicker, $target, $pointer, done}){
     });
 
     return () => {
-        // anime({
-        //     targets: $datepicker,
-        //     // opacity: .5,
-        //     scale: .5,
-        //     translateY: -20,
-        // }).finished.then(() => {
+        anime({
+            targets: $datepicker,
+            opacity: 0,
+            rotateX: -90,
+        }).finished.then(() => {
             popper.destroy();
             done();
-        // })
-
+        })
     }
 }
 

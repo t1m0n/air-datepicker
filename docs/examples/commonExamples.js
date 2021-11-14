@@ -281,6 +281,108 @@ export let basicPositionCallback =
 })
 `
 
+export let basicPosition =
+`new AirDatepicker('#el', {
+    position: 'right center'
+})
+`
+
+export let popperjsPosition = (msg) => (
+`import AirDatepicker from 'air-datepicker';
+import {createPopper} from '@popperjs/core';
+
+new AirDatepicker('#el', {
+    container: '#scroll-container',
+    visible: true,
+    position({$datepicker, $target, $pointer, done}) {
+        let popper = createPopper($target, $datepicker, {
+            placement: 'top',
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 20]
+                    }
+                },
+                {
+                    name: 'arrow',
+                    options: {
+                        element: $pointer
+                    }
+                }
+            ]
+        })
+        
+        ${msg.examplePositionPopperExampleComment}
+        return function completeHide() {
+            popper.destroy();
+            done();
+        }    
+    }
+})
+`
+);
+
+export let animePosition =
+`import AirDatepicker from 'air-datepicker';
+import {createPopper} from '@popperjs/core';
+import anime from 'animejs';
+
+new AirDatepicker('#el', {
+    position({$datepicker, $target, $pointer, done}) {
+        let popper = createPopper($target, $datepicker, {
+            placement: 'bottom',
+            onFirstUpdate: state => {
+                anime.remove($datepicker);
+
+                $datepicker.style.transformOrigin = 'center top';
+
+                anime({
+                    targets: $datepicker,
+                    opacity: [0, 1],
+                    rotateX: [-90, 0],
+                    easing: 'spring(1.3, 80, 5, 0)',
+                })
+
+            },
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 10]
+                    }
+                },
+                {
+                    name: 'arrow',
+                    options: {
+                        element: $pointer,
+                    }
+                },
+                {
+                    name: 'computeStyles',
+                    options: {
+                        gpuAcceleration: false,
+                    },
+                },
+            ]
+        });
+
+        return () => {
+            anime({
+                targets: $datepicker,
+                opacity: 0,
+                rotateX: -90,
+                duration: 300,
+                easing: 'easeOutCubic'
+            }).finished.then(() => {
+                popper.destroy();
+                done();
+            })
+        }
+    }}
+)
+`;
+
 export {
     install,
     basicUsage,
