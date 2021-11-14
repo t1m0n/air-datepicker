@@ -1083,8 +1083,8 @@ export default class Datepicker {
         }
 
         this._setInputValue();
-
-        if (!this.visible) return;
+        //TODO пофиксить выбор времени когда календарь скрыт
+        if (!this.visible && !this.treatAsInline) return;
 
         if (prevOpts.range && !range) {
             this.rangeDateTo = false;
@@ -1098,6 +1098,7 @@ export default class Datepicker {
 
         if (prevOpts.timepicker && !timepicker) {
             this.timepicker.destroy();
+            this.timepicker = false;
             this.$timepicker.parentNode.removeChild(this.$timepicker);
         } else if (!prevOpts.timepicker && timepicker) {
             this._addTimepicker();

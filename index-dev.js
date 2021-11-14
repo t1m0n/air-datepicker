@@ -15,15 +15,15 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
-    visible: false,
+    visible: true,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
     isMobile: false,
     timepicker: false,
-    position: customPosition,
-    // position: 'bottom     left',
+    // position: customPosition,
+    position: 'right center',
     // position: manualPosition,
     // classes: '-anime-',
     selectedDates: [new Date()],
@@ -134,10 +134,10 @@ $btnUpdate.addEventListener('click', () => {
         // range: !dp.opts.range,
         // minDate: new Date(),
         // maxDate: new Date('2021-06-27'),
-        // locale: en,
+        locale: en,
         // buttons: toggle ? ['clear'] : false,
         // selectedDates: dates[Math.floor(Math.random() * dates.length -1)],
-        // timepicker: !dp.opts.timepicker,
+        timepicker: !dp1.opts.timepicker,
     })
 })
 
