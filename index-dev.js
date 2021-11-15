@@ -15,7 +15,7 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
-    visible: true,
+    // visible: true,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
@@ -125,20 +125,22 @@ $bntDestroy.addEventListener('click', dp1.destroy)
 //     dp.destroy();
 // })
 //
-// let dates = [new Date(), new Date('2021-06-10'), new Date('2021-06-15')];
-// let toggle = true;
+let dates = [new Date(), new Date('2021-06-10'), new Date('2021-06-15')];
+let toggle = true;
 $btnUpdate.addEventListener('click', () => {
     dp1.update({
+        isMobile: toggle,
         // view: 'years',
         // prevHtml: 'prev',
         // range: !dp.opts.range,
         // minDate: new Date(),
         // maxDate: new Date('2021-06-27'),
         locale: en,
-        // buttons: toggle ? ['clear'] : false,
-        // selectedDates: dates[Math.floor(Math.random() * dates.length -1)],
+        buttons: toggle ? ['clear'] : false,
+        selectedDates: dates[Math.floor(Math.random() * dates.length -1)],
         timepicker: !dp1.opts.timepicker,
     })
+    toggle = !toggle;
 })
 
 if (module.hot) {

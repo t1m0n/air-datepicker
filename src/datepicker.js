@@ -110,8 +110,7 @@ export default class Datepicker {
         }
 
         if (isMobile && !$datepickerOverlay && !treatAsInline) {
-            $datepickerOverlay = createElement({className: 'air-datepicker-overlay'});
-            $datepickersContainer.appendChild($datepickerOverlay);
+            this._createMobileOverlay();
         }
 
         this._handleLocale();
@@ -140,6 +139,11 @@ export default class Datepicker {
         if (treatAsInline) {
             this._createComponents();
         }
+    }
+
+    _createMobileOverlay() {
+        $datepickerOverlay = createElement({className: 'air-datepicker-overlay'});
+        $datepickersContainer.appendChild($datepickerOverlay);
     }
 
     _createComponents() {
@@ -1069,6 +1073,7 @@ export default class Datepicker {
         deepMerge(this.opts, newOpts);
 
         let {timepicker, buttons, range, selectedDates, isMobile} = this.opts;
+        let shouldUpdateDOM = this.visible || this.treatAsInline;
 
         this._createMinMaxDates();
         this._limitViewDateByMaxMinDates();
@@ -1083,8 +1088,6 @@ export default class Datepicker {
         }
 
         this._setInputValue();
-        //TODO пофиксить выбор времени когда календарь скрыт
-        if (!this.visible && !this.treatAsInline) return;
 
         if (prevOpts.range && !range) {
             this.rangeDateTo = false;
@@ -1097,7 +1100,7 @@ export default class Datepicker {
         }
 
         if (prevOpts.timepicker && !timepicker) {
-            this.timepicker.destroy();
+            shouldUpdateDOM && this.timepicker.destroy();
             this.timepicker = false;
             this.$timepicker.parentNode.removeChild(this.$timepicker);
         } else if (!prevOpts.timepicker && timepicker) {
@@ -1116,10 +1119,15 @@ export default class Datepicker {
         }
 
         if (!prevOpts.isMobile && isMobile) {
+            if (!this.treatAsInline && !$datepickerOverlay) {
+                this._createMobileOverlay();
+            }
             this._addMobileAttributes();
         } else if (prevOpts.isMobile && !isMobile) {
             this._removeMobileAttributes();
         }
+
+        if (!shouldUpdateDOM) return;
 
         this.nav.update();
         this.views[this.currentView].render();
