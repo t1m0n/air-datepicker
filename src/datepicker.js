@@ -695,11 +695,6 @@ export default class Datepicker {
 
         let  {isMobile} = this.opts;
 
-        if (isMobile) {
-            this.$datepicker.style.cssText = 'left: 50%; top: 50%';
-            return;
-        }
-
         let vpDims = this.$el.getBoundingClientRect(),
             dims = this.$el.getBoundingClientRect(),
             $dpOffset = this.$datepicker.offsetParent,
@@ -712,6 +707,11 @@ export default class Datepicker {
             offset = this.opts.offset,
             main = pos[0],
             secondary = pos[1];
+
+        if (isMobile) {
+            this.$datepicker.style.cssText = 'left: 50%; top: 50%';
+            return;
+        }
 
         // If datepicker's container is the same with target element
         if ($dpOffset === $elOffset && $dpOffset !== document.body) {
