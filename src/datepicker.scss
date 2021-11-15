@@ -247,6 +247,7 @@
           var(--adp-overlay-transition-duration),
           var(--adp-overlay-transition-duration),
           var(--adp-overlay-transition-duration);
+  z-index: var(--adp-overlay-z-index);
 
 
   &.-active- {
