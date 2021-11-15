@@ -31,6 +31,14 @@ export let basicMinView =
     dateFormat: 'MMMM yyyy'
 })`;
 
+export let basicIsMobile =
+`new AirDatepicker('#el', {
+    isMobile: true,
+    autoClose: true,
+});
+
+`;
+
 
 let rangeOption =
 `new AirDatepicker('#input', {

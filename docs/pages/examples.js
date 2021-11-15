@@ -105,6 +105,20 @@ export default function Examples() {
                                 </Example>
 
                             </Section.SubSection>
+
+                            <Section.SubSection titleId={'exampleBasicMobileTitle'}>
+                                <Paragraph id='exampleBasicMobileNote' />
+                                <Example>
+                                    <AirDatepicker
+                                        placeholder={messages.asModal}
+                                        isMobile
+                                        autoClose
+                                    />
+                                    <Code>
+                                        {code.basicIsMobile}
+                                    </Code>
+                                </Example>
+                            </Section.SubSection>
                         </Section>
 
                         <Section title='examplePositionTitle'>
@@ -187,6 +201,7 @@ export default function Examples() {
                                 <Example>
                                     <div className={css.animeContainer}>
                                         <AirDatepicker
+                                            placeholder={messages.showMeAnimation}
                                             container={`.${css.animeContainer}`}
                                             position={({$datepicker, $target, $pointer, done}) => {
                                                 let popper = createPopper($target, $datepicker, {
