@@ -308,6 +308,14 @@ new AirDatepicker('#el', {
             placement: 'top',
             modifiers: [
                 {
+                    name: 'flip',
+                    options: {
+                        padding: {
+                            top: 64
+                        }
+                    }
+                },
+                {
                     name: 'offset',
                     options: {
                         offset: [0, 20]

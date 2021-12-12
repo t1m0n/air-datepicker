@@ -70,7 +70,7 @@ export default {
     examplePositionBasicNote: 'The basic positioning is set via the string - {axis}. For example, let us show calendar at the right of the text field:',
     examplePositionPopperTitle: 'Using of Popper.js',
     examplePositionPopperNote1: 'If more complex positioning is required, for example, when you need the calendar to jump to the other side of the text field when scrolling, etc., you can use manual positioning - using the function and third-party libraries',
-    examplePositionPopperNote2: 'In the following example, we will process the position using the {popper} library. Try to scroll the calendar container',
+    examplePositionPopperNote2: 'In the following example, we will process the position using the {popper} library. Try to scroll the page further.',
     examplePositionPopperNote3: 'When using Popper.js, Air Datepicker will automatically rotate the pointer \n in the right direction! 😎',
     examplePositionPopperExampleComment: '/*\n\t\t Return function which will be called when `hide()` method is triggered,\n\t\t it must necessarily call the `done()` function\n \t\t to complete hiding process \n\t\t*/',
     examplePositionAnimeTitle: 'Create show\\hide animation',
