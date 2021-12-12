@@ -40,6 +40,10 @@ class AirDatepicker extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.dp.destroy();
+    }
+
     render() {
         let {inline, inlineInput,  dpClassName, placeholder} = this.props;
 
