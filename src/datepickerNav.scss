@@ -8,6 +8,7 @@
   border-bottom: 1px solid var(--adp-border-color-inner);
   min-height: var(--adp-nav-height);
   padding: var(--adp-padding);
+  box-sizing: content-box;
 
   .-only-timepicker- & {
     display: none;
@@ -25,7 +26,7 @@
    ------------------------------------------------- */
 
 .air-datepicker-nav--action {
-  width: var(--adp-day-cell-width);
+  width: var(--adp-nav-action-size);
   border-radius: var(--adp-border-radius);
   user-select: none;
 
