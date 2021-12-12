@@ -444,4 +444,26 @@ describe('OPTIONS TESTS', () => {
             expect($overlay).toBeInTheDocument();
         });
     });
+
+    describe('autoClose', () => {
+        it('should be inited without errors with selected date', () => {
+            expect(() => {
+                init({
+                    selectedDates: [new Date()],
+                    visible: false,
+                    autoClose: true
+                });
+            }).not.toThrow();
+        });
+
+        it('should hide datepicker after date select', () => {
+            init({
+                autoClose: true
+            });
+
+            dp.selectDate(new Date());
+
+            expect(dp.visible).toBe(false);
+        });
+    });
 });

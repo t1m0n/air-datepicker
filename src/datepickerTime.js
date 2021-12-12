@@ -62,6 +62,8 @@ export default class DatepickerTime {
         addEventListener(this.$ranges, changeEvent, this.onChangeInputRange);
         addEventListener(this.$ranges, 'mouseenter', this.onMouseEnterLeave);
         addEventListener(this.$ranges, 'mouseleave', this.onMouseEnterLeave);
+        addEventListener(this.$ranges, 'focus', this.onFocus);
+        addEventListener(this.$ranges, 'blur', this.onBlur);
     }
 
     createElement() {
@@ -236,7 +238,9 @@ export default class DatepickerTime {
         }
     }
 
-
+    toggleTimepickerIsActive = (value) => {
+        this.dp.timepickerIsActive = value;
+    }
 
     onChangeSelectedDate = ({date, updateTime = false}) => {
         if (!date) return;
@@ -277,6 +281,14 @@ export default class DatepickerTime {
         }
 
         $el.classList.toggle('-focus-');
+    }
+
+    onFocus = () => {
+        this.toggleTimepickerIsActive(true);
+    }
+
+    onBlur = () => {
+        this.toggleTimepickerIsActive(false);
     }
 
     set hours(val) {

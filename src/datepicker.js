@@ -24,7 +24,6 @@ import consts from './consts';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
-import de from './locale/de';
 
 let $body = '',
     $datepickersContainer = '',
@@ -85,6 +84,7 @@ export default class Datepicker {
         this.keys = [];
         this.rangeDateFrom = '';
         this.rangeDateTo = '';
+        this.timepickerIsActive = false; // Need when autoClose and timepicker are both true
         this.treatAsInline = this.opts.inline || !this.elIsInput;
 
         this.init();
@@ -547,7 +547,7 @@ export default class Datepicker {
         });
         this._updateLastSelectedDate(date);
 
-        if (autoClose && !this.timepickerIsActive) {
+        if (autoClose && !this.timepickerIsActive && this.visible) {
             if (!multipleDates && !range) {
                 this.hide();
             } else if (range && selectedDaysLen === 2) {

@@ -16,18 +16,19 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
-    // visible: true,
+    visible: false,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
-    isMobile: true,
-    timepicker: false,
+    // isMobile: true,
+    // timepicker: true,
+    autoClose: true,
     // position: customPosition,
     // position: 'right center',
     // position: manualPosition,
     // classes: '-anime-',
-    selectedDates: [new Date()],
+    // selectedDates: [new Date()],
     onChangeView(view) {
         // console.log(dp1.getCell('2021-01-01', 'month'))
     },
