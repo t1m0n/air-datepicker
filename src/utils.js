@@ -291,7 +291,7 @@ export function addEventListener(el, type, listener) {
  * @return {HTMLElement|Boolean}
  */
 export function closest(target, selector) {
-    if (!target || target === document) return false;
+    if (!target || target === document ||  target instanceof DocumentFragment) return false;
 
     if (target.matches(selector)) {
         return target;
