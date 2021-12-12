@@ -89,7 +89,7 @@ export default {
     optsIsMobile: 'If {trueField}, then the calendar will appear as a modal window with slightly enlarged dimensions.',
     optsVisible: 'Shows the calendar immediately after initialization.',
     optsDateFormat: 'Date format. Since version 3, the date format is based on the {standardLink} standard. By default, it is taken from the current locale. The value passed here will have a higher priority.',
-    optsDateFormatFuncNote: 'You can also pass a function here to manually process the selected dates. It should return a string. If the multi-date selection mode is enabled, this function will be called for each date separately.',
+    optsDateFormatFuncNote: 'You can also pass a function here to manually process the selected dates. It should return a string. If the multi-date selection mode is enabled, array of selected dates will be passed to this function.',
     optsDateFormatsTitle: 'Available tokens:',
     optsDateFormatT: 'time in milliseconds',
     optsDateFormatE: 'the short name of the day of the week, the {fieldName} field from the locale',

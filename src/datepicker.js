@@ -817,17 +817,16 @@ export default class Datepicker {
         let dates = [],
             formattedDates = [],
             datepicker = this,
-            {selectedDates, locale, opts: {onSelect, multipleDates}} = datepicker;
+            {selectedDates, locale, opts: {onSelect, multipleDates}} = datepicker,
+            formatIsFunction = typeof locale.dateFormat === 'function';
 
         if (selectedDates.length) {
             dates = selectedDates.map(copyDate);
-            formattedDates = dates.map((date) => {
-                if (typeof locale.dateFormat === 'function') {
-                    return locale.dateFormat(date);
-                }
-
-                return this.formatDate(date, locale.dateFormat);
-            });
+            formattedDates = formatIsFunction
+                ? multipleDates
+                    ? locale.dateFormat(dates)
+                    : dates.map(date => locale.dateFormat(date))
+                : dates.map(date => this.formatDate(date, locale.dateFormat));
         }
 
         onSelect({
