@@ -1113,7 +1113,7 @@ export default class Datepicker {
             this.buttons.destroy();
             this.$buttons.parentNode.removeChild(this.$buttons);
         } else {
-            if (prevOpts.buttons && buttons) {
+            if (shouldUpdateDOM && prevOpts.buttons && buttons) {
                 this.buttons.clearHtml().render();
             }
         }

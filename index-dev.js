@@ -33,6 +33,7 @@ let opts = {
     onSelect({date}) {
         console.log(date);
     },
+    buttons: ['clear'],
     // dateFormat(d) {
     //     return d.toLocaleString();
     // },
@@ -129,14 +130,14 @@ let dates = [new Date(), new Date('2021-06-10'), new Date('2021-06-15')];
 let toggle = true;
 $btnUpdate.addEventListener('click', () => {
     dp1.update({
-        isMobile: toggle,
+        // isMobile: toggle,
         // view: 'years',
         // prevHtml: 'prev',
         // range: !dp.opts.range,
         // minDate: new Date(),
         // maxDate: new Date('2021-06-27'),
         locale: en,
-        buttons: toggle ? ['clear'] : false,
+        buttons: ['today'],
         selectedDates: dates[Math.floor(Math.random() * dates.length -1)],
         timepicker: !dp1.opts.timepicker,
     })

@@ -52,5 +52,18 @@ describe('API TESTS', () => {
 
             expect(dp.getCell(minDate)).toHaveClass('-min-date-');
         });
+
+        test('update existing buttons with new one', () => {
+            expect(() => {
+                init({
+                    visible: false,
+                    buttons: ['clear']
+                });
+
+                dp.update({
+                    buttons: ['today']
+                });
+            }).not.toThrow();
+        });
     });
 });
