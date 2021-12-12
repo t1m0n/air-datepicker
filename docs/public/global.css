@@ -62,6 +62,6 @@ html {
     --t-duration: .2s;
     --t-easing: ease-out;
 
-    --z-header: 10;
-    --z-language: 11;
+    --z-header: 101;
+    --z-language: 102;
 }

@@ -30,7 +30,7 @@ export default class DatepickerCell {
         if (onRenderCell) {
             this.customData = onRenderCell({
                 date: this.date,
-                type: this.singleType,
+                cellType: this.singleType,
                 datepicker: this.dp,
             });
         }

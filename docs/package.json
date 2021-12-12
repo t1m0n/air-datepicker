@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@popperjs/core": "^2.10.2",
     "animejs": "^3.2.1",
     "classnames": "^2.2.6",
     "clone-deep": "^4.0.1",

@@ -7,7 +7,7 @@ import css from './link.module.scss';
 function Link({href, children, ...rest} = {}) {
     return (
         <NextLink href={href} {...rest}>
-            <a className={css.el}>{children}</a>
+            <a className={css.el} target={rest.target}>{children}</a>
         </NextLink>
     );
 }

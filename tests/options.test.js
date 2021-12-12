@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 function init(opts) {
-    dp = new Datepicker($input, opts);
+    dp = new Datepicker($input, {visible: true, ...opts});
     $datepicker = dp.$datepicker;
 }
 
@@ -37,6 +37,8 @@ describe('OPTIONS TESTS', () => {
     describe('inline', () => {
         test('if datepicker has proper class', () => {
             init({inline: true});
+
+            expect($input.nextSibling).toBe($datepicker);
             expect($datepicker).toHaveClass('-inline-');
         });
     });
@@ -57,7 +59,7 @@ describe('OPTIONS TESTS', () => {
         });
 
         it('should change locale string partially', () => {
-            let daysMin = ['В','П','В','С','Ч','П','С'];
+            let daysMin = ['В', 'П', 'В', 'С', 'Ч', 'П', 'С'];
 
             init({
                 locale: {
@@ -412,6 +414,34 @@ describe('OPTIONS TESTS', () => {
             let $cell = dp.getCell(startDate, 'month');
 
             expect($cell).not.toHaveClass('-disabled-');
+        });
+    });
+
+    describe('isMobile', () => {
+        it('should add mobile class name', () => {
+            init({
+                isMobile: true
+            });
+
+            expect($datepicker).toHaveClass('-is-mobile-');
+        });
+
+        it('should add readonly attribute', () => {
+            init({
+                isMobile: true
+            });
+
+            expect($input).toHaveAttribute('readonly');
+        });
+
+        it('should add mobile overlay', () => {
+            init({
+                isMobile: true
+            });
+
+            let $overlay = document.querySelector('.air-datepicker-overlay');
+
+            expect($overlay).toBeInTheDocument();
         });
     });
 });

@@ -19,6 +19,18 @@ export declare type AirDatepickerViewsSingle = 'day' | 'month' | 'year';
 export declare type AirDatepickerDate = string | number | Date;
 export declare type AirDatepickerNavEntry = string | ((dp: AirDatepicker) => string);
 export declare type AirDatepickerDecade = [number, number];
+export declare type AirDatepickerPositionCallback = (
+    {
+        $datepicker,
+        $target,
+        $pointer,
+        done
+    }: {
+        $datepicker: HTMLDivElement,
+        $target: HTMLInputElement,
+        $pointer: HTMLElement,
+        done: () => void
+    }) => void | (() => void)
 
 export declare type AirDatepickerOptions = {
     classes: string
@@ -26,6 +38,8 @@ export declare type AirDatepickerOptions = {
     locale: Partial<AirDatepickerLocale>,
     startDate: AirDatepickerDate,
     firstDay: number,
+    isMobile: boolean,
+    visible: boolean,
     weekends: [number, number],
     dateFormat: string | ((d: Date) => string),
     altField: AirDatepickerSelector,
@@ -34,7 +48,7 @@ export declare type AirDatepickerOptions = {
     keyboardNav: boolean,
     selectedDates: AirDatepickerDate[] | false,
     container: AirDatepickerSelector,
-    position: AirDatepickerPosition,
+    position: AirDatepickerPosition | AirDatepickerPositionCallback,
     offset: number,
     view: AirDatepickerViews,
     minView: AirDatepickerViews,
@@ -73,10 +87,10 @@ export declare type AirDatepickerOptions = {
     hoursStep: number,
     minutesStep: number,
 
-    onSelect: ({date, formattedDate, dp}: {date: Date | Date[], formattedDate: string | string[], dp: AirDatepicker}) => void,
+    onSelect: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker}) => void,
     onChangeViewDate: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
     onChangeView: (view: AirDatepickerViews) => void,
-    onRenderCell: ({date, type, dp}: {date: Date, type: AirDatepickerViewsSingle, dp: AirDatepicker}) => ({
+    onRenderCell: ({date, cellType, datepicker}: {date: Date, cellType: AirDatepickerViewsSingle, datepicker: AirDatepicker}) => ({
         disabled?: boolean,
         classes?: string,
         html?: string
