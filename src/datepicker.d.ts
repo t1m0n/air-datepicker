@@ -107,7 +107,7 @@ declare class AirDatepicker {
     hide: () => void
     next: () => void
     prev: () => void
-    selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime: boolean, silent: boolean}) => void
+    selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime?: boolean, silent?: boolean}) => void
     unselectDate: (date: AirDatepickerDate) => void
     clear: () => void
     formatDate: (date: AirDatepickerDate, format: string) => void
@@ -115,7 +115,7 @@ declare class AirDatepicker {
     update: (newOpts: Partial<AirDatepickerOptions>) => void
     setCurrentView: (newView: AirDatepickerViews) => void
     setViewDate: (newViewDate: AirDatepickerDate) => void
-    setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition: boolean}) => void
+    setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition?: boolean}) => void
     up: (date?: AirDatepickerDate) => void
     down: (date?: AirDatepickerDate) => void
 

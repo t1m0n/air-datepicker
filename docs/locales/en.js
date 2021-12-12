@@ -86,7 +86,7 @@ export default {
     optsStartDate: 'Sets the start view date of calendar. ',
     optsFirstDay: 'The index of the day from which the week begins. Possible values are from 0 (Sunday) to 6 (Saturday). By default, it is taken from the localization, if the value is passed here, it will have a higher priority.',
     optsWeekends: 'Indexes of the days that will be considered a weekend. The {className} class will be added to them. By default, this is Saturday and Sunday.',
-    optsIsMobile: 'If {true Field}, then the calendar will appear as a modal window with slightly enlarged dimensions.',
+    optsIsMobile: 'If {trueField}, then the calendar will appear as a modal window with slightly enlarged dimensions.',
     optsVisible: 'Shows the calendar immediately after initialization.',
     optsDateFormat: 'Date format. Since version 3, the date format is based on the {standardLink} standard. By default, it is taken from the current locale. The value passed here will have a higher priority.',
     optsDateFormatFuncNote: 'You can also pass a function here to manually process the selected dates. It should return a string. If the multi-date selection mode is enabled, this function will be called for each date separately.',

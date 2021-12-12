@@ -7,6 +7,7 @@ import {createPopper} from '@popperjs/core';
 let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
 let $bntDestroy = document.querySelector('#destroy');
+let $btnAction = document.querySelector('#action');
 let $btnUpdate = document.querySelector('#update');
 import anime from 'animejs';
 
@@ -31,7 +32,7 @@ let opts = {
         // console.log(dp1.getCell('2021-01-01', 'month'))
     },
     onSelect({date}) {
-        console.log(date);
+        console.log('select', date);
     },
     buttons: ['clear'],
     // dateFormat(d) {
@@ -107,25 +108,11 @@ function customPosition({$datepicker, $target, $pointer, done}){
     }
 }
 
-// console.time('init');
 window.dp1 = new Datepicker($input1, opts);
-// console.timeEnd('init');
-//
-// window.dp2 = new Datepicker($input2, {
-//     inline: false,
-//     autoClose: true,
-// });
 
 $bntDestroy.addEventListener('click', dp1.destroy)
 
-// dp.selectDate(new Date('2021-06-01'))
-// dp.selectDate(new Date('2021-06-05'))
 
-
-// document.querySelector('#destr').addEventListener('click', () => {
-//     dp.destroy();
-// })
-//
 let dates = [new Date(), new Date('2021-06-10'), new Date('2021-06-15')];
 let toggle = true;
 $btnUpdate.addEventListener('click', () => {
@@ -143,6 +130,10 @@ $btnUpdate.addEventListener('click', () => {
     })
     toggle = !toggle;
 })
+
+$btnAction.addEventListener('click', () => {
+    dp1.selectDate(new Date(), {silent: true});
+});
 
 if (module.hot) {
     module.hot.accept();
