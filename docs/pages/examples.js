@@ -253,7 +253,13 @@ export default function Examples() {
                                                         easing: 'easeOutCubic'
                                                     }).finished.then(() => {
                                                         popper.destroy();
-                                                        done();
+                                                        // Datepicker could be destroyed at this moment
+                                                        // so wrap `done` function in try/catch
+                                                        try {
+                                                            done();
+                                                        } catch (e) {
+
+                                                        }
                                                     })
                                                 }
                                             }}
