@@ -21,7 +21,7 @@ let opts = {
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
-    isMobile: false,
+    isMobile: true,
     // timepicker: true,
     autoClose: false,
     // position: customPosition,
