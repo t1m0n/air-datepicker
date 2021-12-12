@@ -5,7 +5,7 @@
  */
 import consts from './consts';
 
-export function getEl (el, context=document) {
+export function getEl(el, context = document) {
     return typeof el === 'string'
         ? context['querySelector'](el)
         : el;
@@ -20,7 +20,7 @@ export function getEl (el, context=document) {
  * @param {Object} [attrs]
  * @returns {HTMLElement}
  */
-export function createElement({tagName='div', className='', innerHtml='', id='', attrs={}} = {}) {
+export function createElement({tagName = 'div', className = '', innerHtml = '', id = '', attrs = {}} = {}) {
     let $element = document.createElement(tagName);
     if (className) $element.classList.add(...className.split(' '));
     if (id) $element.id = id;
@@ -44,7 +44,7 @@ export function createElement({tagName='div', className='', innerHtml='', id='',
  * @param {Object} attrs - attributes object
  * @returns {HTMLElement}
  */
-export function setAttribute(el, attrs){
+export function setAttribute(el, attrs) {
     for (let [name, value] of Object.entries(attrs)) {
         el.setAttribute(name, value);
     }
@@ -167,7 +167,7 @@ export function classNames(...classes) {
 
     classes.forEach((c) => {
         if (typeof c === 'object') {
-            for(let cName in c) {
+            for (let cName in c) {
                 if (c[cName]) {
                     classNames.push(cName);
                 }
@@ -191,7 +191,7 @@ export function toggleClass(el, classes) {
 
 export function addClass(el, ...classes) {
     if (el.length) {
-        el.forEach((node)=>{
+        el.forEach((node) => {
             node.classList.add(...classes);
         });
     } else {
@@ -216,7 +216,7 @@ export function removeClass(el, ...classes) {
  * @param {String} cellType - one of days|months|years
  * @return {boolean}
  */
-export function isSameDate(date1, date2, cellType=consts.days) {
+export function isSameDate(date1, date2, cellType = consts.days) {
     if (!date1 || !date2) return false;
     let d1 = getParsedDate(date1),
         d2 = getParsedDate(date2),
@@ -249,7 +249,7 @@ export function isDateSmaller(date, comparedDate) {
  * @param {Boolean} [keepTime] - should keep the time in a new date or not
  * @return {Date}
  */
-export function copyDate(date, keepTime=true) {
+export function copyDate(date, keepTime = true) {
     let newDate = new Date(date.getTime());
 
     if (typeof keepTime === 'boolean' && !keepTime) {
@@ -260,7 +260,7 @@ export function copyDate(date, keepTime=true) {
 }
 
 export function resetTime(date) {
-    date.setHours(0,0,0,0);
+    date.setHours(0, 0, 0, 0);
     return date;
 }
 
@@ -291,7 +291,7 @@ export function addEventListener(el, type, listener) {
  * @return {HTMLElement|Boolean}
  */
 export function closest(target, selector) {
-    if (!target || target === document) return false;
+    if (!target || target === document ||  target instanceof DocumentFragment) return false;
 
     if (target.matches(selector)) {
         return target;
@@ -369,7 +369,7 @@ export function createDate(date) {
     return resultDate;
 }
 
-export function getWordBoundaryRegExp(sign){
+export function getWordBoundaryRegExp(sign) {
     let symbols = '\\s|\\.|-|/|\\\\|,|\\$|\\!|\\?|:|;';
 
     return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');

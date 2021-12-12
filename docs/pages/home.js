@@ -104,7 +104,7 @@ export default function Home() {
                         id={'promoNote2'}
                         values={{
                             airDatepicker: <strong>Air Datepicker</strong>,
-                            size: <strong>13{messages.kilobyte}</strong>
+                            size: <strong>14{messages.kilobyte}</strong>
                         }}
                     />
                     <FormattedMessage

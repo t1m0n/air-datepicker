@@ -42,6 +42,7 @@
 
   --adp-nav-height: 32px;
   --adp-nav-arrow-color: var(--adp-color-secondary);
+  --adp-nav-action-size: 32px;
   --adp-nav-color-secondary: var(--adp-color-secondary);
 
   --adp-day-name-color: #ff9a19;
@@ -52,7 +53,8 @@
   --adp-year-cell-height: 56px;
 
   --adp-pointer-size: 10px;
-  --adp-pointer-offset: 10px;
+  --adp-poiner-border-radius: 2px;
+  --adp-pointer-offset: 14px;
 
   --adp-cell-border-radius: 4px;
   --adp-cell-background-color-selected: #5cc4ef;
@@ -74,4 +76,18 @@
   --adp-time-thumb-size: 12px;
   --adp-time-padding-inner: 10px;
   --adp-time-day-period-color: var(--adp-color-secondary);
+
+  --adp-mobile-font-size: 16px;
+  --adp-mobile-nav-height: 40px;
+  --adp-mobile-width: 320px;
+  --adp-mobile-day-cell-height: 38px;
+  --adp-mobile-month-cell-height: 48px;
+  --adp-mobile-year-cell-height: 64px;
+}
+
+.air-datepicker-overlay {
+  --adp-overlay-background-color: rgba(0, 0, 0, .3);
+  --adp-overlay-transition-duration: .3s;
+  --adp-overlay-transition-ease: ease-out;
+  --adp-overlay-z-index: 100;
 }

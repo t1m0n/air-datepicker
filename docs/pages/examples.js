@@ -13,8 +13,17 @@ import Paragraph from 'components/common/paragraph';
 import Link from 'components/common/link';
 import Head from 'next/head';
 import usePageTitle from 'hooks/usePageTitle';
+import {createPopper} from '@popperjs/core';
+import Note from 'components/common/note';
 
 import sectionCSS from 'components/section/section.module.scss';
+import css from './examples.module.scss';
+import {basicPosition, popperjsPosition} from 'examples/commonExamples';
+import anime from 'animejs';
+
+const PopperLink = () => {
+    return <Link href={'https://popper.js.org/'} target={'_blank'}>Popper.js</Link>
+}
 
 export default function Examples() {
     let [minDate, setMinDate] = useState();
@@ -96,7 +105,163 @@ export default function Examples() {
                                 </Example>
 
                             </Section.SubSection>
+
+                            <Section.SubSection titleId={'exampleBasicMobileTitle'}>
+                                <Paragraph id='exampleBasicMobileNote' />
+                                <Example>
+                                    <AirDatepicker
+                                        placeholder={messages.asModal}
+                                        isMobile
+                                        autoClose
+                                    />
+                                    <Code>
+                                        {code.basicIsMobile}
+                                    </Code>
+                                </Example>
+                            </Section.SubSection>
                         </Section>
+
+                        <Section title='examplePositionTitle'>
+                            <Paragraph id='examplePositionNote' values={{
+                                position: <Code inline isFieldName>{`position`}</Code>
+                            }} />
+                            <Section.SubSection titleId={'examplePositionBasicTitle'}>
+                                <Paragraph id='examplePositionBasicNote'
+                                    values={{
+                                        axis: <Code inline>{`"'${messages.mainAxis} '${messages.secondaryAxis}'"`}</Code>
+                                    }}
+                                />
+                                <Example>
+                                    <AirDatepicker
+                                        position={'right center'}
+                                    />
+                                    <Code>
+                                        {code.basicPosition}
+                                    </Code>
+                                </Example>
+                            </Section.SubSection>
+                            <Section.SubSection titleId={'examplePositionPopperTitle'}>
+                                <Paragraph id='examplePositionPopperNote1' />
+                                <Paragraph id='examplePositionPopperNote2'
+                                    values={{
+                                        popper: <PopperLink />
+                                    }}
+                                />
+                                <Example>
+                                    <div className={css.positionScroll}>
+                                        <div className={css.positionContainer} id='custom-position-container'>
+                                            <AirDatepicker
+                                                container={'#custom-position-container'}
+                                                visible
+                                                position={({$datepicker, $target, $pointer, done}) => {
+                                                    let popper = createPopper($target, $datepicker, {
+                                                        placement: 'top',
+                                                        modifiers: [
+                                                            {
+                                                                name: 'offset',
+                                                                options: {
+                                                                    offset: [0, 20]
+                                                                }
+                                                            },
+                                                            {
+                                                                name: 'arrow',
+                                                                options: {
+                                                                    element: $pointer
+                                                                }
+                                                            }
+                                                        ]
+                                                    })
+
+                                                    return () => {
+                                                        popper.destroy();
+                                                        done();
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <Code>
+                                        {code.popperjsPosition(messages)}
+                                    </Code>
+                                </Example>
+                                <Note>
+                                    {messages.examplePositionPopperNote3}
+                                </Note>
+                            </Section.SubSection>
+
+                            <Section.SubSection titleId={'examplePositionAnimeTitle'}>
+                                <Paragraph id='examplePositionAnimeNote1' />
+                                <Paragraph
+                                    id='examplePositionAnimeNote2'
+                                    values={{
+                                        anime: <Link href={'https://animejs.com/'} target={"_blank"}>anime.js</Link>,
+                                        popper: <PopperLink />
+                                    }}
+                                />
+                                <Example>
+                                    <div className={css.animeContainer}>
+                                        <AirDatepicker
+                                            placeholder={messages.showMeAnimation}
+                                            container={`.${css.animeContainer}`}
+                                            position={({$datepicker, $target, $pointer, isViewChange, done}) => {
+                                                let popper = createPopper($target, $datepicker, {
+                                                    placement: 'bottom',
+                                                    onFirstUpdate: state => {
+                                                        !isViewChange && anime.remove($datepicker);
+
+                                                        $datepicker.style.transformOrigin = 'center top';
+
+                                                        !isViewChange && anime({
+                                                            targets: $datepicker,
+                                                            opacity: [0, 1],
+                                                            rotateX: [-90, 0],
+                                                            easing: 'spring(1.3, 80, 5, 0)',
+                                                        })
+
+                                                    },
+                                                    modifiers: [
+                                                        {
+                                                            name: 'offset',
+                                                            options: {
+                                                                offset: [0, 10]
+                                                            }
+                                                        },
+                                                        {
+                                                            name: 'arrow',
+                                                            options: {
+                                                                element: $pointer,
+                                                            }
+                                                        },
+                                                        {
+                                                            name: 'computeStyles',
+                                                            options: {
+                                                                gpuAcceleration: false,
+                                                            },
+                                                        },
+                                                    ]
+                                                });
+
+                                                return () => {
+                                                    anime({
+                                                        targets: $datepicker,
+                                                        opacity: 0,
+                                                        rotateX: -90,
+                                                        duration: 300,
+                                                        easing: 'easeOutCubic'
+                                                    }).finished.then(() => {
+                                                        popper.destroy();
+                                                        done();
+                                                    })
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <Code>{code.animePosition}</Code>
+                                </Example>
+                            </Section.SubSection>
+
+                        </Section>
+
                         <Section title='exampleRangeTitle'>
                             <FormattedMessage
                                 tagName={'p'}
@@ -220,10 +385,10 @@ export default function Examples() {
                                 <AirDatepicker
                                     inline
                                     selectedDates={new Date(today.getFullYear(), today.getMonth(), 10)}
-                                    onRenderCell={({date, type}) => {
+                                    onRenderCell={({date, cellType}) => {
                                         let dates = [1, 5, 7, 10, 15, 20, 25],
                                             emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
-                                            isDay = type === 'day',
+                                            isDay = cellType === 'day',
                                             _date = date.getDate(),
                                             shouldChangeContent = isDay && dates.includes(_date),
                                             randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];

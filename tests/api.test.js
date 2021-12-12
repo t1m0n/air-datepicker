@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 function init(opts) {
-    dp = new Datepicker($input, opts);
+    dp = new Datepicker($input, {visible: true, ...opts});
     $datepicker = dp.$datepicker;
 }
 
@@ -51,6 +51,19 @@ describe('API TESTS', () => {
             });
 
             expect(dp.getCell(minDate)).toHaveClass('-min-date-');
+        });
+
+        test('update existing buttons with new one', () => {
+            expect(() => {
+                init({
+                    visible: false,
+                    buttons: ['clear']
+                });
+
+                dp.update({
+                    buttons: ['today']
+                });
+            }).not.toThrow();
         });
     });
 });

@@ -24,13 +24,13 @@ export default class DatepickerCell {
         this.init();
     }
 
-    init(){
+    init() {
         let {range, onRenderCell} = this.opts;
 
         if (onRenderCell) {
             this.customData = onRenderCell({
                 date: this.date,
-                type: this.singleType,
+                cellType: this.singleType,
                 datepicker: this.dp,
             });
         }
@@ -46,12 +46,12 @@ export default class DatepickerCell {
         }
     }
 
-    _bindDatepickerEvents(){
+    _bindDatepickerEvents() {
         this.dp.on(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
         this.dp.on(consts.eventChangeFocusDate, this.onChangeFocusDate);
     }
 
-    unbindDatepickerEvents(){
+    unbindDatepickerEvents() {
         this.dp.off(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
         this.dp.off(consts.eventChangeFocusDate, this.onChangeFocusDate);
     }
@@ -69,7 +69,7 @@ export default class DatepickerCell {
         });
     }
 
-    _getClassName(){
+    _getClassName() {
         let currentDate = new Date();
         let {selectOtherMonths, selectOtherYears} = this.opts;
         let {minDate, maxDate} = this.dp;
@@ -112,7 +112,7 @@ export default class DatepickerCell {
         return classNames(classNameCommon, classNameType, this.customData?.classes);
     }
 
-    _getHtml(){
+    _getHtml() {
         let {year, month, date} = getParsedDate(this.date);
         let {showOtherMonths, showOtherYears} = this.opts;
 
@@ -126,7 +126,7 @@ export default class DatepickerCell {
             case consts.months:
                 return this.dp.locale[this.opts.monthsField][month];
             case consts.years:
-                return !showOtherYears && this.isOtherDecade ? '': year;
+                return !showOtherYears && this.isOtherDecade ? '' : year;
         }
     }
 
@@ -160,31 +160,31 @@ export default class DatepickerCell {
         }
     }
 
-    destroy(){
+    destroy() {
         this.unbindDatepickerEvents();
     }
 
-    focus = () =>{
+    focus = () => {
         this.$cell.classList.add('-focus-');
         this.focused = true;
     }
 
-    removeFocus = () =>{
+    removeFocus = () => {
         this.$cell.classList.remove('-focus-');
         this.focused = false;
     }
 
-    select = () =>{
+    select = () => {
         this.$cell.classList.add('-selected-');
         this.selected = true;
     }
 
-    removeSelect = () =>{
+    removeSelect = () => {
         this.$cell.classList.remove('-selected-', '-range-from-', '-range-to-');
         this.selected = false;
     }
 
-    _handleRangeStatus(){
+    _handleRangeStatus() {
         let {rangeDateFrom, rangeDateTo} = this.dp;
         let classes = classNames({
             '-in-range-': rangeDateFrom && rangeDateTo && isDateBetween(this.date, rangeDateFrom, rangeDateTo),
@@ -199,7 +199,7 @@ export default class DatepickerCell {
         }
     }
 
-    _handleSelectedStatus(){
+    _handleSelectedStatus() {
         let selected = this.dp._checkIfDateIsSelected(this.date, this.type);
         if (selected) {
             this.select();
@@ -208,7 +208,7 @@ export default class DatepickerCell {
         }
     }
 
-    _handleInitialFocusStatus(){
+    _handleInitialFocusStatus() {
         let datesAreSame = isSameDate(this.dp.focusDate, this.date, this.type);
 
         if (datesAreSame) {
@@ -216,19 +216,19 @@ export default class DatepickerCell {
         }
     }
 
-    get isDisabled(){
+    get isDisabled() {
         return this.$cell.matches('.-disabled-');
     }
 
-    get isOtherMonth(){
+    get isOtherMonth() {
         return this.dp.isOtherMonth(this.date);
     }
 
-    get isOtherDecade(){
+    get isOtherDecade() {
         return this.dp.isOtherDecade(this.date);
     }
 
-    onChangeSelectedDate = () =>{
+    onChangeSelectedDate = () => {
         if (this.isDisabled) return;
 
         this._handleSelectedStatus();
@@ -237,7 +237,7 @@ export default class DatepickerCell {
         }
     }
 
-    onChangeFocusDate = (date) =>{
+    onChangeFocusDate = (date) => {
         if (!date) {
             if (this.focused) {
                 this.removeFocus();
@@ -258,7 +258,7 @@ export default class DatepickerCell {
         }
     }
 
-    render = () =>{
+    render = () => {
         this.$cell.innerHTML = this._getHtml();
         this.$cell.adpCell = this;
 

@@ -17,13 +17,14 @@
   color: var(--adp-color);
   width: var(--adp-width);
   position: absolute;
-  left: -100000px;
-  opacity: 0;
   transition:
-    opacity var(--adp-transition-duration) var(--adp-transition-ease),
-    transform var(--adp-transition-duration) var(--adp-transition-ease),
-    left 0s var(--adp-transition-duration);
+          opacity var(--adp-transition-duration) var(--adp-transition-ease),
+          transform var(--adp-transition-duration) var(--adp-transition-ease);
   z-index: var(--adp-z-index);
+
+  &:not(.-custom-position-) {
+    opacity: 0;
+  }
 
   &.-from-top- {
     transform: translateY(calc(var(--adp-transition-offset) * -1));
@@ -39,12 +40,14 @@
   }
 
   &.-active- {
-    opacity: 1;
-    transform: translate(0);
-    transition:
-      opacity var(--adp-transition-duration) var(--adp-transition-ease),
-      transform var(--adp-transition-duration) var(--adp-transition-ease),
-      left 0s 0s;
+    &:not(.-custom-position-) {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+
+    &.-custom-position- {
+      transition: none
+    }
   }
 
   &.-inline- {
@@ -60,6 +63,41 @@
       display: none;
     }
   }
+
+  &.-is-mobile- {
+    --adp-font-size: var(--adp-mobile-font-size);
+    --adp-day-cell-height: var(--adp-mobile-day-cell-height);
+    --adp-month-cell-height: var(--adp-mobile-month-cell-height);
+    --adp-year-cell-height: var(--adp-mobile-year-cell-height);
+    --adp-nav-height: var(--adp-mobile-nav-height);
+    --adp-nav-action-size: var(--adp-mobile-nav-height);
+
+    position: fixed;
+    width: var(--adp-mobile-width);
+    border: none;
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .air-datepicker--pointer {
+      display: none;
+    }
+
+    &:not(.-custom-position-) {
+      transform: translate(-50%, calc(-50% + var(--adp-transition-offset)));
+    }
+
+    &.-active- {
+      &:not(.-custom-position-) {
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+
+  &.-custom-position- {
+    transition: none;
+  }
 }
 
 .air-datepicker-global-container {
@@ -72,34 +110,63 @@
   --pointer-half-size: calc(var(--adp-pointer-size) / 2);
 
   position: absolute;
-  background: #fff;
-  border-top: 1px solid var(--adp-border-color-inline);
-  border-right: 1px solid var(--adp-border-color-inline);
   width: var(--adp-pointer-size);
   height: var(--adp-pointer-size);
   z-index: -1;
 
+  &:after {
+    content: '';
+    position: absolute;
+    background: #fff;
+    border-top: 1px solid var(--adp-border-color-inline);
+    border-right: 1px solid var(--adp-border-color-inline);
+    border-top-right-radius: var(--adp-poiner-border-radius);
+    width: var(--adp-pointer-size);
+    height: var(--adp-pointer-size);
+    box-sizing: border-box;
+  }
+
   //  Main axis
   // -------------------------
 
-  .-top-left- &, .-top-center- &, .-top-right- & {
-    top: calc(100% - var(--pointer-half-size));
-    transform: rotate(135deg);
+  .-top-left- &,
+  .-top-center- &,
+  .-top-right- &,
+  [data-popper-placement^='top'] & {
+    top: calc(100% - var(--pointer-half-size) + 1px);
+    &:after {
+      transform: rotate(135deg);
+    }
   }
 
-  .-right-top- &, .-right-center- &, .-right-bottom- & {
-    right: calc(100% - var(--pointer-half-size));
-    transform: rotate(225deg);
+  .-right-top- &,
+  .-right-center- &,
+  .-right-bottom- &,
+  [data-popper-placement^='right'] & {
+    right: calc(100% - var(--pointer-half-size) + 1px);
+    &:after {
+      transform: rotate(225deg);
+    }
   }
 
-  .-bottom-left- &, .-bottom-center- &, .-bottom-right- & {
-    bottom: calc(100% - var(--pointer-half-size));
-    transform: rotate(315deg);
+  .-bottom-left- &,
+  .-bottom-center- &,
+  .-bottom-right- &,
+  [data-popper-placement^='bottom'] & {
+    bottom: calc(100% - var(--pointer-half-size) + 1px);
+    &:after {
+      transform: rotate(315deg);
+    }
   }
 
-  .-left-top- &, .-left-center- &, .-left-bottom- & {
-    left: calc(100% - var(--pointer-half-size));
-    transform: rotate(45deg);
+  .-left-top- &,
+  .-left-center- &,
+  .-left-bottom- &,
+  [data-popper-placement^='left'] & {
+    left: calc(100% - var(--pointer-half-size) + 1px);
+    &:after {
+      transform: rotate(45deg);
+    }
   }
 
   //  Secondary axis
@@ -124,7 +191,6 @@
   .-left-center- &, .-right-center- & {
     top: calc(50% - var(--adp-pointer-size) / 2);
   }
-
 }
 
 
@@ -154,4 +220,41 @@
 .air-datepicker--time {
   padding: var(--adp-padding);
   border-top: 1px solid var(--adp-border-color-inner);
+}
+
+
+/*  Overlay
+   ------------------------------------------------- */
+
+.air-datepicker-overlay {
+  position: fixed;
+  background: var(--adp-overlay-background-color);
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition:
+          opacity var(--adp-overlay-transition-duration) var(--adp-overlay-transition-ease),
+          left 0s,
+          height 0s,
+          width 0s;
+  transition-delay:
+          0s,
+          var(--adp-overlay-transition-duration),
+          var(--adp-overlay-transition-duration),
+          var(--adp-overlay-transition-duration);
+  z-index: var(--adp-overlay-z-index);
+
+
+  &.-active- {
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+
+    transition:
+            opacity var(--adp-overlay-transition-duration) var(--adp-overlay-transition-ease),
+            height 0s,
+            width 0s;
+  }
 }

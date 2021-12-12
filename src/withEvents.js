@@ -1,5 +1,5 @@
 let events = {
-    on(eventName, handler){
+    on(eventName, handler) {
         if (!this.__events) {
             this.__events = {};
         }
@@ -11,7 +11,7 @@ let events = {
         }
     },
 
-    off(eventName, handler){
+    off(eventName, handler) {
         if (!this.__events) return;
         if (!this.__events[eventName]) return;
 
@@ -22,7 +22,7 @@ let events = {
         this.__events = {};
     },
 
-    trigger(eventName, ...args){
+    trigger(eventName, ...args) {
         if (!this.__events) return;
         if (!this.__events[eventName]) return;
 

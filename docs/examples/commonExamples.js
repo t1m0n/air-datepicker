@@ -31,6 +31,14 @@ export let basicMinView =
     dateFormat: 'MMMM yyyy'
 })`;
 
+export let basicIsMobile =
+`new AirDatepicker('#el', {
+    isMobile: true,
+    autoClose: true,
+});
+
+`;
+
 
 let rangeOption =
 `new AirDatepicker('#input', {
@@ -169,10 +177,11 @@ export let optsDateFormatFunc =
 })`
 
 export let optsButtonsShape =
-`type ButtonShape = {
+`ButtonShape = {
     content: string | (dpInstance) => string
     tagName?: string
     className?: string
+    attrs?: object
     onClick?: (dpInstance) => void
 }
 `
@@ -261,6 +270,127 @@ export let apiAccess =
 
 dp.show();
 `
+
+export let basicPositionCallback =
+`new AirDatepicker('#el', {
+    autoClose: true,
+    position({$datepicker, $target, $pointer}) {
+        let coords = $target.getBoundingClientRect(),
+            dpHeight = $datepicker.clientHeight,
+            dpWidth = $datepicker.clientWidth;
+    
+        let top = coords.y + coords.height / 2 + window.scrollY - dpHeight / 2;
+        let left = coords.x + coords.width / 2 - dpWidth / 2;
+    
+        $datepicker.style.left = \`\${left}px\`;
+        $datepicker.style.top = \`\${top}px\`;
+    
+        $pointer.style.display = 'none';
+    }
+})
+`
+
+export let basicPosition =
+`new AirDatepicker('#el', {
+    position: 'right center'
+})
+`
+
+export let popperjsPosition = (msg) => (
+`import AirDatepicker from 'air-datepicker';
+import {createPopper} from '@popperjs/core';
+
+new AirDatepicker('#el', {
+    container: '#scroll-container',
+    visible: true,
+    position({$datepicker, $target, $pointer, done}) {
+        let popper = createPopper($target, $datepicker, {
+            placement: 'top',
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 20]
+                    }
+                },
+                {
+                    name: 'arrow',
+                    options: {
+                        element: $pointer
+                    }
+                }
+            ]
+        })
+        
+        ${msg.examplePositionPopperExampleComment}
+        return function completeHide() {
+            popper.destroy();
+            done();
+        }    
+    }
+})
+`
+);
+
+export let animePosition =
+`import AirDatepicker from 'air-datepicker';
+import {createPopper} from '@popperjs/core';
+import anime from 'animejs';
+
+new AirDatepicker('#el', {
+    position({$datepicker, $target, $pointer, isViewChange, done}) {
+        let popper = createPopper($target, $datepicker, {
+            placement: 'bottom',
+            onFirstUpdate: state => {
+                !isViewChange && anime.remove($datepicker);
+
+                $datepicker.style.transformOrigin = 'center top';
+
+                !isViewChange && anime({
+                    targets: $datepicker,
+                    opacity: [0, 1],
+                    rotateX: [-90, 0],
+                    easing: 'spring(1.3, 80, 5, 0)',
+                })
+
+            },
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 10]
+                    }
+                },
+                {
+                    name: 'arrow',
+                    options: {
+                        element: $pointer,
+                    }
+                },
+                {
+                    name: 'computeStyles',
+                    options: {
+                        gpuAcceleration: false,
+                    },
+                },
+            ]
+        });
+
+        return () => {
+            anime({
+                targets: $datepicker,
+                opacity: 0,
+                rotateX: -90,
+                duration: 300,
+                easing: 'easeOutCubic'
+            }).finished.then(() => {
+                popper.destroy();
+                done();
+            })
+        }
+    }}
+)
+`;
 
 export {
     install,

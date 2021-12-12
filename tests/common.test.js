@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 function init(opts) {
-    dp = new Datepicker($input, opts);
+    dp = new Datepicker($input, {visible: true, ...opts});
     $datepicker = dp.$datepicker;
 }
 
@@ -31,10 +31,26 @@ describe('COMMON TESTS', () => {
         expect(document.querySelector(`#${Datepicker.defaultContainerId}`)).not.toBeNull();
     });
 
-    test('datepicker should be added to the container', () => {
+    test('datepicker should be added to the container if visible', () => {
         init();
         let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
 
         expect($datepicker.parentNode).toEqual($container);
+    });
+
+    test('datepicker should be initialized and not rendered to container', () => {
+        init({visible: false});
+        let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
+
+        expect($container).not.toContainElement(dp.$datepicker);
+    });
+
+    test('datepicker should be removed from container after hide', () => {
+        init();
+        let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
+
+        dp.hide();
+
+        expect($container).not.toContainElement(dp.$datepicker);
     });
 });

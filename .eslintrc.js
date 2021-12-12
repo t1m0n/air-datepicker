@@ -1,3 +1,5 @@
+let tabSize = 4;
+
 module.exports = {
     'env': {
         'browser': true,
@@ -20,41 +22,38 @@ module.exports = {
         'sourceType': 'module'
     },
     'rules': {
-        'indent': [
-            'error',
-            4,
-            {
-                SwitchCase: 1
-            }
-        ],
-        'linebreak-style': "off",
-        'quotes': [
-            'error',
-            'single'
-        ],
-        'semi': [
-            'warn',
-            'always'
-        ],
+        indent: ['error', tabSize,  {ignoredNodes: ['TemplateLiteral'], SwitchCase: 1}], // игнорируем string template из-за ошибки в пакетах
+        quotes: ['error', 'single'],
+        semi: ['warn', 'always'],
+        curly: ['error', 'multi-line'],
         'arrow-parens': ['error', 'as-needed', {requireForBlockBody: true}],
-        'curly': ['error', 'multi-line'],
         'no-unused-vars': [
-            'error',
+            'warn',
             {
-                'ignoreRestSiblings': true,
-                'argsIgnorePattern': '^e$', // Allow to use 'e'(events) argument
+                ignoreRestSiblings: true,
+                argsIgnorePattern: '^e$',
                 varsIgnorePattern: '^_$',
-            }
+            },
         ],
-        'max-len': [
-            'error',
-            {
-                'code': 120,
-                'ignoreStrings': true,
-                'ignoreTrailingComments': true,
-                'ignoreComments': true,
-                'ignoreTemplateLiterals': true
-            }
-        ]
+        'max-len': ['error', {code: 120, ignoreStrings: true, ignoreComments: true}],
+        'object-curly-spacing': ['error', 'never'],
+        'array-bracket-spacing': ['error', 'never'],
+        'comma-style': ['error', 'last'],
+        'comma-spacing': ['error', {'before': false, 'after': true}],
+        'space-infix-ops': 'error',
+        'space-in-parens': ['error', 'never'],
+        'space-before-function-paren': ['error', {
+            'anonymous': 'always',
+            'named': 'never',
+            'asyncArrow': 'always'
+        }],
+        'keyword-spacing': 'error',
+        'arrow-spacing': 'error',
+        'space-before-blocks': 'error',
+        'no-magic-numbers': ['warn', {
+            ignore: [0, 1, -1],
+            ignoreArrayIndexes: true,
+            ignoreDefaultValues: true,
+        }],
     },
 };

@@ -38,7 +38,7 @@ export default class DatepickerBody {
         this.init();
     }
 
-    init(){
+    init() {
         this._buildBaseHtml();
         if (this.type === consts.days) {
             this.renderDayNames();
@@ -48,7 +48,7 @@ export default class DatepickerBody {
         this._bindDatepickerEvents();
     }
 
-    _bindEvents(){
+    _bindEvents() {
         let {range, dynamicRange} = this.opts;
 
         addEventListener(this.$el, 'mouseover', this.onMouseOverCell);
@@ -63,7 +63,7 @@ export default class DatepickerBody {
 
     }
 
-    _bindDatepickerEvents(){
+    _bindDatepickerEvents() {
         this.dp.on(consts.eventChangeViewDate, this.onChangeViewDate);
         this.dp.on(consts.eventChangeCurrentView, this.onChangeCurrentView);
     }
@@ -99,7 +99,7 @@ export default class DatepickerBody {
         return html;
     }
 
-    _getDaysCells(){
+    _getDaysCells() {
         let {viewDate, locale: {firstDay}} = this.dp,
             totalMonthDays = getDaysCount(viewDate),
             {year, month} = getParsedDate(viewDate),
@@ -117,7 +117,7 @@ export default class DatepickerBody {
             {year:renderYear, month: renderMonth} = getParsedDate(firstRenderDate),
             i = 0;
 
-        while(i < totalRenderDays) {
+        while (i < totalRenderDays) {
             let date = new Date(renderYear, renderMonth, firstRenderDayDate + i);
             this._generateCell(date);
             i++;
@@ -139,38 +139,38 @@ export default class DatepickerBody {
         return cell;
     }
 
-    _generateDayCells(){
+    _generateDayCells() {
         this._getDaysCells();
     }
 
-    _generateMonthCells(){
+    _generateMonthCells() {
         let totalMonths = 12,
             {year} = this.dp.parsedViewDate,
             currentMonth = 0;
 
-        while(currentMonth < totalMonths) {
+        while (currentMonth < totalMonths) {
             this.cells.push(this._generateCell(new Date(year, currentMonth)));
             currentMonth++;
         }
     }
 
-    _generateYearCells(){
+    _generateYearCells() {
         let decade = getDecade(this.dp.viewDate),
             firstYear = decade[0] - 1,
             lastYear = decade[1] + 1,
             year = firstYear;
 
-        while(year <= lastYear) {
+        while (year <= lastYear) {
             this.cells.push(this._generateCell(new Date(year, 0)));
             year++;
         }
     }
 
-    renderDayNames(){
+    renderDayNames() {
         this.$names.innerHTML =  this._getDayNamesHtml();
     }
 
-    _generateCells(){
+    _generateCells() {
         switch (this.type) {
             case consts.days:
                 this._generateDayCells();
@@ -194,11 +194,19 @@ export default class DatepickerBody {
         this.$el.classList.add('-hidden-');
     }
 
-    destroyCells(){
-        this.cells.forEach(c=>c.destroy());
+    destroyCells() {
+        this.cells.forEach(c => c.destroy());
+        this.cells = [];
+        this.$cells.innerHTML = '';
     }
 
-    handleClick = (e) =>{
+    destroy() {
+        this.destroyCells();
+        this.dp.off(consts.eventChangeViewDate, this.onChangeViewDate);
+        this.dp.off(consts.eventChangeCurrentView, this.onChangeCurrentView);
+    }
+
+    handleClick = (e) => {
         let $cell = closest(e.target, '.air-datepicker-cell');
         if (!$cell) return;
         let cell = $cell.adpCell;
@@ -218,7 +226,7 @@ export default class DatepickerBody {
         }
     }
 
-    onChangeCurrentView = (view) =>{
+    onChangeCurrentView = (view) => {
         if (view !== this.type) {
             this.hide();
         } else {
@@ -240,7 +248,7 @@ export default class DatepickerBody {
         this.handleClick(e);
     }
 
-    onMouseDown = (e) =>{
+    onMouseDown = (e) => {
         this.pressed = true;
 
         let $cell = closest(e.target, '.air-datepicker-cell'),
@@ -325,11 +333,10 @@ export default class DatepickerBody {
 
     render = () => {
         this.destroyCells();
-        this.cells = [];
-        this.$cells.innerHTML = '';
+
 
         this._generateCells();
-        this.cells.forEach((c)=>{
+        this.cells.forEach((c) => {
             this.$cells.appendChild(c.render());
         });
     }
