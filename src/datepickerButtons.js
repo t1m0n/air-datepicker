@@ -64,15 +64,17 @@ export default class DatepickerButtons {
      * @param {String|Function} content - button content
      * @param {String} [className]
      * @param {String} [tagName=button]
+     * @param {Object} [attrs]
      * @return HTMLElement
      */
-    createButton({content, className, tagName='button'}){
+    createButton({content, className, tagName='button', attrs={}}){
         let _content = typeof content === 'function' ? content(this.dp) : content;
 
         return createElement({
             tagName,
             innerHtml: `<span tabindex='-1'>${_content}</span>`,
-            className: classNames('air-datepicker-button', className)
+            className: classNames('air-datepicker-button', className),
+            attrs
         });
     }
 
