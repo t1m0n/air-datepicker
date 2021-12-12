@@ -80,7 +80,7 @@ function Methods({} = {}) {
                                             definition={'apiSelectDateSilent'}
                                             definitionValues={{
                                                 trueField,
-                                                onSelectLink: <Link href={'/docs#onSelect'}>onSelect()</Link>
+                                                onSelectLink: <Link href={'/docs?scrollTo=onSelect'}>onSelect()</Link>
                                             }}
                                         />
                                     </Param.List>

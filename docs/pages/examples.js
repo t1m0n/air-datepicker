@@ -385,10 +385,10 @@ export default function Examples() {
                                 <AirDatepicker
                                     inline
                                     selectedDates={new Date(today.getFullYear(), today.getMonth(), 10)}
-                                    onRenderCell={({date, type}) => {
+                                    onRenderCell={({date, cellType}) => {
                                         let dates = [1, 5, 7, 10, 15, 20, 25],
                                             emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
-                                            isDay = type === 'day',
+                                            isDay = cellType === 'day',
                                             _date = date.getDate(),
                                             shouldChangeContent = isDay && dates.includes(_date),
                                             randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
