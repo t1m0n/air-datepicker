@@ -286,7 +286,7 @@ function Docs({} = {}) {
                                 <Param name={'dynamicRange'} type={'boolean'} defaultValue={'true'}>
                                     <Paragraph id={'optsDynamicRange'} values={{trueField}} />
                                 </Param>
-                                <Param name={'buttons'} type={'string | string[] | object[]'} defaultValue={'false'}>
+                                <Param name={'buttons'} type={'string | string[] | object | object[] | false'} defaultValue={'false'}>
                                     <Paragraph id={'optsButtons'} />
                                     <Paragraph id={'optsButtons2'} />
                                     <DList>

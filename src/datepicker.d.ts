@@ -13,6 +13,15 @@ export declare type AirDatepickerLocale = {
     firstDay: 0 | 1 | 2 | 3 | 4 | 5 | 6,
 }
 
+export declare type AirDatepickerButton = {
+    content: string | ((dp: AirDatepicker) => string),
+    tagName?: keyof HTMLElementTagNameMap,
+    className?: string,
+    attrs?: Record<string, string>
+}
+
+export declare type AirDatepickerButtonPresets = 'clear' | 'today';
+
 export declare type AirDatepickerPosition = 'left' | 'left top' | 'left bottom' | 'top' | 'top left' | 'top right' | 'right' | 'right top' | 'right bottom' | 'bottom' | 'bottom left' | 'bottom right';
 export declare type AirDatepickerViews = 'days' | 'months' | 'years';
 export declare type AirDatepickerViewsSingle = 'day' | 'month' | 'year';
@@ -65,7 +74,7 @@ export declare type AirDatepickerOptions = {
     multipleDatesSeparator: string,
     range: boolean,
     dynamicRange: boolean,
-    buttons: boolean,
+    buttons: AirDatepickerButtonPresets | AirDatepickerButton | (AirDatepickerButtonPresets| AirDatepickerButton)[] | false,
     monthsField: keyof AirDatepickerLocale,
     showEvent: string,
     autoClose: boolean,

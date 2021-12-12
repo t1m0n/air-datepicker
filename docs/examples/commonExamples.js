@@ -177,10 +177,11 @@ export let optsDateFormatFunc =
 })`
 
 export let optsButtonsShape =
-`type ButtonShape = {
+`ButtonShape = {
     content: string | (dpInstance) => string
     tagName?: string
     className?: string
+    attrs?: object
     onClick?: (dpInstance) => void
 }
 `

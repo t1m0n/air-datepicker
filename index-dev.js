@@ -16,7 +16,7 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
-    visible: false,
+    visible: true,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
@@ -32,13 +32,24 @@ let opts = {
     onChangeView(view) {
         // console.log(dp1.getCell('2021-01-01', 'month'))
     },
-    onSelect({date}) {
-        console.log('select', date);
+    onSelect({date, formattedDate, datepicker}) {
+
     },
-    buttons: ['clear'],
-    // dateFormat(d) {
-    //     return d.toLocaleString();
-    // },
+    buttons: {
+        content: 'suka'
+    },
+    multipleDates: false,
+    dateFormat(d) {
+        // console.log(d);
+        return d.toLocaleString();
+        // if (d.length > 3) {
+        //     return  'выбрано '
+        // }
+        // console.log('date format', d);
+        // return d.map(d => {
+        //     return d.toLocaleDateString();
+        // })
+    },
     // onRenderCell({type}) {
     //     console.log('render', type);
     // },
