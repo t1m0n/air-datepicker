@@ -148,37 +148,40 @@ export default function Examples() {
                                     }}
                                 />
                                 <Example>
-                                    <div className={css.positionScroll}>
-                                        <div className={css.positionContainer} id='custom-position-container'>
-                                            <AirDatepicker
-                                                container={'#custom-position-container'}
-                                                visible
-                                                position={({$datepicker, $target, $pointer, done}) => {
-                                                    let popper = createPopper($target, $datepicker, {
-                                                        placement: 'top',
-                                                        modifiers: [
-                                                            {
-                                                                name: 'offset',
-                                                                options: {
-                                                                    offset: [0, 20]
-                                                                }
+                                    <div className={css.positionContainer}>
+                                        <AirDatepicker
+                                            visible
+                                            position={({$datepicker, $target, $pointer, done}) => {
+                                                let popper = createPopper($target, $datepicker, {
+                                                    placement: 'top',
+                                                    modifiers: [
+                                                        {
+                                                            name: 'flip',
+                                                            options: {
+                                                                padding: {top: 64}
                                                             },
-                                                            {
-                                                                name: 'arrow',
-                                                                options: {
-                                                                    element: $pointer
-                                                                }
+                                                        },
+                                                        {
+                                                            name: 'offset',
+                                                            options: {
+                                                                offset: [0, 20]
                                                             }
-                                                        ]
-                                                    })
+                                                        },
+                                                        {
+                                                            name: 'arrow',
+                                                            options: {
+                                                                element: $pointer
+                                                            }
+                                                        }
+                                                    ]
+                                                })
 
-                                                    return () => {
-                                                        popper.destroy();
-                                                        done();
-                                                    }
-                                                }}
-                                            />
-                                        </div>
+                                                return () => {
+                                                    popper.destroy();
+                                                    done();
+                                                }
+                                            }}
+                                        />
                                     </div>
                                     <Code>
                                         {code.popperjsPosition(messages)}

@@ -9,13 +9,13 @@
 }
 
 .positionScroll {
-  height: 500px;
+  height: 600px;
   overflow: auto;
   @include scrollbars();
 }
 
 .positionContainer {
-  height: 800px;
+  height: 600px;
   display: flex;
   position: relative;
   padding-top: 290px;
