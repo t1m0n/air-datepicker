@@ -45,7 +45,7 @@ function buildDatepickersContainer(id) {
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.0.1'
+    static version = '3.1.0'
     static defaultContainerId = 'air-datepicker-global-container'
     constructor(el, opts) {
         this.$el = getEl(el);
@@ -680,7 +680,7 @@ export default class Datepicker {
         this.$container.removeChild(this.$datepicker);
     }
 
-    setPosition = (position) => {
+    setPosition = (position, isViewChange = false) => {
         position = position || this.opts.position;
 
         if (typeof position === 'function') {
@@ -688,6 +688,7 @@ export default class Datepicker {
                 $datepicker: this.$datepicker,
                 $target: this.$el,
                 $pointer: this.$pointer,
+                isViewChange,
                 done: this._finishHide
             });
             return;
@@ -979,7 +980,7 @@ export default class Datepicker {
 
         this.currentView = view;
 
-        if (this.elIsInput && this.visible) this.setPosition();
+        if (this.elIsInput && this.visible) this.setPosition(undefined, true);
 
         // Trigger inner event before new view is inited, to avoid multiple render calls in datepicker body
         this.trigger(consts.eventChangeCurrentView, view);

@@ -21,9 +21,9 @@ let opts = {
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
-    // isMobile: true,
+    isMobile: false,
     // timepicker: true,
-    autoClose: true,
+    autoClose: false,
     // position: customPosition,
     // position: 'right center',
     // position: manualPosition,
@@ -34,9 +34,6 @@ let opts = {
     },
     onSelect({date, formattedDate, datepicker}) {
 
-    },
-    buttons: {
-        content: 'suka'
     },
     multipleDates: false,
     dateFormat(d) {
@@ -71,7 +68,7 @@ function manualPosition({$datepicker, $target, $pointer, done}) {
 
 }
 
-function customPosition({$datepicker, $target, $pointer, done}){
+function customPosition({$datepicker, $target, $pointer, isViewChange, done}){
     let popper = createPopper($target, $datepicker, {
         placement: 'bottom',
         onFirstUpdate: state => {
@@ -79,12 +76,15 @@ function customPosition({$datepicker, $target, $pointer, done}){
 
             $datepicker.style.transformOrigin = 'center top';
 
+            if (!isViewChange) {
+
             anime({
                 targets: $datepicker,
                 opacity: [0, 1],
                 rotateX: [-90, 0],
                 easing: 'spring(1.3, 80, 5, 0)',
             })
+            }
         },
         modifiers: [
             {

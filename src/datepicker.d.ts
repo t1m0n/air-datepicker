@@ -17,7 +17,8 @@ export declare type AirDatepickerButton = {
     content: string | ((dp: AirDatepicker) => string),
     tagName?: keyof HTMLElementTagNameMap,
     className?: string,
-    attrs?: Record<string, string>
+    attrs?: Record<string, string>,
+    onClick?: (dp: AirDatepicker) => void
 }
 
 export declare type AirDatepickerButtonPresets = 'clear' | 'today';
@@ -33,11 +34,13 @@ export declare type AirDatepickerPositionCallback = (
         $datepicker,
         $target,
         $pointer,
+        isViewChange,
         done
     }: {
         $datepicker: HTMLDivElement,
         $target: HTMLInputElement,
         $pointer: HTMLElement,
+        isViewChange: boolean,
         done: () => void
     }) => void | (() => void)
 

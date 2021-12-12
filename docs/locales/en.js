@@ -125,6 +125,7 @@ export default {
     optsPosition$datepicker: 'calendar element',
     optsPosition$target: 'target element on which calendar is initialized',
     optsPosition$pointer: 'an arrow pointing to the target element',
+    optsPositionIsViewChange: 'since the calendar is also positioned during the view change, this field allows you to determine at what point the function is called - when calendar appears or when switching from one view to another',
     optsPositionDone: 'the function that should be called at the end, in case of manual handling of hiding the calendar',
     optsPosition4: 'If manual processing of calendar hiding is required, then you can return the function from {position} - it will be called when {hide} is triggered - upon completion of processing, do not forget to call the {done} function to complete the hiding process.',
     optsPosition5: 'Example of manual positioning:',

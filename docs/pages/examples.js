@@ -203,15 +203,15 @@ export default function Examples() {
                                         <AirDatepicker
                                             placeholder={messages.showMeAnimation}
                                             container={`.${css.animeContainer}`}
-                                            position={({$datepicker, $target, $pointer, done}) => {
+                                            position={({$datepicker, $target, $pointer, isViewChange, done}) => {
                                                 let popper = createPopper($target, $datepicker, {
                                                     placement: 'bottom',
                                                     onFirstUpdate: state => {
-                                                        anime.remove($datepicker);
+                                                        !isViewChange && anime.remove($datepicker);
 
                                                         $datepicker.style.transformOrigin = 'center top';
 
-                                                        anime({
+                                                        !isViewChange && anime({
                                                             targets: $datepicker,
                                                             opacity: [0, 1],
                                                             rotateX: [-90, 0],

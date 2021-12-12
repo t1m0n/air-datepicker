@@ -198,6 +198,7 @@ function Docs({} = {}) {
                                         <Param name='$datepicker' type={'HTMLDivElement'} definition={'optsPosition$datepicker'} />
                                         <Param name='$target' type='HTMLInputElement' definition={'optsPosition$target'} />
                                         <Param name='$pointer' type='HTMLElement' definition={'optsPosition$pointer'} />
+                                        <Param name='isViewChange' type='boolean' definition={'optsPositionIsViewChange'} />
                                         <Param name='done' type='() => void' definition={'optsPositionDone'} />
                                     </Param.List>
                                     <Paragraph id='optsPosition4' values={{
