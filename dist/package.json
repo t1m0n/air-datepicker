@@ -1,6 +1,6 @@
 {
   "name": "air-datepicker",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "scripts": {
     "dev": "set NODE_ENV=development&& webpack",
     "dev:serve": "npm run browser&& set NODE_ENV=development&& webpack serve",
@@ -16,7 +16,9 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-private-methods": "^7.14.5",
     "@babel/preset-env": "^7.9.6",
+    "@popperjs/core": "^2.10.2",
     "@testing-library/jest-dom": "^5.11.10",
+    "animejs": "^3.2.1",
     "autoprefixer": "^6.7.7",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",

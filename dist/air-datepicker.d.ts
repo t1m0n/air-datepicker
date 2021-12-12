@@ -13,12 +13,36 @@ export declare type AirDatepickerLocale = {
     firstDay: 0 | 1 | 2 | 3 | 4 | 5 | 6,
 }
 
+export declare type AirDatepickerButton = {
+    content: string | ((dp: AirDatepicker) => string),
+    tagName?: keyof HTMLElementTagNameMap,
+    className?: string,
+    attrs?: Record<string, string>,
+    onClick?: (dp: AirDatepicker) => void
+}
+
+export declare type AirDatepickerButtonPresets = 'clear' | 'today';
+
 export declare type AirDatepickerPosition = 'left' | 'left top' | 'left bottom' | 'top' | 'top left' | 'top right' | 'right' | 'right top' | 'right bottom' | 'bottom' | 'bottom left' | 'bottom right';
 export declare type AirDatepickerViews = 'days' | 'months' | 'years';
 export declare type AirDatepickerViewsSingle = 'day' | 'month' | 'year';
 export declare type AirDatepickerDate = string | number | Date;
 export declare type AirDatepickerNavEntry = string | ((dp: AirDatepicker) => string);
 export declare type AirDatepickerDecade = [number, number];
+export declare type AirDatepickerPositionCallback = (
+    {
+        $datepicker,
+        $target,
+        $pointer,
+        isViewChange,
+        done
+    }: {
+        $datepicker: HTMLDivElement,
+        $target: HTMLInputElement,
+        $pointer: HTMLElement,
+        isViewChange: boolean,
+        done: () => void
+    }) => void | (() => void)
 
 export declare type AirDatepickerOptions = {
     classes: string
@@ -26,6 +50,8 @@ export declare type AirDatepickerOptions = {
     locale: Partial<AirDatepickerLocale>,
     startDate: AirDatepickerDate,
     firstDay: number,
+    isMobile: boolean,
+    visible: boolean,
     weekends: [number, number],
     dateFormat: string | ((d: Date) => string),
     altField: AirDatepickerSelector,
@@ -34,7 +60,7 @@ export declare type AirDatepickerOptions = {
     keyboardNav: boolean,
     selectedDates: AirDatepickerDate[] | false,
     container: AirDatepickerSelector,
-    position: AirDatepickerPosition,
+    position: AirDatepickerPosition | AirDatepickerPositionCallback,
     offset: number,
     view: AirDatepickerViews,
     minView: AirDatepickerViews,
@@ -51,7 +77,7 @@ export declare type AirDatepickerOptions = {
     multipleDatesSeparator: string,
     range: boolean,
     dynamicRange: boolean,
-    buttons: boolean,
+    buttons: AirDatepickerButtonPresets | AirDatepickerButton | (AirDatepickerButtonPresets| AirDatepickerButton)[] | false,
     monthsField: keyof AirDatepickerLocale,
     showEvent: string,
     autoClose: boolean,
@@ -73,10 +99,10 @@ export declare type AirDatepickerOptions = {
     hoursStep: number,
     minutesStep: number,
 
-    onSelect: ({date, formattedDate, dp}: {date: Date | Date[], formattedDate: string | string[], dp: AirDatepicker}) => void,
+    onSelect: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker}) => void,
     onChangeViewDate: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
     onChangeView: (view: AirDatepickerViews) => void,
-    onRenderCell: ({date, type, dp}: {date: Date, type: AirDatepickerViewsSingle, dp: AirDatepicker}) => ({
+    onRenderCell: ({date, cellType, datepicker}: {date: Date, cellType: AirDatepickerViewsSingle, datepicker: AirDatepicker}) => ({
         disabled?: boolean,
         classes?: string,
         html?: string
@@ -93,7 +119,7 @@ declare class AirDatepicker {
     hide: () => void
     next: () => void
     prev: () => void
-    selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime: boolean, silent: boolean}) => void
+    selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime?: boolean, silent?: boolean}) => void
     unselectDate: (date: AirDatepickerDate) => void
     clear: () => void
     formatDate: (date: AirDatepickerDate, format: string) => void
@@ -101,7 +127,7 @@ declare class AirDatepicker {
     update: (newOpts: Partial<AirDatepickerOptions>) => void
     setCurrentView: (newView: AirDatepickerViews) => void
     setViewDate: (newViewDate: AirDatepickerDate) => void
-    setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition: boolean}) => void
+    setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition?: boolean}) => void
     up: (date?: AirDatepickerDate) => void
     down: (date?: AirDatepickerDate) => void
 
