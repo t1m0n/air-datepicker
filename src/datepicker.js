@@ -1017,11 +1017,11 @@ export default class Datepicker {
      * @return {HTMLElement | null}
      */
     getCell(cellDate, cellType = consts.day) {
-        date = createDate(cellDate);
+        cellDate = createDate(cellDate);
 
-        if (!(date instanceof Date)) return;
+        if (!(cellDate instanceof Date)) return;
 
-        let {year, month, date} = getParsedDate(date);
+        let {year, month, date} = getParsedDate(cellDate);
 
         let yearQuery = `[data-year="${year}"]`,
             monthQuery = `[data-month="${month}"]`,
@@ -1203,7 +1203,7 @@ export default class Datepicker {
             targetDate = today;
         }
 
-        let $cell = this.getCell(targetDate);
+        let $cell = this.getCell(targetDate, this.currentViewSingular);
         let cell = $cell && $cell.adpCell;
 
         if (cell && cell.isDisabled) return;
@@ -1253,6 +1253,10 @@ export default class Datepicker {
 
     get parsedViewDate() {
         return getParsedDate(this.viewDate);
+    }
+
+    get currentViewSingular() {
+        return this.currentView.slice(0, -1);
     }
 
     get curDecade() {
