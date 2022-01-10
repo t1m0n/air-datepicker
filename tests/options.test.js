@@ -6,6 +6,7 @@ import de from 'locale/de';
 import consts from 'consts';
 
 let $input, $altInput, dp, $datepicker;
+const DAY =  1000 * 60 * 60 * 24;
 
 beforeAll(() => {
     $input = document.createElement('input');
@@ -462,6 +463,21 @@ describe('OPTIONS TESTS', () => {
             });
 
             dp.selectDate(new Date());
+
+            expect(dp.visible).toBe(false);
+        });
+
+        it('should hide datepicker when range mode is true', () => {
+            init({
+                autoClose: true,
+                range: true,
+            });
+
+            let date1 = new Date();
+            let date2 = new Date(date1.getTime() + DAY);
+
+            dp.selectDate(date1);
+            dp.selectDate(date2);
 
             expect(dp.visible).toBe(false);
         });

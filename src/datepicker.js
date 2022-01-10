@@ -550,7 +550,7 @@ export default class Datepicker {
         if (autoClose && !this.timepickerIsActive && this.visible) {
             if (!multipleDates && !range) {
                 this.hide();
-            } else if (range && selectedDaysLen === 2) {
+            } else if (range && selectedDaysLen === 1) {
                 this.hide();
             }
         }
