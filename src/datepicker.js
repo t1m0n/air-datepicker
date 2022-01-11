@@ -641,7 +641,7 @@ export default class Datepicker {
         }
     }
 
-    hide() {
+    hide(cb) {
         let {onHide, isMobile} = this.opts;
         let hasTransition = this._hasTransition();
 
@@ -665,12 +665,13 @@ export default class Datepicker {
                 (!isAnimationCompleted && !hasTransition))
             ) {
                 this._finishHide();
+                cb && cb();
             }
             onHide && onHide(isAnimationCompleted);
         });
 
-        if (isMobile) {
-            $datepickerOverlay.classList.remove('-active-');
+        if (isMobile || this.overlayIsVisible) {
+            this._hideOverlay();
         }
     }
 
@@ -1050,6 +1051,10 @@ export default class Datepicker {
             this._removeMobileAttributes();
         }
 
+        if ($datepickerOverlay) {
+            parent.removeChild($datepickerOverlay);
+        }
+
         if (this.keyboardNav) {
             this.keyboardNav.destroy();
         }
@@ -1124,7 +1129,13 @@ export default class Datepicker {
             }
             this._addMobileAttributes();
         } else if (prevOpts.isMobile && !isMobile) {
-            this._removeMobileAttributes();
+            if (this.visible) {
+                this.hide(() => {
+                    this._removeMobileAttributes();
+                });
+            } else {
+                this._removeMobileAttributes();
+            }
         }
 
         if (!shouldUpdateDOM) return;
@@ -1133,6 +1144,12 @@ export default class Datepicker {
         this.views[this.currentView].render();
         if (this.currentView === consts.days) {
             this.views[this.currentView].renderDayNames();
+        }
+    }
+
+    _hideOverlay() {
+        if ($datepickerOverlay) {
+            $datepickerOverlay.classList.remove('-active-');
         }
     }
 
@@ -1250,6 +1267,10 @@ export default class Datepicker {
 
     //  Helpers
     // -------------------------------------------------
+
+    get overlayIsVisible() {
+        return $datepickerOverlay && $datepickerOverlay.classList.contains('-active-');
+    }
 
     get parsedViewDate() {
         return getParsedDate(this.viewDate);
