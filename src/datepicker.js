@@ -330,6 +330,7 @@ export default class Datepicker {
         this.$el.addEventListener('blur', this._onBlur);
         this.$datepicker.addEventListener('mousedown', this._onMouseDown);
         this.$datepicker.addEventListener('mouseup', this._onMouseUp);
+        window.addEventListener('resize', this._onResize);
     }
 
     _limitViewDateByMaxMinDates() {
@@ -1047,6 +1048,7 @@ export default class Datepicker {
 
         this.$el.removeEventListener(showEvent, this._onFocus);
         this.$el.removeEventListener('blur', this._onBlur);
+        window.removeEventListener('resize', this._onResize);
         if (isMobile) {
             this._removeMobileAttributes();
         }
@@ -1241,6 +1243,12 @@ export default class Datepicker {
     _onMouseUp = (e) => {
         this.inFocus = false;
         this.$el.focus();
+    }
+
+    _onResize = () => {
+        if (this.visible && typeof this.opts.position !== 'function') {
+            this.setPosition();
+        }
     }
 
     _onClickOverlay = () => {
