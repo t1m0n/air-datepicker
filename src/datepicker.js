@@ -818,7 +818,8 @@ export default class Datepicker {
         let dates = [],
             formattedDates = [],
             datepicker = this,
-            {selectedDates, locale, opts: {onSelect, multipleDates}} = datepicker,
+            {selectedDates, locale, opts: {onSelect, multipleDates, range}} = datepicker,
+            isMultiple = multipleDates || range,
             formatIsFunction = typeof locale.dateFormat === 'function';
 
         if (selectedDates.length) {
@@ -831,8 +832,8 @@ export default class Datepicker {
         }
 
         onSelect({
-            date: multipleDates ? dates : dates[0],
-            formattedDate: multipleDates ? formattedDates : formattedDates[0],
+            date: isMultiple ? dates : dates[0],
+            formattedDate: isMultiple ? formattedDates : formattedDates[0],
             datepicker
         });
     }

@@ -4,9 +4,9 @@ import {isSameDate} from 'utils';
 import en from 'locale/en';
 import de from 'locale/de';
 import consts from 'consts';
+import {DAY} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
-const DAY =  1000 * 60 * 60 * 24;
 
 beforeAll(() => {
     $input = document.createElement('input');
