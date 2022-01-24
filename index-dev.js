@@ -21,7 +21,7 @@ let opts = {
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
-    isMobile: true,
+    isMobile: window.matchMedia(`(max-width: 1024px)`).matches,
     // timepicker: true,
     autoClose: false,
     // position: customPosition,
@@ -142,6 +142,14 @@ $btnUpdate.addEventListener('click', () => {
     })
     toggle = !toggle;
 })
+
+window.addEventListener('resize', () => {
+    const {matches} = window.matchMedia(`(max-width: 1024px)`);
+
+    dp1.update({
+        isMobile: matches
+    })
+}, false);
 
 $btnAction.addEventListener('click', () => {
     dp1.selectDate(new Date(), {silent: true});
