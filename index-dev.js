@@ -47,9 +47,8 @@ let opts = {
         //     return d.toLocaleDateString();
         // })
     },
-    // onRenderCell({type}) {
-    //     console.log('render', type);
-    // },
+    onRenderCell(cell) {
+    },
     // visible: true
 }
 
