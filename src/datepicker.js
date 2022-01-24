@@ -638,7 +638,7 @@ export default class Datepicker {
         }
 
         if (isMobile) {
-            $datepickerOverlay.classList.add('-active-');
+            this._showMobileOverlay();
         }
     }
 
@@ -1126,6 +1126,9 @@ export default class Datepicker {
                 this._createMobileOverlay();
             }
             this._addMobileAttributes();
+            if (this.visible) {
+                this._showMobileOverlay();
+            }
         } else if (prevOpts.isMobile && !isMobile) {
             this._removeMobileAttributes();
 
@@ -1144,6 +1147,10 @@ export default class Datepicker {
         if (this.currentView === consts.days) {
             this.views[this.currentView].renderDayNames();
         }
+    }
+
+    _showMobileOverlay() {
+        $datepickerOverlay.classList.add('-active-');
     }
 
     _hasTransition() {

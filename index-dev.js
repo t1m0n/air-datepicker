@@ -16,12 +16,12 @@ let mDate = new Date();
 let opts = {
     // minDate: Date.now(),
     inline: false,
-    visible: true,
+    visible: false,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
     // container: '.container',
-    isMobile: window.matchMedia(`(max-width: 1024px)`).matches,
+    isMobile: false,
     // timepicker: true,
     autoClose: false,
     // position: customPosition,
@@ -142,14 +142,6 @@ $btnUpdate.addEventListener('click', () => {
     })
     toggle = !toggle;
 })
-
-window.addEventListener('resize', () => {
-    const {matches} = window.matchMedia(`(max-width: 1024px)`);
-
-    dp1.update({
-        isMobile: matches
-    })
-}, false);
 
 $btnAction.addEventListener('click', () => {
     dp1.selectDate(new Date(), {silent: true});
