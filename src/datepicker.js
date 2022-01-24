@@ -1128,6 +1128,13 @@ export default class Datepicker {
             this._addMobileAttributes();
         } else if (prevOpts.isMobile && !isMobile) {
             this._removeMobileAttributes();
+
+            if (this.visible) {
+                $datepickerOverlay.classList.remove('-active-');
+                if (typeof this.opts.position !== 'function') {
+                    this.setPosition();
+                }
+            }
         }
 
         if (!shouldUpdateDOM) return;
