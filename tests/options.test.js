@@ -361,9 +361,12 @@ describe('OPTIONS TESTS', () => {
             expect($datepicker.querySelector('[data-action="prev"]')).not.toHaveClass('-disabled-');
         });
         test('"prev" button should be disabled in months view', () => {
+            let minDate = new Date('2021-06-27');
+
             init({
+                startDate: minDate,
                 view: 'months',
-                minDate: new Date('2021-06-27'),
+                minDate,
             });
 
             expect($datepicker.querySelector('[data-action="prev"]')).toHaveClass('-disabled-');

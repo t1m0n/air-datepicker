@@ -97,6 +97,7 @@ describe('EVENTS TEST', () => {
                 formattedDate;
 
             init({
+                visible: true,
                 multipleDates: true,
                 onSelect(data) {
                     date = data.date;
@@ -140,6 +141,7 @@ describe('EVENTS TEST', () => {
                 datepicker;
 
             init({
+                visible: true,
                 onRenderCell(data) {
                     date = data.date;
                     cellType = data.cellType;
