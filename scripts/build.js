@@ -10,6 +10,7 @@ const writeFile = util.promisify(fs.writeFile);
 const rimraf = require('rimraf');
 const copyPackageFiles = require('./copyPackageFiles');
 const generateLocaleTypes = require('./generateLocaleTypes');
+const updateVersion = require('./updateVersion');
 
 let babelConfig = path.resolve(__dirname, '../babel.config.js');
 let srcPath = path.resolve('./src');
@@ -34,6 +35,13 @@ async function run() {
     fs.mkdirSync(distPath);
 
     try {
+        await updateVersion();
+        log.success('Version updated successfully');
+    } catch (e) {
+        log.error('Error while updating version');
+    }
+
+    try {
         await execAsync('set NODE_ENV="production"&& webpack');
         log.success('Bundle compiled successfully');
     } catch (e) {
@@ -56,7 +64,7 @@ async function run() {
 
     try {
         await generateLocaleTypes();
-        log.success('Localization types are generated')
+        log.success('Localization types are generated');
     } catch (e) {
         log.error(`Error while generating types for locale files: ${e}`,);
     }
@@ -66,7 +74,7 @@ async function run() {
             path.join(distPath, 'index.es.js'),
             'import AirDatepicker from \'./air-datepicker\';\nexport default AirDatepicker'
         );
-        log.success('ES module file created')
+        log.success('ES module file created');
     } catch (e) {
         log.error('Could not create ES index file');
     }
