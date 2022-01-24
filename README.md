@@ -26,19 +26,15 @@ new AirDatepicker('#el' [, options]);
 
 ## Recent updates
 
-### 3.1.0
-* added lazy rendering - now inner components of datepicker will be created only when it will be visible, and will be destroyed when datepicker is hidden
-* improved `position` - now it can be function which allows you to perform advanced positioning using third-party libraries such as [popperjs](https://popper.js.org/) or manually
-* added `isMobile` option, which allows showing Air Datepicker as modal window on mobile devices
-* added `visiblie` option, if it is set to `true` then calendar will be visible at the start
-* changed `dateFormat` - as function it now handles all dates at once, instead of each date separately
-* fixed field names in `onSelect` and `onRenderCell` options: `type` -> `cellType`, `dp` -> `datepicker`
-* fixed typings
-* fixed `closet` function, thanks to [@hreyeslo](https://github.com/hreyeslo) in [#445](https://github.com/t1m0n/air-datepicker/pull/445)
-* added Turkish locale, thanks to [@ozkanozcan](https://github.com/ozkanozcan) in [#447](https://github.com/t1m0n/air-datepicker/pull/447)
-* added opportunity to set attributes when creating custom buttons, thanks to [@khidirbekov](https://github.com/khidirbekov) in [#448](https://github.com/t1m0n/air-datepicker/pull/448)
-* added Thai locale, thanks to [@boatkung](https://github.com/boatkung) in [#453](https://github.com/t1m0n/air-datepicker/pull/453)
- 
+### v3.1.1
+* fixed css compilation, [#461](https://github.com/t1m0n/air-datepicker/issues/461)
+* fixed `autoClose` when range mode is on, [#466](https://github.com/t1m0n/air-datepicker/issues/466)
+* fixed `onSelect` when range mode is on. Now it accepts array of selected dates instead of single one [#467](https://github.com/t1m0n/air-datepicker/issues/467)
+* fixed transition between `isMobile` mode on and off [#470](https://github.com/t1m0n/air-datepicker/issues/470)
+* added position update when resizing window [#472](https://github.com/t1m0n/air-datepicker/issues/472)
+* added Sinhala locale, thanks to [nimeshc64](https://github.com/nimeshc64) in [#464](https://github.com/t1m0n/air-datepicker/pull/464)
+* fixed French locale, thanks to [matschik](https://github.com/matschik) in [#465](https://github.com/t1m0n/air-datepicker/pull/465)
+* added Ukrainian locale, thanks to [zaandr](https://github.com/zaandr) in [#471](https://github.com/t1m0n/air-datepicker/pull/471)
 
 
 ## Version 3.0.0 highlights

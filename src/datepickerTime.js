@@ -63,6 +63,7 @@ export default class DatepickerTime {
         addEventListener(this.$ranges, 'mouseenter', this.onMouseEnterLeave);
         addEventListener(this.$ranges, 'mouseleave', this.onMouseEnterLeave);
         addEventListener(this.$ranges, 'focus', this.onFocus);
+        addEventListener(this.$ranges, 'mousedown', this.onFocus);
         addEventListener(this.$ranges, 'blur', this.onBlur);
     }
 

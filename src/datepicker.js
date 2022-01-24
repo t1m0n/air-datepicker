@@ -330,6 +330,7 @@ export default class Datepicker {
         this.$el.addEventListener('blur', this._onBlur);
         this.$datepicker.addEventListener('mousedown', this._onMouseDown);
         this.$datepicker.addEventListener('mouseup', this._onMouseUp);
+        window.addEventListener('resize', this._onResize);
     }
 
     _limitViewDateByMaxMinDates() {
@@ -550,7 +551,7 @@ export default class Datepicker {
         if (autoClose && !this.timepickerIsActive && this.visible) {
             if (!multipleDates && !range) {
                 this.hide();
-            } else if (range && selectedDaysLen === 2) {
+            } else if (range && selectedDaysLen === 1) {
                 this.hide();
             }
         }
@@ -637,7 +638,7 @@ export default class Datepicker {
         }
 
         if (isMobile) {
-            $datepickerOverlay.classList.add('-active-');
+            this._showMobileOverlay();
         }
     }
 
@@ -818,7 +819,8 @@ export default class Datepicker {
         let dates = [],
             formattedDates = [],
             datepicker = this,
-            {selectedDates, locale, opts: {onSelect, multipleDates}} = datepicker,
+            {selectedDates, locale, opts: {onSelect, multipleDates, range}} = datepicker,
+            isMultiple = multipleDates || range,
             formatIsFunction = typeof locale.dateFormat === 'function';
 
         if (selectedDates.length) {
@@ -831,8 +833,8 @@ export default class Datepicker {
         }
 
         onSelect({
-            date: multipleDates ? dates : dates[0],
-            formattedDate: multipleDates ? formattedDates : formattedDates[0],
+            date: isMultiple ? dates : dates[0],
+            formattedDate: isMultiple ? formattedDates : formattedDates[0],
             datepicker
         });
     }
@@ -1017,11 +1019,11 @@ export default class Datepicker {
      * @return {HTMLElement | null}
      */
     getCell(cellDate, cellType = consts.day) {
-        date = createDate(cellDate);
+        cellDate = createDate(cellDate);
 
-        if (!(date instanceof Date)) return;
+        if (!(cellDate instanceof Date)) return;
 
-        let {year, month, date} = getParsedDate(date);
+        let {year, month, date} = getParsedDate(cellDate);
 
         let yearQuery = `[data-year="${year}"]`,
             monthQuery = `[data-month="${month}"]`,
@@ -1046,6 +1048,7 @@ export default class Datepicker {
 
         this.$el.removeEventListener(showEvent, this._onFocus);
         this.$el.removeEventListener('blur', this._onBlur);
+        window.removeEventListener('resize', this._onResize);
         if (isMobile) {
             this._removeMobileAttributes();
         }
@@ -1123,8 +1126,18 @@ export default class Datepicker {
                 this._createMobileOverlay();
             }
             this._addMobileAttributes();
+            if (this.visible) {
+                this._showMobileOverlay();
+            }
         } else if (prevOpts.isMobile && !isMobile) {
             this._removeMobileAttributes();
+
+            if (this.visible) {
+                $datepickerOverlay.classList.remove('-active-');
+                if (typeof this.opts.position !== 'function') {
+                    this.setPosition();
+                }
+            }
         }
 
         if (!shouldUpdateDOM) return;
@@ -1134,6 +1147,10 @@ export default class Datepicker {
         if (this.currentView === consts.days) {
             this.views[this.currentView].renderDayNames();
         }
+    }
+
+    _showMobileOverlay() {
+        $datepickerOverlay.classList.add('-active-');
     }
 
     _hasTransition() {
@@ -1203,7 +1220,7 @@ export default class Datepicker {
             targetDate = today;
         }
 
-        let $cell = this.getCell(targetDate);
+        let $cell = this.getCell(targetDate, this.currentViewSingular);
         let cell = $cell && $cell.adpCell;
 
         if (cell && cell.isDisabled) return;
@@ -1242,6 +1259,12 @@ export default class Datepicker {
         this.$el.focus();
     }
 
+    _onResize = () => {
+        if (this.visible && typeof this.opts.position !== 'function') {
+            this.setPosition();
+        }
+    }
+
     _onClickOverlay = () => {
         if (this.visible) {
             this.hide();
@@ -1253,6 +1276,10 @@ export default class Datepicker {
 
     get parsedViewDate() {
         return getParsedDate(this.viewDate);
+    }
+
+    get currentViewSingular() {
+        return this.currentView.slice(0, -1);
     }
 
     get curDecade() {

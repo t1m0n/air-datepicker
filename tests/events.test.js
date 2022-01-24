@@ -4,6 +4,7 @@ import {isSameDate} from 'utils';
 import en from 'locale/en';
 import de from 'locale/de';
 import consts from 'consts';
+import {DAY} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
 
@@ -62,6 +63,70 @@ describe('EVENTS TEST', () => {
                 expect(date.getTime()).toBe(selectedDate.getTime());
                 expect(formattedDate).toBe(dp.formatDate(selectedDate, format));
                 expect(datepicker).toBeInstanceOf(Datepicker);
+
+                done();
+            });
+        });
+
+        it('should be called with array of dates if range is true', (done) => {
+            let date1 = new Date(),
+                date2 = new Date(date1.getTime() + DAY),
+                date,
+                formattedDate;
+
+            init({
+                range: true,
+                onSelect(data) {
+                    date = data.date;
+                    formattedDate = data.formattedDate;
+                }
+            });
+
+            dp.selectDate([date1, date2]).then(() => {
+                expect(date).toHaveLength(2);
+                expect(formattedDate).toHaveLength(2);
+
+                done();
+            });
+        });
+
+        it('should be called with array of dates if multipleDates is true', (done) => {
+            let date1 = new Date(),
+                date2 = new Date(date1.getTime() + DAY),
+                date,
+                formattedDate;
+
+            init({
+                multipleDates: true,
+                onSelect(data) {
+                    date = data.date;
+                    formattedDate = data.formattedDate;
+                }
+            });
+
+            dp.selectDate([date1, date2]).then(() => {
+                expect(date).toHaveLength(2);
+                expect(formattedDate).toHaveLength(2);
+
+                done();
+            });
+        });
+
+        it('should be called with single date if multipleDates and range are false', (done) => {
+            let date1 = new Date(),
+                date,
+                formattedDate;
+
+            init({
+                onSelect(data) {
+                    date = data.date;
+                    formattedDate = data.formattedDate;
+                }
+            });
+
+            dp.selectDate(date1).then(() => {
+                expect(date).toBeInstanceOf(Date);
+                expect(typeof formattedDate).toBe('string');
 
                 done();
             });

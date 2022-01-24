@@ -4,6 +4,7 @@ import {isSameDate} from 'utils';
 import en from 'locale/en';
 import de from 'locale/de';
 import consts from 'consts';
+import {DAY} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
 
@@ -462,6 +463,21 @@ describe('OPTIONS TESTS', () => {
             });
 
             dp.selectDate(new Date());
+
+            expect(dp.visible).toBe(false);
+        });
+
+        it('should hide datepicker when range mode is true', () => {
+            init({
+                autoClose: true,
+                range: true,
+            });
+
+            let date1 = new Date();
+            let date2 = new Date(date1.getTime() + DAY);
+
+            dp.selectDate(date1);
+            dp.selectDate(date2);
 
             expect(dp.visible).toBe(false);
         });
