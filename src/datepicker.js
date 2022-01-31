@@ -982,7 +982,9 @@ export default class Datepicker {
 
         this.currentView = view;
 
-        if (this.elIsInput && this.visible) this.setPosition(undefined, true);
+        if (this.elIsInput && this.visible) {
+            this.setPosition(undefined, true);
+        }
 
         // Trigger inner event before new view is inited, to avoid multiple render calls in datepicker body
         this.trigger(consts.eventChangeCurrentView, view);
@@ -994,7 +996,9 @@ export default class Datepicker {
                 type: view
             });
 
-            this.$content.appendChild(newView.$el);
+            if (this.shouldUpdateDOM) {
+                this.$content.appendChild(newView.$el);
+            }
         }
 
         // Trigger user event after, to be able to use datepicker api on rendered view
@@ -1273,6 +1277,10 @@ export default class Datepicker {
 
     //  Helpers
     // -------------------------------------------------
+
+    get shouldUpdateDOM() {
+        return this.visible || this.treatAsInline;
+    }
 
     get parsedViewDate() {
         return getParsedDate(this.viewDate);
