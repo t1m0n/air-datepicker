@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+        <title>Air Datepicker - development</title>
+        <style type="text/css">
+
+            body {
+                /*width: 3000px;*/
+
+            }
+            .container  {
+                max-width: 700px;
+                margin: 400px auto;
+                overflow: auto;
+                height: 500px;
+                position: relative;
+            }
+
+            input[type='text'] {
+                width: 300px;
+                height: 32px;
+            }
+
+            .input-wrap {
+                padding: 1px;
+            }
+
+            .air-datepicker.-anime- {
+                left: unset;
+            }
+
+        </style>
+    </head>
+    <body>
+    <div class="dp-custom"></div>
+        <div class="container">
+            <div class='input-wrap'>
+                <input type="text" readonly id="dp1" />
+            </div>
+
+<!--            <div id='dp1' ></div>-->
+
+
+<!--            <div id='dp2' />-->
+
+            <button id='update'>update</button>
+            <button id='destroy'>destory</button>
+            <button id='action'>action</button>
+            <input type='text' id='alt-field' placeholder='alt field'/>
+
+<!--            <input type='text' id='dp2'/>-->
+<!--            <input type='date'/>-->
+        </div>
+    </body>
+</html>

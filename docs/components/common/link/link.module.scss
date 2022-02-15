@@ -1,0 +1,17 @@
+/* -------------------------------------------------
+    Link
+   ------------------------------------------------- */
+
+.el {
+  color: var(--link-color);
+  text-decoration: none;
+  position: relative;
+  border-bottom: 1px solid var(--link-border-color);
+  transition: border-color var(--t-duration) var(--t-easing);
+
+
+  &:hover {
+    border-bottom-color: var(--link-color);
+  }
+}
+

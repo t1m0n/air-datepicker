@@ -1,0 +1,31 @@
+@import "../public/mixins";
+
+/* -------------------------------------------------
+    Examples module
+   ------------------------------------------------- */
+
+.examples {
+
+}
+
+.positionScroll {
+  height: 600px;
+  overflow: auto;
+  @include scrollbars();
+}
+
+.positionContainer {
+  height: 600px;
+  display: flex;
+  position: relative;
+  padding-top: 290px;
+  justify-content: center;
+}
+
+.animeContainer {
+  height: 350px;
+  padding-top: 32px;
+  display: flex;
+  justify-content: center;
+  perspective: 800px;
+}

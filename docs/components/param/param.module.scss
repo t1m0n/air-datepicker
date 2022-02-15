@@ -1,0 +1,95 @@
+@import "public/objects";
+
+/* -------------------------------------------------
+    Param
+   ------------------------------------------------- */
+
+.el {
+
+}
+
+.list {
+  .el {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .nestedList .el {
+    margin-bottom: 14px;
+  }
+}
+
+.nestedList {
+  margin-left: 32px;
+}
+
+.paramRow {
+  display: flex;
+  align-items: baseline;
+  position: relative;
+
+  .nestedList & {
+    display: inline-flex;
+  }
+
+  &:after {
+    @extend %hilitePseudo;
+  }
+}
+
+.type {
+  background: #f1f1f1;
+  display: inline-flex;
+  padding: 0 3px;
+  border-radius: 4px;
+
+  .nestedList & {
+    code {
+      font-size: 12px !important;
+    }
+  }
+}
+
+.paramName {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: .5em;
+
+  .nestedList & {
+    font-size: 1rem;
+    color: #000;
+    text-decoration: underline;
+    font-weight: normal;
+  }
+}
+
+.paramActive {
+  > .paramRow {
+    &:after {
+      animation: blink 1s infinite linear;
+    }
+  }
+}
+
+.defaultValue {
+  margin-left: .5em;
+}
+
+.content {
+
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
