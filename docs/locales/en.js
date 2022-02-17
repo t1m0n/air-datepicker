@@ -222,6 +222,7 @@ export default {
     apiUnselectDate: 'Unselected passed date',
     apiUnselectDateDate: 'date, which should be deleted',
     apiClear: 'Clears all selected dates.',
+    apiClearSilent: 'if {trueField}, then {onSelectLink} will not be called.',
     apiFormatDate: 'Formats date in passed format.',
     apiFormatDateFormat: 'date format, accepts tokens from {dateFormat} option. You could see available tokens in {link}',
     apiFormatDateDate: 'date which must be formatted',

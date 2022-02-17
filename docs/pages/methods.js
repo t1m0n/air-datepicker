@@ -92,8 +92,19 @@ function Methods({} = {}) {
                                     </Param.List>
                                 </Param>
 
-                                <Param name={'clear()'}>
+                                <Param name={'clear(opts)'}>
                                     <Paragraph id={'apiClear'} />
+                                    <Param.List nested>
+                                        <Param
+                                            name={'opts.silent'}
+                                            type={'boolean'}
+                                            definition={'apiClearSilent'}
+                                            definitionValues={{
+                                                trueField,
+                                                onSelectLink: <Link href={'/docs?scrollTo=onSelect'}>onSelect()</Link>
+                                            }}
+                                        />
+                                    </Param.List>
                                 </Param>
                                 <Param name={'formatDate(date, format)'}>
                                     <Paragraph id={'apiFormatDate'} />

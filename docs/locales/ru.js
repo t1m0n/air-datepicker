@@ -222,6 +222,7 @@ export default {
     apiUnselectDate: 'Снимает выбор с переданной даты.',
     apiUnselectDateDate: 'дата, которую нужно удалить',
     apiClear: 'Очищает все выбранные даты.',
+    apiClearSilent: 'если {trueField}, то событие {onSelectLink} не будет вызвано.',
     apiFormatDate: 'Форматирует дату в переданный формат.',
     apiFormatDateFormat: 'формат даты, принимает значения из опции {dateFormat}. Список возможных символов можно посмотреть в {link}',
     apiFormatDateDate: 'дата, которую нужно отформатировать',

@@ -74,4 +74,34 @@ describe('API TESTS', () => {
             ).not.toThrow();
         });
     });
+
+    describe('clear', () => {
+        it('should clear all selected dates', (done) => {
+
+            init();
+
+            dp.selectDate(new Date());
+
+            dp.clear().then(() => {
+                expect(dp.selectedDates).toHaveLength(0);
+                expect(dp.$el.value).toBe('');
+                done();
+            });
+        });
+        it('should not trigger onSelect callback when silent is true', (done) => {
+            let selected = false;
+
+            init({
+                selectedDates: [new Date()],
+                onSelect() {
+                    selected = true;
+                }
+            });
+
+            dp.clear({silent: true}).then(() => {
+                expect(selected).toBe(false);
+                done();
+            });
+        });
+    });
 });

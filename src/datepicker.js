@@ -612,12 +612,20 @@ export default class Datepicker {
         this._updateLastSelectedDate(newDate);
     }
 
-    clear() {
+    /**
+     * Clears all selected dates
+     * @param {boolean} params.silent  - trigger or not user onSelect event
+     */
+    clear(params = {}) {
         this.selectedDates = [];
         this.rangeDateFrom = false;
         this.rangeDateTo = false;
 
-        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate});
+        this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate, silent: params.silent});
+
+        return new Promise((resolve) => {
+            setTimeout(resolve);
+        });
     }
 
     show() {
