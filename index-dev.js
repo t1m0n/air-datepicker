@@ -12,6 +12,7 @@ let $btnUpdate = document.querySelector('#update');
 import anime from 'animejs';
 
 let mDate = new Date();
+let selected = false;
 
 let opts = {
     // minDate: Date.now(),
@@ -24,6 +25,8 @@ let opts = {
     isMobile: false,
     // timepicker: true,
     autoClose: false,
+    range: false,
+    toggleSelected: false,
     // position: customPosition,
     // position: 'right center',
     // position: manualPosition,
@@ -32,8 +35,10 @@ let opts = {
     onChangeView(view) {
         // console.log(dp1.getCell('2021-01-01', 'month'))
     },
+    selectedDates: [new Date()],
     onSelect({date, formattedDate, datepicker}) {
-
+        selected = true;
+        console.log('on select');
     },
     multipleDates: false,
     dateFormat(d) {
@@ -51,6 +56,8 @@ let opts = {
     },
     // visible: true
 }
+
+
 
 function manualPosition({$datepicker, $target, $pointer, done}) {
     let coords = $target.getBoundingClientRect(),

@@ -1,5 +1,9 @@
 # Changelog
 
+### v3.2.0
+* added `silent` param to `clear` method, [#477](https://github.com/t1m0n/air-datepicker/issues/477) 
+* fixed error when trying to call `update` method with `view` parameter on hidden calendar, [#476](https://github.com/t1m0n/air-datepicker/issues/476) 
+
 ### v3.1.1
 * fixed css compilation, [#461](https://github.com/t1m0n/air-datepicker/issues/461)
 * fixed `autoClose` when range mode is on, [#466](https://github.com/t1m0n/air-datepicker/issues/466)
