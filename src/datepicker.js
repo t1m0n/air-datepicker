@@ -300,7 +300,7 @@ export default class Datepicker {
             this.locale.firstDay = firstDay;
         }
 
-        if (timepicker && typeof dateFormat !== 'function') {
+        if (timepicker && typeof dateFormat !== 'function' && typeof timeFormatValidated !== 'function') {
             let separator = timeFormatValidated ? dateTimeSeparator : '';
             this.locale.dateFormat = [this.locale.dateFormat, (timeFormatValidated ? timeFormatValidated : '')].join(separator);
         }

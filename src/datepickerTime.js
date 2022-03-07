@@ -30,8 +30,15 @@ export default class DatepickerTime {
         this.dp = dp;
         let {timeFormat} = this.dp.locale;
 
-        if (timeFormat && (timeFormat.match(getWordBoundaryRegExp('h')) || timeFormat.match(getWordBoundaryRegExp('hh')))) {
-            this.ampm = true;
+        if (timeFormat) {
+            if (typeof timeFormat !== 'function' && (timeFormat.match(getWordBoundaryRegExp('h')) || timeFormat.match(getWordBoundaryRegExp('hh')))) {
+                this.ampm = true;
+            } else if (typeof timeFormat === 'function') {
+                const formattedTime = timeFormat(new Date()).toLowerCase();
+                if (formattedTime.includes('am') || formattedTime.includes('pm')) {
+                    this.ampm = true;
+                }
+            }
         }
 
         this.init();
