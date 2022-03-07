@@ -91,7 +91,7 @@ export declare type AirDatepickerOptions = {
     timepicker: boolean,
     onlyTimepicker: boolean,
     dateTimeSeparator: string,
-    timeFormat: string,
+    timeFormat: string | ((d: Date) => string),
     minHours: number,
     maxHours: number,
     minMinutes: number,

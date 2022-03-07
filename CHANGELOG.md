@@ -1,5 +1,8 @@
 # Changelog
 
+### v3.1.2
+* `timeFormat` now can receive a function
+
 ### v3.1.1
 * fixed css compilation, [#461](https://github.com/t1m0n/air-datepicker/issues/461)
 * fixed `autoClose` when range mode is on, [#466](https://github.com/t1m0n/air-datepicker/issues/466)

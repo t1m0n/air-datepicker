@@ -77,6 +77,14 @@ export let timeFormatOption =
     timeFormat: 'hh:mm AA'
 });
 `
+export let timeFormatFuncOption =
+`new AirDatepicker('#el', {
+    timepicker: true,
+    onlyTimepicker: true,
+    timeFormat: function (date) {
+        return date.toLocaleTimeString('en-US');
+    }
+})`
 
 let customCellExample =
 `let today = new Date();

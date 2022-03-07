@@ -357,7 +357,7 @@ function Docs({} = {}) {
                                 <Param name={'dateTimeSeparator'} type={'string'} defaultValue={'" "'}>
                                     <Paragraph id={'optsDateTimeSeparator'} />
                                 </Param>
-                                <Param name={'timeFormat'} type={'string'}>
+                                <Param name={'timeFormat'} type={'string | (date) => string'}>
                                     <Paragraph
                                         id={'optsTimeFormat'}
                                         values={{
@@ -376,6 +376,17 @@ function Docs({} = {}) {
                                         <DList.Item value={'aa'} definition={'optsTimeFormataa'} />
                                         <DList.Item value={'AA'} definition={'optsTimeFormatAA'} />
                                     </DList>
+                                    <Paragraph id='timeFormatFuncOptionNote'/>
+                                    <Example>
+                                        <AirDatepicker
+                                            timepicker={true}
+                                            onlyTimepicker={true}
+                                            timeFormat={function (date) {
+                                                return date.toLocaleTimeString('en-US');
+                                            }}
+                                        />
+                                        <Code>{examples.timeFormatFuncOption}</Code>
+                                    </Example>
                                 </Param>
                                 <Param name={'minHours'} type={'number'} defaultValue={'0'}>
                                     <Paragraph id={'optsMinHours'}/>

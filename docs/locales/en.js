@@ -165,6 +165,7 @@ export default {
     optsDateTimeSeparator: 'Separator between date and time.',
     optsOnlyTimepicker: 'If you need to choose only time, without date.',
     optsTimeFormat: 'Time format. Just like {dateFormatField} relies on {standardLink}. If you pass a 12-hour display format, the time sliders will be automatically adjusted to the corresponding mode.',
+    timeFormatFuncOptionNote: 'You can also pass a function here to manually process the selected time. It should return a string. This function only affects in time only mode.',
     optsTimeFormath: 'hours in 12-hour mode',
     optsTimeFormathh: 'hours in 12-hour mode with leading zero',
     optsTimeFormatH: 'hours in 24-hour mode',
