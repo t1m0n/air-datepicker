@@ -1,9 +1,5 @@
 import {beforeAll, afterEach, describe, test, it, expect} from '@jest/globals';
 import Datepicker from 'datepicker';
-import {isSameDate} from 'utils';
-import en from 'locale/en';
-import de from 'locale/de';
-import consts from 'consts';
 import {DAY} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
@@ -152,6 +148,41 @@ describe('EVENTS TEST', () => {
             expect(date).toBeInstanceOf(Date);
             expect(cellType).toBe('day');
             expect(datepicker).toBeInstanceOf(Datepicker);
+        });
+    });
+
+    describe('onClickDayName', () => {
+        it('should add click event on day name element', () => {
+            let clicked = false;
+
+            init({
+                visible: true,
+                onClickDayName({dayIndex, datepicker}) {
+                    clicked = true;
+                }
+            });
+
+            let $dayName = $datepicker.querySelector('.air-datepicker-body--day-name');
+
+            $dayName.click();
+
+            expect(clicked).toBe(true);
+            expect($dayName).toHaveClass('-clickable-');
+        });
+        it('should be called with correct arguments', (done) => {
+            init({
+                visible: true,
+                onClickDayName(args) {
+                    expect('dayIndex' in args).toBe(true);
+                    expect('datepicker' in args).toBe(true);
+
+                    done();
+                }
+            });
+
+            let $dayName = $datepicker.querySelector('.air-datepicker-body--day-name');
+
+            $dayName.click();
         });
     });
 });

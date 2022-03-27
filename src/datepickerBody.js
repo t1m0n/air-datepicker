@@ -53,7 +53,8 @@ export default class DatepickerBody {
 
         addEventListener(this.$el, 'mouseover', this.onMouseOverCell);
         addEventListener(this.$el, 'mouseout', this.onMouseOutCell);
-        addEventListener(this.$el, 'click', this.onClickCell);
+        addEventListener(this.$el, 'click', this.onClickBody);
+
 
         if (range && dynamicRange) {
             addEventListener(this.$el, 'mousedown', this.onMouseDown);
@@ -81,17 +82,19 @@ export default class DatepickerBody {
     _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
         let html = '',
             isWeekend = this.dp.isWeekend,
+            {onClickDayName} = this.opts,
             curDay = firstDay,
             i = 0;
 
         while (i < 7) {
             let day = curDay % 7;
             let className = classNames('air-datepicker-body--day-name', {
-                [consts.cssClassWeekend]: isWeekend(day)
+                [consts.cssClassWeekend]: isWeekend(day),
+                '-clickable-': !!onClickDayName
             });
             let dayName = this.dp.locale.daysMin[day];
 
-            html += `<div class="${className}">${dayName}</div>`;
+            html += `<div class="${className}" data-day-index='${day}'>${dayName}</div>`;
 
             i++;
             curDay++;
@@ -207,8 +210,7 @@ export default class DatepickerBody {
     }
 
     handleClick = (e) => {
-        let $cell = closest(e.target, '.air-datepicker-cell');
-        if (!$cell) return;
+        let $cell = e.target;
         let cell = $cell.adpCell;
         if (cell.isDisabled) return;
 
@@ -224,6 +226,15 @@ export default class DatepickerBody {
         } else {
             this.dp.selectDate(cell.date);
         }
+    }
+
+    handleDayNameClick = (e) => {
+        let index = e.target.getAttribute('data-day-index');
+
+        this.opts.onClickDayName({
+            dayIndex: Number(index),
+            datepicker: this.dp
+        });
     }
 
     onChangeCurrentView = (view) => {
@@ -244,8 +255,17 @@ export default class DatepickerBody {
         this.dp.setFocusDate(false);
     }
 
-    onClickCell = (e) => {
-        this.handleClick(e);
+    onClickBody = (e) => {
+        let {onClickDayName} = this.opts;
+        let target = e.target;
+
+        if (target.closest('.air-datepicker-cell')) {
+            this.handleClick(e);
+        }
+
+        if (onClickDayName && target.closest('.air-datepicker-body--day-name')) {
+            this.handleDayNameClick(e);
+        }
     }
 
     onMouseDown = (e) => {

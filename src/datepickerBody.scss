@@ -29,6 +29,14 @@
   text-align: center;
   text-transform: uppercase;
   font-size: .8em;
+
+  &.-clickable- {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--adp-day-name-color-hover);
+    }
+  }
 }
 
 /*  Cells container
