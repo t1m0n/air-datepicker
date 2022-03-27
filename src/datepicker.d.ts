@@ -109,6 +109,7 @@ export declare type AirDatepickerOptions = {
     } | void),
     onShow: (isAnimationComplete: boolean) => void,
     onHide: (isAnimationComplete: boolean) => void,
+    onClickDayName: ({dayIndex, datepicker}: {dayIndex: number, datepicker: AirDatepicker}) => void
 }
 
 

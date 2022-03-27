@@ -72,4 +72,5 @@ export default {
     onRenderCell: false,
     onShow: false,
     onHide: false,
+    onClickDayName: false,
 };

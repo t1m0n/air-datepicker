@@ -16,7 +16,7 @@ let selected = false;
 
 let opts = {
     // minDate: Date.now(),
-    inline: false,
+    inline: true,
     visible: false,
     // container: '.input-wrap',
     // timepicker: true,
@@ -40,7 +40,7 @@ let opts = {
         selected = true;
         console.log('on select');
     },
-    multipleDates: false,
+    multipleDates: true,
     dateFormat(d) {
         // console.log(d);
         return d.toLocaleString();
@@ -51,6 +51,26 @@ let opts = {
         // return d.map(d => {
         //     return d.toLocaleDateString();
         // })
+    },
+    onClickDayName({dayIndex, datepicker}) {
+        let month = datepicker.viewDate.getMonth(),
+            year = datepicker.viewDate.getFullYear(),
+            selected = [],
+            days = 31;
+
+        while(days) {
+            let date = new Date(year, month, days);
+
+            if (date.getDay() === dayIndex) {
+                selected.push(date)
+            }
+
+            days -= 1;
+        }
+
+        datepicker.clear();
+        datepicker.selectDate(selected);
+
     },
     onRenderCell(cell) {
     },
