@@ -1,7 +1,7 @@
 # Changelog
 
 ### v3.2.0
-* added `onClickDayName` param to `clear` method, [#459](https://github.com/t1m0n/air-datepicker/issues/459) 
+* added `onClickDayName` option, [#459](https://github.com/t1m0n/air-datepicker/issues/459) 
 * added `silent` param to `clear` method, [#477](https://github.com/t1m0n/air-datepicker/issues/477) 
 * fixed error when trying to call `update` method with `view` parameter on hidden calendar, [#476](https://github.com/t1m0n/air-datepicker/issues/476) 
 * fixed styles issue with time sliders, [#489](https://github.com/t1m0n/air-datepicker/issues/489) 

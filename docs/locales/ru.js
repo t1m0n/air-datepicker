@@ -207,6 +207,9 @@ export default {
     eventsOnShowArg: 'индикатор завершения анимации появления',
     eventsOnHide: 'Функция обратного вызова при скрытии календаря.  Вызывается вначале анимации скрытия, и когда анимация завершилась.',
     eventsOnHideArg: 'индикатор завершения анимации скрытия',
+    eventsOnClickDayName: 'Добавляет возможность кликать по названиям дней в календаре. При этом, этим элементах будет добавлен класс {className}',
+    eventsOnClickDayNameDayIndex: 'индекс дня недели, где 0 - воскресенье, 6 - суббота',
+    eventsOnClickDayNameDatepicker: 'экземпляр календаря',
 
     apiMethodsTitle: 'Методы',
     apiPropertiesTitle: 'Свойства',

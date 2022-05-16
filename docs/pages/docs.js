@@ -451,10 +451,19 @@ function Docs({} = {}) {
                                         <Param name={'isFinished'} type={'boolean'} definition={'eventsOnShowArg'} />
                                     </Param.List>
                                 </Param>
-                                <Param name={'onHide'}>
+                                <Param name={'onHide'} type={'(isFinished) => void'}>
                                     <Paragraph id={'eventsOnHide'} type={'(isFinished) => void'}/>
                                     <Param.List nested>
                                         <Param name={'isFinished'} type={'boolean'} definition={'eventsOnHideArg'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'onClickDayName'} type='({dayIndex, datepicker}) => void'>
+                                    <Paragraph id={'eventsOnClickDayName'} values={{
+                                        className: <Code inline>`-clickable-`</Code>
+                                    }} />
+                                    <Param.List nested>
+                                        <Param name={'dayIndex'} type={'index'} definition={'eventsOnClickDayNameDayIndex'} />
+                                        <Param name={'datepicker'} type={'object'} definition={'eventsOnClickDayNameDatepicker'} />
                                     </Param.List>
                                 </Param>
                             </Param.List>

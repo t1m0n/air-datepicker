@@ -145,7 +145,7 @@ export default {
     optsMultipleDates: 'If {trueField}, then you can select an unlimited number of dates. If you pass a number, the number of selected dates will be limited by it\'s value.',
     optsMultipleDatesSeparator: 'Separator between dates in text field. It is used in the multiple date selection mode and in the range mode.',
     optsRange: 'Provides the ability to select a date range. The value from {fieldName} will be used as the separator.',
-    optsDynamicRange: 'Если {trueField}, то после выбора дат в режиме диапазона, их можно будет изменить путем перетаскивания курсором мыши.',
+    optsDynamicRange: 'If {trueField}, then after selecting dates in range mode, they can be changed by dragging them.',
     optsButtons: 'This option allows you to add action buttons to body of the calendar. You could add two pre installed buttons or create your own.',
     optsButtons2: 'Initially two buttons are available:',
     optsButtonsToday: '"Today" button - clicking on it will perform transition to today date',
@@ -207,6 +207,9 @@ export default {
     eventsOnShowArg: 'animation completion indicator',
     eventsOnHide: 'Callback function when closing the calendar. Called at the beginning of the hide animation, and when the animation has finished.',
     eventsOnHideArg: 'animation completion indicator',
+    eventsOnClickDayName: 'Adds possibility to click on the names of days in calendar. In case callback is passed {className} will be added to those elements',
+    eventsOnClickDayNameDayIndex: 'day of week index, where is 0 - Sunday, 6 - Saturday',
+    eventsOnClickDayNameDatepicker: 'calendar instance',
 
     apiMethodsTitle: 'Methods',
     apiPropertiesTitle: 'Properties',
