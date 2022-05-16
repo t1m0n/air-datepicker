@@ -123,7 +123,7 @@ declare class AirDatepicker {
     selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime?: boolean, silent?: boolean}) => void
     unselectDate: (date: AirDatepickerDate) => void
     clear: () => void
-    formatDate: (date: AirDatepickerDate, format: string) => void
+    formatDate: (date: AirDatepickerDate, format: string) => string
     destroy: () => void
     update: (newOpts: Partial<AirDatepickerOptions>) => void
     setCurrentView: (newView: AirDatepickerViews) => void
