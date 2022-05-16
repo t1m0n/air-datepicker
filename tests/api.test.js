@@ -21,16 +21,16 @@ function init(opts) {
     $datepicker = dp.$datepicker;
 }
 
-
 describe('API TESTS', () => {
     describe('selectDate', () => {
-        it('should select one passed date', () => {
+        it('should select one passed date', (done) => {
             let selectedDate = new Date();
             init();
 
-            dp.selectDate(selectedDate);
-
-            expect(dp.selectedDates).toContain(selectedDate);
+            dp.selectDate(selectedDate).then(() => {
+                expect(dp.selectedDates).toContain(selectedDate);
+                done();
+            });
         });
     });
 
