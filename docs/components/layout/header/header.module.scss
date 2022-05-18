@@ -61,7 +61,7 @@
   }
 
   @include onMobile {
-    font-size: 18px;
+    font-size: 22px;
     margin-left: calc(var(--nav-toggle-size) + 8px);
   };
 }
