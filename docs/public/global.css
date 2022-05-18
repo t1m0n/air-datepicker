@@ -32,15 +32,18 @@ html {
 
     --container-offset: 16px;
     --container-max-width: 1050px;
-    --container-min-width: 1050px;
+    --container-min-width: 320px;
     --content-nav-col-width: 256px;
     --content-col-gap: 32px;
-    --layout-top-offset: 32px;
 
     --section-offset: 40px;
 
     --header-height: 56px;
+    --header-height-mobile: 40px;
     --header-offset: 32px;
+    --header-offset-mobile: 56px;
+
+    --nav-toggle-size: 32px;
 
     --link-color: var(--color-accent);
     --link-border-color: var(--color-accent-semi-transparent);
@@ -64,4 +67,13 @@ html {
 
     --z-header: 101;
     --z-language: 102;
+    --z-nav-mobile: 103;
+    --z-nav-toggle: 104;
+}
+
+@media screen and (max-width: 1000px) {
+    html {
+        --section-offset: 32px;
+        --container-offset: 8px;
+    }
 }

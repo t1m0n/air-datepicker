@@ -1,7 +1,10 @@
 import React, {useContext} from 'react';
 
 export const appContext = React.createContext({
-    loadingLocales: false
+    loadingLocales: false,
+    navIsVisible: false,
+    hideNav: () => {},
+    showNav: () => {},
 })
 
 export const useApp = (() => {

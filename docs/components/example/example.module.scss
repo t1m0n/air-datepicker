@@ -1,3 +1,5 @@
+@import "public/mixins";
+
 /* -------------------------------------------------
     Example
    ------------------------------------------------- */
@@ -12,5 +14,9 @@
 .doubleSection {
   display: flex;
   grid-column-gap: 48px;
+
+  @include onMobile {
+    @include mobileScroll(true, true);
+  };
 }
 

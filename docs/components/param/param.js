@@ -12,13 +12,15 @@ function Param({name, addId = true, type, definition, definitionValues, defaultV
         <div className={css.el}>
             <div className={css.paramRow} id={addId ? name : undefined}>
                 <div className={css.paramName}>{name}</div>
-                <ParamType>{type}</ParamType>
-                {defaultValue
-                    ? <div className={css.defaultValue}>
-                        =&nbsp;<Code inline bgTransparent>{defaultValue}</Code>
-                    </div>
-                    : ''
-                }
+                <div className={css.paramProps}>
+                    <ParamType>{type}</ParamType>
+                    {defaultValue
+                        ? <div className={css.defaultValue}>
+                            =&nbsp;<Code inline bgTransparent>{defaultValue}</Code>
+                        </div>
+                        : ''
+                    }
+                </div>
             </div>
             {definition && <>
                 &nbsp;&mdash; <FormattedMessage id={definition} values={definitionValues} />

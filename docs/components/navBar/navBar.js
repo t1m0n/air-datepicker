@@ -7,11 +7,15 @@ import {withRouter} from 'next/router';
 import cloneDeep from 'clone-deep';
 import fuzzysearch from 'fuzzysearch';
 import {withApp} from 'context/appContext';
+import cn from 'classnames';
 
 import paramCSS from 'components/param/param.module.scss';
 import sectionCSS from 'components/section/section.module.scss';
 
 import css from './navBar.module.scss';
+
+const easing = 'easeOutCubic';
+const duration = 400;
 
 class NavBar extends React.Component {
     constructor() {
@@ -67,6 +71,8 @@ class NavBar extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         let filteredSections = [];
         let {searchQuery} = this.state;
+        let {context: prevContext} = prevProps;
+        let {context} = this.props;
 
         if (prevState.searchQuery !== searchQuery) {
             this.setState({
@@ -74,11 +80,37 @@ class NavBar extends React.Component {
             })
         }
 
-        if (prevProps.context.loadingLocales && !this.props.context.loadingLocales) {
+        if (prevContext.loadingLocales && !context.loadingLocales) {
             this.setState({
                 sections: this.calculatesSection()
             });
         }
+
+        if (!prevContext.navIsVisible && context.navIsVisible) {
+            this.showNav();
+        }
+
+        if (prevContext.navIsVisible && !context.navIsVisible) {
+            this.hideNav();
+        }
+    }
+
+    showNav() {
+        anime({
+            targets: [`.${css.el}`],
+            translateX: ['-100%', '0'],
+            duration,
+            easing,
+        })
+    }
+
+    hideNav() {
+        anime({
+            targets: [`.${css.el}`],
+            translateX: '-100%',
+            duration,
+            easing: 'easeInOutCubic'
+        })
     }
 
     getFilteredSections() {
@@ -125,7 +157,7 @@ class NavBar extends React.Component {
             }
         })
     }
-    
+
     scrollTo = ($el) => {
         let headerHeight = 56,
             headerOffset = 32;
@@ -159,11 +191,13 @@ class NavBar extends React.Component {
 
     onClickParam = (param) => (e) => {
         e.preventDefault();
+        this.props.context.hideNav();
         this.scrollTo(param.$param);
     }
 
     onClickTitle = (title) => (e) => {
         e.preventDefault();
+        this.props.context.hideNav();
         this.scrollTo(title.$title);
     }
 
@@ -179,44 +213,48 @@ class NavBar extends React.Component {
         return (
             <aside className={css.el}>
                 {showSearch &&
-                <Input
-                    className={css.searchInput}
-                    onChange={this.onChangeSearch}
-                    onFocus={this.onFocusSearch}
-                    onBlur={this.onBlurSearch}
-                    placeholder={messages.searchPlaceholder}
-                    value={searchQuery}
-                />
+                    <Input
+                        className={css.searchInput}
+                        onChange={this.onChangeSearch}
+                        onFocus={this.onFocusSearch}
+                        onBlur={this.onBlurSearch}
+                        placeholder={messages.searchPlaceholder}
+                        value={searchQuery}
+                    />
                 }
-                {(searchQuery ? filteredSections : sections).map((titleObj) => {
-                    let {title, params} = titleObj;
-                    return <div key={title} className={css.section}>
-                        <a
-                            href={'#'}
-                            title={title}
-                            className={css.sectionTitle}
-                            onClick={this.onClickTitle(titleObj)}
-                        >
-                            {title}
-                        </a>
-                        <div className={css.sectionParams}>
-                            {searchQuery && params.length === 0 && <div className={css.notFound}>
-                                {messages.notFound}
-                            </div>}
-                            {params.map((param) => {
-                                return <div className={css.sectionParam} key={`${title}${param.content}`}>
-                                    <a
-                                        className={css.sectionParamLink}
-                                        href='#'
-                                        onClick={this.onClickParam(param)}
-                                    >
-                                        {param.content}
-                                    </a>
-                                </div>
-                            })}
+                <div className={cn(css.scroller, {
+                    [css.scrollerWithSearch]: showSearch
+                })}>
+                    {(searchQuery ? filteredSections : sections).map((titleObj) => {
+                        let {title, params} = titleObj;
+                        return <div key={title} className={css.section}>
+                            <a
+                                href={'#'}
+                                title={title}
+                                className={css.sectionTitle}
+                                onClick={this.onClickTitle(titleObj)}
+                            >
+                                {title}
+                            </a>
+                            <div className={css.sectionParams}>
+                                {searchQuery && params.length === 0 && <div className={css.notFound}>
+                                    {messages.notFound}
+                                </div>}
+                                {params.map((param) => {
+                                    return <div className={css.sectionParam} key={`${title}${param.content}`}>
+                                        <a
+                                            className={css.sectionParamLink}
+                                            href='#'
+                                            onClick={this.onClickParam(param)}
+                                        >
+                                            {param.content}
+                                        </a>
+                                    </div>
+                                })}
+                            </div>
                         </div>
-                    </div>
-                })}
+                    })}
+                </div>
             </aside>
         );
     }

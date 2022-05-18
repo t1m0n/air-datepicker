@@ -22,7 +22,7 @@ let items = {
 
 import css from './language.module.scss';
 
-function Language({} = {}) {
+function Language({className} = {}) {
     let {locale, locales, pathname} = useRouter();
     let [isActive, setIsActive] = useState(false);
 
@@ -56,7 +56,7 @@ function Language({} = {}) {
     }, []);
 
     return (
-        <div className={css.el}>
+        <div className={cn(css.el, className)}>
             <Button
                 size={'s'}
                 onClick={onClickToggle}
@@ -64,7 +64,7 @@ function Language({} = {}) {
                 active={isActive}
                 bordered={false}
             >
-                <activeLang.Icon width={16} /> {activeLang.label}
+                <activeLang.Icon width={16} /><span className={css.itemLabel}>{activeLang.label}</span>
             </Button>
             <div
                 className={cn(css.menu, {

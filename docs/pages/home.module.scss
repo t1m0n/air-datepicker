@@ -1,9 +1,17 @@
+@import "public/mixins";
+
 /* -------------------------------------------------
     Home page
    ------------------------------------------------- */
 
 .el {
-  padding-top: var(--layout-top-offset);
+  --header-offset: 32px;
+
+  padding-top: var(--header-offset);
+
+  @include onMobile {
+    --header-offset: 24px;
+  };
 }
 
 .dpHolder {
@@ -11,6 +19,10 @@
   margin: 42px 0 52px;
   transform-style: preserve-3d;
   perspective: 800px;
+
+  @include onMobile {
+    margin: 32px 0 42px;
+  };
 }
 
 .top {
@@ -18,7 +30,7 @@
   align-items: center;
   height: var(--ui-height-small);
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: var(--header-offset);
 }
 
 .dpPromo {
@@ -56,6 +68,10 @@
     display: inline-block;
     opacity: 0;
   }
+
+  @include onMobile {
+    font-size: 36px;
+  };
 }
 
 .nav {
@@ -66,6 +82,11 @@
   grid-column-gap: 16px;
   align-items: center;
   margin-bottom: 48px;
+
+  @include onMobile {
+    justify-content: flex-start;
+    @include mobileScroll(true, true);
+  };
 }
 
 .transition {

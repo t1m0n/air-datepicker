@@ -1,0 +1,102 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Nav toggle
+   ------------------------------------------------- */
+
+.el {
+  --part-height: 2px;
+  --part-width: 70%;
+  --icon-width: 18px;
+  --icon-height: 12px;
+
+  display: none;
+
+  width: 42px;
+  height: 28px;
+  border-radius: 2px;
+  background: var(--color-accent-almost-transparent);
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: var(--container-offset);
+  top: 6px;
+  z-index: var(--z-nav-toggle);
+  transition: all .2s;
+
+  &:active {
+    background: var(--color-accent-semi-transparent);
+    transform: scale(.9);
+  }
+
+  @include onMobile {
+    display: flex;
+  };
+}
+
+.active {
+
+
+}
+
+.menuIcon, .closeIcon {
+  position: absolute;
+  width: var(--icon-width);
+  height: var(--icon-height);
+  left: calc(50% - var(--icon-width) / 2);
+  top:  calc(50% - var(--icon-height) / 2);
+  transition: all var(--t-duration) var(--t-easing) ;
+  transform: scale(.2);
+  opacity: 0;
+}
+
+.menuIcon {
+  display: grid;
+  grid-template-rows: repeat(3, max-content);
+  align-content: space-between;
+
+  .item {
+    &:nth-child(2) {
+      width: 70%;
+    }
+  }
+}
+
+.closeIcon {
+  --icon-width: 18px;
+  --icon-height: 18px;
+
+  transform: scale(.2) rotate(-45deg);
+  transform-origin: top;
+  margin-top: 8px;
+
+  svg {
+    path {
+      fill: var(--base-color);
+    }
+  }
+
+  .item {
+    position: absolute;
+
+    &:nth-child(1) {
+      transform: rotate(45deg);
+    }
+    &:nth-child(2) {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.activeIcon {
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+.item {
+  border-radius: 2px;
+  height: var(--part-height);
+  width: 100%;
+  background: var(--base-color);
+}
+

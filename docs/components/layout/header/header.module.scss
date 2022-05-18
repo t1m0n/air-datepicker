@@ -1,3 +1,5 @@
+@import "public/mixins";
+
 /* -------------------------------------------------
     Header
    ------------------------------------------------- */
@@ -12,6 +14,23 @@
   top: 0;
   z-index: var(--z-header);
   display: flex;
+
+  @include onMobile {
+    height: var(--header-height-mobile);
+    margin-bottom: var(--header-offset-mobile);
+    padding: 6px 0;
+  };
+}
+
+.logoAndVersion {
+  grid-area: logoAndVersion;
+
+  @include onMobile {
+    position: absolute;
+    left: 50%;
+    transform: translateX(calc(-50% - 20px));
+    white-space: nowrap;
+  };
 }
 
 .container {
@@ -19,6 +38,14 @@
   grid-template-columns: var(--content-nav-col-width) 1fr max-content;
   grid-column-gap: var(--content-col-gap);
   align-items: center;
+  grid-template-areas: "logoAndVersion nav lang";
+
+  @include onMobile {
+    grid-template-columns: 1fr max-content;
+    grid-template-areas:
+      "logoAndVersion lang"
+      "nav nav"
+  };
 }
 
 .logo {
@@ -32,10 +59,19 @@
   &:hover {
     border-bottom-color: rgba(0, 0, 0, .2);
   }
+
+  @include onMobile {
+    font-size: 18px;
+    margin-left: calc(var(--nav-toggle-size) + 8px);
+  };
 }
 .version {
   margin-left: 6px;
   vertical-align: 2px;
+
+  @include onMobile {
+    font-size: 10px;
+  };
 }
 
 
@@ -45,6 +81,26 @@
   align-items: center;
   grid-column-gap: 4px;
   margin-left: -1em;
+  grid-area: nav;
+
+  @include onMobile {
+    justify-content: center;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 32px;
+    padding-bottom: 4px;
+    background: #ffffff;
+    width: 100vw;
+    padding-left: var(--container-offset);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+    transition: box-shadow var(--t-duration) var(--t-easing);
+  };
+}
+
+.navSticky {
+    box-shadow: 0 12px 14px rgba(0, 0, 0, .1);
 }
 
 .navItem {
@@ -67,9 +123,22 @@
   &:active {
     background: var(--color-accent-semi-transparent);
   }
+
+  @include onMobile {
+    margin-right: 0;
+    margin-left: -1em;
+
+    &:active, &:hover {
+      background: none;
+    }
+  };
 }
 
 .navItemActive {
   color: var(--base-color);
   pointer-events: none;
+}
+
+.lang {
+  grid-area: lang;
 }

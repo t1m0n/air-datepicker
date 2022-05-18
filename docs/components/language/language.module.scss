@@ -1,3 +1,5 @@
+@import "public/mixins";
+
 /* -------------------------------------------------
     Language
    ------------------------------------------------- */
@@ -9,6 +11,10 @@
 .toggle {
   svg {
     margin-right: 6px;
+
+    @include onMobile {
+      margin-right: 0;
+    }
   }
 }
 
@@ -60,6 +66,12 @@
     right: 0;
     bottom: 0;
     border: 1px solid rgba(0, 0, 0, .15);
+  }
+}
+
+.itemLabel {
+  @include onMobile {
+    display: none;
   }
 }
 

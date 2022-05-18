@@ -10,18 +10,22 @@ import {useRouter} from 'next/router';
 import Language from 'components/language';
 
 import css from './header.module.scss';
+import useScroll from 'hooks/useScroll';
 
 function Header({} = {}) {
-    let {route} = useRouter();
+    const {route} = useRouter();
+    const {scrollTop} = useScroll();
 
     return (
         <div className={css.el}>
             <Container className={css.container}>
-                <div>
+                <div className={css.logoAndVersion}>
                     <Link href={'/'}><a className={css.logo}>Air Datepicker</a></Link>
                     <Version className={css.version} />
                 </div>
-                <nav className={css.nav}>
+                <nav className={cn(css.nav, {
+                    [css.navSticky]: scrollTop > 50
+                })}>
                     {navItemsData.map(({labelId, href}) => {
                         let isActive = href === route;
                         return <Link href={href} key={labelId}>
@@ -35,7 +39,7 @@ function Header({} = {}) {
                         </Link>
                     })}
                 </nav>
-                <Language />
+                <Language className={css.lang} />
             </Container>
         </div>
     );

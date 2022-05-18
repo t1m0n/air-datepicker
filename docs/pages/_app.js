@@ -5,6 +5,7 @@ import {IntlProvider} from 'react-intl'
 import Header from 'components/layout/header';
 import {AppProvider} from 'context/appContext';
 import {baseName} from 'hooks/usePageTitle';
+import NavToggle from 'components/navToggle';
 import enLocale from 'locales/en';
 import ruLocale from 'locales/ru';
 
@@ -21,9 +22,10 @@ let localeMessages = {
 }
 
 const MyApp = ({Component, pageProps}) => {
-    let {route, locale, defaultLocale} = useRouter();
-    let [loadingLocales, setLoadingLocales] = useState(false);
-    let [messages, setMessages] = useState(localeMessages[locale] || enLocale);
+    const {route, locale, defaultLocale} = useRouter();
+    const [loadingLocales, setLoadingLocales] = useState(false);
+    const [navIsVisible, setNavIsVisible] = useState(false);
+    const [messages, setMessages] = useState(localeMessages[locale] || enLocale);
 
     useEffect(() => {
         // Simulate localization loading for navBar update
@@ -36,14 +38,26 @@ const MyApp = ({Component, pageProps}) => {
         })
     }, [locale])
 
+    const showNav = useCallback(() => {
+        setNavIsVisible(true)
+    }, [])
+
+    const hideNav = useCallback(() => {
+        setNavIsVisible(false)
+    }, [])
+
     return <AppProvider value={{
-        loadingLocales
+        loadingLocales,
+        showNav,
+        hideNav,
+        navIsVisible,
     }}>
         <IntlProvider messages={messages} locale={locale} defaultLocale={defaultLocale}>
             <Head>
                 <title>{baseName}</title>
                 <meta name='description' content={messages.promoNote} />
-                <meta name='keywords' content={'datepicker, calendar, js calendar, plain js datepicker, timepicker, dependency free, lightweight, customizable'} />
+                <meta name='keywords' content={'datepicker, calendar, js calendar, javascript datepicker, javascript calendar, plain js datepicker, timepicker, dependency free, lightweight, customizable'} />
+                <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1" />
                 <meta property="og:title" content={baseName} />
                 <meta property="og:type" content={'website'} />
                 <meta property="og:description" content={messages.promoNote} />
@@ -55,7 +69,7 @@ const MyApp = ({Component, pageProps}) => {
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
                 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet" />
             </Head>
-            {route !== '/home' ? <Header /> : ''}
+            {route !== '/home' ? <><NavToggle /><Header /></> : ''}
             <Component {...pageProps} />
         </IntlProvider>
     </AppProvider>

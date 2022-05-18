@@ -1,3 +1,5 @@
+@import "public/mixins";
+
 /* -------------------------------------------------
     Content grid
    ------------------------------------------------- */
@@ -9,5 +11,9 @@
   display: grid;
   grid-template-columns: var(--content-nav-col-width) var(--main-content-width);
   grid-column-gap: var(--content-col-gap);
+
+  @include onMobile {
+    display: block;
+  };
 }
 

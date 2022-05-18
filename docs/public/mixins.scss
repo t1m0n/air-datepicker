@@ -36,3 +36,25 @@
     scrollbar-width: thin;
   }
 }
+
+@mixin onMobile() {
+  @media screen and (max-width: 1000px) {
+    @content
+  }
+}
+
+@mixin mobileScroll($setPadding: false, $fullWidth: false){
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  @if ($setPadding) {
+    margin-left: calc(var(--container-offset) * -1);
+    margin-right: calc(var(--container-offset) * -1);
+    padding-left: var(--container-offset);
+    padding-right: var(--container-offset);
+  }
+
+  @if ($fullWidth) {
+    width: 100vw;
+  }
+}

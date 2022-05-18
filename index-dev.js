@@ -18,6 +18,8 @@ let opts = {
     // minDate: Date.now(),
     inline: true,
     visible: false,
+    locale: en,
+    timepicker: true,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
@@ -35,23 +37,14 @@ let opts = {
     onChangeView(view) {
         // console.log(dp1.getCell('2021-01-01', 'month'))
     },
+
     selectedDates: [new Date()],
     onSelect({date, formattedDate, datepicker}) {
         selected = true;
         console.log('on select');
     },
     multipleDates: true,
-    dateFormat(d) {
-        // console.log(d);
-        return d.toLocaleString();
-        // if (d.length > 3) {
-        //     return  'выбрано '
-        // }
-        // console.log('date format', d);
-        // return d.map(d => {
-        //     return d.toLocaleDateString();
-        // })
-    },
+    dateFormat: 'EEEE, MMMM d, yyyy',
     onClickDayName({dayIndex, datepicker}) {
         let month = datepicker.viewDate.getMonth(),
             year = datepicker.viewDate.getFullYear(),
