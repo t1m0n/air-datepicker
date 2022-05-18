@@ -26,15 +26,14 @@ new AirDatepicker('#el' [, options]);
 
 ## Recent updates
 
-### v3.1.1
-* fixed css compilation, [#461](https://github.com/t1m0n/air-datepicker/issues/461)
-* fixed `autoClose` when range mode is on, [#466](https://github.com/t1m0n/air-datepicker/issues/466)
-* fixed `onSelect` when range mode is on. Now it accepts array of selected dates instead of single one [#467](https://github.com/t1m0n/air-datepicker/issues/467)
-* fixed transition between `isMobile` mode on and off [#470](https://github.com/t1m0n/air-datepicker/issues/470)
-* added position update when resizing window [#472](https://github.com/t1m0n/air-datepicker/issues/472)
-* added Sinhala locale, thanks to [nimeshc64](https://github.com/nimeshc64) in [#464](https://github.com/t1m0n/air-datepicker/pull/464)
-* fixed French locale, thanks to [matschik](https://github.com/matschik) in [#465](https://github.com/t1m0n/air-datepicker/pull/465)
-* added Ukrainian locale, thanks to [zaandr](https://github.com/zaandr) in [#471](https://github.com/t1m0n/air-datepicker/pull/471)
+### v3.2.0
+* added `onClickDayName` option, [#459](https://github.com/t1m0n/air-datepicker/issues/459)
+* added `silent` param to `clear` method, [#477](https://github.com/t1m0n/air-datepicker/issues/477)
+* added Swedish locale, thanks to [naton](https://github.com/naton) [#207](https://github.com/t1m0n/air-datepicker/pull/207)
+* fixed error when trying to call `update` method with `view` parameter on hidden calendar, [#476](https://github.com/t1m0n/air-datepicker/issues/476)
+* fixed styles issue with time sliders, [#489](https://github.com/t1m0n/air-datepicker/issues/489)
+* fixed English docs description, [#490](https://github.com/t1m0n/air-datepicker/issues/490)
+* fixed typings for `formatDate` method, [#491](https://github.com/t1m0n/air-datepicker/issues/491)
 
 
 ## Version 3.0.0 highlights

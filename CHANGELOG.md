@@ -3,6 +3,7 @@
 ### v3.2.0
 * added `onClickDayName` option, [#459](https://github.com/t1m0n/air-datepicker/issues/459) 
 * added `silent` param to `clear` method, [#477](https://github.com/t1m0n/air-datepicker/issues/477) 
+* added Swedish locale, thanks to [naton](https://github.com/naton) [#207](https://github.com/t1m0n/air-datepicker/pull/207)
 * fixed error when trying to call `update` method with `view` parameter on hidden calendar, [#476](https://github.com/t1m0n/air-datepicker/issues/476) 
 * fixed styles issue with time sliders, [#489](https://github.com/t1m0n/air-datepicker/issues/489) 
 * fixed English docs description, [#490](https://github.com/t1m0n/air-datepicker/issues/490) 
