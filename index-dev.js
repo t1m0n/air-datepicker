@@ -16,7 +16,7 @@ let selected = false;
 
 let opts = {
     // minDate: Date.now(),
-    inline: true,
+    inline: false,
     visible: false,
     locale: en,
     timepicker: true,
