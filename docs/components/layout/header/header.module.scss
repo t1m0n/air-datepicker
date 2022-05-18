@@ -100,7 +100,9 @@
 }
 
 .navSticky {
+  @include onMobile {
     box-shadow: 0 12px 14px rgba(0, 0, 0, .1);
+  }
 }
 
 .navItem {

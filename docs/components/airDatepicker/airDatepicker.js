@@ -21,7 +21,8 @@ class AirDatepicker extends React.Component {
     static propTypes = {
         dpClassName: PropTypes.string,
         inline: PropTypes.bool,
-        inlineInput: PropTypes.bool
+        inlineInput: PropTypes.bool,
+        readonly: PropTypes.bool,
     }
 
     componentDidMount(){
@@ -45,7 +46,7 @@ class AirDatepicker extends React.Component {
     }
 
     render() {
-        let {inline, inlineInput,  dpClassName, placeholder} = this.props;
+        let {inline, inlineInput,  dpClassName, placeholder, readonly} = this.props;
 
         return (
             <>
@@ -53,9 +54,9 @@ class AirDatepicker extends React.Component {
                     ? <div className={cn(css.inlineContainer, dpClassName)} ref={this.$el} />
                     : inlineInput
                         ? null
-                        : <Input ref={this.$el} placeholder={placeholder} />
+                        : <Input ref={this.$el} placeholder={placeholder} readonly={readonly} />
                 }
-                {inlineInput && <Input ref={this.$el} placeholder={placeholder} />}
+                {inlineInput && <Input ref={this.$el} placeholder={placeholder} readonly={readonly} />}
             </>
         );
     }

@@ -136,6 +136,10 @@ export default class Datepicker {
             this.show();
         }
 
+        if (isMobile && !treatAsInline) {
+            this.$el.setAttribute('readonly', true);
+        }
+
         if (treatAsInline) {
             this._createComponents();
         }

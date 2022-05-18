@@ -11,6 +11,7 @@
     "animejs": "^3.2.1",
     "classnames": "^2.2.6",
     "clone-deep": "^4.0.1",
+    "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.23.0",
     "fuzzysearch": "^1.0.3",
     "github-buttons": "^2.18.1",

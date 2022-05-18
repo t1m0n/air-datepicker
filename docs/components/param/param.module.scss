@@ -85,6 +85,27 @@
   }
 }
 
+.paramNameCopy {
+  cursor: pointer;
+  position: relative;
+  transition: all var(--t-duration) var(--t-easing);
+
+  &:hover {
+    color: var(--link-color);
+
+    .linkIcon {
+      opacity: .2;
+    }
+  }
+
+  &:active {
+    .linkIcon {
+      opacity: .5;
+      transform: scale(.9);
+    }
+  }
+}
+
 .paramProps {
   display: flex;
   align-items: center;
@@ -110,6 +131,19 @@
 
 .content {
 
+}
+
+.linkIcon {
+  position: absolute;
+  right: calc(100% + 4px);
+  top: 2px;
+  opacity: 0;
+  transition: all var(--t-duration) var(--t-easing);
+
+  @include onMobile {
+    right: auto;
+    left: calc(100% + 4px);
+  };
 }
 
 @keyframes blink {

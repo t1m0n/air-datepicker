@@ -55,7 +55,7 @@ export default function Examples() {
                         <Section title='exampleBasicTitle'>
                             <Section.SubSection titleId={'exampleBasicDefaultsTitle'} titleHidden>
                                 <Example>
-                                    <AirDatepicker placeholder={messages.chooseDate} />
+                                    <AirDatepicker placeholder={messages.chooseDate} readonly  />
                                     <Code>{code.basicInit}</Code>
                                 </Example>
                             </Section.SubSection>
@@ -134,6 +134,7 @@ export default function Examples() {
                                 <Example>
                                     <AirDatepicker
                                         position={'right center'}
+                                        readonly
                                     />
                                     <Code>
                                         {code.basicPosition}
@@ -206,6 +207,7 @@ export default function Examples() {
                                         <AirDatepicker
                                             placeholder={messages.showMeAnimation}
                                             container={`.${css.animeContainer}`}
+                                            readonly
                                             position={({$datepicker, $target, $pointer, isViewChange, done}) => {
                                                 let popper = createPopper($target, $datepicker, {
                                                     placement: 'bottom',
@@ -278,7 +280,7 @@ export default function Examples() {
                                 values={{param: <Code inline>{`{range: true}`}</Code>}}
                             />
                             <Example>
-                                <AirDatepicker range={true} multipleDatesSeparator={' - '} />
+                                <AirDatepicker range={true} multipleDatesSeparator={' - '} readonly />
                                 <Code>{code.rangeOption}</Code>
                             </Example>
                             <Section.SubSection titleId={'exampleRangeMinMaxTitle'}>
@@ -300,6 +302,7 @@ export default function Examples() {
                                                     setMinDate(date)
                                                 }}
                                                 inlineInput
+                                                readonly
                                             />
                                         </div>
                                         <div>
@@ -310,6 +313,7 @@ export default function Examples() {
                                                     setMaxDate(date)
                                                 }}
                                                 inlineInput
+                                                readonly
                                             />
                                         </div>
                                     </Example.DoubleSection>
@@ -327,7 +331,7 @@ export default function Examples() {
                                 }}
                             />
                             <Example>
-                                <AirDatepicker timepicker={true}/>
+                                <AirDatepicker timepicker={true} readonly/>
                                 <Code>{code.timeOption}</Code>
                             </Example>
 
@@ -348,6 +352,7 @@ export default function Examples() {
                                         timepicker
                                         selectedDates={new Date()}
                                         timeFormat={'hh:mm AA'}
+                                        readonly
                                     />
                                     <Code>{code.timeFormatOption}</Code>
                                 </Example>

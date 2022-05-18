@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Version from 'components/common/version';
 import Container from 'components/layout/container';
 import {FormattedMessage} from 'react-intl';
@@ -44,7 +43,5 @@ function Header({} = {}) {
         </div>
     );
 }
-
-Header.propTypes = {};
 
 export default Header;

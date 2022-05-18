@@ -4,7 +4,7 @@ import cn from 'classnames';
 
 import css from './input.module.scss';
 
-function Input({type='text', value, className, onChange, onFocus, onBlur, placeholder} = {}, ref) {
+function Input({type='text', value, className, onChange, onFocus, onBlur, placeholder, readonly} = {}, ref) {
     return (
         <input
             className={cn(css.el, className)}
@@ -14,6 +14,7 @@ function Input({type='text', value, className, onChange, onFocus, onBlur, placeh
             onBlur={onBlur}
             ref={ref}
             value={value}
+            readOnly={readonly}
             placeholder={placeholder}
         />
     );
@@ -26,7 +27,8 @@ Input.propTypes = {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     placeholder: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.string,
+    readonly: PropTypes.bool,
 };
 
 export default React.forwardRef(Input);

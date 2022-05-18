@@ -132,6 +132,7 @@ function Docs({} = {}) {
                                                     month: 'long'
                                                 });
                                             }}
+                                            readonly
                                         />
                                         <Code>{examples.optsDateFormatFunc}</Code>
                                     </Example>
@@ -210,6 +211,7 @@ function Docs({} = {}) {
                                     <Example>
                                         <AirDatepicker
                                             autoClose
+                                            readonly
                                             position={({$target, $datepicker, $pointer}) => {
                                                 let coords = $target.getBoundingClientRect(),
                                                     dpHeight = $datepicker.clientHeight,
@@ -300,6 +302,7 @@ function Docs({} = {}) {
                                     <Example titleId={'example'}>
                                         <AirDatepicker
                                             placeholder={messages.chooseDate}
+                                            readonly
                                             buttons={[
                                                 {
                                                     content: 'Select 2021-07-26',
