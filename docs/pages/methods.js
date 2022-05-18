@@ -199,6 +199,9 @@ function Methods({} = {}) {
                                 <Param name={'focusDate'} type={'Date | false'}>
                                     <Paragraph id={'apiFocusDate'} />
                                 </Param>
+                                <Param name={'visible'} type={'boolean'}>
+                                    <Paragraph id={'apiVisible'} />
+                                </Param>
                             </Param.List>
                         </Section>
                     </main>

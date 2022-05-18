@@ -137,6 +137,7 @@ declare class AirDatepicker {
     currentView: AirDatepickerViews
     selectedDates: Date[]
     focusDate: Date | false
+    visible: boolean
 }
 
 

@@ -246,6 +246,7 @@ export default {
     apiViewDate: 'Текущая дата отображения',
     apiCurrentView: 'Текущее представление календаря.',
     apiSelectedDates: 'Массив выбранных дат',
-    apiFocusDate: 'Дата, находящаяся в фокусе.'
+    apiFocusDate: 'Дата, находящаяся в фокусе.',
+    apiVisible: 'Показан ли сейчас календарь'
 
 };
