@@ -26,6 +26,10 @@ new AirDatepicker('#el' [, options]);
 
 ## Recent updates
 
+### v3.2.1
+* added Arabic locale, thanks to [abdo-host](https://github.com/abdo-host) [#497](https://github.com/t1m0n/air-datepicker/pull/497)
+* added Italian locale, thanks to [msaltieri](https://github.com/msaltieri) [#498](https://github.com/t1m0n/air-datepicker/pull/498)
+
 ### v3.2.0
 * added `onClickDayName` option, [#459](https://github.com/t1m0n/air-datepicker/issues/459)
 * added `silent` param to `clear` method, [#477](https://github.com/t1m0n/air-datepicker/issues/477)

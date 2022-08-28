@@ -184,8 +184,11 @@ function Methods({} = {}) {
 
                         <Section title={'apiPropertiesTitle'}>
                             <Param.List>
-                                <Param name={'$datepicker'} type={"HTMLElement"} id={'datepicker'}>
+                                <Param name={'$datepicker'} type={"HTMLDivElement"} id={'datepicker'}>
                                     <Paragraph id={'api$datepicker'}/>
+                                </Param>
+                                <Param name={'$el'} type={"HTMLInputElement"} id={'el'}>
+                                    <Paragraph id={'api$el'}/>
                                 </Param>
                                 <Param name={'viewDate'} type={'Date'}>
                                     <Paragraph id={'apiViewDate'}/>

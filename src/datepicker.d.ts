@@ -113,8 +113,8 @@ export declare type AirDatepickerOptions = {
 }
 
 
-declare class AirDatepicker {
-    constructor(el: string | HTMLElement, opts? : Partial<AirDatepickerOptions>)
+declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
+    constructor(el: string | E, opts? : Partial<AirDatepickerOptions>)
     static version: string
     show: () => void
     hide: () => void
@@ -132,6 +132,7 @@ declare class AirDatepicker {
     up: (date?: AirDatepickerDate) => void
     down: (date?: AirDatepickerDate) => void
 
+    $el: E
     $datepicker: HTMLDivElement
     viewDate: Date
     currentView: AirDatepickerViews

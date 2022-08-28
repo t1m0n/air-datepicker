@@ -45,7 +45,7 @@ function buildDatepickersContainer(id) {
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.2.0'
+    static version = '3.2.1'
     static defaultContainerId = 'air-datepicker-global-container'
     constructor(el, opts) {
         this.$el = getEl(el);
@@ -309,7 +309,7 @@ export default class Datepicker {
             this.locale.dateFormat = [this.locale.dateFormat, (timeFormatValidated ? timeFormatValidated : '')].join(separator);
         }
 
-        if (onlyTimepicker) {
+        if (onlyTimepicker && typeof dateFormat !== 'function') {
             this.locale.dateFormat = this.locale.timeFormat;
         }
     }

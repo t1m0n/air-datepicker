@@ -466,7 +466,7 @@ function Docs({} = {}) {
                                     }} />
                                     <Param.List nested>
                                         <Param name={'dayIndex'} type={'index'} definition={'eventsOnClickDayNameDayIndex'} />
-                                        <Param name={'datepicker'} type={'object'} definition={'eventsOnClickDayNameDatepicker'} />
+                                        <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnClickDayNameDatepicker'} />
                                     </Param.List>
                                 </Param>
                             </Param.List>
