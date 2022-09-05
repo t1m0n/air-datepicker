@@ -51,15 +51,15 @@ export default class DatepickerBody {
     _bindEvents() {
         let {range, dynamicRange} = this.opts;
 
-        addEventListener(this.$el, 'mouseover', this.onMouseOverCell);
-        addEventListener(this.$el, 'mouseout', this.onMouseOutCell);
-        addEventListener(this.$el, 'click', this.onClickBody);
+        this.$el.addEventListener('mouseover', this.onMouseOverCell);
+        this.$el.addEventListener('mouseout', this.onMouseOutCell);
+        this.$el.addEventListener('click', this.onClickBody);
 
 
         if (range && dynamicRange) {
-            addEventListener(this.$el, 'mousedown', this.onMouseDown);
-            addEventListener(this.$el, 'mousemove', this.onMouseMove);
-            addEventListener(window.document, 'mouseup', this.onMouseUp);
+            this.$el.addEventListener('mousedown', this.onMouseDown);
+            this.$el.addEventListener('mousemove', this.onMouseMove);
+            window.document.addEventListener('mouseup', this.onMouseUp);
         }
 
     }
