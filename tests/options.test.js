@@ -549,5 +549,22 @@ describe('OPTIONS TESTS', () => {
                 cell.click();
             }).not.toThrow();
         });
+
+        it('should be able to add custom attributes to cells', () => {
+            init({
+                inline: true,
+                onRenderCell() {
+                    return {
+                        attrs: {
+                            'data-custom-attr': 'ok'
+                        }
+                    };
+                }
+            });
+
+            let cell = $datepicker.querySelector('[data-custom-attr="ok"]');
+
+            expect(cell).toBeTruthy();
+        });
     });
 });

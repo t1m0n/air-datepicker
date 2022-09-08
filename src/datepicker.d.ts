@@ -102,10 +102,11 @@ export declare type AirDatepickerOptions = {
     onSelect: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker}) => void,
     onChangeViewDate: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
     onChangeView: (view: AirDatepickerViews) => void,
-    onRenderCell: ({date, cellType, datepicker}: {date: Date, cellType: AirDatepickerViewsSingle, datepicker: AirDatepicker}) => ({
+    onRenderCell: (params: {date: Date, cellType: AirDatepickerViewsSingle, datepicker: AirDatepicker}) => ({
         disabled?: boolean,
         classes?: string,
         html?: string
+        attrs?: Record<string, string | number | undefined>
     } | void),
     onShow: (isAnimationComplete: boolean) => void,
     onHide: (isAnimationComplete: boolean) => void,
