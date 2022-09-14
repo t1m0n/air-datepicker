@@ -30,9 +30,7 @@ export function createElement({tagName = 'div', className = '', innerHtml = '', 
     }
 
     if (attrs) {
-        for (let attr in attrs) {
-            $element.setAttribute(attr, attrs[attr]);
-        }
+        setAttribute($element, attrs);
     }
 
     return $element;
@@ -46,6 +44,8 @@ export function createElement({tagName = 'div', className = '', innerHtml = '', 
  */
 export function setAttribute(el, attrs) {
     for (let [name, value] of Object.entries(attrs)) {
+        if (value === undefined) continue;
+
         el.setAttribute(name, value);
     }
     return el;
@@ -148,18 +148,7 @@ export function subDays(date, days) {
 }
 
 /**
- * Add days to date
- * @param {Date} date
- * @param {Number} days
- * @return {Date}
- */
-export function addDays(date, days) {
-    let {year, month, date: _date} = getParsedDate(date);
-    return new Date(year, month, _date + days);
-}
-
-/**
- * Class names handler, inspired by https://github.com/JedWatson/classnames but very simplified
+ * Class names' handler, inspired by https://github.com/JedWatson/classnames but very simplified
  * @param {String|Object} classes - class names, could contain strings or object
  */
 export function classNames(...classes) {

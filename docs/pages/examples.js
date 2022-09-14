@@ -408,8 +408,11 @@ export default function Examples() {
                                             randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
 
                                         return {
-                                            html: shouldChangeContent ? randomEmoji : false,
-                                            classes: shouldChangeContent ? '-emoji-cell-' : false
+                                            html: shouldChangeContent ? randomEmoji : undefined,
+                                            classes: shouldChangeContent ? '-emoji-cell-' : undefined,
+                                            attrs: {
+                                                title: shouldChangeContent ? randomEmoji : ''
+                                            }
                                         }
                                     }}/>
                                 <Code>{code.customCellExample}</Code>

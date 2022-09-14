@@ -58,13 +58,15 @@ export default class DatepickerCell {
 
     _createElement() {
         let {year, month, date} = getParsedDate(this.date);
+        let extraAttrs = this.customData?.attrs || {};
 
         this.$cell = createElement({
             className: this._getClassName(),
             attrs: {
                 'data-year': year,
                 'data-month': month,
-                'data-date': date
+                'data-date': date,
+                ...extraAttrs,
             }
         });
     }

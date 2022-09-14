@@ -26,6 +26,10 @@ new AirDatepicker('#el' [, options]);
 
 ## Recent updates
 
+### v3.3.0
+* new feature that allow you to add custom attributes via `onRenderCell` [#502](https://github.com/t1m0n/air-datepicker/issues/502), [read docs](https://air-datepicker.com/docs?scrollTo=onRenderCell)
+* fixed selecting cell when using custom html with `onRenderCell` option  [#502](https://github.com/t1m0n/air-datepicker/issues/502)
+
 ### v3.2.1
 * added Arabic locale, thanks to [abdo-host](https://github.com/abdo-host) [#497](https://github.com/t1m0n/air-datepicker/pull/497)
 * added Italian locale, thanks to [msaltieri](https://github.com/msaltieri) [#498](https://github.com/t1m0n/air-datepicker/pull/498)
