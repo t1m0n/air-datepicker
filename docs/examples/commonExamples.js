@@ -260,7 +260,11 @@ export let eventsOnRenderCell =
         if (cellType === 'day') {
             if (date.getDate() === 12) {
                 return {
-                    disabled: true
+                    disabled: true,
+                    classes: 'disabled-class'
+                    attrs: {
+                        title: 'Cell is disabled'
+                    }
                 }
             }
         }
