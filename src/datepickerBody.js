@@ -25,6 +25,8 @@ let templates = {
     [consts.years]: `<div class="air-datepicker-body--cells -${consts.years}-"></div>`
 };
 
+const cellClassName = '.air-datepicker-cell';
+
 export default class DatepickerBody {
     constructor({dp, type, opts}) {
         this.dp = dp;
@@ -84,10 +86,11 @@ export default class DatepickerBody {
             isWeekend = this.dp.isWeekend,
             {onClickDayName} = this.opts,
             curDay = firstDay,
+            totalDays = 7,
             i = 0;
 
-        while (i < 7) {
-            let day = curDay % 7;
+        while (i < totalDays) {
+            let day = curDay % totalDays;
             let className = classNames('air-datepicker-body--day-name', {
                 [consts.cssClassWeekend]: isWeekend(day),
                 '-clickable-': !!onClickDayName
@@ -210,7 +213,7 @@ export default class DatepickerBody {
     }
 
     handleClick = (e) => {
-        let $cell = e.target;
+        let $cell = e.target.closest(cellClassName);
         let cell = $cell.adpCell;
         if (cell.isDisabled) return;
 
@@ -247,7 +250,7 @@ export default class DatepickerBody {
     }
 
     onMouseOverCell = (e) => {
-        let $cell = closest(e.target, '.air-datepicker-cell');
+        let $cell = closest(e.target, cellClassName);
         this.dp.setFocusDate($cell ? $cell.adpCell.date : false);
     }
 
@@ -259,7 +262,7 @@ export default class DatepickerBody {
         let {onClickDayName} = this.opts;
         let target = e.target;
 
-        if (target.closest('.air-datepicker-cell')) {
+        if (target.closest(cellClassName)) {
             this.handleClick(e);
         }
 
@@ -271,7 +274,7 @@ export default class DatepickerBody {
     onMouseDown = (e) => {
         this.pressed = true;
 
-        let $cell = closest(e.target, '.air-datepicker-cell'),
+        let $cell = closest(e.target, cellClassName),
             cell = $cell && $cell.adpCell;
 
         if (isSameDate(cell.date, this.dp.rangeDateFrom)) {
@@ -286,7 +289,7 @@ export default class DatepickerBody {
         if (!this.pressed || !this.dp.isMinViewReached) return;
         e.preventDefault();
 
-        let $cell = closest(e.target, '.air-datepicker-cell'),
+        let $cell = closest(e.target, cellClassName),
             cell = $cell && $cell.adpCell,
             {selectedDates, rangeDateTo, rangeDateFrom} = this.dp;
 

@@ -430,7 +430,7 @@ function Docs({} = {}) {
                                 <Param name={'onChangeView'} type={'("days | months | years") => void'}>
                                     <Paragraph id={'eventsOnChangeView'} />
                                 </Param>
-                                <Param name={'onRenderCell'} type={'({date, cellType, datepicker}) => {html, classes, disabled}'}>
+                                <Param name={'onRenderCell'} type={'({date, cellType, datepicker}) => {html, classes, disabled, attrs}'}>
                                     <Paragraph id={'eventsOnRenderCell'} />
                                     <Paragraph id={'eventsOnRenderCell2'} />
                                     <Param.List nested>
@@ -443,6 +443,7 @@ function Docs({} = {}) {
                                         <Param name={'html'} type={'string'} definition={'eventsOnRenderCellHtml'}/>
                                         <Param name={'classes'} type={'string'} definition={'eventsOnRenderCellClasses'} />
                                         <Param name={'disabled'} type={'boolean'} definition={'eventsOnRenderCellDisabled'} />
+                                        <Param name={'attrs'} type={'Record<string, string | number | undefined>'} definition={'eventsOnRenderCellAttrs'} />
                                     </Param.List>
                                     <Example>
                                         <Code>{examples.eventsOnRenderCell}</Code>

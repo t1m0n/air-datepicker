@@ -92,8 +92,11 @@ new AirDatepicker('#inline-div', {
             randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
     
         return {
-            html: shouldChangeContent ? randomEmoji : false,
-            classes: shouldChangeContent ? '-emoji-cell-' : false
+            html: shouldChangeContent ? randomEmoji : undefined,
+            classes: shouldChangeContent ? '-emoji-cell-' : undefined,
+            attrs: {
+                title: shouldChangeContent ? randomEmoji : ''
+            }
         }
     },
     
@@ -257,7 +260,11 @@ export let eventsOnRenderCell =
         if (cellType === 'day') {
             if (date.getDate() === 12) {
                 return {
-                    disabled: true
+                    disabled: true,
+                    classes: 'disabled-class'
+                    attrs: {
+                        title: 'Cell is disabled'
+                    }
                 }
             }
         }

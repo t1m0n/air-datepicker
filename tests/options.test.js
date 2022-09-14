@@ -485,4 +485,86 @@ describe('OPTIONS TESTS', () => {
             expect(dp.visible).toBe(false);
         });
     });
+
+    describe('onRenderCell', () => {
+        it('should change cell class names', () => {
+            init({
+                inline: true,
+                onRenderCell() {
+                    return {
+                        classes: 'custom-cell-class'
+                    };
+                }
+            });
+
+            let cell = $datepicker.querySelector('.air-datepicker-cell');
+
+            expect(cell.classList.contains('custom-cell-class')).toBe(true);
+        });
+
+        it('should be able to disable cell', () => {
+            init({
+                startDate: '2022.09.01',
+                inline: true,
+                onRenderCell({date}) {
+                    if (date.getDate() === 8) {
+                        return {
+                            disabled: true
+                        };
+                    }
+                }
+            });
+
+            let cell = dp.getCell('2022.09.08');
+
+            expect(cell.classList.contains('-disabled-')).toBe(true);
+        });
+
+        it('should be able to change cell html', () => {
+            init({
+                inline: true,
+                onRenderCell() {
+                    return {
+                        html: '<div>Custom content</div>'
+                    };
+                }
+            });
+
+            let cell = $datepicker.querySelector('.air-datepicker-cell');
+            expect(cell.textContent).toBe('Custom content');
+        });
+
+        it('should be able to change cell html and not affect selecting dates', () => {
+            init({
+                inline: true,
+                onRenderCell() {
+                    return {
+                        html: '<div class="custom-cell">Custom content</div>'
+                    };
+                }
+            });
+
+            let cell = $datepicker.querySelector('.custom-cell');
+            expect(() => {
+                cell.click();
+            }).not.toThrow();
+        });
+
+        it('should be able to add custom attributes to cells', () => {
+            init({
+                inline: true,
+                onRenderCell() {
+                    return {
+                        attrs: {
+                            'data-custom-attr': 'ok'
+                        }
+                    };
+                }
+            });
+
+            let cell = $datepicker.querySelector('[data-custom-attr="ok"]');
+
+            expect(cell).toBeTruthy();
+        });
+    });
 });
