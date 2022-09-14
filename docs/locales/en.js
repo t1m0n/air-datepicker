@@ -203,6 +203,7 @@ export default {
     eventsOnRenderCellHtml: 'custom cell content',
     eventsOnRenderCellClasses: 'extra classes',
     eventsOnRenderCellDisabled: 'if cell should be disabled',
+    eventsOnRenderCellAttrs: 'object with extra attributes of cell',
     eventsOnShow: 'Callback function when the calendar appears. Called at the beginning of the animation, and when the animation has finished.',
     eventsOnShowArg: 'animation completion indicator',
     eventsOnHide: 'Callback function when closing the calendar. Called at the beginning of the hide animation, and when the animation has finished.',
