@@ -1,0 +1,43 @@
+/* -------------------------------------------------
+    Datepicker buttons
+   ------------------------------------------------- */
+
+.air-datepicker-buttons {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+}
+
+.air-datepicker-button {
+  display: inline-flex;
+  color: var(--adp-btn-color);
+  border-radius: var(--adp-btn-border-radius);
+  cursor: pointer;
+  height: var(--adp-btn-height);
+  border: none;
+  background: rgba(255, 255, 255, 0);
+  
+  &:hover {
+    color: var(--adp-btn-color-hover);
+    background: var(--adp-btn-background-color-hover);
+  }
+
+  &:focus {
+    color: var(--adp-btn-color-hover);
+    background: var(--adp-btn-background-color-hover);
+    outline: none;
+  }
+
+  &:active {
+    background: var(--adp-btn-background-color-active);
+  }
+
+  span {
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+}

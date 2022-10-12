@@ -1,0 +1,109 @@
+@import "./_objects";
+
+/* -------------------------------------------------
+    Datepicker cell
+   ------------------------------------------------- */
+
+.air-datepicker-cell {
+  border-radius: var(--adp-cell-border-radius);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; // ?
+
+  &.-focus- {
+    background: var(--adp-cell-background-color-hover);
+  }
+
+  &.-current- {
+    color: var(--adp-color-current-date);
+
+    &.-focus- {
+      color: var(--adp-color);
+    }
+
+    &.-in-range- {
+      color: var(--adp-color-current-date);
+    }
+  }
+
+  &.-disabled- {
+    cursor: default;
+    color: var(--adp-color-disabled);
+
+    &.-focus- {
+      color: var(--adp-color-disabled);
+    }
+
+    &.-in-range- {
+      color: var(--adp-color-disabled-in-range);
+    }
+
+    &.-current- {
+      &.-focus- {
+        color:var(--adp-color-disabled);
+      }
+    }
+  }
+
+  &.-in-range- {
+    background: var(--adp-cell-background-color-in-range);
+    border-radius: 0;
+
+    &:hover {
+      background: var(--adp-cell-background-color-in-range-hover);
+    }
+  }
+
+  &.-range-from- {
+    border: 1px solid var(--adp-cell-border-color-in-range);
+    background-color: var(--adp-cell-background-color-in-range);
+    border-radius: var(--adp-cell-border-radius) 0 0 var(--adp-cell-border-radius);
+  }
+  &.-range-to- {
+    border: 1px solid var(--adp-cell-border-color-in-range);
+    background-color: var(--adp-cell-background-color-in-range);
+    border-radius: 0 var(--adp-cell-border-radius) var(--adp-cell-border-radius) 0;
+  }
+
+  &.-range-to-.-range-from- {
+    border-radius: var(--adp-cell-border-radius);
+  }
+
+  &.-selected- {
+    color: #fff;
+    border: none;
+    background: var(--adp-cell-background-color-selected);
+
+    &.-current- {
+      color: #fff;
+      background: var(--adp-cell-background-color-selected);
+    }
+
+    &.-focus- {
+      background: var(--adp-cell-background-color-selected-hover);
+    }
+  }
+}
+
+
+/*  Day cell
+   ------------------------------------------------- */
+
+.air-datepicker-cell.-day- {
+  &.-other-month-, {
+    @extend %otherMonth;
+  }
+}
+
+/*  Year cell
+   ------------------------------------------------- */
+
+.air-datepicker-cell.-year- {
+  &.-other-decade-, {
+    @extend %otherMonth;
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "air-datepicker-docs",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.10.2",
+    "animejs": "^3.2.1",
+    "classnames": "^2.2.6",
+    "clone-deep": "^4.0.1",
+    "copy-to-clipboard": "^3.3.1",
+    "date-fns": "^2.23.0",
+    "fuzzysearch": "^1.0.3",
+    "github-buttons": "^2.18.1",
+    "next": "12.1.6",
+    "prismjs": "^1.23.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-fast-compare": "^3.2.0",
+    "react-intl": "^5.17.7"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@svgr/webpack": "^5.5.0",
+    "autoprefixer": "^10.3.6",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.27.0",
+    "eslint-plugin-react": "^7.23.2",
+    "hygen": "^6.1.0",
+    "node-sass": "^7.0.0",
+    "prop-types": "^15.7.2",
+    "raw-loader": "^4.0.2",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%"
+  ]
+}

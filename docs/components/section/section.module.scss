@@ -1,0 +1,82 @@
+@import "public/objects";
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Sub section
+   ------------------------------------------------- */
+
+.el {
+  margin-bottom: var(--section-offset);
+
+  p {
+    margin-bottom: var(--paragraph-offset);
+  }
+}
+
+.title {
+  font-size: 25px;
+  margin-bottom: .5em;
+  color: #000;
+  font-weight: bold;
+}
+
+.titleHidden {
+  .title {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.subSection {
+  display: block;
+}
+
+.subTitle {
+  font-size: 18px;
+  margin-bottom: .2em;
+  margin-top: 1.4em;
+  position: relative;
+
+  &:after {
+    @extend %hilitePseudo;
+  }
+}
+
+.subSectionActive {
+  .subTitle {
+    &:after {
+      animation: blink 1s infinite linear;
+    }
+  }
+}
+
+.subTitleMini {
+  font-size: 16px;
+}
+
+.subTitleSecondary {
+  color: var(--color-secondary);
+}
+
+.titlePrimary {
+
+}
+
+.isPrimary {
+
+}
+
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+

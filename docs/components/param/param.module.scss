@@ -1,0 +1,159 @@
+@import "public/objects";
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Param
+   ------------------------------------------------- */
+
+.el {
+
+}
+
+.list {
+  .el {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .nestedList .el {
+    margin-bottom: 14px;
+  }
+}
+
+.nestedList {
+  margin-left: 32px;
+
+  @include onMobile {
+    margin-left: 12px;
+  };
+}
+
+.paramRow {
+  display: flex;
+  align-items: baseline;
+  position: relative;
+
+  .nestedList & {
+    display: inline-flex;
+  }
+
+  &:after {
+    @extend %hilitePseudo;
+  }
+
+  @include onMobile {
+    flex-direction: column;
+
+    .nestedList & {
+      flex-direction: row;
+    }
+  };
+}
+
+.type {
+  background: #f1f1f1;
+  display: inline-flex;
+  padding: 0 3px;
+  border-radius: 4px;
+
+  .nestedList & {
+    code {
+      font-size: 12px !important;
+    }
+  }
+
+  @include onMobile {
+    code {
+      font-size: 12px !important;
+    }
+  };
+}
+
+.paramName {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: .5em;
+
+  .nestedList & {
+    font-size: 1rem;
+    color: #000;
+    text-decoration: underline;
+    font-weight: normal;
+  }
+}
+
+.paramNameCopy {
+  cursor: pointer;
+  position: relative;
+  transition: all var(--t-duration) var(--t-easing);
+
+  &:hover {
+    color: var(--link-color);
+
+    .linkIcon {
+      opacity: .2;
+    }
+  }
+
+  &:active {
+    .linkIcon {
+      opacity: .5;
+      transform: scale(.9);
+    }
+  }
+}
+
+.paramProps {
+  display: flex;
+  align-items: center;
+
+  @include onMobile {
+    @include mobileScroll();
+    width: 100%;
+  };
+}
+
+.paramActive {
+  > .paramRow {
+    &:after {
+      animation: blink 1s infinite linear;
+    }
+  }
+}
+
+.defaultValue {
+  margin-left: .5em;
+  display: inline-flex;
+}
+
+.content {
+
+}
+
+.linkIcon {
+  position: absolute;
+  right: calc(100% + 4px);
+  top: 2px;
+  opacity: 0;
+  transition: all var(--t-duration) var(--t-easing);
+
+  @include onMobile {
+    right: auto;
+    left: calc(100% + 4px);
+  };
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,13 @@
+%hilitePseudo {
+  content: '';
+  position: absolute;
+  border-radius: 4px;
+  background: var(--color-accent-almost-transparent);
+  opacity: 0;
+  z-index: -1;
+  left: -4px;
+  top: -4px;
+  right: -4px;
+  bottom: -4px;
+
+}

@@ -1,0 +1,60 @@
+@mixin scrollbars($foreground-color:rgba(0, 0, 0, .1), $size: 10px, $background-color: transparent) {
+  $color: $foreground-color;
+
+  @if ($color == 'light') {
+    $color: rgba(255, 255, 255, .5);
+  }
+
+
+  // For Google Chrome
+  &::-webkit-scrollbar {
+    width:  $size;
+    height: $size;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color;
+    border-radius: 8px;
+
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+
+  // For Internet Explorer
+  & {
+    scrollbar-face-color: $color;
+    scrollbar-track-color: $background-color;
+  }
+
+
+  // Firefox
+  & {
+    scrollbar-color: $color $background-color;
+    scrollbar-width: thin;
+  }
+}
+
+@mixin onMobile() {
+  @media screen and (max-width: 1000px) {
+    @content
+  }
+}
+
+@mixin mobileScroll($setPadding: false, $fullWidth: false){
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  @if ($setPadding) {
+    margin-left: calc(var(--container-offset) * -1);
+    margin-right: calc(var(--container-offset) * -1);
+    padding-left: var(--container-offset);
+    padding-right: var(--container-offset);
+  }
+
+  @if ($fullWidth) {
+    width: 100vw;
+  }
+}

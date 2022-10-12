@@ -1,0 +1,77 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Language
+   ------------------------------------------------- */
+
+.el {
+  position: relative;
+}
+
+.toggle {
+  svg {
+    margin-right: 6px;
+
+    @include onMobile {
+      margin-right: 0;
+    }
+  }
+}
+
+.menu {
+  right: 0;
+  top: calc(100% + 8px);
+  width: 128px;
+  background: #fff;
+  border-radius: var(--ui-border-radius);
+  position: absolute;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .1);
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: all var(--t-duration) var(--t-easing);
+}
+
+.menuActive {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0px);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding: .4em 1em;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-secondary);
+
+  &:hover {
+    background: var(--color-accent-almost-transparent);
+  }
+}
+
+.flagHolder {
+  position: relative;
+  display: inline-flex;
+  margin-right: 8px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid rgba(0, 0, 0, .15);
+  }
+}
+
+.itemLabel {
+  @include onMobile {
+    display: none;
+  }
+}
+

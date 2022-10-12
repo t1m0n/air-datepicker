@@ -1,0 +1,36 @@
+%otherMonth {
+  color: var(--adp-color-other-month);
+
+  &:hover {
+    color: var(--adp-color-other-month-hover);
+  }
+
+  &.-disabled- {
+    &.-focus- {
+      color: var(--adp-color-other-month);
+    }
+  }
+
+  &.-selected- {
+    color: #fff;
+    background: var(--adp-background-color-selected-other-month);
+    &.-focus- {
+      background: var(--adp-background-color-selected-other-month-focused);
+    }
+  }
+
+  &.-in-range- {
+    background-color: var(--adp-background-color-in-range);
+    color: var(--adp-color);
+
+    &.-focus- {
+      background-color: var(--adp-background-color-in-range-focused);
+    }
+  }
+
+
+  &:empty {
+    background: none;
+    border: none;
+  }
+}

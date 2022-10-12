@@ -1,0 +1,19 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Content grid
+   ------------------------------------------------- */
+
+.el {
+  // Calculate width with absolute values to not handle Code blocks overflow
+  --main-content-width: calc(var(--container-max-width) - var(--content-nav-col-width) - var(--content-col-gap) - var(--container-offset) * 2);
+
+  display: grid;
+  grid-template-columns: var(--content-nav-col-width) var(--main-content-width);
+  grid-column-gap: var(--content-col-gap);
+
+  @include onMobile {
+    display: block;
+  };
+}
+

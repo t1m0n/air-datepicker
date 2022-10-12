@@ -1,0 +1,198 @@
+/* -------------------------------------------------
+    Timepicker
+   ------------------------------------------------- */
+
+$rangeTrackBg: #dedede;
+$rangeThumbSize: 12px;
+
+@mixin trackSelector {
+  &::-webkit-slider-runnable-track {
+    @content;
+  }
+
+  &::-moz-range-track {
+    @content;
+  }
+
+  &::-ms-track {
+    @content;
+  }
+}
+
+@mixin thumbSelector {
+  &::-webkit-slider-thumb {
+    @content;
+  }
+
+  &::-moz-range-thumb {
+    @content;
+  }
+
+  &::-ms-thumb {
+    @content;
+  }
+}
+
+@mixin thumb {
+  box-sizing: border-box;
+  height: $rangeThumbSize;
+  width: $rangeThumbSize;
+  border-radius: 3px;
+  border: 1px solid var(--adp-time-track-color);
+  background: #fff;
+  cursor: pointer;
+
+  transition: background var(--adp-transition-duration);
+}
+
+@mixin track {
+  border: none;
+  height: var(--adp-time-track-height);
+  cursor: pointer;
+  color: transparent;
+  background: transparent;
+}
+
+.air-datepicker-time {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-column-gap: 12px;
+  align-items: center;
+  position: relative;
+  padding: 0 var(--adp-time-padding-inner);
+
+  .-only-timepicker- & {
+    border-top: none;
+  }
+}
+
+.air-datepicker-time--sliders {
+}
+
+.air-datepicker-time--current {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-size: 14px;
+  text-align: center;
+}
+
+.air-datepicker-time--current-colon {
+  margin: 0 2px 3px;
+  line-height: 1;
+}
+
+.air-datepicker-time--current-hours,
+.air-datepicker-time--current-minutes {
+  line-height: 1;
+  font-size: 19px;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  position: relative;
+  z-index: 1;
+
+  &:after {
+    content: '';
+    background: var(--adp-background-color-hover);
+    border-radius: var(--adp-border-radius);
+    position: absolute;
+    left: -2px;
+    top: -3px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  &.-focus- {
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
+.air-datepicker-time--current-ampm {
+  text-transform: uppercase;
+  align-self: flex-end;
+  color: var(--adp-time-day-period-color);
+  margin-left: 6px;
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+
+.air-datepicker-time--row {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  height: 17px;
+  background:
+    linear-gradient(to right,var(--adp-time-track-color), var(--adp-time-track-color))
+    left 50%/100% var(--adp-time-track-height) no-repeat;
+
+  &:first-child {
+    margin-bottom: 4px;
+  }
+
+  input[type='range'] {
+    background: none;
+    cursor: pointer;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+
+    &::-ms-tooltip {
+      display: none;
+    }
+
+    &:hover {
+      @include thumbSelector() {
+        border-color: var(--adp-time-track-color-hover);
+      }
+    }
+
+    &:focus {
+      outline: none;
+
+      @include thumbSelector() {
+        background: var(--adp-cell-background-color-selected);
+        border-color: var(--adp-cell-background-color-selected);
+      }
+    }
+
+    //  Thumb
+    // -------------------------------------------------
+
+    @include thumbSelector() {
+      @include thumb;
+    }
+
+    &::-webkit-slider-thumb {
+      margin-top: calc(var(--adp-time-thumb-size) / 2 * -1);
+    }
+
+    //  Track
+    // -------------------------------------------------
+    @include trackSelector() {
+      @include track;
+    }
+
+    &::-ms-fill-lower {
+      background: transparent;
+    }
+    &:focus::-ms-fill-lower {
+
+    }
+    &::-ms-fill-upper {
+      background: transparent;
+    }
+    &:focus::-ms-fill-upper {
+
+    }
+  }
+}

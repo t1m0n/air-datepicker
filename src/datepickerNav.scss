@@ -1,0 +1,84 @@
+/* -------------------------------------------------
+    Datepicker nav
+   ------------------------------------------------- */
+
+.air-datepicker-nav {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--adp-border-color-inner);
+  min-height: var(--adp-nav-height);
+  padding: var(--adp-padding);
+  box-sizing: content-box;
+
+  .-only-timepicker- & {
+    display: none;
+  }
+}
+.air-datepicker-nav--title,
+.air-datepicker-nav--action {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/*  Navigation action
+   ------------------------------------------------- */
+
+.air-datepicker-nav--action {
+  width: var(--adp-nav-action-size);
+  border-radius: var(--adp-border-radius);
+  user-select: none;
+
+  &:hover {
+    background: var(--adp-background-color-hover);
+  }
+
+  &:active {
+    background: var(--adp-background-color-active);
+  }
+
+  &.-disabled- {
+    visibility: hidden;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  path {
+    fill: none;
+    stroke: var(--adp-nav-arrow-color);
+    stroke-width: 2px;
+  }
+}
+
+/*  Navigation title
+   ------------------------------------------------- */
+
+.air-datepicker-nav--title {
+  border-radius: var(--adp-border-radius);
+  padding: 0 8px;
+
+  i {
+    font-style: normal;
+    color: var(--adp-nav-color-secondary);
+    margin-left: .3em;
+  }
+
+  &:hover {
+    background: var(--adp-background-color-hover);
+  }
+
+  &:active {
+    background: var(--adp-background-color-active);
+  }
+
+  &.-disabled- {
+    cursor: default;
+    background: none;
+  }
+}
+
+

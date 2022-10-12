@@ -1,0 +1,22 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Example
+   ------------------------------------------------- */
+
+.el {
+  margin: 1em 0;
+  input {
+    margin-bottom: 10px;
+  }
+}
+
+.doubleSection {
+  display: flex;
+  grid-column-gap: 48px;
+
+  @include onMobile {
+    @include mobileScroll(true, true);
+  };
+}
+

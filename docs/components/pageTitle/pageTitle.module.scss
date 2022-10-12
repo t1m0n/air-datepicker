@@ -1,0 +1,16 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Page title
+   ------------------------------------------------- */
+
+.el {
+  font-size: 40px;
+  line-height: var(--title-line-height);
+  margin-bottom: .7em;
+
+  @include onMobile {
+    font-size: 32px;
+  };
+}
+

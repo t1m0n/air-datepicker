@@ -1,0 +1,79 @@
+/* -------------------------------------------------
+    Global styles
+   ------------------------------------------------- */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    --base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --base-font-size: 16px;
+    --base-line-height: 1.35;
+    --base-color: #333;
+
+    --color-accent: #26b9ff;
+    --color-accent-semi-transparent: rgba(38, 185, 255, .2);
+    --color-accent-almost-transparent: rgba(38, 185, 255, .1);
+    --color-accent-darker: #1e83b1;
+    --color-secondary: #6d6d6d;
+    --color-purple: #9e25be;
+
+    --btn-bg: rgba(38, 185, 255, 0.1);
+    --btn-bg-hover: rgba(38, 185, 255, 0.2);
+    --btn-bg-active: rgba(38, 185, 255, 0.3);
+    --btn-color: var(--color-accent);
+    --btn-color-hover: #14a7ee;
+
+    --paragraph-offset: .7em;
+
+    --container-offset: 16px;
+    --container-max-width: 1050px;
+    --container-min-width: 320px;
+    --content-nav-col-width: 256px;
+    --content-col-gap: 32px;
+
+    --section-offset: 40px;
+
+    --header-height: 56px;
+    --header-height-mobile: 40px;
+    --header-offset: 32px;
+    --header-offset-mobile: 56px;
+
+    --nav-toggle-size: 32px;
+
+    --link-color: var(--color-accent);
+    --link-border-color: var(--color-accent-semi-transparent);
+    --link-color-hover: var(--color-accent-darker);
+
+    --title-line-height: 1.2;
+
+    --ui-height: 40px;
+    --ui-height-small: 28px;
+    --ui-height-promo: 60px;
+    --ui-border-radius: 4px;
+    --ui-border-color: #ddd;
+    --ui-bg-hover: #f1f1f1;
+    --ui-border-color-focus: var(--color-accent);
+    --ui-font-size: 16px;
+
+    --nav-link-border-radius: 4px;
+
+    --t-duration: .2s;
+    --t-easing: ease-out;
+
+    --z-header: 101;
+    --z-language: 102;
+    --z-nav-mobile: 103;
+    --z-nav-toggle: 104;
+}
+
+@media screen and (max-width: 1000px) {
+    html {
+        --section-offset: 32px;
+        --container-offset: 8px;
+    }
+}

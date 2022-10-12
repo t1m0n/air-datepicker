@@ -1,0 +1,8 @@
+/* -------------------------------------------------
+    Datepicker examples custom styles
+   ------------------------------------------------- */
+
+.-emoji-cell- {
+    --adp-cell-background-color-selected: #ffb8ff;
+    --adp-cell-background-color-selected-hover: #fda5fd;
+}

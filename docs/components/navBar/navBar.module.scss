@@ -1,0 +1,116 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Nav bar
+   ------------------------------------------------- */
+
+.el {
+  --search-height: 56px;
+
+  height: calc(100vh - var(--header-height) - var(--header-offset) - 32px);
+  position: sticky;
+  top: calc(var(--header-height) + var(--header-offset));
+  transition: opacity var(--t-duration) var(--t-easing);
+  opacity: .4;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus-within {
+    opacity: 1;
+  }
+
+  @include onMobile {
+    opacity: 1;
+    position: fixed;
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    padding: calc(var(--header-height-mobile) + 16px) var(--container-offset) var(--container-offset);
+    z-index: var(--z-nav-mobile);
+    transform: translateX(-100%);
+    transition: none;
+
+    @include mobileScroll();
+  };
+}
+
+.scroller {
+  padding-right: 8px;
+  height: 100%;
+  overflow: auto;
+
+  @include scrollbars(rgba(0, 0, 0, .05), 6px);
+}
+
+.scrollerWithSearch {
+  height: calc(100% - var(--search-height));
+}
+
+.section {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.searchInput {
+  margin-bottom: 16px;
+  margin-right: 8px;
+  width: 100%;
+}
+
+.sectionTitle {
+  margin-bottom: 4px;
+  color: var(--base-color);
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  line-height: 1.1;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    outline: none;
+  }
+}
+
+.notFound {
+  min-height: 50px;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sectionParams {
+}
+
+.sectionParam {
+}
+
+.sectionParamLink {
+  display: block;
+  text-decoration: none;
+  color: var(--link-color);
+  padding: .1em .2em .2em .5em;
+  border-radius: var(--nav-link-border-radius);
+
+  &:hover,
+  &:focus {
+    background: var(--color-accent-almost-transparent);
+    outline: none;
+  }
+}

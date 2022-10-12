@@ -1,0 +1,36 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    D list
+   ------------------------------------------------- */
+
+.el {
+  margin: .7em 0;
+  .item {
+    margin-bottom: .5em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+.item {
+  padding-left: 1em;
+  display: flex;
+
+  @include onMobile() {
+    display: block;
+    padding-left: .2em;
+  };
+}
+
+.value {
+  padding: 0 5px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .1) !important;
+}
+
+.valueContainer {
+  white-space: nowrap;
+}

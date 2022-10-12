@@ -1,0 +1,94 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Home page
+   ------------------------------------------------- */
+
+.el {
+  --header-offset: 32px;
+
+  padding-top: var(--header-offset);
+
+  @include onMobile {
+    --header-offset: 24px;
+  };
+}
+
+.dpHolder {
+  text-align: center;
+  margin: 42px 0 52px;
+  transform-style: preserve-3d;
+  perspective: 800px;
+
+  @include onMobile {
+    margin: 32px 0 42px;
+  };
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  height: var(--ui-height-small);
+  justify-content: space-between;
+  margin-bottom: var(--header-offset);
+}
+
+.dpPromo {
+  opacity: 0;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.promoHeader {
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.promoHeaderNote {
+  font-weight: normal;
+  opacity: 0;
+}
+
+.promoHeaderVersion {
+  position: absolute;
+  bottom: 9px;
+  margin-left: 4px;
+}
+
+.mainTitle {
+  font-weight: 100;
+  font-size: 48px;
+  text-transform: uppercase;
+  margin-bottom: .2em;
+  white-space: pre;
+  position: relative;
+
+  span {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  @include onMobile {
+    font-size: 36px;
+  };
+}
+
+.nav {
+  display: grid;
+  grid-auto-columns: 160px;
+  justify-content: center;
+  grid-auto-flow: column;
+  grid-column-gap: 16px;
+  align-items: center;
+  margin-bottom: 48px;
+
+  @include onMobile {
+    justify-content: flex-start;
+    @include mobileScroll(true, true);
+  };
+}
+
+.transition {
+  opacity: 0;
+}

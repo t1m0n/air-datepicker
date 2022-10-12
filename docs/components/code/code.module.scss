@@ -1,0 +1,50 @@
+@import "public/mixins";
+
+/* -------------------------------------------------
+    Code
+   ------------------------------------------------- */
+
+.el {
+  padding: 12px 18px !important;
+  background: #fff !important;
+  border-radius: 10px;
+  color: #000 !important;
+  border: 1px solid rgba(0, 0, 0, .02);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .08);
+
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 14px !important;
+
+  max-width: 100%;
+  overflow: auto !important;
+  @include scrollbars();
+
+  @include onMobile {
+    @include mobileScroll();
+    font-size: 12px !important;
+  };
+
+  &:after,
+  &:before {
+    display: none !important;
+  }
+}
+
+.bgTransparent {
+  background: transparent !important;
+}
+
+.inline {
+  display: inline-flex !important;
+  margin-bottom: 0 !important;
+  padding: 1px !important;
+  border: none !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  white-space: pre !important;
+}
+
+.isFieldName {
+  color: var(--color-purple) !important;
+}
+
