@@ -17,7 +17,7 @@ npm i air-datepicker
 import AirDatepicker from 'air-datepicker'
 import 'air-datepicker/air-datepicker.css'
 
-new AirDatepicker('#el' [, options]);
+new AirDatepicker('#el', options);
 ```
 
 ## Demo and docs
