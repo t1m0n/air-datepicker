@@ -13,7 +13,7 @@ var _default = {
   today: 'Heute',
   clear: 'Aufräumen',
   dateFormat: 'dd.MM.yyyy',
-  timeFormat: 'HH:ii',
+  timeFormat: 'HH:mm',
   firstDay: 1
 };
 exports.default = _default;
