@@ -356,13 +356,9 @@ export default class Datepicker {
         let result = string,
             locale = this.locale,
             parsedDate = getParsedDate(date),
+            dayPeriod = parsedDate.dayPeriod,
             decade = getDecade(date),
-            replacer = Datepicker.replacer,
-            dayPeriod = 'am';
-
-        if (this.opts.timepicker && this.timepicker) {
-            dayPeriod = this.timepicker.getDayPeriod(date).dayPeriod;
-        }
+            replacer = Datepicker.replacer;
 
         let formats = {
             // Time in ms
