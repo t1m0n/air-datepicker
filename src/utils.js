@@ -94,12 +94,14 @@ export function getDaysCount(date) {
  *  minutes: number,
  *  fullMonth: string,
  *  day: number,
- *  fullMinutes: (string|*)
+ *  fullMinutes: (string|*),
+ *  hours12: number,
+ *  dayPeriod: 'am' | 'pm'
  * }}
  */
 export function getParsedDate(date) {
     let hours = date.getHours(),
-        hours12 = hours % 12 === 0 ? 12 : hours % 12;
+        {hours: hours12, dayPeriod} = getDayPeriodFromHours24(hours);
 
     return {
         year: date.getFullYear(),
@@ -111,9 +113,20 @@ export function getParsedDate(date) {
         hours,
         fullHours: getLeadingZeroNum(hours),
         hours12,
+        dayPeriod,
         fullHours12: getLeadingZeroNum(hours12),
         minutes: date.getMinutes(),
         fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
+    };
+}
+
+export function getDayPeriodFromHours24(hours) {
+    let hours12 = hours % 12 === 0 ? 12 : hours % 12;
+    let dayPeriod = hours > 11 ? 'pm' : 'am';
+
+    return {
+        dayPeriod,
+        hours: hours12
     };
 }
 

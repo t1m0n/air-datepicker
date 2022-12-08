@@ -8,7 +8,7 @@ import {
     getParsedDate,
     isSameDate,
     setAttribute,
-    getWordBoundaryRegExp,
+    getWordBoundaryRegExp, getDayPeriodFromHours24,
 } from './utils';
 
 import './datepickerTime.scss';
@@ -181,43 +181,6 @@ export default class DatepickerTime {
         }
     }
 
-    /**
-     * Calculates valid hour value to display in text input and datepicker's body.
-     * @param date {Date|Number} - date or hours
-     * @param [ampm] {Boolean} - 12 hours mode
-     * @returns {{hours: number, dayPeriod: string}}
-     */
-    getDayPeriod(date, ampm) {
-        let _date = date,
-            hours = Number(date);
-
-        if (date instanceof Date) {
-            _date = getParsedDate(date);
-            hours = Number(_date.hours);
-        }
-
-        let _ampm = ampm || this.ampm,
-            dayPeriod = 'am';
-
-        if (_ampm) {
-            switch (true) {
-                case hours === 12:
-                    dayPeriod = 'pm';
-                    break;
-                case hours > 11:
-                    dayPeriod = 'pm';
-                    break;
-            }
-
-            hours = hours % 12 === 0 ? 12 : hours % 12;
-        }
-
-        return {
-            hours,
-            dayPeriod
-        };
-    }
-
     updateSliders() {
         setAttribute(this.$hours, {
             min: this.minHours,
@@ -295,7 +258,7 @@ export default class DatepickerTime {
     set hours(val) {
         this._hours = val;
 
-        let {hours, dayPeriod} = this.getDayPeriod(val);
+        let {hours, dayPeriod} = getDayPeriodFromHours24(val);
 
         this.displayHours = hours;
         this.dayPeriod = dayPeriod;

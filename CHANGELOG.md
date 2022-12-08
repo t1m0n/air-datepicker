@@ -1,5 +1,9 @@
 # Changelog
 
+### v3.3.2
+* fixed day period value, when selecting date while datepicker is not active, [#510](https://github.com/t1m0n/air-datepicker/issues/510)
+* fixed German locale, [#511](https://github.com/t1m0n/air-datepicker/issues/511)
+
 ### v3.3.1
 * added Japanese locale, thanks to [kyong0612](https://github.com/kyong0612), in [#505](https://github.com/t1m0n/air-datepicker/pull/505)
 * added Korean locale, thanks to [YankeeTube](https://github.com/YankeeTube), in [#506](https://github.com/t1m0n/air-datepicker/pull/506)

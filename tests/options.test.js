@@ -119,8 +119,8 @@ describe('OPTIONS TESTS', () => {
         let date = new Date('2021-04-28T23:05'),
             values = {
                 'T': date.getTime().toString(),
-                'aa': 'am',
-                'AA': 'AM',
+                'aa': 'pm',
+                'AA': 'PM',
                 'H': '23',
                 'HH': '23',
                 'm': '5',
@@ -565,6 +565,35 @@ describe('OPTIONS TESTS', () => {
             let cell = $datepicker.querySelector('[data-custom-attr="ok"]');
 
             expect(cell).toBeTruthy();
+        });
+    });
+
+    describe('selectedDates', () => {
+        it('should select dates on init', () => {
+            const date = new Date('2022-12-08');
+            init({
+                visible: false,
+                selectedDates: [date]
+            });
+            // As selecting date is a little bit async, we'll wait here until
+            // values will be changed
+            setTimeout(() => {
+                expect(dp.$el).toHaveValue('08.12.2022');
+                expect(dp.selectedDates).toHaveLength(1);
+            });
+        });
+        it('should select dates with time on init with correct day period', () => {
+            const date = new Date('2022-12-08 23:21');
+            init({
+                visible: false,
+                timepicker: true,
+                locale: en,
+                selectedDates: [date]
+            });
+
+            setTimeout(() => {
+                expect(dp.$el).toHaveValue('12/08/2022 11:21 pm');
+            });
         });
     });
 });
