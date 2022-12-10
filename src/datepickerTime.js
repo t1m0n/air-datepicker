@@ -260,7 +260,7 @@ export default class DatepickerTime {
 
         let {hours, dayPeriod} = getDayPeriodFromHours24(val);
 
-        this.displayHours = hours;
+        this.displayHours = this.ampm ? hours : val;
         this.dayPeriod = dayPeriod;
     }
 

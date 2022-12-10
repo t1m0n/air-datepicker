@@ -15,11 +15,11 @@ beforeAll(() => {
     document.body.appendChild($altInput);
 });
 
-afterEach(() => {
-    dp.destroy();
-    dp = false;
-    $datepicker = false;
-});
+function sleep(timeout = 100) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, timeout);
+    });
+}
 
 function init(opts) {
     dp = new Datepicker($input, {visible: true, ...opts});
@@ -569,20 +569,23 @@ describe('OPTIONS TESTS', () => {
     });
 
     describe('selectedDates', () => {
-        it('should select dates on init', () => {
+        it('should select dates on init', async (done) => {
             const date = new Date('2022-12-08');
             init({
                 visible: false,
                 selectedDates: [date]
             });
+
             // As selecting date is a little bit async, we'll wait here until
             // values will be changed
-            setTimeout(() => {
-                expect(dp.$el).toHaveValue('08.12.2022');
-                expect(dp.selectedDates).toHaveLength(1);
-            });
+            await sleep();
+
+            expect(dp.$el).toHaveValue('08.12.2022');
+            expect(dp.selectedDates).toHaveLength(1);
+            done();
         });
-        it('should select dates with time on init with correct day period', () => {
+
+        it('should select dates with time on init with correct day period', async () => {
             const date = new Date('2022-12-08 23:21');
             init({
                 visible: false,
@@ -591,9 +594,8 @@ describe('OPTIONS TESTS', () => {
                 selectedDates: [date]
             });
 
-            setTimeout(() => {
-                expect(dp.$el).toHaveValue('12/08/2022 11:21 pm');
-            });
+            await sleep();
+            expect(dp.$el).toHaveValue('12/08/2022 11:21 pm');
         });
     });
 });

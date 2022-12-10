@@ -26,6 +26,9 @@ new AirDatepicker('#el' [, options]);
 
 ## Recent updates
 
+### v3.3.3
+* fixed time format in timepicker body [#512](https://github.com/t1m0n/air-datepicker/issues/512)
+
 ### v3.3.2
 * fixed day period value, when selecting date while datepicker is not active, [#510](https://github.com/t1m0n/air-datepicker/issues/510)
 * fixed German locale, [#511](https://github.com/t1m0n/air-datepicker/issues/511)

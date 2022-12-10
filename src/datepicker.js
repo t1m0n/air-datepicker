@@ -45,7 +45,7 @@ function buildDatepickersContainer(id) {
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.3.2'
+    static version = '3.3.3'
     static defaultContainerId = 'air-datepicker-global-container'
     constructor(el, opts) {
         this.$el = getEl(el);
