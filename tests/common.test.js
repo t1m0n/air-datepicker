@@ -53,4 +53,18 @@ describe('COMMON TESTS', () => {
 
         expect($container).not.toContainElement(dp.$datepicker);
     });
+
+    test('time format should be in 24 hours mode by default', (done) => {
+        const date = '2022-12-10T22:13';
+
+        init({
+            timepicker: true,
+            selectedDates: [date]
+        });
+        setTimeout(() => {
+            expect(dp.$datepicker.querySelector('.air-datepicker-time--current-hours')).toHaveTextContent('22');
+            expect(dp.$el).toHaveValue('10.12.2022 22:13');
+            done();
+        });
+    });
 });
