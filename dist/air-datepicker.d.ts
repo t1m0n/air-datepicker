@@ -116,7 +116,10 @@ export declare type AirDatepickerOptions = {
 
 declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     constructor(el: string | E, opts? : Partial<AirDatepickerOptions>)
+    static defaults: AirDatepickerOptions
     static version: string
+    static defaultGlobalContainerId: string
+    static buildGlobalContainer: (id?: string) => void;
     show: () => void
     hide: () => void
     next: () => void

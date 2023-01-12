@@ -25,8 +25,7 @@ import consts from './consts';
 import './datepickerVars.scss';
 import './datepicker.scss';
 
-let $body = '',
-    $datepickersContainer = '',
+let $datepickersContainer = '',
     $datepickerOverlay = '',
     containerBuilt = false,
     baseTemplate = '' +
@@ -34,19 +33,16 @@ let $body = '',
         '<div class="air-datepicker--navigation"></div>' +
         '<div class="air-datepicker--content"></div>';
 
-function buildDatepickersContainer(id) {
-    containerBuilt = true;
-
-    $datepickersContainer = createElement({className: id, id});
-    $body.appendChild($datepickersContainer);
-
-    return $datepickersContainer;
-}
-
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.3.3'
-    static defaultContainerId = 'air-datepicker-global-container'
+    static version = '3.3.4'
+    static defaultGlobalContainerId = 'air-datepicker-global-container'
+    static buildGlobalContainer(id) {
+        containerBuilt = true;
+
+        $datepickersContainer = createElement({className: id, id});
+        getEl('body').appendChild($datepickersContainer);
+    }
     constructor(el, opts) {
         this.$el = getEl(el);
 
@@ -57,9 +53,6 @@ export default class Datepicker {
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
         this.$altField = getEl(this.opts.altField || false);
 
-        if (!$body) {
-            $body = getEl('body');
-        }
 
         let {view, startDate} = this.opts;
 
@@ -104,9 +97,17 @@ export default class Datepicker {
                 onlyTimepicker
             }
         } = this;
+        let $body = getEl('body');
 
-        if (!containerBuilt && !inline && this.elIsInput) {
-            buildDatepickersContainer(Datepicker.defaultContainerId);
+        let shouldBuildGlobalContainer =
+            // Check if global container still exist in DOM
+            (!containerBuilt || containerBuilt && $datepickersContainer && !$body.contains($datepickersContainer))
+            && !inline
+            && this.elIsInput
+            && !this.$customContainer;
+
+        if (shouldBuildGlobalContainer) {
+            Datepicker.buildGlobalContainer(Datepicker.defaultGlobalContainerId);
         }
 
         if (isMobile && !$datepickerOverlay && !treatAsInline) {
