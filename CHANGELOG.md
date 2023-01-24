@@ -1,5 +1,9 @@
 # Changelog
 
+### v3.3.5
+* added handling of optional chaining operator in dist package [#518](https://github.com/t1m0n/air-datepicker/issues/518)
+* added Indonesian locale, thanks to [BariqDharmawan](https://github.com/BariqDharmawan), in [#517](https://github.com/t1m0n/air-datepicker/pull/517)
+
 ### v3.3.4
 * recreate global container if it was removed from DOM [#516](https://github.com/t1m0n/air-datepicker/issues/516)
 * added Greek locale, thanks to [sonole](https://github.com/sonole), in [#515](https://github.com/t1m0n/air-datepicker/pull/515)

@@ -35,7 +35,7 @@ let $datepickersContainer = '',
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.3.4'
+    static version = '3.3.5'
     static defaultGlobalContainerId = 'air-datepicker-global-container'
     static buildGlobalContainer(id) {
         containerBuilt = true;

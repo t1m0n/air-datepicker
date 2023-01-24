@@ -1,6 +1,6 @@
 {
   "name": "air-datepicker",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "scripts": {
     "dev": "set NODE_ENV=development&& webpack",
     "dev:serve": "npm run browser&& set NODE_ENV=development&& webpack serve",
