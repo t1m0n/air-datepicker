@@ -6,7 +6,7 @@ export default {
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'],
     today: 'Hari ini',
     clear: 'Hapus',
-    dateFormat: 'dd/mm/yyyy',
-    timeFormat: 'hh:ii aa',
+    dateFormat: 'dd/MM/yyyy',
+    timeFormat: 'hh:mm aa',
     firstDay: 1
-}
+};
