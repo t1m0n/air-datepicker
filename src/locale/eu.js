@@ -1,9 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = void 0;
 var _default = {
     days: ['Igandea', 'Astelehena', 'Asteartea', 'Asteazkena', 'Osteguna', 'Ostirala', 'Larunbata'],
     daysShort: ['Iga', 'Ast', 'Asr', 'Asz', 'Ost', 'Osr', 'Lar'],
@@ -16,4 +10,3 @@ var _default = {
     timeFormat: 'hh:mm aa',
     firstDay: 1
 };
-exports.default = _default;
