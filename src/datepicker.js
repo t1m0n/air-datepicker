@@ -1284,6 +1284,16 @@ export default class Datepicker {
         }
     }
 
+    /**
+     * Returns all dates that are currently should be shown in calendar
+     * @param {ViewType} viewType
+     * @returns {*}
+     */
+    getViewDates = (viewType = consts.days) => {
+        const dates = DatepickerBody.getDatesFunction(viewType);
+        return dates(this);
+    }
+
     //  Helpers
     // -------------------------------------------------
 
