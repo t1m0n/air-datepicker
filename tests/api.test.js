@@ -104,4 +104,42 @@ describe('API TESTS', () => {
             });
         });
     });
+
+    describe('getViewDates', () => {
+        it('should return array of all dates that should be visible in days view', () => {
+            init({
+                startDate: '2023-06-18'
+            });
+
+            const dates = dp.getViewDates('days');
+
+            expect(dates).toHaveLength(35);
+            expect(dates[0].toLocaleDateString('ru')).toBe('29.05.2023');
+            expect(dates.at(-1).toLocaleDateString('ru')).toBe('02.07.2023');
+        });
+
+        it('should return array of all dates that should be visible in months view', () => {
+            init({
+                startDate: '2023-06-18'
+            });
+
+            const dates = dp.getViewDates('months');
+
+            expect(dates).toHaveLength(12);
+            expect(dates[0].toLocaleDateString('ru')).toBe('01.01.2023');
+            expect(dates.at(-1).toLocaleDateString('ru')).toBe('01.12.2023');
+        });
+
+        it('should return array of all dates that should be visible in years view', () => {
+            init({
+                startDate: '2023-06-18'
+            });
+
+            const dates = dp.getViewDates('years');
+
+            expect(dates).toHaveLength(12);
+            expect(dates[0].toLocaleDateString('ru')).toBe('01.01.2019');
+            expect(dates.at(-1).toLocaleDateString('ru')).toBe('01.01.2030');
+        });
+    });
 });
