@@ -245,9 +245,11 @@ export default {
     apiDown: 'Switching to the previous view type.',
     api$datepicker: 'DOM element of the calendar.',
     api$el: 'DOM element on which calendar was initialized. Type of the element depends on generic value, which can be passed with initialization. By default it is HTMLInputElement.',
-    apiViewDate: 'Current view date',
+    apiViewDate: 'Current view date.',
     apiCurrentView: 'Current view of the calendar.',
     apiSelectedDates: 'An array of selected dates.',
     apiFocusDate: 'A focused date.',
-    apiVisible: 'Is calendar visible'
+    apiVisible: 'Is calendar visible.',
+    apiGetViewDates: 'Returns all dates that should be currently displayed in calendar.'
+
 };

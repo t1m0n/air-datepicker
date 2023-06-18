@@ -179,6 +179,9 @@ function Methods({} = {}) {
                                         <Param addId={false} name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
                                     </Param.List>
                                 </Param>
+                                <Param name={'getViewDates(view?)'} type={'(days|months|years) => Date[])'}>
+                                    <Paragraph id={'apiGetViewDates'} />
+                                </Param>
                             </Param.List>
                         </Section>
 
