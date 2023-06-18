@@ -28,26 +28,26 @@ describe('COMMON TESTS', () => {
 
     test('datepickers container should be created', () => {
         init();
-        expect(document.querySelector(`#${Datepicker.defaultContainerId}`)).not.toBeNull();
+        expect(document.querySelector(`#${Datepicker.defaultGlobalContainerId}`)).not.toBeNull();
     });
 
     test('datepicker should be added to the container if visible', () => {
         init();
-        let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
+        let $container = document.querySelector(`#${Datepicker.defaultGlobalContainerId}`);
 
         expect($datepicker.parentNode).toEqual($container);
     });
 
     test('datepicker should be initialized and not rendered to container', () => {
         init({visible: false});
-        let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
+        let $container = document.querySelector(`#${Datepicker.defaultGlobalContainerId}`);
 
         expect($container).not.toContainElement(dp.$datepicker);
     });
 
     test('datepicker should be removed from container after hide', () => {
         init();
-        let $container = document.querySelector(`#${Datepicker.defaultContainerId}`);
+        let $container = document.querySelector(`#${Datepicker.defaultGlobalContainerId}`);
 
         dp.hide();
 
