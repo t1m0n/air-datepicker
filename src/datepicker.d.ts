@@ -44,78 +44,78 @@ export declare type AirDatepickerPositionCallback = (
         done: () => void
     }) => void | (() => void)
 
-export declare type AirDatepickerOptions = {
-    classes: string
-    inline: boolean,
-    locale: Partial<AirDatepickerLocale>,
-    startDate: AirDatepickerDate,
-    firstDay: number,
-    isMobile: boolean,
-    visible: boolean,
-    weekends: [number, number],
-    dateFormat: string | ((d: Date) => string),
-    altField: AirDatepickerSelector,
-    altFieldDateFormat: string,
-    toggleSelected: boolean,
-    keyboardNav: boolean,
-    selectedDates: AirDatepickerDate[] | false,
-    container: AirDatepickerSelector,
-    position: AirDatepickerPosition | AirDatepickerPositionCallback,
-    offset: number,
-    view: AirDatepickerViews,
-    minView: AirDatepickerViews,
-    showOtherMonths: boolean,
-    selectOtherMonths: boolean,
-    moveToOtherMonthsOnSelect: boolean,
-    showOtherYears: boolean,
-    selectOtherYears: boolean,
-    moveToOtherYearsOnSelect: boolean,
-    minDate: AirDatepickerDate | false,
-    maxDate: AirDatepickerDate | false,
-    disableNavWhenOutOfRange: true,
-    multipleDates: number | true | false,
-    multipleDatesSeparator: string,
-    range: boolean,
-    dynamicRange: boolean,
-    buttons: AirDatepickerButtonPresets | AirDatepickerButton | (AirDatepickerButtonPresets| AirDatepickerButton)[] | false,
-    monthsField: keyof AirDatepickerLocale,
-    showEvent: string,
-    autoClose: boolean,
-    prevHtml: string,
-    nextHtml: string,
-    navTitles: {
+export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElement> = {
+    classes?: string
+    inline?: boolean,
+    locale?: Partial<AirDatepickerLocale>,
+    startDate?: AirDatepickerDate,
+    firstDay?: number,
+    isMobile?: boolean,
+    visible?: boolean,
+    weekends?: [number, number],
+    dateFormat?: string | ((d: Date) => string),
+    altField?: AirDatepickerSelector,
+    altFieldDateFormat?: string,
+    toggleSelected?: boolean | (({datepicker, date}:{datepicker: AirDatepicker<E>, date: Date}) => boolean),
+    keyboardNav?: boolean,
+    selectedDates?: AirDatepickerDate[] | false,
+    container?: AirDatepickerSelector,
+    position?: AirDatepickerPosition | AirDatepickerPositionCallback,
+    offset?: number,
+    view?: AirDatepickerViews,
+    minView?: AirDatepickerViews,
+    showOtherMonths?: boolean,
+    selectOtherMonths?: boolean,
+    moveToOtherMonthsOnSelect?: boolean,
+    showOtherYears?: boolean,
+    selectOtherYears?: boolean,
+    moveToOtherYearsOnSelect?: boolean,
+    minDate?: AirDatepickerDate | false,
+    maxDate?: AirDatepickerDate | false,
+    disableNavWhenOutOfRange?: true,
+    multipleDates?: number | true | false,
+    multipleDatesSeparator?: string,
+    range?: boolean,
+    dynamicRange?: boolean,
+    buttons?: AirDatepickerButtonPresets | AirDatepickerButton | (AirDatepickerButtonPresets| AirDatepickerButton)[] | false,
+    monthsField?: keyof AirDatepickerLocale,
+    showEvent?: string,
+    autoClose?: boolean,
+    prevHtml?: string,
+    nextHtml?: string,
+    navTitles?: {
         days?: AirDatepickerNavEntry,
         months?: AirDatepickerNavEntry,
         years?: AirDatepickerNavEntry
     },
-    timepicker: boolean,
-    onlyTimepicker: boolean,
-    dateTimeSeparator: string,
-    timeFormat: string,
-    minHours: number,
-    maxHours: number,
-    minMinutes: number,
-    maxMinutes: number,
-    hoursStep: number,
-    minutesStep: number,
+    timepicker?: boolean,
+    onlyTimepicker?: boolean,
+    dateTimeSeparator?: string,
+    timeFormat?: string,
+    minHours?: number,
+    maxHours?: number,
+    minMinutes?: number,
+    maxMinutes?: number,
+    hoursStep?: number,
+    minutesStep?: number,
 
-    onSelect: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker}) => void,
-    onChangeViewDate: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
-    onChangeView: (view: AirDatepickerViews) => void,
-    onRenderCell: (params: {date: Date, cellType: AirDatepickerViewsSingle, datepicker: AirDatepicker}) => ({
+    onSelect?: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker<E>}) => void,
+    onChangeViewDate?: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
+    onChangeView?: (view: AirDatepickerViews) => void,
+    onRenderCell?: (params: {date: Date, cellType: AirDatepickerViewsSingle, datepicker: AirDatepicker<E>}) => ({
         disabled?: boolean,
         classes?: string,
         html?: string
         attrs?: Record<string, string | number | undefined>
     } | void),
-    onShow: (isAnimationComplete: boolean) => void,
-    onHide: (isAnimationComplete: boolean) => void,
-    onClickDayName: ({dayIndex, datepicker}: {dayIndex: number, datepicker: AirDatepicker}) => void
+    onShow?: (isAnimationComplete: boolean) => void,
+    onHide?: (isAnimationComplete: boolean) => void,
+    onClickDayName?: ({dayIndex, datepicker}: {dayIndex: number, datepicker: AirDatepicker<E>}) => void
 }
 
 
 declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
-    constructor(el: string | E, opts? : Partial<AirDatepickerOptions>)
+    constructor(el: string | E, opts? : AirDatepickerOptions<E>)
     static defaults: AirDatepickerOptions
     static version: string
     static defaultGlobalContainerId: string
@@ -129,7 +129,7 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     clear: () => void
     formatDate: (date: AirDatepickerDate, format: string) => string
     destroy: () => void
-    update: (newOpts: Partial<AirDatepickerOptions>) => void
+    update: (newOpts?: AirDatepickerOptions) => void
     setCurrentView: (newView: AirDatepickerViews) => void
     setViewDate: (newViewDate: AirDatepickerDate) => void
     setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition?: boolean}) => void
