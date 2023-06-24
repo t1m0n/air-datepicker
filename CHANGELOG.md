@@ -2,6 +2,7 @@
 
 ### v3.4.0
 * added new method `getViewDates()` allows you to get all dates that should be currently displayed in calendar [#536](https://github.com/t1m0n/air-datepicker/issues/536)
+* `toggleSelected` now can be a function [#534](https://github.com/t1m0n/air-datepicker/issues/534)
 
 ### v3.3.5
 * added handling of optional chaining operator in dist package [#518](https://github.com/t1m0n/air-datepicker/issues/518)

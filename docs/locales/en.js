@@ -107,6 +107,7 @@ export default {
     optsAltField: 'An additional text field where the date with the format from the {fieldName} field will be written',
     optsAltFieldDateFormat: 'Date format for alternative field',
     optsToggleSelected: 'If {true}, then clicking on the active cell will remove the selection from it',
+    optsToggleSelectedFunc: 'Also could be a function. It receives datepicker instance and date which user tries to unselect. If function will return {true} then selection will be removed, otherwise it will remain.',
     optsKeyboardNav: 'Enables keyboard navigation. It only works if the element on which the calendar is initialized is a text field.',
     optsKeyboardNavListTitle: 'Key combinations:',
     optsKeyboardNavMonthForward: 'next month',

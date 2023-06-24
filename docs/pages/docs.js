@@ -148,8 +148,11 @@ function Docs({} = {}) {
                                 <Param name={'altFieldDateFormat'} type={'string | (date) => string'} defaultValue={'"T"'}>
                                     <Paragraph id={'optsAltFieldDateFormat'} />
                                 </Param>
-                                <Param name={'toggleSelected'} type={'boolean'} defaultValue={'true'}>
+                                <Param name={'toggleSelected'} type={'boolean | ({datepicker, date}) => boolean'} defaultValue={'true'}>
                                     <Paragraph id={'optsToggleSelected'} values={{
+                                        true: <Code inline>true</Code>
+                                    }} />
+                                    <Paragraph id={'optsToggleSelectedFunc'} values={{
                                         true: <Code inline>true</Code>
                                     }} />
                                 </Param>

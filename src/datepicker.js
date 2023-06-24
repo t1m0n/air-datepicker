@@ -869,22 +869,23 @@ export default class Datepicker {
     }
 
     _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate) {
-        let {range, toggleSelected} = this.opts;
+        const {range, toggleSelected} = this.opts;
+        const isFunc = typeof toggleSelected === 'function';
+        let shouldToggle = isFunc ? toggleSelected({datepicker: this, date: newSelectedDate}) : toggleSelected;
+
         if (range) {
-            if (!toggleSelected) {
+            if (!shouldToggle) {
                 // Add possibility to select same date when range is true
                 if (this.selectedDates.length !== 2) {
                     this.selectDate(newSelectedDate);
                 }
-            } else {
-                this.unselectDate(newSelectedDate);
             }
-        } else if (toggleSelected) {
-            this.unselectDate(newSelectedDate);
         }
 
-        // Change last selected date to be able to change time when clicking on this cell
-        if (!toggleSelected) {
+        if (shouldToggle) {
+            this.unselectDate(newSelectedDate);
+        } else {
+            // Change last selected date to be able to change time when clicking on this cell
             this._updateLastSelectedDate(alreadySelectedDate);
         }
     }
@@ -1084,7 +1085,7 @@ export default class Datepicker {
         this.rangeDateTo = null;
     }
 
-    update = (newOpts) => {
+    update = (newOpts = {}) => {
         let prevOpts = deepMerge({}, this.opts);
         deepMerge(this.opts, newOpts);
 

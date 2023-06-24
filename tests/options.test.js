@@ -234,6 +234,37 @@ describe('OPTIONS TESTS', () => {
 
             expect(dp.selectedDates).toHaveLength(1);
         });
+
+        it('should receive correct arguments if it is a function', function (done) {
+            let date = new Date();
+
+            init({
+                toggleSelected: ({datepicker, date}) => {
+                    expect(datepicker).toBeInstanceOf(Datepicker);
+                    expect(date).toBeInstanceOf(Date);
+
+                    done();
+                }
+            });
+
+            dp.selectDate(date);
+            dp.getCell(date).click();
+        });
+
+        it('should handle option as function correctly', function () {
+            let date = new Date();
+
+            init({
+                toggleSelected: () => {
+                    return false;
+                }
+            });
+
+            dp.selectDate(date);
+            dp.getCell(date).click();
+
+            expect(dp.selectedDates).toHaveLength(1);
+        });
     });
 
     describe('keyboardNav', () => {
