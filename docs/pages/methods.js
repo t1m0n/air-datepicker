@@ -8,7 +8,7 @@ import Param from 'components/param';
 import Example from 'components/example';
 import Code from 'components/code';
 import Paragraph from 'components/common/paragraph';
-import * as examples from 'examples/commonExamples';
+import * as examples from 'examples/code/commonExamples';
 import Link from 'components/common/link';
 import dataTypes from 'data/dataTypes';
 import {useIntl} from 'react-intl';
@@ -178,6 +178,9 @@ function Methods({} = {}) {
                                     <Param.List nested>
                                         <Param addId={false} name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
                                     </Param.List>
+                                </Param>
+                                <Param name={'getViewDates(view?)'} type={'(days|months|years) => Date[])'}>
+                                    <Paragraph id={'apiGetViewDates'} />
                                 </Param>
                             </Param.List>
                         </Section>

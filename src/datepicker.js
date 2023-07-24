@@ -35,7 +35,7 @@ let $datepickersContainer = '',
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.3.5'
+    static version = '3.4.0'
     static defaultGlobalContainerId = 'air-datepicker-global-container'
     static buildGlobalContainer(id) {
         containerBuilt = true;
@@ -471,7 +471,8 @@ export default class Datepicker {
             moveToOtherYearsOnSelect,
             multipleDates,
             range,
-            autoClose
+            autoClose,
+            onBeforeSelect,
         } = this.opts;
         let selectedDaysLen = selectedDates.length;
         let newViewDate;
@@ -489,6 +490,10 @@ export default class Datepicker {
         date = createDate(date);
 
         if (!(date instanceof Date)) return;
+
+        if (onBeforeSelect && !onBeforeSelect({date, datepicker: this})) {
+            return Promise.resolve();
+        }
 
         // Checks if selected date is out of current month or decade
         // If so, change `viewDate`
@@ -621,6 +626,7 @@ export default class Datepicker {
         this.selectedDates = [];
         this.rangeDateFrom = false;
         this.rangeDateTo = false;
+        this.lastSelectedDate = false;
 
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate, silent: params.silent});
 
@@ -869,22 +875,23 @@ export default class Datepicker {
     }
 
     _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate) {
-        let {range, toggleSelected} = this.opts;
+        const {range, toggleSelected} = this.opts;
+        const isFunc = typeof toggleSelected === 'function';
+        let shouldToggle = isFunc ? toggleSelected({datepicker: this, date: newSelectedDate}) : toggleSelected;
+
         if (range) {
-            if (!toggleSelected) {
+            if (!shouldToggle) {
                 // Add possibility to select same date when range is true
                 if (this.selectedDates.length !== 2) {
                     this.selectDate(newSelectedDate);
                 }
-            } else {
-                this.unselectDate(newSelectedDate);
             }
-        } else if (toggleSelected) {
-            this.unselectDate(newSelectedDate);
         }
 
-        // Change last selected date to be able to change time when clicking on this cell
-        if (!toggleSelected) {
+        if (shouldToggle) {
+            this.unselectDate(newSelectedDate);
+        } else {
+            // Change last selected date to be able to change time when clicking on this cell
             this._updateLastSelectedDate(alreadySelectedDate);
         }
     }
@@ -1084,7 +1091,7 @@ export default class Datepicker {
         this.rangeDateTo = null;
     }
 
-    update = (newOpts) => {
+    update = (newOpts = {}) => {
         let prevOpts = deepMerge({}, this.opts);
         deepMerge(this.opts, newOpts);
 
@@ -1222,6 +1229,10 @@ export default class Datepicker {
             this.setViewDate(date);
         }
 
+        if (this.opts.onFocus) {
+            this.opts.onFocus({datepicker: this, date});
+        }
+
     }
 
     _onChangeTime = ({hours, minutes}) => {
@@ -1282,6 +1293,16 @@ export default class Datepicker {
         if (this.visible) {
             this.hide();
         }
+    }
+
+    /**
+     * Returns all dates that are currently should be shown in calendar
+     * @param {ViewType} viewType
+     * @returns {*}
+     */
+    getViewDates = (viewType = consts.days) => {
+        const dates = DatepickerBody.getDatesFunction(viewType);
+        return dates(this);
     }
 
     //  Helpers

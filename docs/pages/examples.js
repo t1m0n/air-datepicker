@@ -7,7 +7,7 @@ import Section from 'components/section';
 import Example from 'components/example';
 import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
-import * as code from 'examples/commonExamples';
+import * as code from 'examples/code/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Paragraph from 'components/common/paragraph';
 import Link from 'components/common/link';
@@ -18,8 +18,9 @@ import Note from 'components/common/note';
 
 import sectionCSS from 'components/section/section.module.scss';
 import css from './examples.module.scss';
-import {basicPosition, popperjsPosition} from 'examples/commonExamples';
 import anime from 'animejs';
+import {ExampleDisabledRange} from 'examples/snippets/ExampleDisabledRange';
+import {disabledRangeDateExample, disabledRangeDateExampleCSS} from 'examples/code/disabledRangeDateExample';
 
 const PopperLink = () => {
     return <Link href={'https://popper.js.org/'} target={'_blank'}>Popper.js</Link>
@@ -283,6 +284,21 @@ export default function Examples() {
                                 <AirDatepicker range={true} multipleDatesSeparator={' - '} readonly />
                                 <Code>{code.rangeOption}</Code>
                             </Example>
+                            <Section.SubSection titleId={'exampleRangeDisabledTitle'}>
+                                <Paragraph
+                                    id={'exampleRangeDisabledNote'}
+                                    values={{
+                                        onBeforeSelectLink: <Link href={'docs?scrollTo=onBeforeSelect'}>onBeforeSelect</Link>,
+                                        onFocusLink: <Link href={'docs?scrollTo=onFocus'}>onFocus</Link>
+                                    }}
+                                />
+                                <Example>
+                                    <ExampleDisabledRange />
+                                    <Code>{disabledRangeDateExample(messages)}</Code>
+                                    <Code language={'css'}>{disabledRangeDateExampleCSS}</Code>
+                                </Example>
+
+                            </Section.SubSection>
                             <Section.SubSection titleId={'exampleRangeMinMaxTitle'}>
                                 <Paragraph
                                     id={'exampleRangeMinMaxNote'}

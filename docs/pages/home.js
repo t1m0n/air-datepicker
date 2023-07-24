@@ -5,7 +5,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import Button from 'components/common/button';
 import Section from 'components/section';
 import Code from 'components/code';
-import {install, basicUsage} from 'examples/commonExamples';
+import {install, basicUsage} from 'examples/code/commonExamples';
 import anime from 'animejs';
 import Head from 'next/head';
 import usePageTitle from 'hooks/usePageTitle';

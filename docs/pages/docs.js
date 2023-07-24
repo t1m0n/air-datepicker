@@ -9,7 +9,7 @@ import Example from 'components/example';
 import AirDatepicker from 'components/airDatepicker';
 import Code from 'components/code';
 import Paragraph from 'components/common/paragraph';
-import * as examples from 'examples/commonExamples';
+import * as examples from 'examples/code/commonExamples';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Link from 'components/common/link';
 import DList from 'components/common/dList';
@@ -23,9 +23,10 @@ import {
     optsButtonsShape, optsDateFormatFunc,
     optsNavTitlesDefaults,
     optsSelectedDatesExample
-} from 'examples/commonExamples';
+} from 'examples/code/commonExamples';
 
 const trueField = (() => <Code inline>{'true'}</Code>)();
+const falseField = (() => <Code inline>{'false'}</Code>)();
 const UnicodeStandardLink = <Link href={'https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'} target={'_blank'}>Unicode Technical Standard #35</Link>;
 
 function Docs({} = {}) {
@@ -148,8 +149,11 @@ function Docs({} = {}) {
                                 <Param name={'altFieldDateFormat'} type={'string | (date) => string'} defaultValue={'"T"'}>
                                     <Paragraph id={'optsAltFieldDateFormat'} />
                                 </Param>
-                                <Param name={'toggleSelected'} type={'boolean'} defaultValue={'true'}>
+                                <Param name={'toggleSelected'} type={'boolean | ({datepicker, date}) => boolean'} defaultValue={'true'}>
                                     <Paragraph id={'optsToggleSelected'} values={{
+                                        true: <Code inline>true</Code>
+                                    }} />
+                                    <Paragraph id={'optsToggleSelectedFunc'} values={{
                                         true: <Code inline>true</Code>
                                     }} />
                                 </Param>
@@ -419,6 +423,16 @@ function Docs({} = {}) {
                                         <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnSelectAirDatepicker'} />
                                     </Param.List>
                                 </Param>
+                                <Param name={'onBeforeSelect'} type={'({date, datepicker}) => boolean'}>
+                                    <Paragraph id={'eventsOnBeforeSelect'} values={{
+                                        trueField,
+                                        falseField
+                                    }}/>
+                                    <Param.List nested>
+                                        <Param name={'date'} type={'Date'} definition={'eventsOnBeforeSelectDate'}/>
+                                        <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnSelectAirDatepicker'} />
+                                    </Param.List>
+                                </Param>
                                 <Param name={'onChangeViewDate'} type={'({month, year, decade}) => void'}>
                                     <Paragraph id={'eventsOnChangeViewDate'}/>
                                     <Param.List nested>
@@ -467,6 +481,13 @@ function Docs({} = {}) {
                                     }} />
                                     <Param.List nested>
                                         <Param name={'dayIndex'} type={'index'} definition={'eventsOnClickDayNameDayIndex'} />
+                                        <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnSelectAirDatepicker'} />
+                                    </Param.List>
+                                </Param>
+                                <Param name={'onFocus'} type='({date, datepicker}) => void'>
+                                    <Paragraph id={'eventsOnFocus'}/>
+                                    <Param.List nested>
+                                        <Param name={'date'} type={'Date'} definition={'eventsOnFocusDate'} />
                                         <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnClickDayNameDatepicker'} />
                                     </Param.List>
                                 </Param>

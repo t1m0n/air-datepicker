@@ -234,6 +234,37 @@ describe('OPTIONS TESTS', () => {
 
             expect(dp.selectedDates).toHaveLength(1);
         });
+
+        it('should receive correct arguments if it is a function', function (done) {
+            let date = new Date();
+
+            init({
+                toggleSelected: ({datepicker, date}) => {
+                    expect(datepicker).toBeInstanceOf(Datepicker);
+                    expect(date).toBeInstanceOf(Date);
+
+                    done();
+                }
+            });
+
+            dp.selectDate(date);
+            dp.getCell(date).click();
+        });
+
+        it('should handle option as function correctly', function () {
+            let date = new Date();
+
+            init({
+                toggleSelected: () => {
+                    return false;
+                }
+            });
+
+            dp.selectDate(date);
+            dp.getCell(date).click();
+
+            expect(dp.selectedDates).toHaveLength(1);
+        });
     });
 
     describe('keyboardNav', () => {
@@ -598,4 +629,80 @@ describe('OPTIONS TESTS', () => {
             expect(dp.$el).toHaveValue('12/08/2022 11:21 pm');
         });
     });
+
+    describe('onBeforeSelect', () => {
+        it('should receive correct arguments', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onBeforeSelect({date, datepicker}) {
+                    const assertion = date instanceof Date && datepicker instanceof Datepicker;
+                    expect(assertion).toBeTruthy();
+                    done();
+                }
+            });
+
+            dp.selectDate(selectedDate);
+        });
+        it('should disable date selection if returns false', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onBeforeSelect({date}) {
+                    return date.toLocaleDateString('ru') !== selectedDate.toLocaleDateString('ru');
+                }
+            });
+
+            dp.selectDate(selectedDate).then(() => {
+                expect(dp.selectedDates).toHaveLength(0);
+                done();
+            });
+        });
+
+        it('should enable date selection if returns true', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onBeforeSelect({date}) {
+                    return date.toLocaleDateString('ru') === selectedDate.toLocaleDateString('ru');
+                }
+            });
+
+            dp.selectDate(selectedDate).then(() => {
+                expect(dp.selectedDates).toHaveLength(1);
+                done();
+            });
+        });
+    });
+
+
+    describe('onFocus', () => {
+        it('should receive correct arguments', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onFocus({date, datepicker}) {
+                    const assertion = date instanceof Date && datepicker instanceof Datepicker;
+                    expect(assertion).toBeTruthy();
+                    done();
+                }
+            });
+
+            dp.setFocusDate(selectedDate);
+        });
+        it('should be triggered when focusing cell', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onFocus({date}) {
+                    expect(date.toLocaleDateString('ru')).toEqual('18.07.2023');
+                    done();
+                }
+            });
+
+            dp.setFocusDate(selectedDate);
+        });
+    });
+
+
 });
