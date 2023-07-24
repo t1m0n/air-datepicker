@@ -103,6 +103,20 @@ describe('API TESTS', () => {
                 done();
             });
         });
+
+        it('should reset other date related properties to falsy values', (done) => {
+            init();
+
+            dp.selectDate(new Date());
+
+            dp.clear().then(() => {
+                expect(dp.selectedDates).toHaveLength(0);
+                expect(dp.rangeDateFrom).toBeFalsy();
+                expect(dp.rangeDateTo).toBeFalsy();
+                expect(dp.lastSelectedDate).toBeFalsy();
+                done();
+            });
+        });
     });
 
     describe('getViewDates', () => {

@@ -626,6 +626,7 @@ export default class Datepicker {
         this.selectedDates = [];
         this.rangeDateFrom = false;
         this.rangeDateTo = false;
+        this.lastSelectedDate = false;
 
         this.trigger(consts.eventChangeSelectedDate, {action: consts.actionUnselectDate, silent: params.silent});
 
