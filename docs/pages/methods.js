@@ -8,7 +8,7 @@ import Param from 'components/param';
 import Example from 'components/example';
 import Code from 'components/code';
 import Paragraph from 'components/common/paragraph';
-import * as examples from 'examples/commonExamples';
+import * as examples from 'examples/code/commonExamples';
 import Link from 'components/common/link';
 import dataTypes from 'data/dataTypes';
 import {useIntl} from 'react-intl';

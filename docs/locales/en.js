@@ -40,6 +40,10 @@ export default {
 
     exampleRangeTitle: 'Range of dates',
     exampleRangeNote: 'For choosing range of dates use parameter {param}. After selecting both dates you could correct them by dragging active dates.',
+    exampleRangeDisabledTitle: 'Prohibiting range selection',
+    exampleRangeDisabledNote: 'Sometimes there is a need to prohibit the user from selecting a date range if there are disabled cells in it, for this you can use the options {onBeforeSelectLink} and {onFocusLink}, as well as a small stylization of our range. Try to select a range from July 9 to 15:',
+    exampleRangeDisabledComment: 'Check if disabled date is in the range',
+    exampleRangeDisabledComment2: 'Dont allow user to select date, if disabled date is in the range',
     exampleRangeMinMaxTitle: 'Minimum and maximum dates',
     exampleRangeMinMaxNote: 'For manipulation with minimum and maximum possible dates use options {minDate} and {maxDate}. In combination with {update} function you could implement limited date range that user could choose.',
     exampleTimeTitle: 'Timepicker',
@@ -190,6 +194,8 @@ export default {
     eventsOnSelectDate: 'selected date, if multiple date mode is on, then array of dates will be passed.',
     eventsOnSelectFormattedDate: 'formatted selected date, or array in case of multiple dates mode.',
     eventsOnSelectAirDatepicker: 'calendar instance',
+    eventsOnBeforeSelect: 'Triggered before cell should be selected. If returns {trueField} then cell will be selected, if {falseField} then not',
+    eventsOnBeforeSelectDate: 'the date to be selected',
     eventsOnChangeViewDate: 'Triggered when navigating back and forth. It takes object as and argument with actual values of month, year and decade',
     eventsOnChangeViewDateMonth: 'month of viewed date',
     eventsOnChangeViewDateYear: 'year of viewed date',
@@ -212,6 +218,8 @@ export default {
     eventsOnClickDayName: 'Adds possibility to click on the names of days in calendar. In case callback is passed {className} will be added to those elements',
     eventsOnClickDayNameDayIndex: 'day of week index, where is 0 - Sunday, 6 - Saturday',
     eventsOnClickDayNameDatepicker: 'calendar instance',
+    eventsOnFocus: 'Callback which is triggered when cell receives focus',
+    eventsOnFocusDate: 'date on which focus is triggered',
 
     apiMethodsTitle: 'Methods',
     apiPropertiesTitle: 'Properties',

@@ -471,7 +471,8 @@ export default class Datepicker {
             moveToOtherYearsOnSelect,
             multipleDates,
             range,
-            autoClose
+            autoClose,
+            onBeforeSelect,
         } = this.opts;
         let selectedDaysLen = selectedDates.length;
         let newViewDate;
@@ -489,6 +490,10 @@ export default class Datepicker {
         date = createDate(date);
 
         if (!(date instanceof Date)) return;
+
+        if (onBeforeSelect && !onBeforeSelect({date, datepicker: this})) {
+            return Promise.resolve();
+        }
 
         // Checks if selected date is out of current month or decade
         // If so, change `viewDate`
@@ -1221,6 +1226,10 @@ export default class Datepicker {
 
         if (shouldPerformTransition) {
             this.setViewDate(date);
+        }
+
+        if (this.opts.onFocus) {
+            this.opts.onFocus({datepicker: this, date});
         }
 
     }

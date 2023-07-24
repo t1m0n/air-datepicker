@@ -629,4 +629,80 @@ describe('OPTIONS TESTS', () => {
             expect(dp.$el).toHaveValue('12/08/2022 11:21 pm');
         });
     });
+
+    describe('onBeforeSelect', () => {
+        it('should receive correct arguments', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onBeforeSelect({date, datepicker}) {
+                    const assertion = date instanceof Date && datepicker instanceof Datepicker;
+                    expect(assertion).toBeTruthy();
+                    done();
+                }
+            });
+
+            dp.selectDate(selectedDate);
+        });
+        it('should disable date selection if returns false', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onBeforeSelect({date}) {
+                    return date.toLocaleDateString('ru') !== selectedDate.toLocaleDateString('ru');
+                }
+            });
+
+            dp.selectDate(selectedDate).then(() => {
+                expect(dp.selectedDates).toHaveLength(0);
+                done();
+            });
+        });
+
+        it('should enable date selection if returns true', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onBeforeSelect({date}) {
+                    return date.toLocaleDateString('ru') === selectedDate.toLocaleDateString('ru');
+                }
+            });
+
+            dp.selectDate(selectedDate).then(() => {
+                expect(dp.selectedDates).toHaveLength(1);
+                done();
+            });
+        });
+    });
+
+
+    describe('onFocus', () => {
+        it('should receive correct arguments', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onFocus({date, datepicker}) {
+                    const assertion = date instanceof Date && datepicker instanceof Datepicker;
+                    expect(assertion).toBeTruthy();
+                    done();
+                }
+            });
+
+            dp.setFocusDate(selectedDate);
+        });
+        it('should be triggered when focusing cell', (done) => {
+            const selectedDate = new Date('2023-07-18');
+            init({
+                visible: true,
+                onFocus({date}) {
+                    expect(date.toLocaleDateString('ru')).toEqual('18.07.2023');
+                    done();
+                }
+            });
+
+            dp.setFocusDate(selectedDate);
+        });
+    });
+
+
 });

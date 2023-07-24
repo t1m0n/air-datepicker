@@ -1,6 +1,7 @@
 # Changelog
 
 ### v3.4.0
+* added new options `onFocus` and `onBeforeSelect` grant you more control over range selection behaviour and more [#526](https://github.com/t1m0n/air-datepicker/issues/526)
 * added new method `getViewDates()` allows you to get all dates that should be currently displayed in calendar [#536](https://github.com/t1m0n/air-datepicker/issues/536)
 * `toggleSelected` now can be a function [#534](https://github.com/t1m0n/air-datepicker/issues/534)
 

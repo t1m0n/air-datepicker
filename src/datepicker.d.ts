@@ -111,6 +111,8 @@ export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElemen
     onShow?: (isAnimationComplete: boolean) => void,
     onHide?: (isAnimationComplete: boolean) => void,
     onClickDayName?: ({dayIndex, datepicker}: {dayIndex: number, datepicker: AirDatepicker<E>}) => void
+    onBeforeSelect?: ({date, datepicker}: {date: Date, datepicker: AirDatepicker}) => boolean;
+    onFocus?: ({date, datepicker}: {date: Date, datepicker: AirDatepicker}) => void;
 }
 
 
