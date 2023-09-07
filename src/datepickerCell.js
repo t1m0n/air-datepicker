@@ -1,4 +1,5 @@
 import consts from './consts';
+import DateCalendar from './calendar';
 import {
     createElement,
     classNames,
@@ -72,9 +73,9 @@ export default class DatepickerCell {
     }
 
     _getClassName() {
-        let currentDate = new Date();
-        let {selectOtherMonths, selectOtherYears} = this.opts;
+        let {calendar, selectOtherMonths, selectOtherYears} = this.opts;
         let {minDate, maxDate} = this.dp;
+        let currentDate = new DateCalendar(calendar).Date();
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
         let disabled = this.customData?.disabled;
@@ -133,7 +134,7 @@ export default class DatepickerCell {
     }
 
     _isOutOfMinMaxRange() {
-        let {minDate, maxDate} = this.dp;
+        let {opts: {calendar}, minDate, maxDate} = this.dp;
         let {type, date: cellDate} = this;
         let {month, year, date} = getParsedDate(cellDate);
         let isDay = type === consts.days;
@@ -143,10 +144,10 @@ export default class DatepickerCell {
         //to be able to mark cell as disabled correctly
         //Same goes to year cells
         let cellMinDate = minDate
-            ? new Date(year, isYear ? minDate.getMonth() : month, isDay ? date : minDate.getDate())
+            ? new DateCalendar(calendar).Date(year, isYear ? minDate.getMonth() : month, isDay ? date : minDate.getDate())
             : false;
         let cellMaxDate = maxDate
-            ? new Date(year, isYear ? maxDate.getMonth() : month, isDay ? date : maxDate.getDate())
+            ? new DateCalendar(calendar).Date(year, isYear ? maxDate.getMonth() : month, isDay ? date : maxDate.getDate())
             : false;
 
         if (minDate && maxDate) {

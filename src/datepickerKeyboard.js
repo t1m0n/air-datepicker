@@ -1,4 +1,5 @@
 import consts from './consts';
+import DateCalendar from './calendar';
 import {getParsedDate, getDaysCount} from './utils';
 
 export default class DatepickerKeyboard {
@@ -44,19 +45,21 @@ export default class DatepickerKeyboard {
     }
     
     getInitialFocusDate() {
-        let {focusDate, currentView, selectedDates, parsedViewDate: {year, month}} = this.dp;
+        let {opts: {calendar}, focusDate, currentView, selectedDates, parsedViewDate: {year, month}} = this.dp;
         let potentialFocused  = focusDate || selectedDates[selectedDates.length - 1];
 
         if (!potentialFocused) {
             switch (currentView) {
                 case consts.days:
-                    potentialFocused = new Date(year, month, new Date().getDate());
+                    potentialFocused = new DateCalendar(calendar).Date(
+                        year, month, new DateCalendar(calendar).Date().getDate()
+                    );
                     break;
                 case consts.months:
-                    potentialFocused = new Date(year, month, 1);
+                    potentialFocused = new DateCalendar(calendar).Date(year, month, 1);
                     break;
                 case consts.years:
-                    potentialFocused = new Date(year, 0, 1);
+                    potentialFocused = new DateCalendar(calendar).Date(year, 0, 1);
                     break;
             }
         }
@@ -66,7 +69,7 @@ export default class DatepickerKeyboard {
 
     focusNextCell(keyName) {
         let initialFocusDate = this.getInitialFocusDate(),
-            {currentView} = this.dp,
+            {opts: {calendar}, currentView} = this.dp,
             {days, months, years} = consts,
             parsedFocusDate = getParsedDate(initialFocusDate),
             y = parsedFocusDate.year,
@@ -96,7 +99,7 @@ export default class DatepickerKeyboard {
                 break;
         }
 
-        let newFocusedDate = this.dp.getClampedDate(new Date(y, m, d));
+        let newFocusedDate = this.dp.getClampedDate(new DateCalendar(calendar).Date(y, m, d));
         this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }
 
@@ -114,15 +117,16 @@ export default class DatepickerKeyboard {
 
         fn(dateParts, this.dp);
 
+        let {calendar} = this.opts;
         let {year, month, date} = dateParts;
 
-        let totalDaysInNextMonth = getDaysCount(new Date(year, month));
+        let totalDaysInNextMonth = getDaysCount(new DateCalendar(calendar).Date(year, month));
 
         if (totalDaysInNextMonth < date) {
             date = totalDaysInNextMonth;
         }
 
-        let newFocusedDate = this.dp.getClampedDate(new Date(year, month, date));
+        let newFocusedDate = this.dp.getClampedDate(new DateCalendar(calendar).Date(year, month, date));
 
         this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }

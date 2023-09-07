@@ -1,3 +1,4 @@
+import DateCalendar from './calendar';
 import defaults from './defaults';
 import {
     copyDate,
@@ -53,11 +54,12 @@ export default class Datepicker {
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
         this.$altField = getEl(this.opts.altField || false);
 
-
         let {view, startDate} = this.opts;
 
-        if (!startDate) {
-            this.opts.startDate = new Date();
+        if (startDate) {
+            this.opts.startDate = new DateCalendar(this.opts.calendar).Date(startDate);
+        } else {
+            this.opts.startDate = new DateCalendar(this.opts.calendar).Date();
         }
 
         if (this.$el.nodeName === 'INPUT') {
@@ -67,7 +69,7 @@ export default class Datepicker {
         this.inited = false;
         this.visible = false;
 
-        this.viewDate = createDate(this.opts.startDate);
+        this.viewDate = createDate(this.opts.startDate, this.opts.calendar);
         this.focusDate = false;
         this.initialReadonly = this.$el.getAttribute('readonly');
         this.customHide = false;
@@ -163,6 +165,7 @@ export default class Datepicker {
                 classes,
                 onlyTimepicker,
                 isMobile,
+                direction,
             }
         } = this;
         let dp = this;
@@ -173,6 +176,10 @@ export default class Datepicker {
             if (!inline) {
                 this._setPositionClasses(position);
             }
+        }
+
+        if (direction === 'rtl') {
+            this.$datepicker.classList.add('-rtl-');
         }
 
         if (inline || !this.elIsInput) {
@@ -242,8 +249,8 @@ export default class Datepicker {
     _createMinMaxDates() {
         let {minDate, maxDate} = this.opts;
 
-        this.minDate = minDate ? createDate(minDate) : false;
-        this.maxDate = maxDate ? createDate(maxDate) : false;
+        this.minDate = minDate ? createDate(minDate, this.opts.calendar) : false;
+        this.maxDate = maxDate ? createDate(maxDate, this.opts.calendar) : false;
     }
 
     _addTimepicker() {
@@ -350,7 +357,7 @@ export default class Datepicker {
     }
 
     formatDate(date = this.viewDate, string) {
-        date = createDate(date);
+        date = createDate(date, this.opts.calendar);
 
         if (!(date instanceof Date)) return;
 
@@ -413,16 +420,17 @@ export default class Datepicker {
      */
     next = () => {
         let {year, month} = this.parsedViewDate;
+        let {calendar} = this.opts;
 
         switch (this.currentView) {
             case consts.days:
-                this.setViewDate(new Date(year, month + 1, 1));
+                this.setViewDate(new DateCalendar(calendar).Date(year, month + 1, 1));
                 break;
             case consts.months:
-                this.setViewDate(new Date(year + 1, month, 1));
+                this.setViewDate(new DateCalendar(calendar).Date(year + 1, month, 1));
                 break;
             case consts.years:
-                this.setViewDate(new Date(year + 10, 0, 1));
+                this.setViewDate(new DateCalendar(calendar).Date(year + 10, 0, 1));
                 break;
         }
     }
@@ -432,16 +440,17 @@ export default class Datepicker {
      */
     prev = () => {
         let {year, month} = this.parsedViewDate;
+        let {calendar} = this.opts;
 
         switch (this.currentView) {
             case consts.days:
-                this.setViewDate(new Date(year, month - 1, 1));
+                this.setViewDate(new DateCalendar(calendar).Date(year, month - 1, 1));
                 break;
             case consts.months:
-                this.setViewDate(new Date(year - 1, month, 1));
+                this.setViewDate(new DateCalendar(calendar).Date(year - 1, month, 1));
                 break;
             case consts.years:
-                this.setViewDate(new Date(year - 10, 0, 1));
+                this.setViewDate(new DateCalendar(calendar).Date(year - 10, 0, 1));
                 break;
         }
     }
@@ -461,12 +470,13 @@ export default class Datepicker {
      * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
      * @param {boolean} [params.silent] - if true, then onChange event wont be triggered
      * @return {Promise<unknown>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise tobe able to get current input value
-     * @example selectDate(new Date()).then(() => {console.log(dp.$el.value)})
+     * @example selectDate(new DateCalendar(calendar).Date()).then(() => {console.log(dp.$el.value)})
      */
     selectDate(date, params = {}) {
         let {currentView, parsedViewDate, selectedDates} = this;
         let {updateTime} = params;
         let {
+            calendar,
             moveToOtherMonthsOnSelect,
             moveToOtherYearsOnSelect,
             multipleDates,
@@ -487,7 +497,7 @@ export default class Datepicker {
             });
         }
 
-        date = createDate(date);
+        date = createDate(date, calendar);
 
         if (!(date instanceof Date)) return;
 
@@ -499,13 +509,13 @@ export default class Datepicker {
         // If so, change `viewDate`
         if (currentView === consts.days) {
             if (date.getMonth() !== parsedViewDate.month && moveToOtherMonthsOnSelect) {
-                newViewDate = new Date(date.getFullYear(), date.getMonth(), 1);
+                newViewDate = new DateCalendar(calendar).Date(date.getFullYear(), date.getMonth(), 1);
             }
         }
 
         if (currentView === consts.years) {
             if (date.getFullYear() !== parsedViewDate.year && moveToOtherYearsOnSelect) {
-                newViewDate = new Date(date.getFullYear(), 0, 1);
+                newViewDate = new DateCalendar(calendar).Date(date.getFullYear(), 0, 1);
             }
         }
 
@@ -571,7 +581,7 @@ export default class Datepicker {
         let selected = this.selectedDates,
             _this = this;
 
-        date = createDate(date);
+        date = createDate(date, this.opts.calendar);
 
         if (!(date instanceof Date)) return;
 
@@ -898,9 +908,10 @@ export default class Datepicker {
 
     _handleUpDownActions(date, dir) {
         let maxViewIndex = 2,
-            minViewIndex = 0;
+            minViewIndex = 0,
+            {calendar} = this.opts;
 
-        date = createDate(date || this.focusDate || this.viewDate);
+        date = createDate(date || this.focusDate || this.viewDate, calendar);
 
         if (!(date instanceof Date)) return;
 
@@ -908,7 +919,7 @@ export default class Datepicker {
         if (nextView > maxViewIndex) nextView = maxViewIndex;
         if (nextView < minViewIndex) nextView = minViewIndex;
 
-        this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
+        this.setViewDate(new DateCalendar(calendar).Date(date.getFullYear(), date.getMonth(), 1));
         this.setCurrentView(this.viewIndexes[nextView]);
     }
 
@@ -946,7 +957,7 @@ export default class Datepicker {
      * @param {DateLike} date
      */
     setViewDate = (date) => {
-        date = createDate(date);
+        date = createDate(date, this.opts.calendar);
 
         if (!(date instanceof Date)) return;
 
@@ -975,7 +986,7 @@ export default class Datepicker {
      */
     setFocusDate = (date, params = {}) => {
         if (date) {
-            date = createDate(date);
+            date = createDate(date, this.opts.calendar);
 
             if (!(date instanceof Date)) return;
         }
@@ -1039,7 +1050,7 @@ export default class Datepicker {
      * @return {HTMLElement | null}
      */
     getCell(cellDate, cellType = consts.day) {
-        cellDate = createDate(cellDate);
+        cellDate = createDate(cellDate, this.opts.calendar);
 
         if (!(cellDate instanceof Date)) return;
 
@@ -1236,9 +1247,9 @@ export default class Datepicker {
     }
 
     _onChangeTime = ({hours, minutes}) => {
-        let today = new Date();
-        let {lastSelectedDate, opts: {onSelect}} = this;
+        let {lastSelectedDate, opts: {calendar, onSelect}} = this;
         let targetDate = lastSelectedDate;
+        let today = new DateCalendar(calendar).Date();
 
         if (!lastSelectedDate) {
             targetDate = today;

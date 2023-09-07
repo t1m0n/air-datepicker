@@ -9,6 +9,7 @@
   border-radius: var(--adp-border-radius);
   box-sizing: content-box;
   display: grid;
+  direction: ltr;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(4, max-content);
   grid-template-areas: var(--adp-grid-areas);
@@ -21,6 +22,10 @@
           opacity var(--adp-transition-duration) var(--adp-transition-ease),
           transform var(--adp-transition-duration) var(--adp-transition-ease);
   z-index: var(--adp-z-index);
+
+  &.-rtl- {
+    direction: rtl;
+  }
 
   &:not(.-custom-position-) {
     opacity: 0;

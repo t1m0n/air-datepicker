@@ -158,7 +158,10 @@ export default class DatepickerNav {
     }
 
     _buildBaseHtml() {
-        let {prevHtml, nextHtml} = this.opts;
+        let {prevHtml, nextHtml, direction} = this.opts;
+        if (direction === 'rtl') {
+            [prevHtml, nextHtml] = [nextHtml, prevHtml];
+        }
 
         this.$el.innerHTML = '' +
             `<div class="air-datepicker-nav--action" data-action="prev">${prevHtml}</div>` +

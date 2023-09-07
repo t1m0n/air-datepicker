@@ -1,4 +1,5 @@
 import consts from './consts';
+import DateCalendar from './calendar';
 import {
     addEventListener,
     classNames,
@@ -304,11 +305,11 @@ export default class DatepickerBody {
 
 
     static getDaysDates(dp, cb) {
-        let {viewDate, locale: {firstDay}} = dp,
+        let {opts: {calendar}, viewDate, locale: {firstDay}} = dp,
             totalMonthDays = getDaysCount(viewDate),
             {year, month} = getParsedDate(viewDate),
-            firstMonthDay = new Date(year, month, 1),
-            lastMonthDay = new Date(year, month, totalMonthDays),
+            firstMonthDay = new DateCalendar(calendar).Date(year, month, 1),
+            lastMonthDay = new DateCalendar(calendar).Date(year, month, totalMonthDays),
             daysFromPrevMonth = firstMonthDay.getDay() - firstDay,
             daysFromNextMonth = 6 - lastMonthDay.getDay() + firstDay;
 
@@ -324,7 +325,7 @@ export default class DatepickerBody {
         const dates = [];
 
         while (i < totalRenderDays) {
-            let date = new Date(renderYear, renderMonth, firstRenderDayDate + i);
+            let date = new DateCalendar(calendar).Date(renderYear, renderMonth, firstRenderDayDate + i);
             if (cb) {
                 cb(date);
             }
@@ -337,12 +338,12 @@ export default class DatepickerBody {
 
     static getMonthsDates(dp, cb) {
         let totalMonths = 12,
-            {year} = dp.parsedViewDate,
+            {opts: {calendar}, parsedViewDate: {year}} = dp,
             currentMonth = 0,
             dates = [];
 
         while (currentMonth < totalMonths) {
-            const date = new Date(year, currentMonth);
+            const date = new DateCalendar(calendar).Date(year, currentMonth);
             dates.push(date);
             if (cb) {
                 cb(date);
@@ -355,13 +356,14 @@ export default class DatepickerBody {
 
     static getYearsDates(dp, cb) {
         let decade = getDecade(dp.viewDate),
+            {calendar} = dp.opts,
             firstYear = decade[0] - 1,
             lastYear = decade[1] + 1,
             year = firstYear,
             dates = [];
 
         while (year <= lastYear) {
-            const date = new Date(year, 0);
+            const date = new DateCalendar(calendar).Date(year, 0);
             dates.push(date);
             if (cb) {
                 cb(date);

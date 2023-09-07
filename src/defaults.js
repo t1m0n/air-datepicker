@@ -1,11 +1,14 @@
 import localeRu from './locale/ru';
 import consts from './consts';
+import DateCalendar from './calendar';
 
 export default {
     classes: '',
     inline: false,
     locale: localeRu,
-    startDate: new Date(),
+    calendar: 'gregorian',
+    direction: 'ltr',
+    startDate: '',
     firstDay: '',
     weekends: [6, 0],
     dateFormat: '',

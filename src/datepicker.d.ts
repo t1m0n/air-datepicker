@@ -48,6 +48,8 @@ export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElemen
     classes?: string
     inline?: boolean,
     locale?: Partial<AirDatepickerLocale>,
+    calendar?: string
+    direction?: string
     startDate?: AirDatepickerDate,
     firstDay?: number,
     isMobile?: boolean,

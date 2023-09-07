@@ -4,6 +4,7 @@
  * @param {Document|HTMLElement} [context=document]
  */
 import consts from './consts';
+import DateCalendar from './calendar';
 
 export function getEl(el, context = document) {
     return typeof el === 'string'
@@ -78,7 +79,7 @@ export function deepCopy(obj) {
  * @return {number}
  */
 export function getDaysCount(date) {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    return new DateCalendar(date.calendar).Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
 /**
@@ -157,7 +158,7 @@ export function getDecade(date) {
  */
 export function subDays(date, days) {
     let {year, month, date: _date} = getParsedDate(date);
-    return new Date(year, month, _date - days);
+    return new DateCalendar(date.calendar).Date(year, month, _date - days);
 }
 
 /**
@@ -252,7 +253,7 @@ export function isDateSmaller(date, comparedDate) {
  * @return {Date}
  */
 export function copyDate(date, keepTime = true) {
-    let newDate = new Date(date.getTime());
+    let newDate = new DateCalendar(date.calendar).Date(date.getTime());
 
     if (typeof keepTime === 'boolean' && !keepTime) {
         resetTime(newDate);
@@ -356,11 +357,11 @@ export function deepMerge(target, ...objects) {
  * @param {number|string|Date} date
  * @return {Date | boolean}
  */
-export function createDate(date) {
+export function createDate(date, calendar) {
     let resultDate = date;
 
     if (!(date instanceof Date)) {
-        resultDate = new Date(date);
+        resultDate = new DateCalendar(calendar).Date(date);
     }
 
     if (isNaN(resultDate.getTime())) {
