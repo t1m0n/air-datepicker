@@ -8,7 +8,7 @@
  * @see         http://www.fourmilab.ch/documents/calendar/ by John Walker
  * @see         https://github.com/tahajahangir/jdate
  */
-class JalaliDate extends Date {
+export default class JalaliDate extends Date {
     // Proxy get/set time-related methods to internal date object
     #proxyProps = [
         'getHours', 'getMilliseconds', 'getMinutes', 'getSeconds', 'getTime', 'getUTCDay', 'getUTCHours', 'getTimezoneOffset',
@@ -426,6 +426,3 @@ class JalaliDate extends Date {
     }
 
 }
-
-// Export JalaliDate class to global scope
-window['JalaliDate'] = JalaliDate;

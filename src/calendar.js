@@ -1,3 +1,4 @@
+import JalaliDate from './calendar/jalali';
 export default class DateCalendar {
     #calendar;
     constructor(calendar) {
