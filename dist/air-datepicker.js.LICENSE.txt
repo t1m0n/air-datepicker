@@ -1,0 +1,10 @@
+/**
+ * Implementation of JavaScript Date class for Jalali calendar
+ *
+ * @package     JalaliDate
+ * @author      Ali Fazelzadeh <afzcode@gmail.com>
+ * @copyright   2023 Ali Fazelzadeh
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ * @see         http://www.fourmilab.ch/documents/calendar/ by John Walker
+ * @see         https://github.com/tahajahangir/jdate
+ */
