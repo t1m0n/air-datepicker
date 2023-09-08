@@ -11,7 +11,7 @@ const NAME = 'air-datepicker';
 let plugins = [
     new webpack.DefinePlugin({
         'process.env': {
-            'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production').toLowerCase()
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV).toLowerCase()
         }
     }),
     new HtmlWebpackPlugin({
