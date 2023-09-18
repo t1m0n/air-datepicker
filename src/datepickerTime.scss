@@ -55,6 +55,7 @@ $rangeThumbSize: 12px;
 
 .air-datepicker-time {
   display: grid;
+  direction: ltr;
   grid-template-columns: max-content 1fr;
   grid-column-gap: 12px;
   align-items: center;
