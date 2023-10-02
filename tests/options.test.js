@@ -704,5 +704,27 @@ describe('OPTIONS TESTS', () => {
         });
     });
 
+    describe('fixedHeight', () => {
+        it('should render 6 weeks in every month, when true', () => {
+            init({
+                fixedHeight: true,
+                visible: true,
+                startDate: '2021-02-01'
+            });
 
+            const $dayCells = $datepicker.querySelectorAll('.air-datepicker-cell');
+
+            expect($dayCells).toHaveLength(42);
+        });
+        it('should render weeks according to dates length, when false', () => {
+            init({
+                visible: true,
+                startDate: '2021-02-01'
+            });
+
+            const $dayCells = $datepicker.querySelectorAll('.air-datepicker-cell');
+
+            expect($dayCells).toHaveLength(28);
+        });
+    });
 });

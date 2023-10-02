@@ -98,6 +98,7 @@ export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElemen
     maxMinutes?: number,
     hoursStep?: number,
     minutesStep?: number,
+    fixedHeight?: boolean,
 
     onSelect?: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker<E>}) => void,
     onChangeViewDate?: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
