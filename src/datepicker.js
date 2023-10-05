@@ -521,6 +521,10 @@ export default class Datepicker {
         } else if (range) {
             switch (selectedDaysLen) {
                 case 1:
+                    // If the selected date is the same as the first date, creates a new object from the new date
+                    if (this.selectedDates[0] === date) {
+                        date = new Date(date);
+                    }
                     selectedDates.push(date);
                     // Need to define this manually if call selectDate programmatically
                     if (!this.rangeDateTo) {
@@ -915,6 +919,10 @@ export default class Datepicker {
     _handleRangeOnFocus() {
         if (this.selectedDates.length === 1) {
             let selectedDate = this.selectedDates[0];
+            // If the selected dates are the same, creates a new object from the second date
+            if (selectedDate === this.focusDate) {
+                this.focusDate = new Date(this.focusDate);
+            }
             if (isDateBigger(selectedDate, this.focusDate)) {
                 this.rangeDateTo =  this.selectedDates[0];
                 this.rangeDateFrom = this.focusDate;
@@ -1244,6 +1252,10 @@ export default class Datepicker {
             targetDate = today;
         }
 
+        // Set the date to be updated to the last selected date
+        if (this.opts.range && this.selectedDates?.length) {
+            targetDate = this.selectedDates[this.selectedDates.length - 1];
+        }
         let $cell = this.getCell(targetDate, this.currentViewSingular);
         let cell = $cell && $cell.adpCell;
 
