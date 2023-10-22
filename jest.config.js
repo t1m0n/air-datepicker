@@ -1,6 +1,7 @@
 module.exports = {
     clearMocks: true,
     coverageDirectory: 'coverage',
+    testEnvironment: 'jsdom',
     moduleDirectories: [
         'src',
         'node_modules'

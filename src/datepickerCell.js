@@ -187,11 +187,25 @@ export default class DatepickerCell {
     }
 
     _handleRangeStatus() {
-        let {rangeDateFrom, rangeDateTo} = this.dp;
+        const {selectedDates, focusDate, rangeDateTo, rangeDateFrom} = this.dp;
+        const selectedDatesLen = selectedDates.length;
+
+        if (!selectedDatesLen) return;
+
+        let from = rangeDateFrom;
+        let to = rangeDateTo;
+
+        if (selectedDatesLen === 1 && focusDate) {
+            const focusDateIsLargerThenSelected = isDateBigger(focusDate, selectedDates[0]);
+
+            from =  focusDateIsLargerThenSelected ? selectedDates[0] : focusDate;
+            to = focusDateIsLargerThenSelected ? focusDate : selectedDates[0];
+        }
+
         let classes = classNames({
-            '-in-range-': rangeDateFrom && rangeDateTo && isDateBetween(this.date, rangeDateFrom, rangeDateTo),
-            '-range-from-': rangeDateFrom && isSameDate(this.date, rangeDateFrom, this.type),
-            '-range-to-': rangeDateTo && isSameDate(this.date, rangeDateTo, this.type)
+            '-in-range-': from && to && isDateBetween(this.date, from, to),
+            '-range-from-': from && isSameDate(this.date, from, this.type),
+            '-range-to-': to && isSameDate(this.date, to, this.type)
         });
 
         this.$cell.classList.remove('-range-from-', '-range-to-', '-in-range-');

@@ -874,25 +874,35 @@ export default class Datepicker {
         return alreadySelectedDate;
     }
 
-    _handleAlreadySelectedDates(alreadySelectedDate, newSelectedDate) {
-        const {range, toggleSelected} = this.opts;
-        const isFunc = typeof toggleSelected === 'function';
-        let shouldToggle = isFunc ? toggleSelected({datepicker: this, date: newSelectedDate}) : toggleSelected;
+    _handleAlreadySelectedDates(alreadySelectedDate, cellDate) {
+        let {selectedDates, rangeDateFrom, rangeDateTo} = this;
+        let {range, toggleSelected} = this.opts;
+        let selectedDatesLen = selectedDates.length;
+        let isFunc = typeof toggleSelected === 'function';
+        let shouldToggle = isFunc ? toggleSelected({datepicker: this, date: cellDate}) : toggleSelected;
+        let datesAreSame = Boolean(range && selectedDatesLen === 1 && alreadySelectedDate);
+        // If range=true and user selects same date, then add new instance of same date to selectedDates
+        // to be able to change time independently on both dates
+        let cellDateCopy = datesAreSame ? copyDate(cellDate) : cellDate;
 
         if (range) {
             if (!shouldToggle) {
                 // Add possibility to select same date when range is true
-                if (this.selectedDates.length !== 2) {
-                    this.selectDate(newSelectedDate);
+                if (selectedDatesLen !== 2) {
+                    this.selectDate(cellDateCopy);
+                }
+                // Don't change lastSelectedDate if we have 2 same selected dates
+                if (selectedDatesLen === 2 && isSameDate(rangeDateFrom, rangeDateTo)) {
+                    return;
                 }
             }
         }
 
         if (shouldToggle) {
-            this.unselectDate(newSelectedDate);
+            this.unselectDate(cellDateCopy);
         } else {
             // Change last selected date to be able to change time when clicking on this cell
-            this._updateLastSelectedDate(alreadySelectedDate);
+            this._updateLastSelectedDate(datesAreSame ? cellDateCopy : alreadySelectedDate);
         }
     }
 
@@ -910,19 +920,6 @@ export default class Datepicker {
 
         this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
         this.setCurrentView(this.viewIndexes[nextView]);
-    }
-
-    _handleRangeOnFocus() {
-        if (this.selectedDates.length === 1) {
-            let selectedDate = this.selectedDates[0];
-            if (isDateBigger(selectedDate, this.focusDate)) {
-                this.rangeDateTo =  this.selectedDates[0];
-                this.rangeDateFrom = this.focusDate;
-            } else {
-                this.rangeDateTo = this.focusDate;
-                this.rangeDateFrom = this.selectedDates[0];
-            }
-        }
     }
 
     _scheduleCallAfterTransition = (cb) => {
@@ -981,10 +978,6 @@ export default class Datepicker {
         }
 
         this.focusDate = date;
-
-        if (this.opts.range && date) {
-            this._handleRangeOnFocus();
-        }
 
         this.trigger(consts.eventChangeFocusDate, date, params);
     }
