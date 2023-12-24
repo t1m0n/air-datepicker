@@ -35,6 +35,10 @@ export default class DatepickerCell {
             });
         }
 
+        if (this.customData?.disabled) {
+            this.dp.disableDate(this.date);
+        }
+
         this._createElement();
         this._bindDatepickerEvents();
         this._handleInitialFocusStatus();
@@ -61,7 +65,6 @@ export default class DatepickerCell {
         let extraAttrs = this.customData?.attrs || {};
 
         this.$cell = createElement({
-            className: this._getClassName(),
             attrs: {
                 'data-year': year,
                 'data-month': month,
@@ -74,10 +77,10 @@ export default class DatepickerCell {
     _getClassName() {
         let currentDate = new Date();
         let {selectOtherMonths, selectOtherYears} = this.opts;
-        let {minDate, maxDate} = this.dp;
+        let {minDate, maxDate, isDateDisabled} = this.dp;
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
-        let disabled = this.customData?.disabled;
+        let disabled = isDateDisabled(this.date);
 
         let classNameCommon = classNames(
             'air-datepicker-cell',
@@ -111,7 +114,7 @@ export default class DatepickerCell {
                 break;
         }
 
-        return classNames(classNameCommon, classNameType, this.customData?.classes);
+        return classNames(classNameCommon, classNameType, this.customData?.classes).split(' ');
     }
 
     _getHtml() {
@@ -276,6 +279,8 @@ export default class DatepickerCell {
 
     render = () => {
         this.$cell.innerHTML = this._getHtml();
+        this.$cell.setAttribute('class', '');
+        this.$cell.classList.add(...this._getClassName());
         this.$cell.adpCell = this;
 
         return this.$cell;

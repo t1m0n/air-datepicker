@@ -796,7 +796,8 @@ describe('OPTIONS TESTS', () => {
             init({
                 range: true,
                 toggleSelected: false,
-                timepicker: true
+                timepicker: true,
+                startDate: '2023-10-10',
             });
             const date = '2023-10-10';
 

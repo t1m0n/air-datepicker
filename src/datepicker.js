@@ -73,6 +73,7 @@ export default class Datepicker {
         this.customHide = false;
         this.currentView = view;
         this.selectedDates = [];
+        this.disabledDates = new Set();
         this.views = {};
         this.keys = [];
         this.rangeDateFrom = '';
@@ -1048,6 +1049,11 @@ export default class Datepicker {
             [consts.year]: `${yearQuery}`,
         };
 
+        // Can find cells only if calendar is visible and current view is initialized
+        if (!this.views[this.currentView]) {
+            return undefined;
+        }
+
         return this.views[this.currentView].$el.querySelector(resultQuery[cellType]);
     }
 
@@ -1160,6 +1166,45 @@ export default class Datepicker {
         if (this.currentView === consts.days) {
             this.views[this.currentView].renderDayNames();
         }
+    }
+
+    /**
+     * Disables dates
+     * @param dates {DateLike | Array<DateLike>} - dates to disable
+     * @param [_enable] {Boolean} - for internal use, if true, then instead of disabling date its enabling it
+     */
+    disableDate = (dates, _enable) => {
+        let datesToHandle = Array.isArray(dates) ? dates : [dates];
+
+        datesToHandle.forEach((date) => {
+            let trueDate = createDate(date);
+            if (!trueDate) return;
+            let method = _enable ? 'delete' : 'add';
+
+            this.disabledDates[method](this.formatDate(trueDate, 'yyyy-MM-dd'));
+            let cell = this.getCell(trueDate, this.currentViewSingular);
+
+            if (!cell) return;
+            cell.adpCell.render();
+        }, []);
+    }
+
+    /**
+     * Enable disabled dates
+     * @param dates {DateLike | Array<DateLike>} - dates to enable
+     */
+    enableDate = (dates) => {
+        this.disableDate(dates, true);
+    }
+
+    /**
+     * Checks if date is disabled
+     * @param date {DateLike}
+     */
+    isDateDisabled = (date) => {
+        let trueDate = createDate(date);
+
+        return this.disabledDates.has(this.formatDate(trueDate, 'yyyy-MM-dd'));
     }
 
     _showMobileOverlay() {
