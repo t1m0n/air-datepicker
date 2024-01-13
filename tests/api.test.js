@@ -156,4 +156,67 @@ describe('API TESTS', () => {
             expect(dates.at(-1).toLocaleDateString('ru')).toBe('01.01.2030');
         });
     });
+
+    describe('disableDate', () => {
+        it('should disable single date', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate('2024-01-14');
+
+            const cell = dp.getCell('2024-01-14');
+
+            expect(cell.classList).toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(1);
+        });
+
+        it('should disable multiple dates', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate(['2024-01-14', '2024-01-15']);
+
+            const cell1 = dp.getCell('2024-01-14');
+            const cell2 = dp.getCell('2024-01-15');
+
+            expect(cell1.classList).toContain('-disabled-');
+            expect(cell2.classList).toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(2);
+        });
+    });
+
+    describe('enableDate', () => {
+        it('should enable single date', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate('2024-01-14');
+
+            dp.enableDate('2024-01-14');
+
+            const cell = dp.getCell('2024-01-14');
+
+            expect(cell.classList).not.toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(0);
+        });
+
+        it('should enable multiple dates', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate(['2024-01-14', '2024-01-15']);
+            dp.enableDate(['2024-01-14', '2024-01-15']);
+
+            const cell1 = dp.getCell('2024-01-14');
+            const cell2 = dp.getCell('2024-01-15');
+
+            expect(cell1.classList).not.toContain('-disabled-');
+            expect(cell2.classList).not.toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(0);
+        });
+    });
 });

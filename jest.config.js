@@ -1,6 +1,12 @@
 module.exports = {
     clearMocks: true,
-    coverageDirectory: 'coverage',
+    collectCoverage: true,
+    collectCoverageFrom: ['./src/**/*.js'],
+    coverageThreshold: {
+        global: {
+            lines: 75
+        }
+    },
     testEnvironment: 'jsdom',
     moduleDirectories: [
         'src',
@@ -11,5 +17,5 @@ module.exports = {
     },
     setupFilesAfterEnv: [
         '<rootDir>/tests/setupTests.js'
-    ]
+    ],
 };

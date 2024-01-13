@@ -260,6 +260,8 @@ export default {
     apiSelectedDates: 'An array of selected dates.',
     apiFocusDate: 'A focused date.',
     apiVisible: 'Is calendar visible.',
-    apiGetViewDates: 'Returns all dates that should be currently displayed in calendar.'
-
+    apiGetViewDates: 'Returns all dates that should be currently displayed in calendar.',
+    apiDisableDate: 'Disables one or multiple dates.',
+    apiEnabledDate: 'Enables dates previously disabled.',
+    apiDisabledDates: 'Set of disabled dates'
 };

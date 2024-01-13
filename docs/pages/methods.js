@@ -179,8 +179,14 @@ function Methods({} = {}) {
                                         <Param addId={false} name={'date'} type={dataTypes.date} definition={'apiUpDate'} />
                                     </Param.List>
                                 </Param>
-                                <Param name={'getViewDates(view?)'} type={'(days|months|years) => Date[])'}>
+                                <Param name={'getViewDates(view?)'} type={'(days|months|years) => Date[]'}>
                                     <Paragraph id={'apiGetViewDates'} />
+                                </Param>
+                                <Param name={'disableDate(date)'} type={'((date: Date|string|number|Array<Date|string|number>)) => void'}>
+                                    <Paragraph id={'apiDisableDate'} />
+                                </Param>
+                                <Param name={'enableDate(date)'} type={'((date: Date|string|number|Array<Date|string|number>)) => void'}>
+                                    <Paragraph id={'apiEnabledDate'} />
                                 </Param>
                             </Param.List>
                         </Section>
@@ -207,6 +213,9 @@ function Methods({} = {}) {
                                 </Param>
                                 <Param name={'visible'} type={'boolean'}>
                                     <Paragraph id={'apiVisible'} />
+                                </Param>
+                                <Param name={'disabledDates'} type={'Set<string>'}>
+                                    <Paragraph id={'apiDisabledDates'} />
                                 </Param>
                             </Param.List>
                         </Section>

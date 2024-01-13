@@ -138,6 +138,8 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition?: boolean}) => void
     up: (date?: AirDatepickerDate) => void
     down: (date?: AirDatepickerDate) => void
+    disableDate: (date: AirDatepickerDate | AirDatepickerDate[]) => void
+    enableDate: (date: AirDatepickerDate | AirDatepickerDate[]) => void
 
     $el: E
     $datepicker: HTMLDivElement
@@ -146,6 +148,7 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     selectedDates: Date[]
     focusDate: Date | false
     visible: boolean
+    disabledDates: Set<string>
 }
 
 
