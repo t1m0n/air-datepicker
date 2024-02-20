@@ -27,7 +27,7 @@ let opts = {
     isMobile: false,
     // timepicker: true,
     autoClose: false,
-    range: false,
+    range: true,
     toggleSelected: false,
     // position: customPosition,
     // position: 'right center',
@@ -38,7 +38,7 @@ let opts = {
         // console.log(dp1.getCell('2021-01-01', 'month'))
     },
 
-    selectedDates: [new Date()],
+    selectedDates: [new Date(), new Date("2024-02-30")],
     onSelect({date, formattedDate, datepicker}) {
         selected = true;
         console.log('on select');

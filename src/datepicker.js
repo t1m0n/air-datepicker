@@ -658,6 +658,12 @@ export default class Datepicker {
     }
 
     hide() {
+        //guard clause to force user to actually select a range of dates instead of just exiting the datepicker
+        let {range} = this.opts;
+        if (range === true) {
+            if (this.selectedDates.length <= 1) return;
+        }
+
         let {onHide, isMobile} = this.opts;
         let hasTransition = this._hasTransition();
 
