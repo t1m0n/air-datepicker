@@ -1,6 +1,5 @@
 import {beforeAll, afterEach, describe, test, it, expect} from '@jest/globals';
 import Datepicker from 'datepicker';
-import {isSameDate} from 'utils';
 import en from 'locale/en';
 import de from 'locale/de';
 import consts from 'consts';
