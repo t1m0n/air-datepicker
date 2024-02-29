@@ -25,7 +25,7 @@ export default class DatepickerCell {
     }
 
     init() {
-        let {range, onRenderCell} = this.opts;
+        let {onRenderCell} = this.opts;
 
         if (onRenderCell) {
             this.customData = onRenderCell({
@@ -35,18 +35,11 @@ export default class DatepickerCell {
             });
         }
 
-        if (this.customData?.disabled) {
-            this.dp.disableDate(this.date);
-        }
-
         this._createElement();
         this._bindDatepickerEvents();
-        this._handleInitialFocusStatus();
-        if (this.dp.hasSelectedDates) {
-            this._handleSelectedStatus();
-            if (range) {
-                this._handleRangeStatus();
-            }
+
+        if (this.customData?.disabled) {
+            this.dp.disableDate(this.date);
         }
     }
 
@@ -72,6 +65,7 @@ export default class DatepickerCell {
                 ...extraAttrs,
             }
         });
+        this.$cell.adpCell = this;
     }
 
     _getClassName() {
@@ -80,7 +74,7 @@ export default class DatepickerCell {
         let {minDate, maxDate, isDateDisabled} = this.dp;
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
-        let disabled = isDateDisabled(this.date);
+        let isDisabled = isDateDisabled(this.date);
 
         let classNameCommon = classNames(
             'air-datepicker-cell',
@@ -98,18 +92,18 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': this.isOtherMonth,
-                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || disabled
+                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || isDisabled
                 });
                 break;
             case consts.months:
                 classNameType = classNames({
-                    '-disabled-': isOutOfMinMaxRange || disabled
+                    '-disabled-': isOutOfMinMaxRange
                 });
                 break;
             case consts.years:
                 classNameType = classNames({
                     '-other-decade-': this.isOtherDecade,
-                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears) || disabled
+                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears)
                 });
                 break;
         }
@@ -235,6 +229,18 @@ export default class DatepickerCell {
         }
     }
 
+    _handleClasses() {
+        this.$cell.setAttribute('class', '');
+        this._handleInitialFocusStatus();
+        if (this.dp.hasSelectedDates) {
+            this._handleSelectedStatus();
+            if (this.dp.opts.range) {
+                this._handleRangeStatus();
+            }
+        }
+        this.$cell.classList.add(...this._getClassName());
+    }
+
     get isDisabled() {
         return this.$cell.matches('.-disabled-');
     }
@@ -279,9 +285,8 @@ export default class DatepickerCell {
 
     render = () => {
         this.$cell.innerHTML = this._getHtml();
-        this.$cell.setAttribute('class', '');
-        this.$cell.classList.add(...this._getClassName());
-        this.$cell.adpCell = this;
+
+        this._handleClasses();
 
         return this.$cell;
     }

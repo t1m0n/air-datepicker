@@ -605,15 +605,31 @@ describe('OPTIONS TESTS', () => {
             const date = new Date('2022-12-08');
             init({
                 visible: false,
+                startDate: date,
+                selectedDates: [date]
+            });
+
+
+            // As selecting date is a little bit async, we'll wait here until
+            // values will be changed
+            await sleep();
+            expect(dp.$el).toHaveValue('08.12.2022');
+            expect(dp.selectedDates).toHaveLength(1);
+        });
+
+        it('should hilite selected cell on init', async () => {
+            const date = new Date('2024-03-01');
+            init({
+                visible: true,
+                startDate: date,
                 selectedDates: [date]
             });
 
             // As selecting date is a little bit async, we'll wait here until
             // values will be changed
             await sleep();
-
-            expect(dp.$el).toHaveValue('08.12.2022');
-            expect(dp.selectedDates).toHaveLength(1);
+            const cell = dp.getCell(date);
+            expect(cell).toHaveClass('-selected-');
         });
 
         it('should select dates with time on init with correct day period', async () => {

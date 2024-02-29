@@ -295,7 +295,6 @@ export default class DatepickerBody {
     render = () => {
         this.destroyCells();
 
-
         this._generateCells();
         this.cells.forEach((c) => {
             this.$cells.appendChild(c.render());
