@@ -5,6 +5,7 @@ const readdir = util.promisify(fs.readdir);
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
 const ejs = require('ejs');
+const _ = require('lodash');
 
 let srcPath = path.resolve(__dirname, '../src');
 let distPath = path.resolve(__dirname, '../dist/locale');
@@ -17,7 +18,7 @@ module.exports = async () => {
     return fileNames.map((fileName) => {
         let localeName = fileName.replace(/\.js/, '');
         let typeName = `${localeName}.d.ts`;
-        return writeFile(path.join(distPath, typeName), ejs.render(template, {locale: localeName}));
+        return writeFile(path.join(distPath, typeName), ejs.render(template, {locale: _.camelCase(localeName)}));
     });
 };
 
