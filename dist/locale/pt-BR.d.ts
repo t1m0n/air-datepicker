@@ -1,6 +1,6 @@
 declare module 'air-datepicker/locale/pt-BR' {
     import {AirDatepickerLocale} from 'air-datepicker';
-    const pt-BR: AirDatepickerLocale;
+    const ptBr: AirDatepickerLocale;
 
-    export default pt-BR;
+    export default ptBr;
 }

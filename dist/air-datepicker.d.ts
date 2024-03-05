@@ -98,6 +98,7 @@ export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElemen
     maxMinutes?: number,
     hoursStep?: number,
     minutesStep?: number,
+    fixedHeight?: boolean,
 
     onSelect?: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker<E>}) => void,
     onChangeViewDate?: ({month, year, decade}: {month: number, year: number, decade: AirDatepickerDecade}) => void,
@@ -128,15 +129,17 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     prev: () => void
     selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime?: boolean, silent?: boolean}) => void
     unselectDate: (date: AirDatepickerDate) => void
-    clear: () => void
+    clear: (opts?: {silent?: boolean}) => void
     formatDate: (date: AirDatepickerDate, format: string) => string
     destroy: () => void
-    update: (newOpts?: AirDatepickerOptions) => void
-    setCurrentView: (newView: AirDatepickerViews) => void
+    update: (newOpts?: AirDatepickerOptions, params?: {silent?: boolean}) => void
+    setCurrentView: (newView: AirDatepickerViews, params?: {silent?: boolean}) => void
     setViewDate: (newViewDate: AirDatepickerDate) => void
     setFocusDate: (date: AirDatepickerDate | false, opts?: {viewDateTransition?: boolean}) => void
     up: (date?: AirDatepickerDate) => void
     down: (date?: AirDatepickerDate) => void
+    disableDate: (date: AirDatepickerDate | AirDatepickerDate[]) => void
+    enableDate: (date: AirDatepickerDate | AirDatepickerDate[]) => void
 
     $el: E
     $datepicker: HTMLDivElement
@@ -145,6 +148,7 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     selectedDates: Date[]
     focusDate: Date | false
     visible: boolean
+    disabledDates: Set<string>
 }
 
 

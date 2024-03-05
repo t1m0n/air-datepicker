@@ -184,6 +184,7 @@ export default {
     optsMaxMinutes: 'Maximum possible minutes value.',
     optsHoursStep: 'Hours step.',
     optsMinutesStep: 'Minutes step.',
+    optsFixedHeight: 'Sets fixed height of the calendar. If {trueField} then there will be 6 weeks rendered in every month.',
 
     localeTitle: 'Localization',
     localeNote: 'Starting from version 3.0.0, the calendar language must be passed as an object, instead of a string, as it was before. You can pass one of the available localizations or create your own. The available localizations are located in the {dirName} directory',
@@ -242,8 +243,10 @@ export default {
     apiDestroy: 'Destroys calendar instance. Remove itself from DOM tree and all events from target element.',
     apiUpdate: 'Updates calendar options. Using this method, you can set new values for the minimum or maximum dates, change the calendar language, etc.',
     apiUpdateNewOpts: 'new calendar options, almost all options that can be passed initially are supported.',
+    apiUpdateSilent: 'if {trueField} then onSelect and onChangeView callbacks won\'t be triggered',
     apiSetCurrentView: 'Sets the new value of the calendar view.',
     apiSetCurrentViewView: 'new view',
+    apiSetCurrentViewSilent: 'if {trueField}, then onChangeView won\'t be triggered',
     apiSetViewDate: 'Sets a new date for displaying the calendar. It is used when, for example, you need to show some other month without having to select a date.',
     apiSetViewDateDate: 'a new date. If it is not possible to convert a string or a number to a date, the call is ignored.',
     apiSetFocusDate: 'Sets the focus to the cell with the passed date.',
@@ -259,6 +262,8 @@ export default {
     apiSelectedDates: 'An array of selected dates.',
     apiFocusDate: 'A focused date.',
     apiVisible: 'Is calendar visible.',
-    apiGetViewDates: 'Returns all dates that should be currently displayed in calendar.'
-
+    apiGetViewDates: 'Returns all dates that should be currently displayed in calendar.',
+    apiDisableDate: 'Disables one or multiple dates.',
+    apiEnabledDate: 'Enables dates previously disabled.',
+    apiDisabledDates: 'Set of disabled dates'
 };
