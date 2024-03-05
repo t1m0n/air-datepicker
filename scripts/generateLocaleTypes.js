@@ -18,7 +18,10 @@ module.exports = async () => {
     return fileNames.map((fileName) => {
         let localeName = fileName.replace(/\.js/, '');
         let typeName = `${localeName}.d.ts`;
-        return writeFile(path.join(distPath, typeName), ejs.render(template, {locale: _.camelCase(localeName)}));
+        return writeFile(path.join(distPath, typeName), ejs.render(template, {
+            locale: localeName,
+            localeVarName: _.camelCase(localeName)
+        }));
     });
 };
 
