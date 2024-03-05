@@ -1,5 +1,6 @@
 import {beforeAll, afterEach, describe, test, it, expect} from '@jest/globals';
 import Datepicker from 'datepicker';
+import {sleep} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
 
@@ -72,6 +73,50 @@ describe('API TESTS', () => {
                 });
             }
             ).not.toThrow();
+        });
+
+        test('update selected dates', (done) => {
+            init({
+                visible: false,
+                multipleDates: true,
+                selectedDates: ['2024-03-05', '2024-03-06', '2024-03-07']
+            });
+
+            expect(dp.selectedDates).toHaveLength(3);
+
+            dp.update({
+                selectedDates: ['2024-02-01'],
+            });
+            sleep().then(() => {
+                expect(dp.selectedDates).toHaveLength(1);
+                expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('01.02.2024');
+                done();
+            });
+        });
+
+        test('update should not trigger callback with silent == true', (done) => {
+            let selected = false;
+            let changedView = false;
+            init({
+                onSelect() {
+                    selected = true;
+                },
+                onChangeView() {
+                    changedView = true;
+                }
+            });
+
+            dp.update({
+                selectedDates: ['2024-02-01'],
+                view: 'months'
+            }, {silent: true});
+
+            sleep().then(() => {
+                expect(selected).toEqual(false);
+                expect(changedView).toEqual(false);
+                done();
+            });
+
         });
     });
 
@@ -154,6 +199,69 @@ describe('API TESTS', () => {
             expect(dates).toHaveLength(12);
             expect(dates[0].toLocaleDateString('ru')).toBe('01.01.2019');
             expect(dates.at(-1).toLocaleDateString('ru')).toBe('01.01.2030');
+        });
+    });
+
+    describe('disableDate', () => {
+        it('should disable single date', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate('2024-01-14');
+
+            const cell = dp.getCell('2024-01-14');
+
+            expect(cell.classList).toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(1);
+        });
+
+        it('should disable multiple dates', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate(['2024-01-14', '2024-01-15']);
+
+            const cell1 = dp.getCell('2024-01-14');
+            const cell2 = dp.getCell('2024-01-15');
+
+            expect(cell1.classList).toContain('-disabled-');
+            expect(cell2.classList).toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(2);
+        });
+    });
+
+    describe('enableDate', () => {
+        it('should enable single date', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate('2024-01-14');
+
+            dp.enableDate('2024-01-14');
+
+            const cell = dp.getCell('2024-01-14');
+
+            expect(cell.classList).not.toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(0);
+        });
+
+        it('should enable multiple dates', () => {
+            init({
+                startDate: '2024-01-13'
+            });
+
+            dp.disableDate(['2024-01-14', '2024-01-15']);
+            dp.enableDate(['2024-01-14', '2024-01-15']);
+
+            const cell1 = dp.getCell('2024-01-14');
+            const cell2 = dp.getCell('2024-01-15');
+
+            expect(cell1.classList).not.toContain('-disabled-');
+            expect(cell2.classList).not.toContain('-disabled-');
+            expect(dp.disabledDates.size).toBe(0);
         });
     });
 });

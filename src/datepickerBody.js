@@ -295,7 +295,6 @@ export default class DatepickerBody {
     render = () => {
         this.destroyCells();
 
-
         this._generateCells();
         this.cells.forEach((c) => {
             this.$cells.appendChild(c.render());
@@ -304,7 +303,7 @@ export default class DatepickerBody {
 
 
     static getDaysDates(dp, cb) {
-        let {viewDate, locale: {firstDay}} = dp,
+        let {viewDate, opts: {fixedHeight}, locale: {firstDay}} = dp,
             totalMonthDays = getDaysCount(viewDate),
             {year, month} = getParsedDate(viewDate),
             firstMonthDay = new Date(year, month, 1),
@@ -320,6 +319,10 @@ export default class DatepickerBody {
             firstRenderDayDate = firstRenderDate.getDate(),
             {year:renderYear, month: renderMonth} = getParsedDate(firstRenderDate),
             i = 0;
+
+        if (fixedHeight) {
+            totalRenderDays = 6 * 7; // Render 6 weeks in every month
+        }
 
         const dates = [];
 
