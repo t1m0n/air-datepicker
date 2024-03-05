@@ -1,4 +1,4 @@
-var _default = {
+export default {
     days: ['Igandea', 'Astelehena', 'Asteartea', 'Asteazkena', 'Osteguna', 'Ostirala', 'Larunbata'],
     daysShort: ['Iga', 'Ast', 'Asr', 'Asz', 'Ost', 'Osr', 'Lar'],
     daysMin: ['Ig', 'As', 'Ar', 'Az', 'Os', 'Or', 'La'],
