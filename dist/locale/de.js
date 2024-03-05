@@ -11,7 +11,7 @@ var _default = {
   months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
   monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
   today: 'Heute',
-  clear: 'Aufräumen',
+  clear: 'Löschen',
   dateFormat: 'dd.MM.yyyy',
   timeFormat: 'HH:mm',
   firstDay: 1
