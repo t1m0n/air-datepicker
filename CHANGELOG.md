@@ -6,6 +6,7 @@
 * added prop `disabledDates` - it is a Set which holds all disabled dates
 * added possibility to pass `{silent: true}` to `update` and `setCurrentView` methods, [#583](https://github.com/t1m0n/air-datepicker/issues/568)
 * changed `update` method - now if you pass `selectedDates` here then calendar will keep selected only those dates
+* fixed localization generation
 * fixed selecting time on same date when `range: true`, [#568](https://github.com/t1m0n/air-datepicker/issues/568)
 * fixed date conversion to local date when using strings, e.g `selectDate('2024-03-05')` [#589](https://github.com/t1m0n/air-datepicker/issues/589)
 
