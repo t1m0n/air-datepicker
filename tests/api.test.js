@@ -1,5 +1,6 @@
 import {beforeAll, afterEach, describe, test, it, expect} from '@jest/globals';
 import Datepicker from 'datepicker';
+import {sleep} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
 
@@ -72,6 +73,50 @@ describe('API TESTS', () => {
                 });
             }
             ).not.toThrow();
+        });
+
+        test('update selected dates', (done) => {
+            init({
+                visible: false,
+                multipleDates: true,
+                selectedDates: ['2024-03-05', '2024-03-06', '2024-03-07']
+            });
+
+            expect(dp.selectedDates).toHaveLength(3);
+
+            dp.update({
+                selectedDates: ['2024-02-01'],
+            });
+            sleep().then(() => {
+                expect(dp.selectedDates).toHaveLength(1);
+                expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('01.02.2024');
+                done();
+            });
+        });
+
+        test('update should not trigger callback with silent == true', (done) => {
+            let selected = false;
+            let changedView = false;
+            init({
+                onSelect() {
+                    selected = true;
+                },
+                onChangeView() {
+                    changedView = true;
+                }
+            });
+
+            dp.update({
+                selectedDates: ['2024-02-01'],
+                view: 'months'
+            }, {silent: true});
+
+            sleep().then(() => {
+                expect(selected).toEqual(false);
+                expect(changedView).toEqual(false);
+                done();
+            });
+
         });
     });
 

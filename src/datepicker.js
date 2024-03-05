@@ -986,8 +986,10 @@ export default class Datepicker {
     /**
      * Sets new datepicker view
      * @param {ViewType} view
+     * @param [params]
+     * @param [params.silent] {boolean}
      */
-    setCurrentView = (view) => {
+    setCurrentView = (view, params = {}) => {
         if (!this.viewIndexes.includes(view)) return;
 
         this.currentView = view;
@@ -1012,7 +1014,7 @@ export default class Datepicker {
         }
 
         // Trigger user event after, to be able to use datepicker api on rendered view
-        if (this.opts.onChangeView) {
+        if (this.opts.onChangeView && !params.silent) {
             this.opts.onChangeView(view);
         }
     }
@@ -1090,8 +1092,16 @@ export default class Datepicker {
         this.rangeDateTo = null;
     }
 
-    update = (newOpts = {}) => {
+    /**
+     * Updates datepicker state
+     * @param newOpts
+     * @param [params]
+     * @param [params.silent] {boolean} - if true then callbacks won't be triggered
+     */
+    update = (newOpts = {}, params = {}) => {
         let prevOpts = deepMerge({}, this.opts);
+        let {silent} = params;
+
         deepMerge(this.opts, newOpts);
 
         let {timepicker, buttons, range, selectedDates, isMobile} = this.opts;
@@ -1101,12 +1111,13 @@ export default class Datepicker {
         this._limitViewDateByMaxMinDates();
         this._handleLocale();
 
-        if (!prevOpts.selectedDates && selectedDates) {
-            this.selectDate(selectedDates);
+        if (selectedDates) {
+            this.selectedDates = [];
+            this.selectDate(selectedDates, {silent});
         }
 
         if (newOpts.view) {
-            this.setCurrentView(newOpts.view);
+            this.setCurrentView(newOpts.view, {silent});
         }
 
         this._setInputValue();

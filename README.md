@@ -1,5 +1,3 @@
-> :tada: New version released! :tada:
-
 # Air Datepicker
 
 Lightweight, **dependency-free**, fast, customizable datepicker written in pure JavaScript. Works in all modern browsers which supports native css variables.
@@ -28,6 +26,12 @@ new AirDatepicker('#el' [, options]);
 
 ### v3.5.0
 * added `fixedHeight` option, allows you to have equal weeks number in every month
+* added method `disableDate`, allows you to disabled one or multiple dates with datepicker API
+* added prop `disabledDates` - it is a Set which holds all disabled dates
+* added possibility to pass `{silent: true}` to `update` and `setCurrentView` methods, [#583](https://github.com/t1m0n/air-datepicker/issues/568)
+* changed `update` method - now if you pass `selectedDates` here then calendar will keep selected only those dates
+* fixed selecting time on same date when `range: true`, [#568](https://github.com/t1m0n/air-datepicker/issues/568)
+* fixed date conversion to local date when using strings, e.g `selectDate('2024-03-05')` [#589](https://github.com/t1m0n/air-datepicker/issues/589)
 
 ### v3.4.0
 * added new options `onFocus` and `onBeforeSelect` grant you more control over range selection behaviour and more [#526](https://github.com/t1m0n/air-datepicker/issues/526)
@@ -41,39 +45,6 @@ new AirDatepicker('#el' [, options]);
 ### v3.3.5
 * added handling of optional chaining operator in dist package [#518](https://github.com/t1m0n/air-datepicker/issues/518)
 * added Indonesian locale, thanks to [BariqDharmawan](https://github.com/BariqDharmawan), in [#517](https://github.com/t1m0n/air-datepicker/pull/517)
-
-### v3.3.4
-* recreate global container if it was removed from DOM [#516](https://github.com/t1m0n/air-datepicker/issues/516)
-* added Greek locale, thanks to [sonole](https://github.com/sonole), in [#515](https://github.com/t1m0n/air-datepicker/pull/515)
-
-### v3.3.3
-* fixed time format in timepicker body [#512](https://github.com/t1m0n/air-datepicker/issues/512)
-
-### v3.3.2
-* fixed day period value, when selecting date while datepicker is not active, [#510](https://github.com/t1m0n/air-datepicker/issues/510)
-* fixed German locale, [#511](https://github.com/t1m0n/air-datepicker/issues/511)
-
-### v3.3.1
-* added Japanese locale, thanks to [kyong0612](https://github.com/kyong0612), in [#505](https://github.com/t1m0n/air-datepicker/pull/505)
-* added Korean locale, thanks to [YankeeTube](https://github.com/YankeeTube), in [#506](https://github.com/t1m0n/air-datepicker/pull/506)
-
-### v3.3.0
-* new feature that allow you to add custom attributes via `onRenderCell` [#502](https://github.com/t1m0n/air-datepicker/issues/502), [read docs](https://air-datepicker.com/docs?scrollTo=onRenderCell)
-* fixed selecting cell when using custom html with `onRenderCell` option  [#502](https://github.com/t1m0n/air-datepicker/issues/502)
-
-### v3.2.1
-* added Arabic locale, thanks to [abdo-host](https://github.com/abdo-host) [#497](https://github.com/t1m0n/air-datepicker/pull/497)
-* added Italian locale, thanks to [msaltieri](https://github.com/msaltieri) [#498](https://github.com/t1m0n/air-datepicker/pull/498)
-
-### v3.2.0
-* added `onClickDayName` option, [#459](https://github.com/t1m0n/air-datepicker/issues/459)
-* added `silent` param to `clear` method, [#477](https://github.com/t1m0n/air-datepicker/issues/477)
-* added Swedish locale, thanks to [naton](https://github.com/naton) [#207](https://github.com/t1m0n/air-datepicker/pull/207)
-* fixed error when trying to call `update` method with `view` parameter on hidden calendar, [#476](https://github.com/t1m0n/air-datepicker/issues/476)
-* fixed styles issue with time sliders, [#489](https://github.com/t1m0n/air-datepicker/issues/489)
-* fixed English docs description, [#490](https://github.com/t1m0n/air-datepicker/issues/490)
-* fixed typings for `formatDate` method, [#491](https://github.com/t1m0n/air-datepicker/issues/491)
-
 
 ## Version 3.0.0 highlights
 It is been a while since the last release, a lot of work has been done, and I'm glad to finally present a new version of Air Datepicker.

@@ -134,16 +134,22 @@ function Methods({} = {}) {
                                 <Param name={'destroy()'} id={'destroy'}>
                                     <Paragraph id={'apiDestroy'}/>
                                 </Param>
-                                <Param name={'update(newOpts)'} id={'update'}>
+                                <Param name={'update(newOpts, params?)'} id={'update'}>
                                     <Paragraph id={'apiUpdate'} />
                                     <Param.List nested>
                                         <Param name={'newOpts'} addId={false} type={'object'} definition={'apiUpdateNewOpts'} />
+                                        <Param name={'params.silent'} addId={false} type={'boolean'} definition={'apiUpdateSilent'} definitionValues={{
+                                            trueField
+                                        }} />
                                     </Param.List>
                                 </Param>
-                                <Param name={'setCurrentView(view)'} id={'setCurrentView'}>
+                                <Param name={'setCurrentView(view, params?)'} id={'setCurrentView'}>
                                     <Paragraph id={'apiSetCurrentView'} />
                                     <Param.List nested>
                                         <Param name={'view'} addId={false} type={'"days" | "months" | "years"'} definition={'apiSetCurrentViewView'} />
+                                        <Param name={'params.silent'} addId={false} type={'boolean'} definition={'apiSetCurrentViewSilent'} definitionValues={{
+                                            trueField
+                                        }} />
                                     </Param.List>
                                 </Param>
                                 <Param name={'setViewDate(date)'} id={'setViewDate'}>

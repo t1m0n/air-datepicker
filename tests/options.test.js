@@ -3,7 +3,7 @@ import Datepicker from 'datepicker';
 import en from 'locale/en';
 import de from 'locale/de';
 import consts from 'consts';
-import {DAY} from './helpers';
+import {DAY, sleep} from './helpers';
 
 let $input, $altInput, dp, $datepicker;
 const timeFormat = new Intl.DateTimeFormat('ru', {hour: 'numeric', minute: 'numeric'});
@@ -16,11 +16,6 @@ beforeAll(() => {
     document.body.appendChild($altInput);
 });
 
-function sleep(timeout = 100) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, timeout);
-    });
-}
 
 function init(opts) {
     dp = new Datepicker($input, {visible: true, ...opts});
