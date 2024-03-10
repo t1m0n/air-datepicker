@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = {
+var _default = exports.default = {
   days: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
   daysShort: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
   daysMin: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
@@ -16,4 +16,3 @@ var _default = {
   timeFormat: 'HH:mm',
   firstDay: 1
 };
-exports.default = _default;
