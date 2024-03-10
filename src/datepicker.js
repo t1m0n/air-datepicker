@@ -225,6 +225,7 @@ export default class Datepicker {
 
     _addMobileAttributes() {
         $datepickerOverlay.addEventListener('click', this._onClickOverlay);
+        window.addEventListener('keydown', this._onMobileTabPress);
 
         this.$datepicker.classList.add('-is-mobile-');
         this.$el.setAttribute('readonly', true);
@@ -232,6 +233,7 @@ export default class Datepicker {
 
     _removeMobileAttributes() {
         $datepickerOverlay.removeEventListener('click', this._onClickOverlay);
+        $datepickerOverlay.removeEventListener('keydown', this._onMobileTabPress);
 
         this.$datepicker.classList.remove('-is-mobile-');
 
@@ -1343,6 +1345,16 @@ export default class Datepicker {
             this.hide();
         }
     }
+
+    _onMobileTabPress = (e) => {
+        if (e.code !== 'Tab') {
+            return;
+        }
+    
+        if (this.visible) {
+            this.hide();
+        }
+    };
 
     /**
      * Returns all dates that are currently should be shown in calendar
