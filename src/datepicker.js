@@ -74,6 +74,7 @@ export default class Datepicker {
         this.currentView = view;
         this.selectedDates = [];
         this.disabledDates = new Set();
+        this.isDestroyed = false;
         this.views = {};
         this.keys = [];
         this.rangeDateFrom = '';
@@ -1060,6 +1061,8 @@ export default class Datepicker {
     }
 
     destroy = () => {
+        if (this.isDestroyed) return;
+
         let {showEvent, isMobile} = this.opts;
 
         let parent = this.$datepicker.parentNode;
@@ -1082,14 +1085,16 @@ export default class Datepicker {
         this.nav = null;
 
         this.$datepicker = null;
-        this.opts = null;
+        this.opts = {};
         this.$customContainer = null;
 
         this.viewDate = null;
         this.focusDate = null;
-        this.selectedDates = null;
+        this.selectedDates = [];
         this.rangeDateFrom = null;
         this.rangeDateTo = null;
+
+        this.isDestroyed = true;
     }
 
     /**
