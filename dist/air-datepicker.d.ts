@@ -149,6 +149,7 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     focusDate: Date | false
     visible: boolean
     disabledDates: Set<string>
+    isDestroyed: boolean;
 }
 
 

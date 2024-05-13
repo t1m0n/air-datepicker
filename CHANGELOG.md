@@ -1,5 +1,8 @@
 # Changelog
 
+### v3.5.1
+* improved `destroy()` behavior - added `isDestroyed` property, `opts` and `selectedDates` will still have empty values, instead of `null`, even after AirDatepicker has been destroyed
+
 ### v3.5.0
 * added `fixedHeight` option, allows you to have equal weeks number in every month
 * added method `disableDate`, allows you to disabled one or multiple dates with datepicker API
