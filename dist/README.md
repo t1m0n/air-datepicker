@@ -24,15 +24,23 @@ new AirDatepicker('#el' [, options]);
 
 ## Recent updates
 
+### v3.5.1
+* improved `destroy()` behavior - added `isDestroyed` property, `opts` and `selectedDates` will still have empty values, instead of `null`, even after AirDatepicker has been destroyed [#600](https://github.com/t1m0n/air-datepicker/issues/600)
+
 ### v3.5.0
 * added `fixedHeight` option, allows you to have equal weeks number in every month
 * added method `disableDate`, allows you to disabled one or multiple dates with datepicker API
 * added prop `disabledDates` - it is a Set which holds all disabled dates
 * added possibility to pass `{silent: true}` to `update` and `setCurrentView` methods, [#583](https://github.com/t1m0n/air-datepicker/issues/568)
-* changed `update` method - now if you pass `selectedDates` here then calendar will keep selected only those dates
-* fixed localization generation
+* changed `update` method - now if you pass `selectedDates` then calendar will keep selected only those dates
 * fixed selecting time on same date when `range: true`, [#568](https://github.com/t1m0n/air-datepicker/issues/568)
 * fixed date conversion to local date when using strings, e.g `selectDate('2024-03-05')` [#589](https://github.com/t1m0n/air-datepicker/issues/589)
+* fixed localization generation, thanks to [hreyeslo](https://github.com/hreyeslo) in [#524](https://github.com/t1m0n/air-datepicker/pull/524)
+* fixed type definition for `clear` method, thanks to [ahmetzambak](https://github.com/ahmetzambak) in [#591](https://github.com/t1m0n/air-datepicker/pull/591)
+* fixed German translation for "clear", thanks to [pbek](https://github.com/pbek) in [#582](https://github.com/t1m0n/air-datepicker/pull/582)
+* added Slovenian locale, thanks to [carliblaz](https://github.com/carliblaz) in [#569](https://github.com/t1m0n/air-datepicker/pull/569)
+* added Basque locale, thanks to [ikerib](https://github.com/ikerib) in [#529](https://github.com/t1m0n/air-datepicker/pull/529)
+* added Norwegian locale, thanks to [MortenSpjotvoll](https://github.com/MortenSpjotvoll) in [#521](https://github.com/t1m0n/air-datepicker/pull/521)
 
 ### v3.4.0
 * added new options `onFocus` and `onBeforeSelect` grant you more control over range selection behaviour and more [#526](https://github.com/t1m0n/air-datepicker/issues/526)

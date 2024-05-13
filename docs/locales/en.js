@@ -265,5 +265,6 @@ export default {
     apiGetViewDates: 'Returns all dates that should be currently displayed in calendar.',
     apiDisableDate: 'Disables one or multiple dates.',
     apiEnabledDate: 'Enables dates previously disabled.',
-    apiDisabledDates: 'Set of disabled dates'
+    apiDisabledDates: 'Set of disabled dates',
+    apiIsDestroyed: 'If {trueField} then calendar has been destroyed with destroy() method'
 };

@@ -223,6 +223,9 @@ function Methods({} = {}) {
                                 <Param name={'disabledDates'} type={'Set<string>'}>
                                     <Paragraph id={'apiDisabledDates'} />
                                 </Param>
+                                <Param name={'isDestroyed'} type={'boolean'}>
+                                    <Paragraph id={'apiIsDestroyed'} values={{trueField}}  />
+                                </Param>
                             </Param.List>
                         </Section>
                     </main>

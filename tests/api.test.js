@@ -264,4 +264,32 @@ describe('API TESTS', () => {
             expect(dp.disabledDates.size).toBe(0);
         });
     });
+
+    describe('destory', () => {
+        it('should destroy AirDatecpiker', () => {
+            init();
+
+            dp.destroy();
+
+            expect(dp.isDestroyed).toBe(true);
+            expect(dp.$datepicker).toBeNull();
+        });
+        it('should not throw error when calling destroy after selectDate', () => {
+            expect(() => {
+                init();
+
+                dp.selectDate(new Date());
+                dp.destroy();
+            }).not.toThrow();
+        });
+        it('should not throw error when calling destroy multiple times', () => {
+            expect(() => {
+                init();
+
+                dp.destroy();
+                dp.destroy();
+                dp.destroy();
+            }).not.toThrow();
+        });
+    });
 });
