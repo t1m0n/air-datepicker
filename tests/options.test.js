@@ -742,12 +742,14 @@ describe('OPTIONS TESTS', () => {
     describe('range', () => {
         it('should enable range mode', () => {
             init({
-                range: true
+                range: true,
+                startDate: '2023-10-10',
             });
 
-            dp.selectDate(['2023-10-10', '2023-10-22']);
+            dp.getCell('2023-10-10').click();
+            dp.getCell('2023-10-22').click();
 
-            expect(Boolean(dp.rangeDateFrom && dp.rangeDateTo)).toBeTruthy();
+            expect(dp.selectedDates).toHaveLength(2);
         });
 
         it('should select dates in proper', () => {
@@ -825,6 +827,29 @@ describe('OPTIONS TESTS', () => {
 
             expect(timeFormat.format(dp.selectedDates[0])).toEqual('10:10');
             expect(timeFormat.format(dp.selectedDates[1])).toEqual('20:20');
+        });
+
+        it('should work correctly when user unselects one date and then selects another', () => {
+            init({
+                range: true,
+                toggleSelected: true,
+                startDate: '2024-05-26',
+            });
+
+            // Select two dates
+            dp.getCell('2024-05-12').click();
+            dp.getCell('2024-05-17').click();
+
+            // Unselect the last one
+            dp.getCell('2024-05-17').click();
+
+            // Select other 'to' date
+            dp.getCell('2024-05-23').click();
+
+            expect(dp.selectedDates).toHaveLength(2);
+            expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('12.05.2024');
+            expect(dp.selectedDates[1].toLocaleDateString('ru')).toEqual('23.05.2024');
+
         });
     });
 });
