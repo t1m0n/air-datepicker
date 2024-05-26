@@ -53,7 +53,7 @@
     background: var(--adp-cell-background-color-in-range);
     border-radius: 0;
 
-    &:hover {
+    &:hover, &.-focus- {
       background: var(--adp-cell-background-color-in-range-hover);
     }
   }

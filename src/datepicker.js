@@ -35,7 +35,7 @@ let $datepickersContainer = '',
 
 export default class Datepicker {
     static defaults = defaults
-    static version = '3.5.2'
+    static version = '3.5.3'
     static defaultGlobalContainerId = 'air-datepicker-global-container'
     static buildGlobalContainer(id) {
         containerBuilt = true;
@@ -589,6 +589,7 @@ export default class Datepicker {
                     // Assume that if unselectDate has been called, then there is only one selected date
                     // in range mode, so we need to reset rangeDateTo
                     _this.rangeDateTo = '';
+                    _this.rangeDateFrom = selected[0];
 
                     _this._updateLastSelectedDate(_this.selectedDates[_this.selectedDates.length - 1]);
                 }

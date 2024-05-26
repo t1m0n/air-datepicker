@@ -1,5 +1,8 @@
 # Changelog
 
+### v3.5.3
+* fixed range mode [#613](https://github.com/t1m0n/air-datepicker/issues/613)
+
 ### v3.5.2
 * fixed range mode [#613](https://github.com/t1m0n/air-datepicker/issues/613)
 
