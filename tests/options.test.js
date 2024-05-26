@@ -829,7 +829,7 @@ describe('OPTIONS TESTS', () => {
             expect(timeFormat.format(dp.selectedDates[1])).toEqual('20:20');
         });
 
-        it('should work correctly when user unselects one date and then selects another', () => {
+        it('should work correctly when user unselects "to" date and then selects other', () => {
             init({
                 range: true,
                 toggleSelected: true,
@@ -849,6 +849,52 @@ describe('OPTIONS TESTS', () => {
             expect(dp.selectedDates).toHaveLength(2);
             expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('12.05.2024');
             expect(dp.selectedDates[1].toLocaleDateString('ru')).toEqual('23.05.2024');
+
+        });
+
+        it('should work correctly when user unselects "from" date and then selects another', () => {
+            init({
+                range: true,
+                toggleSelected: true,
+                startDate: '2024-05-26',
+            });
+
+            // Select two dates
+            dp.getCell('2024-05-12').click();
+            dp.getCell('2024-05-17').click();
+
+            // Unselect the last one
+            dp.getCell('2024-05-12').click();
+
+            // Select other 'to' date
+            dp.getCell('2024-05-01').click();
+
+            expect(dp.selectedDates).toHaveLength(2);
+            expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('01.05.2024');
+            expect(dp.selectedDates[1].toLocaleDateString('ru')).toEqual('17.05.2024');
+
+        });
+
+        it('should work correctly when user unselects "to" date and then selects other date erlier than "from"', () => {
+            init({
+                range: true,
+                toggleSelected: true,
+                startDate: '2024-05-26',
+            });
+
+            // Select two dates
+            dp.getCell('2024-05-12').click();
+            dp.getCell('2024-05-17').click();
+
+            // Unselect the last one
+            dp.getCell('2024-05-17').click();
+
+            // Select other 'to' date
+            dp.getCell('2024-05-01').click();
+
+            expect(dp.selectedDates).toHaveLength(2);
+            expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('01.05.2024');
+            expect(dp.selectedDates[1].toLocaleDateString('ru')).toEqual('12.05.2024');
 
         });
     });
