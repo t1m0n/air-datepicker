@@ -117,10 +117,10 @@
   &:after {
     content: '';
     position: absolute;
-    background: #fff;
+    background: var(--adp-background-color);
     border-top: 1px solid var(--adp-border-color-inline);
     border-right: 1px solid var(--adp-border-color-inline);
-    border-top-right-radius: var(--adp-poiner-border-radius);
+    border-top-right-radius: var(--adp-pointer-border-radius);
     width: var(--adp-pointer-size);
     height: var(--adp-pointer-size);
     box-sizing: border-box;
