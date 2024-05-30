@@ -25,6 +25,7 @@ export default class DatepickerKeyboard {
 
     init() {
         this.bindKeyboardEvents();
+        this.bindInputBlurEvent();
     }
 
     bindKeyboardEvents() {
@@ -34,11 +35,18 @@ export default class DatepickerKeyboard {
         $el.addEventListener('keyup', this.onKeyUp);
     }
 
+    bindInputBlurEvent() {
+        let {$el} = this.dp;
+
+        $el.addEventListener('blur', this.onInputBlur);
+    }
+
     destroy() {
         let {$el} = this.dp;
 
         $el.removeEventListener('keydown', this.onKeyDown);
         $el.removeEventListener('keyup', this.onKeyUp);
+        $el.removeEventListener('blur', this.onInputBlur);
         this.hotKeys = null;
         this.pressedKeys = null;
     }
@@ -199,5 +207,9 @@ export default class DatepickerKeyboard {
 
     onKeyUp = (e) => {
         this.removeKey(e.key);
+    }
+
+    onInputBlur = () => {
+        this.pressedKeys.clear();
     }
 }
