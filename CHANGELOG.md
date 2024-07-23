@@ -1,5 +1,38 @@
 # Changelog
 
+### v3.5.3
+* fixed range mode [#613](https://github.com/t1m0n/air-datepicker/issues/613)
+
+### v3.5.2
+* fixed range mode [#613](https://github.com/t1m0n/air-datepicker/issues/613)
+
+### v3.5.1
+* improved `destroy()` behavior - added `isDestroyed` property, `opts` and `selectedDates` will still have empty values, instead of `null`, even after AirDatepicker has been destroyed [#600](https://github.com/t1m0n/air-datepicker/issues/600)
+
+### v3.5.0
+* added `fixedHeight` option, allows you to have equal weeks number in every month
+* added method `disableDate`, allows you to disabled one or multiple dates with datepicker API
+* added prop `disabledDates` - it is a Set which holds all disabled dates
+* added possibility to pass `{silent: true}` to `update` and `setCurrentView` methods, [#583](https://github.com/t1m0n/air-datepicker/issues/568)
+* changed `update` method - now if you pass `selectedDates` then calendar will keep selected only those dates
+* fixed selecting time on same date when `range: true`, [#568](https://github.com/t1m0n/air-datepicker/issues/568)
+* fixed date conversion to local date when using strings, e.g `selectDate('2024-03-05')` [#589](https://github.com/t1m0n/air-datepicker/issues/589)
+* fixed localization generation, thanks to [hreyeslo](https://github.com/hreyeslo) in [#524](https://github.com/t1m0n/air-datepicker/pull/524)
+* fixed type definition for `clear` method, thanks to [ahmetzambak](https://github.com/ahmetzambak) in [#591](https://github.com/t1m0n/air-datepicker/pull/591)
+* fixed German translation for "clear", thanks to [pbek](https://github.com/pbek) in [#582](https://github.com/t1m0n/air-datepicker/pull/582)
+* added Slovenian locale, thanks to [carliblaz](https://github.com/carliblaz) in [#569](https://github.com/t1m0n/air-datepicker/pull/569)
+* added Basque locale, thanks to [ikerib](https://github.com/ikerib) in [#529](https://github.com/t1m0n/air-datepicker/pull/529)
+* added Norwegian locale, thanks to [MortenSpjotvoll](https://github.com/MortenSpjotvoll) in [#521](https://github.com/t1m0n/air-datepicker/pull/521)
+
+### v3.4.0
+* added new options `onFocus` and `onBeforeSelect` grant you more control over range selection behaviour and more [#526](https://github.com/t1m0n/air-datepicker/issues/526)
+* added new method `getViewDates()` allows you to get all dates that should be currently displayed in calendar [#536](https://github.com/t1m0n/air-datepicker/issues/536)
+* `toggleSelected` now can be a function [#534](https://github.com/t1m0n/air-datepicker/issues/534)
+* fixed `clear` method [#546](https://github.com/t1m0n/air-datepicker/issues/546)
+* added Bulgarian locale, thanks to [tonytomov](https://github.com/tonytomov), in [#531](https://github.com/t1m0n/air-datepicker/pull/531)
+* added Catalan locale, thanks to [joatb](https://github.com/joatb), in [#542](https://github.com/t1m0n/air-datepicker/pull/542)
+* added Croatian Locale, thanks to [diomed](https://github.com/diomed), in [#551](https://github.com/t1m0n/air-datepicker/pull/551)
+
 ### v3.3.5
 * added handling of optional chaining operator in dist package [#518](https://github.com/t1m0n/air-datepicker/issues/518)
 * added Indonesian locale, thanks to [BariqDharmawan](https://github.com/BariqDharmawan), in [#517](https://github.com/t1m0n/air-datepicker/pull/517)

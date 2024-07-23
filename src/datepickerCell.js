@@ -25,7 +25,7 @@ export default class DatepickerCell {
     }
 
     init() {
-        let {range, onRenderCell} = this.opts;
+        let {onRenderCell} = this.opts;
 
         if (onRenderCell) {
             this.customData = onRenderCell({
@@ -37,12 +37,9 @@ export default class DatepickerCell {
 
         this._createElement();
         this._bindDatepickerEvents();
-        this._handleInitialFocusStatus();
-        if (this.dp.hasSelectedDates) {
-            this._handleSelectedStatus();
-            if (range) {
-                this._handleRangeStatus();
-            }
+
+        if (this.customData?.disabled) {
+            this.dp.disableDate(this.date);
         }
     }
 
@@ -61,7 +58,6 @@ export default class DatepickerCell {
         let extraAttrs = this.customData?.attrs || {};
 
         this.$cell = createElement({
-            className: this._getClassName(),
             attrs: {
                 'data-year': year,
                 'data-month': month,
@@ -69,15 +65,16 @@ export default class DatepickerCell {
                 ...extraAttrs,
             }
         });
+        this.$cell.adpCell = this;
     }
 
     _getClassName() {
         let currentDate = new Date();
         let {selectOtherMonths, selectOtherYears} = this.opts;
-        let {minDate, maxDate} = this.dp;
+        let {minDate, maxDate, isDateDisabled} = this.dp;
         let {day} = getParsedDate(this.date);
         let isOutOfMinMaxRange = this._isOutOfMinMaxRange();
-        let disabled = this.customData?.disabled;
+        let isDisabled = isDateDisabled(this.date);
 
         let classNameCommon = classNames(
             'air-datepicker-cell',
@@ -95,23 +92,23 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': this.isOtherMonth,
-                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || disabled
+                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || isDisabled
                 });
                 break;
             case consts.months:
                 classNameType = classNames({
-                    '-disabled-': isOutOfMinMaxRange || disabled
+                    '-disabled-': isOutOfMinMaxRange
                 });
                 break;
             case consts.years:
                 classNameType = classNames({
                     '-other-decade-': this.isOtherDecade,
-                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears) || disabled
+                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears)
                 });
                 break;
         }
 
-        return classNames(classNameCommon, classNameType, this.customData?.classes);
+        return classNames(classNameCommon, classNameType, this.customData?.classes).split(' ');
     }
 
     _getHtml() {
@@ -187,11 +184,25 @@ export default class DatepickerCell {
     }
 
     _handleRangeStatus() {
-        let {rangeDateFrom, rangeDateTo} = this.dp;
+        const {selectedDates, focusDate, rangeDateTo, rangeDateFrom} = this.dp;
+        const selectedDatesLen = selectedDates.length;
+
+        if (!selectedDatesLen) return;
+
+        let from = rangeDateFrom;
+        let to = rangeDateTo;
+
+        if (selectedDatesLen === 1 && focusDate) {
+            const focusDateIsLargerThenSelected = isDateBigger(focusDate, selectedDates[0]);
+
+            from =  focusDateIsLargerThenSelected ? selectedDates[0] : focusDate;
+            to = focusDateIsLargerThenSelected ? focusDate : selectedDates[0];
+        }
+
         let classes = classNames({
-            '-in-range-': rangeDateFrom && rangeDateTo && isDateBetween(this.date, rangeDateFrom, rangeDateTo),
-            '-range-from-': rangeDateFrom && isSameDate(this.date, rangeDateFrom, this.type),
-            '-range-to-': rangeDateTo && isSameDate(this.date, rangeDateTo, this.type)
+            '-in-range-': from && to && isDateBetween(this.date, from, to),
+            '-range-from-': from && isSameDate(this.date, from, this.type),
+            '-range-to-': to && isSameDate(this.date, to, this.type)
         });
 
         this.$cell.classList.remove('-range-from-', '-range-to-', '-in-range-');
@@ -216,6 +227,18 @@ export default class DatepickerCell {
         if (datesAreSame) {
             this.focus();
         }
+    }
+
+    _handleClasses() {
+        this.$cell.setAttribute('class', '');
+        this._handleInitialFocusStatus();
+        if (this.dp.hasSelectedDates) {
+            this._handleSelectedStatus();
+            if (this.dp.opts.range) {
+                this._handleRangeStatus();
+            }
+        }
+        this.$cell.classList.add(...this._getClassName());
     }
 
     get isDisabled() {
@@ -262,7 +285,8 @@ export default class DatepickerCell {
 
     render = () => {
         this.$cell.innerHTML = this._getHtml();
-        this.$cell.adpCell = this;
+
+        this._handleClasses();
 
         return this.$cell;
     }

@@ -12,7 +12,7 @@
     "classnames": "^2.2.6",
     "clone-deep": "^4.0.1",
     "copy-to-clipboard": "^3.3.1",
-    "date-fns": "^2.23.0",
+    "date-fns": "^2.30.0",
     "fuzzysearch": "^1.0.3",
     "github-buttons": "^2.18.1",
     "next": "12.1.6",
@@ -30,14 +30,17 @@
     "eslint": "^7.27.0",
     "eslint-plugin-react": "^7.23.2",
     "hygen": "^6.1.0",
-    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "raw-loader": "^4.0.2",
-    "sass-loader": "^12.6.0",
+    "sass": "^1.63.4",
+    "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1"
   },
   "browserslist": [
     "last 2 versions",
     "> 1%"
-  ]
+  ],
+  "engines": {
+    "node": ">=18"
+  }
 }

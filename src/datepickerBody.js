@@ -1,17 +1,17 @@
 import consts from './consts';
 import {
-    getEl,
+    addEventListener,
+    classNames,
+    closest,
     createElement,
     getDaysCount,
-    getParsedDate,
-    subDays,
     getDecade,
-    isSameDate,
-    addEventListener,
-    closest,
+    getEl,
+    getParsedDate,
     isDateBigger,
     isDateSmaller,
-    classNames,
+    isSameDate,
+    subDays,
 } from './utils';
 import DatepickerCell from './datepickerCell';
 
@@ -105,89 +105,27 @@ export default class DatepickerBody {
         return html;
     }
 
-    _getDaysCells() {
-        let {viewDate, locale: {firstDay}} = this.dp,
-            totalMonthDays = getDaysCount(viewDate),
-            {year, month} = getParsedDate(viewDate),
-            firstMonthDay = new Date(year, month, 1),
-            lastMonthDay = new Date(year, month, totalMonthDays),
-            daysFromPrevMonth = firstMonthDay.getDay() - firstDay,
-            daysFromNextMonth = 6 - lastMonthDay.getDay() + firstDay;
-
-        daysFromPrevMonth = daysFromPrevMonth < 0 ? daysFromPrevMonth + 7 : daysFromPrevMonth;
-        daysFromNextMonth = daysFromNextMonth > 6 ? daysFromNextMonth - 7 : daysFromNextMonth;
-
-        let firstRenderDate = subDays(firstMonthDay, daysFromPrevMonth),
-            totalRenderDays = totalMonthDays + daysFromPrevMonth + daysFromNextMonth,
-            firstRenderDayDate = firstRenderDate.getDate(),
-            {year:renderYear, month: renderMonth} = getParsedDate(firstRenderDate),
-            i = 0;
-
-        while (i < totalRenderDays) {
-            let date = new Date(renderYear, renderMonth, firstRenderDayDate + i);
-            this._generateCell(date);
-            i++;
-        }
+    renderDayNames() {
+        this.$names.innerHTML =  this._getDayNamesHtml();
     }
 
     _generateCell(date) {
         let {type, dp, opts} = this;
-        let cell = new DatepickerCell({
+        return new DatepickerCell({
             type,
             dp,
             opts,
             date,
             body: this
         });
-
-        this.cells.push(cell);
-
-        return cell;
-    }
-
-    _generateDayCells() {
-        this._getDaysCells();
-    }
-
-    _generateMonthCells() {
-        let totalMonths = 12,
-            {year} = this.dp.parsedViewDate,
-            currentMonth = 0;
-
-        while (currentMonth < totalMonths) {
-            this.cells.push(this._generateCell(new Date(year, currentMonth)));
-            currentMonth++;
-        }
-    }
-
-    _generateYearCells() {
-        let decade = getDecade(this.dp.viewDate),
-            firstYear = decade[0] - 1,
-            lastYear = decade[1] + 1,
-            year = firstYear;
-
-        while (year <= lastYear) {
-            this.cells.push(this._generateCell(new Date(year, 0)));
-            year++;
-        }
-    }
-
-    renderDayNames() {
-        this.$names.innerHTML =  this._getDayNamesHtml();
     }
 
     _generateCells() {
-        switch (this.type) {
-            case consts.days:
-                this._generateDayCells();
-                break;
-            case consts.months:
-                this._generateMonthCells();
-                break;
-            case consts.years:
-                this._generateYearCells();
-                break;
-        }
+        const getDates = DatepickerBody.getDatesFunction(this.type);
+
+        getDates(this.dp, (date) => {
+            this.cells.push(this._generateCell(date));
+        });
     }
 
     show() {
@@ -357,10 +295,91 @@ export default class DatepickerBody {
     render = () => {
         this.destroyCells();
 
-
         this._generateCells();
         this.cells.forEach((c) => {
             this.$cells.appendChild(c.render());
         });
+    }
+
+
+    static getDaysDates(dp, cb) {
+        let {viewDate, opts: {fixedHeight}, locale: {firstDay}} = dp,
+            totalMonthDays = getDaysCount(viewDate),
+            {year, month} = getParsedDate(viewDate),
+            firstMonthDay = new Date(year, month, 1),
+            lastMonthDay = new Date(year, month, totalMonthDays),
+            daysFromPrevMonth = firstMonthDay.getDay() - firstDay,
+            daysFromNextMonth = 6 - lastMonthDay.getDay() + firstDay;
+
+        daysFromPrevMonth = daysFromPrevMonth < 0 ? daysFromPrevMonth + 7 : daysFromPrevMonth;
+        daysFromNextMonth = daysFromNextMonth > 6 ? daysFromNextMonth - 7 : daysFromNextMonth;
+
+        let firstRenderDate = subDays(firstMonthDay, daysFromPrevMonth),
+            totalRenderDays = totalMonthDays + daysFromPrevMonth + daysFromNextMonth,
+            firstRenderDayDate = firstRenderDate.getDate(),
+            {year:renderYear, month: renderMonth} = getParsedDate(firstRenderDate),
+            i = 0;
+
+        if (fixedHeight) {
+            totalRenderDays = 6 * 7; // Render 6 weeks in every month
+        }
+
+        const dates = [];
+
+        while (i < totalRenderDays) {
+            let date = new Date(renderYear, renderMonth, firstRenderDayDate + i);
+            if (cb) {
+                cb(date);
+            }
+            dates.push(date);
+            i++;
+        }
+
+        return dates;
+    }
+
+    static getMonthsDates(dp, cb) {
+        let totalMonths = 12,
+            {year} = dp.parsedViewDate,
+            currentMonth = 0,
+            dates = [];
+
+        while (currentMonth < totalMonths) {
+            const date = new Date(year, currentMonth);
+            dates.push(date);
+            if (cb) {
+                cb(date);
+            }
+            currentMonth++;
+        }
+
+        return dates;
+    }
+
+    static getYearsDates(dp, cb) {
+        let decade = getDecade(dp.viewDate),
+            firstYear = decade[0] - 1,
+            lastYear = decade[1] + 1,
+            year = firstYear,
+            dates = [];
+
+        while (year <= lastYear) {
+            const date = new Date(year, 0);
+            dates.push(date);
+            if (cb) {
+                cb(date);
+            }
+            year++;
+        }
+
+        return dates;
+    }
+
+    static getDatesFunction(viewType = consts.days) {
+        return {
+            [consts.days]: DatepickerBody.getDaysDates,
+            [consts.months]: DatepickerBody.getMonthsDates,
+            [consts.years]: DatepickerBody.getYearsDates,
+        }[viewType];
     }
 }

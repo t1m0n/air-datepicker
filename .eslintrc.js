@@ -50,10 +50,5 @@ module.exports = {
         'keyword-spacing': 'error',
         'arrow-spacing': 'error',
         'space-before-blocks': 'error',
-        'no-magic-numbers': ['warn', {
-            ignore: [0, 1, -1],
-            ignoreArrayIndexes: true,
-            ignoreDefaultValues: true,
-        }],
     },
 };
