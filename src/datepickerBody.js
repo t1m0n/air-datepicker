@@ -19,13 +19,13 @@ import './datepickerBody.scss';
 
 let templates = {
     [consts.days]:'' +
-        '<div class="air-datepicker-body--day-names"></div>' +
-        `<div class="air-datepicker-body--cells -${consts.days}-"></div>`,
-    [consts.months]: `<div class="air-datepicker-body--cells -${consts.months}-"></div>`,
-    [consts.years]: `<div class="air-datepicker-body--cells -${consts.years}-"></div>`
+        '<div class="air-datepicker-calendar-body--day-names"></div>' +
+        `<div class="air-datepicker-calendar-body--cells -${consts.days}-"></div>`,
+    [consts.months]: `<div class="air-datepicker-calendar-body--cells -${consts.months}-"></div>`,
+    [consts.years]: `<div class="air-datepicker-calendar-body--cells -${consts.years}-"></div>`
 };
 
-const cellClassName = '.air-datepicker-cell';
+const cellClassName = '.air-datepicker-calendar-cell';
 
 export default class DatepickerBody {
     constructor({dp, type, opts}) {
@@ -73,12 +73,12 @@ export default class DatepickerBody {
 
     _buildBaseHtml() {
         this.$el = createElement({
-            className: `air-datepicker-body -${this.type}-`,
+            className: `air-datepicker-calendar-body -${this.type}-`,
             innerHtml: templates[this.type]
         });
 
-        this.$names = getEl('.air-datepicker-body--day-names', this.$el);
-        this.$cells = getEl('.air-datepicker-body--cells', this.$el);
+        this.$names = getEl('.air-datepicker-calendar-body--day-names', this.$el);
+        this.$cells = getEl('.air-datepicker-calendar-body--cells', this.$el);
     }
 
     _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
@@ -91,7 +91,7 @@ export default class DatepickerBody {
 
         while (i < totalDays) {
             let day = curDay % totalDays;
-            let className = classNames('air-datepicker-body--day-name', {
+            let className = classNames('air-datepicker-calendar-body--day-name', {
                 [consts.cssClassWeekend]: isWeekend(day),
                 '-clickable-': !!onClickDayName
             });
@@ -204,7 +204,7 @@ export default class DatepickerBody {
             this.handleClick(e);
         }
 
-        if (onClickDayName && target.closest('.air-datepicker-body--day-name')) {
+        if (onClickDayName && target.closest('.air-datepicker-calendar-body--day-name')) {
             this.handleDayNameClick(e);
         }
     }

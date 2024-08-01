@@ -2,7 +2,7 @@
     Datepicker body
    ------------------------------------------------- */
 
-.air-datepicker-body {
+.air-datepicker-calendar-body {
   transition: all var(--adp-transition-duration) var(--adp-transition-ease);
 
   &.-hidden- {
@@ -14,13 +14,13 @@
 /*  Day names
    ------------------------------------------------- */
 
-.air-datepicker-body--day-names {
+.air-datepicker-calendar-body--day-names {
   display: grid;
   grid-template-columns: repeat(7, var(--adp-day-cell-width));
   margin: 8px 0 3px;
 }
 
-.air-datepicker-body--day-name {
+.air-datepicker-calendar-body--day-name {
   color: var(--adp-day-name-color);
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@
 /*  Cells container
    ------------------------------------------------- */
 
-.air-datepicker-body--cells {
+.air-datepicker-calendar-body--cells {
   display: grid;
   &.-days- {
     grid-template-columns: repeat(7, var(--adp-day-cell-width));

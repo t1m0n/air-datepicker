@@ -77,7 +77,7 @@ export default class DatepickerCell {
         let isDisabled = isDateDisabled(this.date);
 
         let classNameCommon = classNames(
-            'air-datepicker-cell',
+            'air-datepicker-calendar-cell',
             `-${this.singleType}-`, // days -> day etc.'`
             {
                 '-current-': isSameDate(currentDate, this.date, this.type),

@@ -15,7 +15,6 @@
   font-family: var(--adp-font-family), sans-serif;
   font-size: var(--adp-font-size);
   color: var(--adp-color);
-  width: var(--adp-width);
   position: absolute;
   transition:
           opacity var(--adp-transition-duration) var(--adp-transition-ease),
@@ -194,11 +193,11 @@
 }
 
 
-.air-datepicker--navigation {
+.air-datepicker-calendar--navigation {
   grid-area: nav;
 }
 
-.air-datepicker--content {
+.air-datepicker-calendar--content {
   box-sizing: content-box;
   padding: var(--adp-padding);
   grid-area: body;

@@ -29,9 +29,8 @@ let $datepickersContainer = '',
     $datepickerOverlay = '',
     containerBuilt = false,
     baseTemplate = '' +
-        '<i class="air-datepicker--pointer"></i>' +
-        '<div class="air-datepicker--navigation"></div>' +
-        '<div class="air-datepicker--content"></div>';
+        '<div class="air-datepicker-calendar--navigation"></div>' +
+        '<div class="air-datepicker-calendar--content"></div>';
 
 export default class Datepicker {
     static defaults = defaults
@@ -48,7 +47,7 @@ export default class Datepicker {
 
         if (!this.$el) return;
 
-        this.$datepicker = createElement({className: 'air-datepicker'});
+        this.$datepicker = createElement({className: 'air-datepicker-calendar'});
         this.opts = deepMerge({}, defaults, opts);
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
         this.$altField = getEl(this.opts.altField || false);
@@ -99,22 +98,6 @@ export default class Datepicker {
                 onlyTimepicker
             }
         } = this;
-        let $body = getEl('body');
-
-        let shouldBuildGlobalContainer =
-            // Check if global container still exist in DOM
-            (!containerBuilt || containerBuilt && $datepickersContainer && !$body.contains($datepickersContainer))
-            && !inline
-            && this.elIsInput
-            && !this.$customContainer;
-
-        if (shouldBuildGlobalContainer) {
-            Datepicker.buildGlobalContainer(Datepicker.defaultGlobalContainerId);
-        }
-
-        if (isMobile && !$datepickerOverlay && !treatAsInline) {
-            this._createMobileOverlay();
-        }
 
         this._handleLocale();
         this._bindSubEvents();
@@ -148,50 +131,17 @@ export default class Datepicker {
         }
     }
 
-    _createMobileOverlay() {
-        $datepickerOverlay = createElement({className: 'air-datepicker-overlay'});
-        $datepickersContainer.appendChild($datepickerOverlay);
-    }
-
     _createComponents() {
         let {
             opts,
-            treatAsInline,
             opts: {
-                inline,
                 buttons,
                 timepicker,
-                position,
-                classes,
-                onlyTimepicker,
-                isMobile,
             }
         } = this;
         let dp = this;
 
         this._buildBaseHtml();
-
-        if (this.elIsInput) {
-            if (!inline) {
-                this._setPositionClasses(position);
-            }
-        }
-
-        if (inline || !this.elIsInput) {
-            this.$datepicker.classList.add('-inline-');
-        }
-
-        if (classes) {
-            this.$datepicker.classList.add(...classes.split(' '));
-        }
-
-        if (onlyTimepicker) {
-            this.$datepicker.classList.add('-only-timepicker-');
-        }
-
-        if (isMobile && !treatAsInline) {
-            this._addMobileAttributes();
-        }
 
         this.views[this.currentView] = new DatepickerBody({
             dp,
@@ -271,21 +221,21 @@ export default class Datepicker {
     _buildBaseHtml() {
         let {inline} = this.opts;
 
-        if  (this.elIsInput) {
-            if (!inline) {
-                this.$container.appendChild(this.$datepicker);
-            } else {
-                insertAfter(this.$datepicker, this.$el);
-            }
-        } else {
-            this.$el.appendChild(this.$datepicker);
-        }
+        // if  (this.elIsInput) {
+        //     if (!inline) {
+        //         this.$container.appendChild(this.$datepicker);
+        //     } else {
+        //         insertAfter(this.$datepicker, this.$el);
+        //     }
+        // } else {
+        this.$el.appendChild(this.$datepicker);
+        // }
 
         this.$datepicker.innerHTML = baseTemplate;
 
-        this.$content = getEl('.air-datepicker--content',  this.$datepicker);
-        this.$pointer = getEl('.air-datepicker--pointer', this.$datepicker);
-        this.$nav = getEl('.air-datepicker--navigation', this.$datepicker);
+        this.$content = getEl('.air-datepicker-calendar--content',  this.$datepicker);
+        this.$pointer = getEl('.air-datepicker-calendar--pointer', this.$datepicker);
+        this.$nav = getEl('.air-datepicker-calendar--navigation', this.$datepicker);
     }
 
     _handleLocale() {

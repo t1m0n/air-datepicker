@@ -1,0 +1,14 @@
+
+.air-datepicker {
+  width: calc(var(--adp-width) * var(--calendars));
+}
+
+.air-datepicker-calendar {
+  width: var(--adp-width);
+  flex: none;
+}
+
+.air-datepicker--calendars {
+  display: flex;
+  align-items: flex-start;
+}

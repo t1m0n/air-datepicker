@@ -1,1 +1,1 @@
-export {default as AirDatepicker} from './datepicker';
+export {AirDatepicker} from './airDatepicker';
