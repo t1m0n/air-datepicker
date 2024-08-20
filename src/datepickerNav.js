@@ -11,8 +11,9 @@ import './datepickerNav.scss';
 import consts from './consts';
 
 export default class DatepickerNav {
-    constructor({dp, opts}) {
+    constructor({dp, adp, opts}) {
         this.dp = dp;
+        this.adp = adp;
         this.opts = opts;
 
         this.init();
@@ -137,7 +138,7 @@ export default class DatepickerNav {
 
         let actionName = $item.dataset.action;
 
-        this.dp[actionName]();
+        this.adp[actionName]();
     }
 
     onChangeViewDate = () => {

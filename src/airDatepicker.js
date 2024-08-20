@@ -1,8 +1,10 @@
 import defaults from './defaults';
-import {createElement, deepMerge, getEl} from 'utils';
+import {createDate, createElement, deepMerge, getDecade, getEl, getParsedDate, isSameDate} from 'utils';
 import Datepicker from 'datepicker';
 
 import './airDatepicker.scss';
+import consts, {EVENTS} from 'consts';
+import withEvents from 'withEvents';
 
 let $datepickersContainer = '',
     $datepickerOverlay = '',
@@ -32,6 +34,11 @@ export class AirDatepicker {
         }
 
         this.opts = deepMerge({}, defaults, opts);
+
+        let {view, startDate} = this.opts;
+
+        this.viewDate = createDate(startDate);
+        this.currentView = view;
         this.$datepicker = createElement({className: 'air-datepicker'});
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
 
@@ -88,7 +95,7 @@ export class AirDatepicker {
         let count = 0;
 
         while (count < (this.opts.calendars || 1)) {
-            this.calendars.push(new Datepicker(this.$calendars, this.opts));
+            this.calendars.push(new Datepicker(this.$calendars, this.opts, {adp: this, index: count}));
             count++;
         }
     }
@@ -382,7 +389,78 @@ export class AirDatepicker {
         }
     }
 
+    /**
+     * Sets new view date of the AirDatepicker
+     * @param {DateLike} date
+     */
+    setViewDate = (date) => {
+        date = createDate(date);
+
+        if (!(date instanceof Date)) return;
+
+        if (isSameDate(date, this.viewDate)) return;
+        this.viewDate = date;
+        let {onChangeViewDate} = this.opts;
+
+        if (onChangeViewDate) {
+            let {month, year} = this.parsedViewDate;
+            onChangeViewDate({
+                month,
+                year,
+                decade: this.curDecade
+            });
+        }
+
+        this.trigger(EVENTS.changeViewDate, date);
+    }
+
+    /**
+     * Changes month, year, decade to next period
+     */
+    next = () => {
+        let {year, month} = this.parsedViewDate;
+
+        switch (this.currentView) {
+            case consts.days:
+                this.setViewDate(new Date(year, month + 1, 1));
+                break;
+            case consts.months:
+                this.setViewDate(new Date(year + 1, month, 1));
+                break;
+            case consts.years:
+                this.setViewDate(new Date(year + 10, 0, 1));
+                break;
+        }
+    }
+
+    /**
+     * Changes month, year, decade to prev period
+     */
+    prev = () => {
+        let {year, month} = this.parsedViewDate;
+
+        switch (this.currentView) {
+            case consts.days:
+                this.setViewDate(new Date(year, month - 1, 1));
+                break;
+            case consts.months:
+                this.setViewDate(new Date(year - 1, month, 1));
+                break;
+            case consts.years:
+                this.setViewDate(new Date(year - 10, 0, 1));
+                break;
+        }
+    }
+
     get $container() {
         return this.$customContainer || $datepickersContainer;
     }
+    get parsedViewDate() {
+        return getParsedDate(this.viewDate);
+    }
+    get curDecade() {
+        return getDecade(this.viewDate);
+    }
 }
+
+withEvents(AirDatepicker.prototype);

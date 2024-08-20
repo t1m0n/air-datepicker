@@ -20,7 +20,7 @@ import DatepickerButtons from './datepickerButtons';
 import DatepickerTime from './datepickerTime';
 import DatepickerKeyboard from './datepickerKeyboard';
 import withEvents from './withEvents';
-import consts from './consts';
+import consts, {EVENTS} from './consts';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
@@ -42,16 +42,17 @@ export default class Datepicker {
         $datepickersContainer = createElement({className: id, id});
         getEl('body').appendChild($datepickersContainer);
     }
-    constructor(el, opts) {
+    constructor(el, opts, params) {
         this.$el = getEl(el);
 
         if (!this.$el) return;
-
         this.$datepicker = createElement({className: 'air-datepicker-calendar'});
         this.opts = deepMerge({}, defaults, opts);
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
         this.$altField = getEl(this.opts.altField || false);
 
+        this.adp = params.adp;
+        this.index = params.index;
 
         let {view, startDate} = this.opts;
 
@@ -65,12 +66,11 @@ export default class Datepicker {
 
         this.inited = false;
         this.visible = false;
-
-        this.viewDate = createDate(this.opts.startDate);
+        this.currentView = view;
+        this.viewDate = this._calculateViewDate(createDate(this.opts.startDate));
         this.focusDate = false;
         this.initialReadonly = this.$el.getAttribute('readonly');
         this.customHide = false;
-        this.currentView = view;
         this.selectedDates = [];
         this.disabledDates = new Set();
         this.isDestroyed = false;
@@ -134,6 +134,7 @@ export default class Datepicker {
     _createComponents() {
         let {
             opts,
+            adp,
             opts: {
                 buttons,
                 timepicker,
@@ -149,7 +150,7 @@ export default class Datepicker {
             opts
         });
 
-        this.nav = new DatepickerNav({dp, opts});
+        this.nav = new DatepickerNav({dp, adp, opts});
 
         if (timepicker) {
             this._addTimepicker();
@@ -171,6 +172,26 @@ export default class Datepicker {
         this.nav.destroy();
         if (this.timepicker) {
             this.timepicker.destroy();
+        }
+    }
+
+    /**
+     * Calculates view date according to the index of the datepicker
+     * @param {Date} nextViewDate
+     * @private
+     */
+    _calculateViewDate(nextViewDate) {
+        let parsedDate = getParsedDate(nextViewDate);
+        let {index} = this;
+        let {year, month, date} = parsedDate;
+
+        switch (this.currentView) {
+            case consts.months:
+                return new Date(year + index, month, 1);
+            case consts.years:
+                return new Date(year + (10 * index), 0, 1);
+            default:
+                return new Date(year, month + index, date);
         }
     }
 
@@ -216,6 +237,7 @@ export default class Datepicker {
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
         this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
         this.on(consts.eventChangeTime, this._onChangeTime);
+        this.adp.on(EVENTS.changeViewDate, this._onChangeGlobalViewDate);
     }
 
     _buildBaseHtml() {
@@ -265,21 +287,6 @@ export default class Datepicker {
         if (onlyTimepicker && typeof dateFormat !== 'function') {
             this.locale.dateFormat = this.locale.timeFormat;
         }
-    }
-
-    _setPositionClasses(pos) {
-        if (typeof pos === 'function') {
-            this.$datepicker.classList.add('-custom-position-');
-
-            return;
-        }
-
-        pos = pos.split(' ');
-        let main = pos[0],
-            sec = pos[1],
-            classes = `air-datepicker -${main}-${sec}- -from-${main}-`;
-
-        this.$datepicker.classList.add(...classes.split(' '));
     }
 
     _bindEvents() {
@@ -360,43 +367,6 @@ export default class Datepicker {
         return result;
     }
 
-    /**
-     * Changes month, year, decade to next period
-     */
-    next = () => {
-        let {year, month} = this.parsedViewDate;
-
-        switch (this.currentView) {
-            case consts.days:
-                this.setViewDate(new Date(year, month + 1, 1));
-                break;
-            case consts.months:
-                this.setViewDate(new Date(year + 1, month, 1));
-                break;
-            case consts.years:
-                this.setViewDate(new Date(year + 10, 0, 1));
-                break;
-        }
-    }
-
-    /**
-     * Changes month, year, decade to prev period
-     */
-    prev = () => {
-        let {year, month} = this.parsedViewDate;
-
-        switch (this.currentView) {
-            case consts.days:
-                this.setViewDate(new Date(year, month - 1, 1));
-                break;
-            case consts.months:
-                this.setViewDate(new Date(year - 1, month, 1));
-                break;
-            case consts.years:
-                this.setViewDate(new Date(year - 10, 0, 1));
-                break;
-        }
-    }
 
     down(date) {
         this._handleUpDownActions(date, 'down');
@@ -592,169 +562,6 @@ export default class Datepicker {
         });
     }
 
-    show() {
-        let {onShow, isMobile} = this.opts;
-        this._cancelScheduledCall();
-
-        if (!this.visible && !this.hideAnimation) {
-            this._createComponents();
-        }
-
-        this.setPosition(this.opts.position);
-
-        this.$datepicker.classList.add('-active-');
-        this.visible = true;
-
-        if (onShow) {
-            this._scheduleCallAfterTransition(onShow);
-        }
-
-        if (isMobile) {
-            this._showMobileOverlay();
-        }
-    }
-
-    hide() {
-        let {onHide, isMobile} = this.opts;
-        let hasTransition = this._hasTransition();
-
-        this.visible = false;
-        this.hideAnimation = true;
-
-        this.$datepicker.classList.remove('-active-');
-
-        if (this.customHide) {
-            this.customHide();
-        }
-
-        if (this.elIsInput) {
-            this.$el.blur();
-        }
-
-        this._scheduleCallAfterTransition((isAnimationCompleted) => {
-            if (
-                !this.customHide &&
-                ((isAnimationCompleted && hasTransition) ||
-                (!isAnimationCompleted && !hasTransition))
-            ) {
-                this._finishHide();
-            }
-            onHide && onHide(isAnimationCompleted);
-        });
-
-        if (isMobile) {
-            $datepickerOverlay.classList.remove('-active-');
-        }
-    }
-
-    _finishHide = () => {
-        this.hideAnimation = false;
-        this._destroyComponents();
-        this.$container.removeChild(this.$datepicker);
-    }
-
-    setPosition = (position, isViewChange = false) => {
-        position = position || this.opts.position;
-
-        if (typeof position === 'function') {
-            this.customHide = position({
-                $datepicker: this.$datepicker,
-                $target: this.$el,
-                $pointer: this.$pointer,
-                isViewChange,
-                done: this._finishHide
-            });
-            return;
-        }
-
-        let  {isMobile} = this.opts;
-
-        let vpDims = this.$el.getBoundingClientRect(),
-            dims = this.$el.getBoundingClientRect(),
-            $dpOffset = this.$datepicker.offsetParent,
-            $elOffset = this.$el.offsetParent,
-            selfDims = this.$datepicker.getBoundingClientRect(),
-            pos = position.split(' '),
-            top, left,
-            scrollTop = window.scrollY,
-            scrollLeft = window.scrollX,
-            offset = this.opts.offset,
-            main = pos[0],
-            secondary = pos[1];
-
-        if (isMobile) {
-            this.$datepicker.style.cssText = 'left: 50%; top: 50%';
-            return;
-        }
-
-        // If datepicker's container is the same with target element
-        if ($dpOffset === $elOffset && $dpOffset !== document.body) {
-            dims = {
-                top: this.$el.offsetTop,
-                left: this.$el.offsetLeft,
-                width: vpDims.width,
-                height: this.$el.offsetHeight
-            };
-
-            scrollTop = 0;
-            scrollLeft = 0;
-        }
-
-        // If dp container is different from target offset parent
-        // and dp offset parent has position not static (default case)
-        if ($dpOffset !== $elOffset && $dpOffset !== document.body) {
-            let dpOffsetDims = $dpOffset.getBoundingClientRect();
-
-            dims = {
-                top: vpDims.top - dpOffsetDims.top,
-                left: vpDims.left - dpOffsetDims.left,
-                width: vpDims.width,
-                height: vpDims.height
-            };
-
-            scrollTop = 0;
-            scrollLeft = 0;
-        }
-
-        switch (main) {
-            case 'top':
-                top = dims.top - selfDims.height - offset;
-                break;
-            case 'right':
-                left = dims.left + dims.width + offset;
-                break;
-            case 'bottom':
-                top = dims.top + dims.height + offset;
-                break;
-            case 'left':
-                left = dims.left - selfDims.width - offset;
-                break;
-        }
-
-        switch (secondary) {
-            case 'top':
-                top = dims.top;
-                break;
-            case 'right':
-                left = dims.left + dims.width - selfDims.width;
-                break;
-            case 'bottom':
-                top = dims.top + dims.height - selfDims.height;
-                break;
-            case 'left':
-                left = dims.left;
-                break;
-            case 'center':
-                if (/left|right/.test(main)) {
-                    top = dims.top + dims.height / 2 - selfDims.height / 2;
-                } else {
-                    left = dims.left + dims.width / 2 - selfDims.width / 2;
-                }
-        }
-
-        this.$datepicker.style.cssText = `left: ${left + scrollLeft}px; top: ${top + scrollTop}px`;
-    }
-
     _setInputValue = () => {
         let {opts, $altField, locale: {dateFormat}} = this,
             {altFieldDateFormat, altField} = opts;
@@ -879,44 +686,13 @@ export default class Datepicker {
         this.setCurrentView(this.viewIndexes[nextView]);
     }
 
-    _scheduleCallAfterTransition = (cb) => {
-        this._cancelScheduledCall();
-
-        cb && cb(false);
-
-        this._onTransitionEnd = () => {
-            cb && cb(true);
-        };
-
-        this.$datepicker.addEventListener('transitionend', this._onTransitionEnd, {once: true});
-    }
-
-    _cancelScheduledCall = () => {
-        this.$datepicker.removeEventListener('transitionend', this._onTransitionEnd);
-    }
-
     /**
      * Sets new view date of datepicker
-     * @param {DateLike} date
+     * @param {Date} date
      */
     setViewDate = (date) => {
-        date = createDate(date);
-
-        if (!(date instanceof Date)) return;
-
-        if (isSameDate(date, this.viewDate)) return;
         let oldViewDate = this.viewDate;
-        this.viewDate = date;
-        let {onChangeViewDate} = this.opts;
-
-        if (onChangeViewDate) {
-            let {month, year} = this.parsedViewDate;
-            onChangeViewDate({
-                month,
-                year,
-                decade: this.curDecade
-            });
-        }
+        this.viewDate = this._calculateViewDate(date);
 
         this.trigger(consts.eventChangeViewDate, date, oldViewDate);
     }
@@ -1242,6 +1018,15 @@ export default class Datepicker {
             this.opts.onFocus({datepicker: this, date});
         }
 
+    }
+
+    /**
+     * Subscribe to change global view date
+     * @param {Date} date
+     * @private
+     */
+    _onChangeGlobalViewDate = (date) => {
+        this.setViewDate(date);
     }
 
     _onChangeTime = ({hours, minutes}) => {

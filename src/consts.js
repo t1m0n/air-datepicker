@@ -5,7 +5,7 @@ export default {
     day: 'day',
     month: 'month',
     year: 'year',
-
+    // TODO вынести события для календарей в отдeльный объект
     eventChangeViewDate: 'changeViewDate',
     eventChangeCurrentView: 'changeCurrentView',
 
@@ -30,4 +30,11 @@ export default {
     actionUnselectDate: 'unselectDate',
 
     cssClassWeekend: '-weekend-'
+};
+
+/**
+ * Global events, triggered on AirDatepicker class
+ */
+export const EVENTS = {
+    changeViewDate: 'changeViewDate',
 };

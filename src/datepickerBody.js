@@ -264,6 +264,7 @@ export default class DatepickerBody {
     }
 
     onChangeViewDate = (date, oldViewDate) => {
+
         // Handle only visible views
         if (!this.isVisible) return;
 
