@@ -28,8 +28,9 @@ let templates = {
 const cellClassName = '.air-datepicker-calendar-cell';
 
 export default class DatepickerBody {
-    constructor({dp, type, opts}) {
+    constructor({dp, adp, type, opts}) {
         this.dp = dp;
+        this.adp = adp;
         this.type = type;
         this.opts = opts;
         this.cells = [];
@@ -155,8 +156,8 @@ export default class DatepickerBody {
         let cell = $cell.adpCell;
         if (cell.isDisabled) return;
 
-        if (!this.dp.isMinViewReached) {
-            this.dp.down();
+        if (!this.adp.isMinViewReached) {
+            this.adp.down();
             return;
         }
 

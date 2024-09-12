@@ -54,6 +54,8 @@ export default class Datepicker {
         this.adp = params.adp;
         this.index = params.index;
 
+        this.logName = 'Calendar ' + this.index;
+
         let {view, startDate} = this.opts;
 
         if (!startDate) {
@@ -79,7 +81,6 @@ export default class Datepicker {
         this.rangeDateFrom = '';
         this.rangeDateTo = '';
         this.timepickerIsActive = false; // Need when autoClose and timepicker are both true
-        this.treatAsInline = this.opts.inline || !this.elIsInput;
 
         this.init();
     }
@@ -88,8 +89,8 @@ export default class Datepicker {
 
     init() {
         let {
+            adp,
             opts,
-            treatAsInline,
             opts: {
                 inline,
                 isMobile,
@@ -98,13 +99,14 @@ export default class Datepicker {
                 onlyTimepicker
             }
         } = this;
+        let {treatAsInline} = adp;
 
         this._handleLocale();
         this._bindSubEvents();
         this._createMinMaxDates();
         this._limitViewDateByMaxMinDates();
 
-        if (this.elIsInput) {
+        if (adp.elIsInput) {
             if (!inline) {
                 this._bindEvents();
             }
@@ -146,6 +148,7 @@ export default class Datepicker {
 
         this.views[this.currentView] = new DatepickerBody({
             dp,
+            adp,
             type: this.currentView,
             opts
         });
@@ -237,7 +240,9 @@ export default class Datepicker {
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
         this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
         this.on(consts.eventChangeTime, this._onChangeTime);
+
         this.adp.on(EVENTS.changeViewDate, this._onChangeGlobalViewDate);
+        this.adp.on(EVENTS.changeCurrentView, this._onChangeGlobalView);
     }
 
     _buildBaseHtml() {
@@ -367,14 +372,6 @@ export default class Datepicker {
         return result;
     }
 
-
-    down(date) {
-        this._handleUpDownActions(date, 'down');
-    }
-
-    up(date) {
-        this._handleUpDownActions(date, 'up');
-    }
 
     /**
      * Selects date, if array is passed then selects dates one by one
@@ -670,21 +667,6 @@ export default class Datepicker {
         }
     }
 
-    _handleUpDownActions(date, dir) {
-        let maxViewIndex = 2,
-            minViewIndex = 0;
-
-        date = createDate(date || this.focusDate || this.viewDate);
-
-        if (!(date instanceof Date)) return;
-
-        let nextView = dir === 'up' ? this.viewIndex + 1 : this.viewIndex - 1;
-        if (nextView > maxViewIndex) nextView = maxViewIndex;
-        if (nextView < minViewIndex) nextView = minViewIndex;
-
-        this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
-        this.setCurrentView(this.viewIndexes[nextView]);
-    }
 
     /**
      * Sets new view date of datepicker
@@ -693,8 +675,7 @@ export default class Datepicker {
     setViewDate = (date) => {
         let oldViewDate = this.viewDate;
         this.viewDate = this._calculateViewDate(date);
-
-        this.trigger(consts.eventChangeViewDate, date, oldViewDate);
+        this.trigger(consts.eventChangeViewDate, this.viewDate, oldViewDate);
     }
 
     /**
@@ -718,17 +699,9 @@ export default class Datepicker {
     /**
      * Sets new datepicker view
      * @param {ViewType} view
-     * @param [params]
-     * @param [params.silent] {boolean}
      */
-    setCurrentView = (view, params = {}) => {
-        if (!this.viewIndexes.includes(view)) return;
-
+    setCurrentView = (view) => {
         this.currentView = view;
-
-        if (this.elIsInput && this.visible) {
-            this.setPosition(undefined, true);
-        }
 
         // Trigger inner event before new view is inited, to avoid multiple render calls in datepicker body
         this.trigger(consts.eventChangeCurrentView, view);
@@ -736,6 +709,7 @@ export default class Datepicker {
         if (!this.views[view]) {
             let newView = this.views[view] = new DatepickerBody({
                 dp: this,
+                adp: this.adp,
                 opts: this.opts,
                 type: view
             });
@@ -743,11 +717,6 @@ export default class Datepicker {
             if (this.shouldUpdateDOM) {
                 this.$content.appendChild(newView.$el);
             }
-        }
-
-        // Trigger user event after, to be able to use datepicker api on rendered view
-        if (this.opts.onChangeView && !params.silent) {
-            this.opts.onChangeView(view);
         }
     }
 
@@ -1029,6 +998,15 @@ export default class Datepicker {
         this.setViewDate(date);
     }
 
+    /**
+     * Subscribe to change view of AirDatepicker
+     * @param {ViewType} view
+     * @private
+     */
+    _onChangeGlobalView = (view) => {
+        this.setCurrentView(view);
+    }
+
     _onChangeTime = ({hours, minutes}) => {
         let today = new Date();
         let {lastSelectedDate, opts: {onSelect}} = this;
@@ -1130,9 +1108,7 @@ export default class Datepicker {
         return this.selectedDates.length > 0;
     }
 
-    get isMinViewReached() {
-        return this.currentView === this.opts.minView || this.currentView === consts.days;
-    }
+
 
     get $container() {
         return this.$customContainer || $datepickersContainer;

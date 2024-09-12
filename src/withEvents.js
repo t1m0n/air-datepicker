@@ -25,6 +25,7 @@ let events = {
     trigger(eventName, ...args) {
         if (!this.__events) return;
         if (!this.__events[eventName]) return;
+        console.log(`%c${this.logName}%c -> %c${eventName}`, 'background: #f4f4f4', 'background: none; font-weight:bold;', 'color: green', args,);
 
         this.__events[eventName].forEach((handler) => {
             handler(...args);

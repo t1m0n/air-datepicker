@@ -13,8 +13,8 @@ import consts from './consts';
 export default class DatepickerNav {
     constructor({dp, adp, opts}) {
         this.dp = dp;
-        this.adp = adp;
         this.opts = opts;
+        this.adp = adp;
 
         this.init();
     }
@@ -154,8 +154,8 @@ export default class DatepickerNav {
     }
 
     onClickNavTitle = () => {
-        if (this.dp.isFinalView) return;
-        this.dp.up();
+        if (this.adp.isFinalView) return;
+        this.adp.up();
     }
 
     _buildBaseHtml() {

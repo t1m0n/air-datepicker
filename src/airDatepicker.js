@@ -33,21 +33,28 @@ export class AirDatepicker {
             return;
         }
 
+        this.logName = 'Air Datepicker';
+
         this.opts = deepMerge({}, defaults, opts);
 
         let {view, startDate} = this.opts;
 
         this.viewDate = createDate(startDate);
         this.currentView = view;
+        // TODO нужно сделать focusDate глобальным для нормальной навигации и работы разных представлений календаря
+        this.focusDate = undefined;
         this.$datepicker = createElement({className: 'air-datepicker'});
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
 
         if (this.$el.nodeName === 'INPUT') {
             this.elIsInput = true;
         }
+        this.treatAsInline = this.opts.inline || !this.elIsInput;
 
         this.init();
     }
+
+    viewIndexes = [consts.days, consts.months, consts.years];
 
     init() {
         let $body = getEl('body');
@@ -395,14 +402,14 @@ export class AirDatepicker {
      */
     setViewDate = (date) => {
         date = createDate(date);
-
         if (!(date instanceof Date)) return;
 
-        if (isSameDate(date, this.viewDate)) return;
+        let areDatesSame = isSameDate(date, this.viewDate);
+
         this.viewDate = date;
         let {onChangeViewDate} = this.opts;
 
-        if (onChangeViewDate) {
+        if (onChangeViewDate && !areDatesSame) {
             let {month, year} = this.parsedViewDate;
             onChangeViewDate({
                 month,
@@ -410,8 +417,26 @@ export class AirDatepicker {
                 decade: this.curDecade
             });
         }
-
         this.trigger(EVENTS.changeViewDate, date);
+    }
+
+    /**
+     * Sets global AirDatepicker view
+     * @param {ViewType} view
+     * @param [params]
+     * @param [params.silent] {boolean}
+     */
+    setCurrentView = (view, params) => {
+        if (!this.viewIndexes.includes(view)) return;
+
+        this.currentView = view;
+
+        this.trigger(EVENTS.changeCurrentView, view);
+
+        // Trigger user event after, to be able to use datepicker api on rendered view
+        if (this.opts.onChangeView && !params.silent) {
+            this.opts.onChangeView(view);
+        }
     }
 
     /**
@@ -452,15 +477,53 @@ export class AirDatepicker {
         }
     }
 
+    _handleUpDownActions(date, dir) {
+        let maxViewIndex = 2,
+            minViewIndex = 0;
+
+        date = createDate(date || this.focusDate || this.viewDate);
+
+        if (!(date instanceof Date)) return;
+
+        let nextView = dir === 'up' ? this.viewIndex + 1 : this.viewIndex - 1;
+        if (nextView > maxViewIndex) nextView = maxViewIndex;
+        if (nextView < minViewIndex) nextView = minViewIndex;
+
+        this.setCurrentView(this.viewIndexes[nextView]);
+        this.setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
+    }
+
+    down(date) {
+        this._handleUpDownActions(date, 'down');
+    }
+
+    up(date) {
+        this._handleUpDownActions(date, 'up');
+    }
+
     get $container() {
         return this.$customContainer || $datepickersContainer;
     }
+
     get parsedViewDate() {
         return getParsedDate(this.viewDate);
     }
+
     get curDecade() {
         return getDecade(this.viewDate);
     }
+
+    get viewIndex() {
+        return this.viewIndexes.indexOf(this.currentView);
+    }
+
+    get isFinalView() {
+        return this.currentView === consts.years;
+    }
+    get isMinViewReached() {
+        return this.currentView === this.opts.minView || this.currentView === consts.days;
+    }
+
 }
 
 withEvents(AirDatepicker.prototype);
