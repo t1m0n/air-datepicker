@@ -3,7 +3,7 @@ import {getParsedDate, getDaysCount} from './utils';
 
 export default class DatepickerKeyboard {
     pressedKeys = new Set();
-    
+
     hotKeys = new Map(
         [
             [[['Control', 'ArrowRight'], ['Control', 'ArrowUp']], dateParts =>  dateParts.month++],
@@ -16,8 +16,9 @@ export default class DatepickerKeyboard {
         ]
     )
 
-    constructor({dp, opts}) {
+    constructor({dp, adp, opts}) {
         this.dp = dp;
+        this.adp = adp;
         this.opts = opts;
 
         this.init();
@@ -42,7 +43,7 @@ export default class DatepickerKeyboard {
         this.hotKeys = null;
         this.pressedKeys = null;
     }
-    
+
     getInitialFocusDate() {
         let {focusDate, currentView, selectedDates, parsedViewDate: {year, month}} = this.dp;
         let potentialFocused  = focusDate || selectedDates[selectedDates.length - 1];
@@ -97,7 +98,7 @@ export default class DatepickerKeyboard {
         }
 
         let newFocusedDate = this.dp.getClampedDate(new Date(y, m, d));
-        this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
+        this.adp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }
 
     registerKey(keyName) {
@@ -112,7 +113,7 @@ export default class DatepickerKeyboard {
         let fn = this.hotKeys.get(combination),
             dateParts = getParsedDate(this.getInitialFocusDate());
 
-        fn(dateParts, this.dp);
+        fn(dateParts, this.adp);
 
         let {year, month, date} = dateParts;
 
@@ -124,7 +125,7 @@ export default class DatepickerKeyboard {
 
         let newFocusedDate = this.dp.getClampedDate(new Date(year, month, date));
 
-        this.dp.setFocusDate(newFocusedDate, {viewDateTransition: true});
+        this.adp.setFocusDate(newFocusedDate, {viewDateTransition: true});
     }
 
     /**

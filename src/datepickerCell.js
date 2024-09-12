@@ -1,4 +1,4 @@
-import consts from './consts';
+import consts, {GLOBAL_EVENTS} from './consts';
 import {
     createElement,
     classNames,
@@ -12,10 +12,11 @@ import {
 import './datepickerCell.scss';
 
 export default class DatepickerCell {
-    constructor({type, date, dp, opts, body} = {}) {
+    constructor({type, date, adp, dp, opts, body} = {}) {
         this.type = type;
         this.singleType = this.type.slice(0, -1); // days -> day etc.'`
         this.date = date;
+        this.adp = adp;
         this.dp = dp;
         this.opts = opts;
         this.body = body;
@@ -45,12 +46,12 @@ export default class DatepickerCell {
 
     _bindDatepickerEvents() {
         this.dp.on(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
-        this.dp.on(consts.eventChangeFocusDate, this.onChangeFocusDate);
+        this.adp.on(GLOBAL_EVENTS.changeFocusDate, this.onChangeFocusDate);
     }
 
     unbindDatepickerEvents() {
         this.dp.off(consts.eventChangeSelectedDate, this.onChangeSelectedDate);
-        this.dp.off(consts.eventChangeFocusDate, this.onChangeFocusDate);
+        this.adp.off(GLOBAL_EVENTS.changeFocusDate, this.onChangeFocusDate);
     }
 
     _createElement() {

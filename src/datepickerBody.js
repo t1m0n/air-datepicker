@@ -16,6 +16,7 @@ import {
 import DatepickerCell from './datepickerCell';
 
 import './datepickerBody.scss';
+import bg from 'locale/bg';
 
 let templates = {
     [consts.days]:'' +
@@ -111,10 +112,11 @@ export default class DatepickerBody {
     }
 
     _generateCell(date) {
-        let {type, dp, opts} = this;
+        let {type, dp, adp, opts} = this;
         return new DatepickerCell({
             type,
             dp,
+            adp,
             opts,
             date,
             body: this
@@ -190,11 +192,11 @@ export default class DatepickerBody {
 
     onMouseOverCell = (e) => {
         let $cell = closest(e.target, cellClassName);
-        this.dp.setFocusDate($cell ? $cell.adpCell.date : false);
+        this.adp.setFocusDate($cell ? $cell.adpCell.date : false);
     }
 
     onMouseOutCell = () => {
-        this.dp.setFocusDate(false);
+        this.adp.setFocusDate(false);
     }
 
     onClickBody = (e) => {
@@ -295,8 +297,8 @@ export default class DatepickerBody {
     }
 
     render = () => {
+        console.log(`%c${this.dp.logName}%c -> %cdatepickerBody %c-> render`, 'background: #f4f4f4', 'background: none', 'background: #f4f4f4', 'background: none; font-weight:bold;');
         this.destroyCells();
-
         this._generateCells();
         this.cells.forEach((c) => {
             this.$cells.appendChild(c.render());

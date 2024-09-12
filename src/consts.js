@@ -35,7 +35,8 @@ export default {
 /**
  * Global events, triggered on AirDatepicker class
  */
-export const EVENTS = {
+export const GLOBAL_EVENTS = {
     changeViewDate: 'changeGlobalViewDate',
     changeCurrentView: 'changeGlobalCurrentView',
+    changeFocusDate: 'changeGlobalFocusDate',
 };

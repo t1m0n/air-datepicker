@@ -3,7 +3,7 @@ import {createDate, createElement, deepMerge, getDecade, getEl, getParsedDate, i
 import Datepicker from 'datepicker';
 
 import './airDatepicker.scss';
-import consts, {EVENTS} from 'consts';
+import consts, {GLOBAL_EVENTS} from 'consts';
 import withEvents from 'withEvents';
 
 let $datepickersContainer = '',
@@ -12,6 +12,9 @@ let $datepickersContainer = '',
     baseTemplate = '' +
         '<i class="air-datepicker--pointer"></i>' +
         '<div class="air-datepicker--calendars"></div>';
+
+//TODO Разобраться с datepickerKeyboard.js
+//TODO Подумать какую дату назначать для currentViewDate после перехода с месяцев на дни? (ту что в текущем календаре или с учетом индекса календаря)
 
 export class AirDatepicker {
     static defaultGlobalContainerId = 'air-datepicker-global-container'
@@ -25,6 +28,7 @@ export class AirDatepicker {
     hideAnimation = false;
     calendars = [];
     inFocus = false;
+    focused = false;
     constructor(el, opts = {}) {
         this.$el = getEl(el);
 
@@ -89,6 +93,8 @@ export class AirDatepicker {
     _bindEvents() {
         this.$el.addEventListener(this.opts.showEvent, this._onFocus);
         this.$el.addEventListener('blur', this._onBlur);
+
+        this.on(GLOBAL_EVENTS.changeFocusDate, this._onChangeFocusedDate);
     }
 
     _buildBaseHtml() {
@@ -417,7 +423,7 @@ export class AirDatepicker {
                 decade: this.curDecade
             });
         }
-        this.trigger(EVENTS.changeViewDate, date);
+        this.trigger(GLOBAL_EVENTS.changeViewDate, date);
     }
 
     /**
@@ -431,7 +437,7 @@ export class AirDatepicker {
 
         this.currentView = view;
 
-        this.trigger(EVENTS.changeCurrentView, view);
+        this.trigger(GLOBAL_EVENTS.changeCurrentView, view);
 
         // Trigger user event after, to be able to use datepicker api on rendered view
         if (this.opts.onChangeView && !params.silent) {
@@ -477,6 +483,25 @@ export class AirDatepicker {
         }
     }
 
+
+    /**
+     * Sets new focusDate
+     * @param {Date} date
+     * @param {Object} [params]
+     * @param {Boolean} params.viewDateTransition
+     */
+    setFocusDate = (date, params = {}) => {
+        if (date) {
+            date = createDate(date);
+
+            if (!(date instanceof Date)) return;
+        }
+
+        this.focusDate = date;
+
+        this.trigger(GLOBAL_EVENTS.changeFocusDate, date, params);
+    }
+
     _handleUpDownActions(date, dir) {
         let maxViewIndex = 2,
             minViewIndex = 0;
@@ -499,6 +524,25 @@ export class AirDatepicker {
 
     up(date) {
         this._handleUpDownActions(date, 'up');
+    }
+
+
+    _onChangeFocusedDate = (date, {viewDateTransition} = {}) => {
+        if (!date) return;
+        let shouldPerformTransition = false;
+
+        if (viewDateTransition) {
+            shouldPerformTransition = this.isOtherMonth(date) || this.isOtherYear(date) || this.isOtherDecade(date);
+        }
+
+        if (shouldPerformTransition) {
+            this.setViewDate(date);
+        }
+
+        if (this.opts.onFocus) {
+            this.opts.onFocus({datepicker: this, date});
+        }
+
     }
 
     get $container() {

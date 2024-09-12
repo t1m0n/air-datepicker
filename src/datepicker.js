@@ -20,7 +20,7 @@ import DatepickerButtons from './datepickerButtons';
 import DatepickerTime from './datepickerTime';
 import DatepickerKeyboard from './datepickerKeyboard';
 import withEvents from './withEvents';
-import consts, {EVENTS} from './consts';
+import consts, {GLOBAL_EVENTS} from './consts';
 
 import './datepickerVars.scss';
 import './datepicker.scss';
@@ -67,10 +67,8 @@ export default class Datepicker {
         }
 
         this.inited = false;
-        this.visible = false;
         this.currentView = view;
         this.viewDate = this._calculateViewDate(createDate(this.opts.startDate));
-        this.focusDate = false;
         this.initialReadonly = this.$el.getAttribute('readonly');
         this.customHide = false;
         this.selectedDates = [];
@@ -238,11 +236,10 @@ export default class Datepicker {
 
     _bindSubEvents() {
         this.on(consts.eventChangeSelectedDate, this._onChangeSelectedDate);
-        this.on(consts.eventChangeFocusDate, this._onChangeFocusedDate);
         this.on(consts.eventChangeTime, this._onChangeTime);
 
-        this.adp.on(EVENTS.changeViewDate, this._onChangeGlobalViewDate);
-        this.adp.on(EVENTS.changeCurrentView, this._onChangeGlobalView);
+        this.adp.on(GLOBAL_EVENTS.changeViewDate, this._onChangeGlobalViewDate);
+        this.adp.on(GLOBAL_EVENTS.changeCurrentView, this._onChangeGlobalView);
     }
 
     _buildBaseHtml() {
@@ -473,7 +470,7 @@ export default class Datepicker {
         });
         this._updateLastSelectedDate(date);
 
-        if (autoClose && !this.timepickerIsActive && this.visible) {
+        if (autoClose && !this.timepickerIsActive && this.adp.visible) {
             if (!multipleDates && !range) {
                 this.hide();
             } else if (range && selectedDaysLen === 1) {
@@ -678,23 +675,6 @@ export default class Datepicker {
         this.trigger(consts.eventChangeViewDate, this.viewDate, oldViewDate);
     }
 
-    /**
-     * Sets new focusDate
-     * @param {Date} date
-     * @param {Object} [params]
-     * @param {Boolean} params.viewDateTransition
-     */
-    setFocusDate = (date, params = {}) => {
-        if (date) {
-            date = createDate(date);
-
-            if (!(date instanceof Date)) return;
-        }
-
-        this.focusDate = date;
-
-        this.trigger(consts.eventChangeFocusDate, date, params);
-    }
 
     /**
      * Sets new datepicker view
@@ -810,7 +790,7 @@ export default class Datepicker {
         deepMerge(this.opts, newOpts);
 
         let {timepicker, buttons, range, selectedDates, isMobile} = this.opts;
-        let shouldUpdateDOM = this.visible || this.treatAsInline;
+        let shouldUpdateDOM = this.adp.visible || this.treatAsInline;
 
         this._createMinMaxDates();
         this._limitViewDateByMaxMinDates();
@@ -861,13 +841,13 @@ export default class Datepicker {
                 this._createMobileOverlay();
             }
             this._addMobileAttributes();
-            if (this.visible) {
+            if (this.adp.visible) {
                 this._showMobileOverlay();
             }
         } else if (prevOpts.isMobile && !isMobile) {
             this._removeMobileAttributes();
 
-            if (this.visible) {
+            if (this.adp.visible) {
                 $datepickerOverlay.classList.remove('-active-');
                 if (typeof this.opts.position !== 'function') {
                     this.setPosition();
@@ -971,24 +951,6 @@ export default class Datepicker {
         });
     }
 
-    _onChangeFocusedDate = (date, {viewDateTransition} = {}) => {
-        if (!date) return;
-        let shouldPerformTransition = false;
-
-        if (viewDateTransition) {
-            shouldPerformTransition = this.isOtherMonth(date) || this.isOtherYear(date) || this.isOtherDecade(date);
-        }
-
-        if (shouldPerformTransition) {
-            this.setViewDate(date);
-        }
-
-        if (this.opts.onFocus) {
-            this.opts.onFocus({datepicker: this, date});
-        }
-
-    }
-
     /**
      * Subscribe to change global view date
      * @param {Date} date
@@ -1035,13 +997,13 @@ export default class Datepicker {
     }
 
     _onFocus = (e) => {
-        if (!this.visible) {
+        if (!this.adp.visible) {
             this.show();
         }
     }
 
     _onBlur = (e) => {
-        if (!this.inFocus && this.visible && !this.opts.isMobile) {
+        if (!this.inFocus && this.adp.visible && !this.opts.isMobile) {
             this.hide();
         }
     }
@@ -1056,13 +1018,13 @@ export default class Datepicker {
     }
 
     _onResize = () => {
-        if (this.visible && typeof this.opts.position !== 'function') {
+        if (this.adp.visible && typeof this.opts.position !== 'function') {
             this.setPosition();
         }
     }
 
     _onClickOverlay = () => {
-        if (this.visible) {
+        if (this.adp.visible) {
             this.hide();
         }
     }
@@ -1081,7 +1043,7 @@ export default class Datepicker {
     // -------------------------------------------------
 
     get shouldUpdateDOM() {
-        return this.visible || this.treatAsInline;
+        return this.adp.visible || this.adp.treatAsInline;
     }
 
     get parsedViewDate() {
