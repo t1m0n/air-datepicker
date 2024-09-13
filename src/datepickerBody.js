@@ -16,7 +16,6 @@ import {
 import DatepickerCell from './datepickerCell';
 
 import './datepickerBody.scss';
-import bg from 'locale/bg';
 
 let templates = {
     [consts.days]:'' +
@@ -27,6 +26,16 @@ let templates = {
 };
 
 const cellClassName = '.air-datepicker-calendar-cell';
+
+//TODO поменять везде на использование этой фукнции
+/**
+ * Finds cell from DOM event
+ * @param {Event} e
+ */
+function getCellFromEvent(e) {
+    const $cell = e.target.closest(cellClassName);
+    return $cell && $cell.adpCell;
+}
 
 export default class DatepickerBody {
     constructor({dp, adp, type, opts}) {
@@ -191,11 +200,16 @@ export default class DatepickerBody {
     }
 
     onMouseOverCell = (e) => {
-        let $cell = closest(e.target, cellClassName);
-        this.adp.setFocusDate($cell ? $cell.adpCell.date : false);
+        let cell = getCellFromEvent(e);
+        if (!cell?.isVisible) return;
+
+        this.adp.setFocusDate(cell?.date || false);
     }
 
-    onMouseOutCell = () => {
+    onMouseOutCell = (e) => {
+        let cell = getCellFromEvent(e);
+        if (!cell?.isVisible) return;
+
         this.adp.setFocusDate(false);
     }
 

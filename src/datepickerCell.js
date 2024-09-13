@@ -93,7 +93,7 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': this.isOtherMonth,
-                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || isDisabled
+                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || isDisabled || !this.isVisible
                 });
                 break;
             case consts.months:
@@ -104,7 +104,7 @@ export default class DatepickerCell {
             case consts.years:
                 classNameType = classNames({
                     '-other-decade-': this.isOtherDecade,
-                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears)
+                    '-disabled-': isOutOfMinMaxRange || (this.isOtherDecade && !selectOtherYears) || !this.isVisible
                 });
                 break;
         }
@@ -247,11 +247,24 @@ export default class DatepickerCell {
     }
 
     get isOtherMonth() {
-        return this.dp.isOtherMonth(this.date);
+        return this.type === 'days' && this.dp.isOtherMonth(this.date);
     }
 
     get isOtherDecade() {
-        return this.dp.isOtherDecade(this.date);
+        return this.type === 'years' && this.dp.isOtherDecade(this.date);
+    }
+
+    /**
+     * If showOtherMonths or showOtherYears is false, and cell is in other month or decade
+     * then its considered as not visible. It is rendered empty and does not trigger subscribe events
+     * @returns {boolean}
+     */
+    get isVisible() {
+        return !(
+            (this.isOtherMonth && !this.opts.showOtherMonths) ||
+            (this.isOtherDecade && !this.opts.showOtherYears)
+        );
+
     }
 
     onChangeSelectedDate = () => {

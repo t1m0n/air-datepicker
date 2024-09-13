@@ -45,7 +45,6 @@ export class AirDatepicker {
 
         this.viewDate = createDate(startDate);
         this.currentView = view;
-        // TODO нужно сделать focusDate глобальным для нормальной навигации и работы разных представлений календаря
         this.focusDate = undefined;
         this.$datepicker = createElement({className: 'air-datepicker'});
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
@@ -67,6 +66,7 @@ export class AirDatepicker {
             opts: {
                 inline,
                 isMobile,
+                visible,
             }
         } = this;
 
@@ -88,6 +88,10 @@ export class AirDatepicker {
         this._buildBaseHtml();
         this._createCalendars();
         this._bindEvents();
+
+        if (visible && !treatAsInline) {
+            this.show();
+        }
     }
 
     _bindEvents() {

@@ -118,9 +118,6 @@ export default class Datepicker {
             this.selectDate(selectedDates, {silent: true});
         }
 
-        if (this.opts.visible && !treatAsInline) {
-            this.show();
-        }
 
         if (isMobile && !treatAsInline) {
             this.$el.setAttribute('readonly', true);
@@ -925,16 +922,9 @@ export default class Datepicker {
         return month !== this.parsedViewDate.month;
     }
 
-    isOtherYear = (date) => {
-        let {year} = getParsedDate(date);
-
-        return year !== this.parsedViewDate.year;
-    }
-
     isOtherDecade = (date) => {
         let {year} = getParsedDate(date);
         let [firstDecadeYear, lastDecadeYear] = getDecade(this.viewDate);
-
         return year < firstDecadeYear || year > lastDecadeYear;
     }
 
