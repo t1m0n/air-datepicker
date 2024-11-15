@@ -187,6 +187,8 @@ export default class DatepickerCell {
         const {selectedDates, focusDate, rangeDateTo, rangeDateFrom} = this.dp;
         const selectedDatesLen = selectedDates.length;
 
+        this.$cell.classList.remove('-range-from-', '-range-to-', '-in-range-');
+
         if (!selectedDatesLen) return;
 
         let from = rangeDateFrom;
@@ -204,8 +206,6 @@ export default class DatepickerCell {
             '-range-from-': from && isSameDate(this.date, from, this.type),
             '-range-to-': to && isSameDate(this.date, to, this.type)
         });
-
-        this.$cell.classList.remove('-range-from-', '-range-to-', '-in-range-');
 
         if (classes) {
             this.$cell.classList.add(...classes.split(' '));

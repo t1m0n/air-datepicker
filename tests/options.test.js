@@ -875,7 +875,7 @@ describe('OPTIONS TESTS', () => {
 
         });
 
-        it('should work correctly when user unselects "to" date and then selects other date erlier than "from"', () => {
+        it('should work correctly when user unselects "to" date and then selects other date earlier than "from"', () => {
             init({
                 range: true,
                 toggleSelected: true,
@@ -896,6 +896,22 @@ describe('OPTIONS TESTS', () => {
             expect(dp.selectedDates[0].toLocaleDateString('ru')).toEqual('01.05.2024');
             expect(dp.selectedDates[1].toLocaleDateString('ru')).toEqual('12.05.2024');
 
+        });
+
+        it('should reset cell styles on "clear" event', () => {
+            init({
+                range: true,
+                startDate: '2024-11-15',
+            });
+
+            dp.getCell('2024-11-01').click();
+            dp.getCell('2024-11-17').click();
+
+            dp.clear();
+
+            const $cells = $datepicker.querySelectorAll('.-in-range-');
+
+            expect($cells).toHaveLength(0);
         });
     });
 });
