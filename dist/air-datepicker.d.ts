@@ -23,7 +23,7 @@ export declare type AirDatepickerButton = {
 
 export declare type AirDatepickerButtonPresets = 'clear' | 'today';
 
-export declare type AirDatepickerPosition = 'left' | 'left top' | 'left bottom' | 'top' | 'top left' | 'top right' | 'right' | 'right top' | 'right bottom' | 'bottom' | 'bottom left' | 'bottom right';
+export declare type AirDatepickerPosition = 'left' | 'left top' | 'left center' | 'left bottom' | 'top' | 'top left' | 'top center' | 'top right' | 'right' | 'right top' | 'right center' | 'right bottom' | 'bottom' | 'bottom left' | 'bottom center' | 'bottom right';
 export declare type AirDatepickerViews = 'days' | 'months' | 'years';
 export declare type AirDatepickerViewsSingle = 'day' | 'month' | 'year';
 export declare type AirDatepickerDate = string | number | Date;
