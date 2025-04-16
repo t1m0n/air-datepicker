@@ -233,7 +233,7 @@ export default class Datepicker {
 
     _removeMobileAttributes() {
         $datepickerOverlay.removeEventListener('click', this._onClickOverlay);
-
+        $datepickerOverlay = '';
         this.$datepicker.classList.remove('-is-mobile-');
 
         if (!this.initialReadonly && this.initialReadonly !== '') {
