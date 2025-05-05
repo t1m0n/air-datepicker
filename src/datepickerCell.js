@@ -56,7 +56,7 @@ export default class DatepickerCell {
     }
 
     _createElement() {
-        let {year, month, date} = getParsedDate(this.date);
+        let {year, month, fullMonth, date, fullDate} = getParsedDate(this.date);
         let extraAttrs = this.customData?.attrs || {};
 
         this.$cell = createElement({
@@ -64,6 +64,7 @@ export default class DatepickerCell {
                 'data-year': year,
                 'data-month': month,
                 'data-date': date,
+                'data-iso-date': `${year}-${fullMonth}-${fullDate}`,
                 ...extraAttrs,
             }
         });

@@ -67,4 +67,19 @@ describe('COMMON TESTS', () => {
             done();
         });
     });
+
+    test('every cell should have data attributes', () => {
+        const startDate = '2025-05-05';
+
+        init({
+            startDate
+        });
+
+        const $cell = dp.getCell('2025-05-05');
+
+        expect($cell.dataset.isoDate).toEqual('2025-05-05');
+        expect($cell.dataset.date).toEqual('5');
+        expect($cell.dataset.month).toEqual('4');
+        expect($cell.dataset.year).toEqual('2025');
+    });
 });
