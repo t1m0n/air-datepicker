@@ -461,13 +461,13 @@ export default class Datepicker {
      * @param {DateLike|Array<DateLike>} date
      * @param {object} [params] - extra parameters
      * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
-     * @param {boolean} [params.silent] - if true, then onChange event wont be triggered
+     * @param {boolean} [params.silent] - if true, then onChange and onBeforeSelect events won't be triggered
      * @return {Promise<void>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise to be able to get current input value
      * @example selectDate(new Date()).then(() => {console.log(dp.$el.value)})
      */
     selectDate(date, params = {}) {
         let {currentView, parsedViewDate, selectedDates} = this;
-        let {updateTime} = params;
+        let {updateTime, silent} = params;
         let {
             moveToOtherMonthsOnSelect,
             moveToOtherYearsOnSelect,
@@ -493,7 +493,7 @@ export default class Datepicker {
 
         if (!(date instanceof Date)) return;
 
-        if (onBeforeSelect && !onBeforeSelect({date, datepicker: this})) {
+        if (onBeforeSelect && !silent && !onBeforeSelect({date, datepicker: this})) {
             return Promise.resolve();
         }
 

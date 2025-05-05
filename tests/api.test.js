@@ -33,6 +33,25 @@ describe('API TESTS', () => {
                 done();
             });
         });
+        it('should not trigger onSelect and onBeforeSelect events is {silent: true}', (done) => {
+            let onSelectTriggered = false;
+            let onBeforeSelectTriggered = false;
+
+            init({
+                onSelect() {
+                    onSelectTriggered = true;
+                },
+                onBeforeSelect() {
+                    onBeforeSelectTriggered = true;
+                }
+            });
+
+            dp.selectDate(new Date(), {silent: true}).then(() => {
+                expect(onSelectTriggered).toBe(false);
+                expect(onBeforeSelectTriggered).toBe(false);
+                done();
+            });
+        });
     });
 
     describe('update', () => {
