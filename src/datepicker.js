@@ -462,7 +462,7 @@ export default class Datepicker {
      * @param {object} [params] - extra parameters
      * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
      * @param {boolean} [params.silent] - if true, then onChange event wont be triggered
-     * @return {Promise<unknown>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise tobe able to get current input value
+     * @return {Promise<void>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise to be able to get current input value
      * @example selectDate(new Date()).then(() => {console.log(dp.$el.value)})
      */
     selectDate(date, params = {}) {
