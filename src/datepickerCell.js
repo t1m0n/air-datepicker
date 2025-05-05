@@ -40,6 +40,8 @@ export default class DatepickerCell {
 
         if (this.customData?.disabled) {
             this.dp.disableDate(this.date);
+        } else if (this.customData?.disabled === false) {
+            this.dp.enableDate(this.date);
         }
     }
 
