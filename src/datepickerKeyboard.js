@@ -3,7 +3,7 @@ import {getParsedDate, getDaysCount} from './utils';
 
 export default class DatepickerKeyboard {
     pressedKeys = new Set();
-    
+
     hotKeys = new Map(
         [
             [[['Control', 'ArrowRight'], ['Control', 'ArrowUp']], dateParts =>  dateParts.month++],
@@ -42,7 +42,7 @@ export default class DatepickerKeyboard {
         this.hotKeys = null;
         this.pressedKeys = null;
     }
-    
+
     getInitialFocusDate() {
         let {focusDate, currentView, selectedDates, parsedViewDate: {year, month}} = this.dp;
         let potentialFocused  = focusDate || selectedDates[selectedDates.length - 1];
@@ -157,6 +157,8 @@ export default class DatepickerKeyboard {
     }
 
     onKeyDown = (e) => {
+        if (!this.dp.visible && !this.dp.treatAsInline) return;
+
         let {key, which} = e;
         let {dp, dp: {focusDate}, opts} = this;
 
