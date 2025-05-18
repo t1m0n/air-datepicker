@@ -426,6 +426,10 @@ function Docs({} = {}) {
                                         <Param name={'formattedDate'} type={'string | string[]'} definition={'eventsOnSelectFormattedDate'} />
                                         <Param name={'datepicker'} type={'AirDatepicker'} definition={'eventsOnSelectAirDatepicker'} />
                                     </Param.List>
+                                    <Paragraph id={'eventsOnSelectChangeEvent'} values={{
+                                        changeField: <Code inline language={'javascript'}>change</Code>,
+                                        inputField: <Code inline language={'html'}>&lt;input /&gt;</Code>
+                                    }}/>
                                 </Param>
                                 <Param name={'onBeforeSelect'} type={'({date, datepicker}) => boolean'}>
                                     <Paragraph id={'eventsOnBeforeSelect'} values={{

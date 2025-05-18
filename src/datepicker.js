@@ -814,6 +814,7 @@ export default class Datepicker {
         }
 
         this.$el.value = this._getInputValue(dateFormat);
+        this.$el.dispatchEvent(new Event('change'));
     }
 
     _getInputValue = (dateFormat) => {

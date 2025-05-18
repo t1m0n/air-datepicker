@@ -195,6 +195,7 @@ export default {
     eventsOnSelectDate: 'selected date, if multiple date mode is on, then array of dates will be passed.',
     eventsOnSelectFormattedDate: 'formatted selected date, or array in case of multiple dates mode.',
     eventsOnSelectAirDatepicker: 'calendar instance',
+    eventsOnSelectChangeEvent: 'Selecting a date or modifying the time in the calendar triggers a {changeField} event on the {inputField} element.',
     eventsOnBeforeSelect: 'Triggered before cell should be selected. If returns {trueField} then cell will be selected, if {falseField} then not',
     eventsOnBeforeSelectDate: 'the date to be selected',
     eventsOnChangeViewDate: 'Triggered when navigating back and forth. It takes object as and argument with actual values of month, year and decade',

@@ -128,6 +128,22 @@ describe('EVENTS TEST', () => {
                 done();
             });
         });
+
+        it('should generate "chnage" event on input element', (done) => {
+            let changeIsTriggered = false;
+            init();
+
+            $input.addEventListener('change', () => {
+                changeIsTriggered = true;
+            }, {});
+
+            dp.selectDate(new Date()).then(() => {
+                setTimeout(() => {
+                    expect(changeIsTriggered).toBe(true);
+                    done();
+                }, []);
+            });
+        });
     });
 
     describe('onRenderCell', () => {
