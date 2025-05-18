@@ -1,6 +1,6 @@
 {
   "name": "air-datepicker",
-  "version": "3.5.3",
+  "version": "3.6.0",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack",
     "dev:serve": "cross-env NODE_ENV=development webpack serve",

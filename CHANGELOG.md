@@ -1,5 +1,15 @@
 # Changelog
 
+### v3.6.0
+* added iso-date data attribute to the cells, [#640](https://github.com/t1m0n/air-datepicker/issues/640)
+* added triggering `change` event on `<input />` element when user selects a date in the calendar [#624](https://github.com/t1m0n/air-datepicker/issues/624)
+* fixed an unnecessary call to the `onBeforeSelect` function when the `{silent: false}` argument is passed [#649](https://github.com/t1m0n/air-datepicker/issues/649)
+* now `clear` button works correctly in the range mode [#642](https://github.com/t1m0n/air-datepicker/issues/642)
+* now keyboard events are not triggered when the calendar is hidden [#631](https://github.com/t1m0n/air-datepicker/issues/631) 
+* fixed return type in `selectDate` function, thanks to [marfrede](https://github.com/marfrede) in [#656](https://github.com/t1m0n/air-datepicker/pull/656)
+* now you can re-enable cells in `onRenderCell` callback, thanks to [kdagnan](https://github.com/kdagnan) in [#657](https://github.com/t1m0n/air-datepicker/pull/657)
+* fixed gramma and spelling in the Russian docs, thanks to [Ser5](https://github.com/Ser5) [#669](https://github.com/t1m0n/air-datepicker/pull/669)
+
 ### v3.5.3
 * fixed range mode [#613](https://github.com/t1m0n/air-datepicker/issues/613)
 

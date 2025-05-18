@@ -127,7 +127,17 @@ declare class AirDatepicker<E extends HTMLElement = HTMLInputElement> {
     hide: () => void
     next: () => void
     prev: () => void
-    selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime?: boolean, silent?: boolean}) => void
+
+    /**
+     * Selects date, if array is passed then selects dates one by one
+     * @param {DateLike|Array<DateLike>} date
+     * @param {object} [opts] - extra parameters
+     * @param {boolean} [opts.updateTime] - should update timepicker's time from passed date
+     * @param {boolean} [opts.silent] - if true, then onChange event wont be triggered
+     * @return {Promise<void>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise to be able to get current input value
+     * @example selectDate(new Date()).then(() => {console.log(dp.$el.value)})
+     */
+    selectDate: (date: AirDatepickerDate | AirDatepickerDate[], opts?: {updateTime?: boolean, silent?: boolean}) => Promise<void>
     unselectDate: (date: AirDatepickerDate) => void
     clear: (opts?: {silent?: boolean}) => void
     formatDate: (date: AirDatepickerDate, format: string) => string
