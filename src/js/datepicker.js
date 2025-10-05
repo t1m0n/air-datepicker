@@ -70,8 +70,11 @@
             maxHours: 24,
             minMinutes: 0,
             maxMinutes: 59,
+            minSeconds: 0,
+            maxSeconds: 59,
             hoursStep: 1,
             minutesStep: 1,
+            secondsStep: 1,
 
             // events
             onSelect: '',
@@ -302,7 +305,8 @@
                     parsedSelected.month,
                     parsedSelected.date,
                     parsedSelected.hours,
-                    parsedSelected.minutes
+                    parsedSelected.minutes,
+                    parsedSelected.seconds
                 );
 
                 formattedDates = selectedDates.map(function (date) {
@@ -318,11 +322,11 @@
                         parsedDate.month,
                         parsedDate.date,
                         parsedDate.hours,
-                        parsedDate.minutes
+                        parsedDate.minutes,
+                        parsedDate.seconds
                     );
                 })
             }
-
             this._prevOnSelectValue = formattedDates;
             this.opts.onSelect(formattedDates, dates, this);
         },
@@ -410,6 +414,8 @@
                     result = replacer(result, boundary('MM'), this.loc.months[d.month]);
                 case /M/.test(result):
                     result = replacer(result, boundary('M'), locale.monthsShort[d.month]);
+                case /ss/.test(result):
+                    result = replacer(result, boundary('ss'), d.seconds);
                 case /ii/.test(result):
                     result = replacer(result, boundary('ii'), d.fullMinutes);
                 case /i/.test(result):
@@ -477,6 +483,7 @@
             if (this.timepicker) {
                 date.setHours(this.timepicker.hours);
                 date.setMinutes(this.timepicker.minutes)
+                date.setSeconds(this.timepicker.seconds)
             }
 
             if (_this.view == 'days') {
@@ -644,6 +651,7 @@
                 if (lastSelectedDate) {
                     lastSelectedDate.setHours(this.timepicker.hours);
                     lastSelectedDate.setMinutes(this.timepicker.minutes);
+                    lastSelectedDate.setSeconds(this.timepicker.seconds);
                 }
             }
 
@@ -1187,6 +1195,7 @@
                             if (this.timepicker) {
                                 this.focused.setHours(this.timepicker.hours);
                                 this.focused.setMinutes(this.timepicker.minutes);
+                                this.focused.setSeconds(this.timepicker.seconds);
                             }
                             this.selectDate(this.focused);
                             return;
@@ -1248,7 +1257,7 @@
             this.silent = false;
         },
 
-        _onTimeChange: function (e, h, m) {
+        _onTimeChange: function (e, h, m, s) {
             var date = new Date(),
                 selectedDates = this.selectedDates,
                 selected = false;
@@ -1260,6 +1269,7 @@
 
             date.setHours(h);
             date.setMinutes(m);
+            date.setSeconds(s);
 
             if (!selected && !this._getCell(date).hasClass('-disabled-')) {
                 this.selectDate(date);
@@ -1275,6 +1285,7 @@
             if (this.timepicker) {
                 date.setHours(this.timepicker.hours);
                 date.setMinutes(this.timepicker.minutes);
+                date.setSeconds(this.timepicker.seconds)
             }
             this.selectDate(date);
         },
@@ -1398,7 +1409,8 @@
             hours: date.getHours(),
             fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
             minutes: date.getMinutes(),
-            fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
+            fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes(),
+            seconds: date.getSeconds()
         }
     };
 

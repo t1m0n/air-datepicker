@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Air datepicker visual tests</title>
-        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="dist/js/datepicker.js"></script>
+        <script type="text/javascript" src="dist/js/i18n/datepicker.en.js"></script>
         <link rel="stylesheet" href="dist/css/datepicker.css"/>
         <link rel="stylesheet" href="docs/css/style.css"/>
         <script type="text/javascript">
@@ -31,7 +32,7 @@
                 <div class="row">
                     <div class="vt-tile">
                         <h2>Default</h2>
-                        <div class="datepicker-here"></div>
+                        <div class="datepicker-here" data-language="en"></div>
                     </div>
                 </div>
             </article>
@@ -41,11 +42,11 @@
                 <div class="row">
                     <div class="vt-tile">
                         <h2>{range: true}</h2>
-                        <div class="datepicker-here" data-range="true"></div>
+                        <div class="datepicker-here" data-language="en" data-range="true"></div>
                     </div>
                     <div class="vt-tile">
                         <h2>{range: true, onSelect: ...}</h2>
-                        <div class="datepicker-here" id="dp-3" data-range="true"></div>
+                        <div class="datepicker-here" data-language="en" id="dp-3" data-range="true"></div>
                         <script type="text/javascript">
                             $('#dp-3').datepicker({
                                 onSelect: function (fd) {
@@ -56,7 +57,7 @@
                     </div>
                     <div class="vt-tile">
                         <h2>{range: true, onSelect: ...}</h2>
-                        <input class="datepicker-here" id="dp-4" data-range="true"/>
+                        <input class="datepicker-here" data-language="en" id="dp-4" data-range="true"/>
                         <script type="text/javascript">
                             $('#dp-4').datepicker({
                                 onSelect: function (fd) {
@@ -73,17 +74,29 @@
                 <div class="row">
                     <div class="vt-tile">
                         <h2>{timepicker: true}</h2>
-                        <div class="datepicker-here" data-timepicker="true"></div>
+                        <div id="test" class="datepicker-here" data-language="en" data-timepicker="true"></div>
+                        <script type="text/javascript">
+                            $('#test').datepicker({
+                                toggleSelected: false,
+                                inline: true,
+                                timeFormat: 'hh:ii:ss',
+                                onSelect: function (fd) {
+                                    console.log(arguments)
+                                    log(fd)
+                                }
+                            })
+                        </script>
                     </div>
                     <div class="vt-tile">
                         <h2>{onChange: ..., toggleSelected: false, range: true}</h2>
-                        <input id="dp-5" class="datepicker-here" data-timepicker="true" />
+                        <input id="dp-5" class="datepicker-here" data-language="en" data-timepicker="true" />
                         <script type="text/javascript">
                             $('#dp-5').datepicker({
                                 toggleSelected: false,
                                 inline: true,
                                 range: true,
                                 onSelect: function (fd) {
+                                    console.log(arguments)
                                     log(fd)
                                 }
                             })
@@ -91,11 +104,11 @@
                     </div>
                     <div class="vt-tile">
                         <h2>{timepicker: true}</h2>
-                        <input class="datepicker-here" data-timepicker="true" />
+                        <input class="datepicker-here" data-language="en" data-timepicker="true" />
                     </div>
                     <div class="vt-tile">
                         <h2>{timepicker: true, minDate: new Date()}</h2>
-                        <input class="datepicker-here" id="dp-6"/>
+                        <input class="datepicker-here" data-language="en" id="dp-6"/>
                         <script type="text/javascript">
                             $('#dp-6').datepicker({
                                 minDate: new Date(),

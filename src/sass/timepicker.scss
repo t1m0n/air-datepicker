@@ -94,7 +94,7 @@ $rangeThumbBg: #dedede;
   flex: 1;
   font-size: 14px;
   text-align: center;
-  margin: 0 0 0 10px;
+  margin: 0 10px;
 }
 
 .datepicker--time-current-colon {
@@ -103,9 +103,10 @@ $rangeThumbBg: #dedede;
 }
 
 .datepicker--time-current-hours,
-.datepicker--time-current-minutes {
+.datepicker--time-current-minutes,
+.datepicker--time-current-seconds {
   line-height: 1;
-  font-size: 19px;
+  font-size: 14px;
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
   position: relative;
   z-index: 1;
@@ -132,7 +133,7 @@ $rangeThumbBg: #dedede;
 
 .datepicker--time-current-ampm {
   text-transform: uppercase;
-  align-self: flex-end;
+  align-self: flex-start;
   color: map_get($datepickerTextColor, navArrows);
   margin-left: 6px;
   font-size: 11px;
