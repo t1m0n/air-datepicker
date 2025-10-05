@@ -415,7 +415,9 @@
                 case /M/.test(result):
                     result = replacer(result, boundary('M'), locale.monthsShort[d.month]);
                 case /ss/.test(result):
-                    result = replacer(result, boundary('ss'), d.seconds);
+                    result = replacer(result, boundary('ss'), d.fullSeconds);
+                case /s/.test(result):
+                    result = replacer(result, boundary('s'), d.seconds);
                 case /ii/.test(result):
                     result = replacer(result, boundary('ii'), d.fullMinutes);
                 case /i/.test(result):
@@ -1410,7 +1412,8 @@
             fullHours:  date.getHours() < 10 ? '0' + date.getHours() :  date.getHours() ,
             minutes: date.getMinutes(),
             fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes(),
-            seconds: date.getSeconds()
+            seconds: date.getSeconds(),
+            fullSeconds:  date.getSeconds() < 10 ? '0' + date.getSeconds() :  date.getSeconds()
         }
     };
 
