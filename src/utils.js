@@ -20,7 +20,7 @@ export function getEl(el, context = document) {
  * @param {Object} [attrs]
  * @returns {HTMLElement}
  */
-export function createElement({tagName = 'div', className = '', innerHtml = '', id = '', attrs = {}} = {}) {
+export function createElement({ tagName = 'div', className = '', innerHtml = '', id = '', attrs = {} } = {}) {
     let $element = document.createElement(tagName);
     if (className) $element.classList.add(...className.split(' '));
     if (id) $element.id = id;
@@ -92,16 +92,19 @@ export function getDaysCount(date) {
  *  fullHours: (string|*),
  *  year: number,
  *  minutes: number,
+ *  seconds: number,
  *  fullMonth: string,
  *  day: number,
  *  fullMinutes: (string|*),
+ *  fullSeconds: (string|*),
  *  hours12: number,
+ *  fullHours12: number,
  *  dayPeriod: 'am' | 'pm'
  * }}
  */
 export function getParsedDate(date) {
     let hours = date.getHours(),
-        {hours: hours12, dayPeriod} = getDayPeriodFromHours24(hours);
+        { hours: hours12, dayPeriod } = getDayPeriodFromHours24(hours);
 
     return {
         year: date.getFullYear(),
@@ -116,7 +119,9 @@ export function getParsedDate(date) {
         dayPeriod,
         fullHours12: getLeadingZeroNum(hours12),
         minutes: date.getMinutes(),
-        fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
+        fullMinutes: getLeadingZeroNum(date.getMinutes()),
+        seconds: date.getSeconds(),
+        fullSeconds: getLeadingZeroNum(date.getSeconds())
     };
 }
 
@@ -136,7 +141,7 @@ export function getDayPeriodFromHours24(hours) {
  * @return {String|Number}
  */
 export function getLeadingZeroNum(num) {
-    return num < 10 ? '0' + num : num;
+    return ('0' + num).slice(-2);
 }
 
 /**
@@ -156,7 +161,7 @@ export function getDecade(date) {
  * @return {Date}
  */
 export function subDays(date, days) {
-    let {year, month, date: _date} = getParsedDate(date);
+    let { year, month, date: _date } = getParsedDate(date);
     return new Date(year, month, _date - days);
 }
 
@@ -261,8 +266,20 @@ export function copyDate(date, keepTime = true) {
     return newDate;
 }
 
-export function resetTime(date) {
+/**
+ * Resets time to start or end
+ * @param {Date} date
+ * @param {Boolean} [isEnd] - end of day
+ * @return {Date}
+ */
+
+export function resetTime(date, isEnd = false) {
     date.setHours(0, 0, 0, 0);
+
+    if (isEnd) {
+        date.setHours(23, 59, 59, 999);
+    }
+
     return date;
 }
 
@@ -293,7 +310,7 @@ export function addEventListener(el, type, listener) {
  * @return {HTMLElement|Boolean}
  */
 export function closest(target, selector) {
-    if (!target || target === document ||  target instanceof DocumentFragment) return false;
+    if (!target || target === document || target instanceof DocumentFragment) return false;
 
     if (target.matches(selector)) {
         return target;

@@ -63,9 +63,14 @@ let config = {
                 test: /\.scss$/,
                 use: [
                     dev ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    {loader: 'css-loader', options: {sourceMap: dev}},
-                    {loader:'postcss-loader', options: {sourceMap: dev}},
-                    {loader: 'sass-loader', options: {sourceMap: dev}},
+                    { loader: 'css-loader', options: { sourceMap: dev } },
+                    { loader: 'postcss-loader', options: { sourceMap: dev } },
+                    {
+                        loader: 'sass-loader', options: {
+                            implementation: require('sass'),
+                            sourceMap: dev
+                        }
+                    },
                 ]
             },
         ]

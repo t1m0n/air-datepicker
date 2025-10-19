@@ -89,7 +89,9 @@ export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElemen
         years?: AirDatepickerNavEntry
     },
     timepicker?: boolean,
+    timepickerWithSeconds?: boolean,
     onlyTimepicker?: boolean,
+    normalizeToDayBounds?: boolean,
     dateTimeSeparator?: string,
     timeFormat?: string,
     minHours?: number,
@@ -98,6 +100,7 @@ export declare type AirDatepickerOptions<E extends HTMLElement = HTMLInputElemen
     maxMinutes?: number,
     hoursStep?: number,
     minutesStep?: number,
+    secondsStep?: number,
     fixedHeight?: boolean,
 
     onSelect?: ({date, formattedDate, datepicker}: {date: Date | Date[], formattedDate: string | string[], datepicker: AirDatepicker<E>}) => void,

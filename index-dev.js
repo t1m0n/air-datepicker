@@ -1,9 +1,10 @@
 /* eslint-disable */
 
 import Datepicker from 'datepicker';
-import {closest} from './src/utils';
+import { closest } from './src/utils';
 import en from 'locale/en';
-import {createPopper} from '@popperjs/core';
+import { createPopper } from '@popperjs/core';
+
 let $input1 = document.querySelector('#dp1');
 let $input2 = document.querySelector('#dp2');
 let $bntDestroy = document.querySelector('#destroy');
@@ -19,7 +20,7 @@ let opts = {
     inline: false,
     visible: false,
     locale: en,
-    timepicker: true,
+    timepicker: false,
     // container: '.input-wrap',
     // timepicker: true,
     // maxDate: mDate,
@@ -27,7 +28,9 @@ let opts = {
     isMobile: false,
     // timepicker: true,
     autoClose: false,
-    range: false,
+    range: true,
+    normalizeToDayBounds: true, // false if timepicker is true
+    //timepickerWithSeconds: true,
     toggleSelected: false,
     // position: customPosition,
     // position: 'right center',
@@ -39,19 +42,21 @@ let opts = {
     },
 
     selectedDates: [new Date()],
-    onSelect({date, formattedDate, datepicker}) {
+    onSelect({ date, formattedDate, datepicker }) {
         selected = true;
-        console.log('on select');
+        console.log('on select', date, formattedDate);
     },
     multipleDates: true,
-    dateFormat: 'EEEE, MMMM d, yyyy',
-    onClickDayName({dayIndex, datepicker}) {
+    //dateFormat: 'EEEE, MMMM d, yyyy',
+    dateFormat: 'dd-MMM-yyyy HH:mm:ss',
+    timeFormat: 'HH:mm:ss',
+    onClickDayName({ dayIndex, datepicker }) {
         let month = datepicker.viewDate.getMonth(),
             year = datepicker.viewDate.getFullYear(),
             selected = [],
             days = 31;
 
-        while(days) {
+        while (days) {
             let date = new Date(year, month, days);
 
             if (date.getDay() === dayIndex) {
@@ -71,8 +76,7 @@ let opts = {
 }
 
 
-
-function manualPosition({$datepicker, $target, $pointer, done}) {
+function manualPosition({ $datepicker, $target, $pointer, done }) {
     let coords = $target.getBoundingClientRect(),
         dpHeight = $datepicker.clientHeight,
         dpWidth = $datepicker.clientWidth;
@@ -87,7 +91,7 @@ function manualPosition({$datepicker, $target, $pointer, done}) {
 
 }
 
-function customPosition({$datepicker, $target, $pointer, isViewChange, done}){
+function customPosition({ $datepicker, $target, $pointer, isViewChange, done }) {
     let popper = createPopper($target, $datepicker, {
         placement: 'bottom',
         onFirstUpdate: state => {
@@ -97,12 +101,12 @@ function customPosition({$datepicker, $target, $pointer, isViewChange, done}){
 
             if (!isViewChange) {
 
-            anime({
-                targets: $datepicker,
-                opacity: [0, 1],
-                rotateX: [-90, 0],
-                easing: 'spring(1.3, 80, 5, 0)',
-            })
+                anime({
+                    targets: $datepicker,
+                    opacity: [0, 1],
+                    rotateX: [-90, 0],
+                    easing: 'spring(1.3, 80, 5, 0)',
+                })
             }
         },
         modifiers: [
@@ -156,14 +160,14 @@ $btnUpdate.addEventListener('click', () => {
         // maxDate: new Date('2021-06-27'),
         locale: en,
         buttons: ['today'],
-        selectedDates: dates[Math.floor(Math.random() * dates.length -1)],
+        selectedDates: dates[Math.floor(Math.random() * dates.length - 1)],
         timepicker: !dp1.opts.timepicker,
     })
     toggle = !toggle;
 })
 
 $btnAction.addEventListener('click', () => {
-    dp1.selectDate(new Date(), {silent: true});
+    dp1.selectDate(new Date(), { silent: true });
 });
 
 if (module.hot) {
