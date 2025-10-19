@@ -45,7 +45,7 @@
     "pug": "^3.0.2",
     "rimraf": "^2.7.1",
     "sass": "^1.63.4",
-    "sass-loader": "^13.2.0",
+    "sass-loader": "^16.0.5",
     "style-loader": "^3.3.1",
     "typescript": "^4.5.4",
     "webpack": "^5.65.0",

@@ -57,7 +57,9 @@ export default {
     },
 
     timepicker: false,
+    timepickerWithSeconds: false,
     onlyTimepicker: false,
+    normalizeToDayBounds: false,
     dateTimeSeparator: ' ',
     timeFormat: '',
     minHours: 0,
@@ -66,6 +68,7 @@ export default {
     maxMinutes: 59,
     hoursStep: 1,
     minutesStep: 1,
+    secondsStep: 1,
 
     onSelect: false,
     onChangeViewDate: false,

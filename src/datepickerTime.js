@@ -25,10 +25,10 @@ import consts from './consts';
  *
  */
 export default class DatepickerTime {
-    constructor({opts, dp} = {}) {
+    constructor({ opts, dp } = {}) {
         this.opts = opts;
         this.dp = dp;
-        let {timeFormat} = this.dp.locale;
+        let { timeFormat } = this.dp.locale;
 
         if (timeFormat && (timeFormat.match(getWordBoundaryRegExp('h')) || timeFormat.match(getWordBoundaryRegExp('hh')))) {
             this.ampm = true;
@@ -68,7 +68,7 @@ export default class DatepickerTime {
     }
 
     createElement() {
-        this.$el = createElement({className: classNames('air-datepicker-time', {'-am-pm-': this.dp.ampm})});
+        this.$el = createElement({ className: classNames('air-datepicker-time', { '-am-pm-': this.dp.ampm }) });
     }
 
     destroy() {
@@ -79,8 +79,17 @@ export default class DatepickerTime {
 
     buildHtml() {
         let {
-            ampm, hours, displayHours, minutes, minHours, minMinutes, maxHours, maxMinutes, dayPeriod,
-            opts: {hoursStep, minutesStep}
+            ampm,
+            hours,
+            displayHours,
+            minutes,
+            seconds,
+            minHours,
+            minMinutes,
+            maxHours,
+            maxMinutes,
+            dayPeriod,
+            opts: { hoursStep, minutesStep, secondsStep, timepickerWithSeconds }
         } = this;
 
         this.$el.innerHTML = '' +
@@ -88,6 +97,11 @@ export default class DatepickerTime {
             `   <span class="air-datepicker-time--current-hours">${getLeadingZeroNum(displayHours)}</span>` +
             '   <span class="air-datepicker-time--current-colon">:</span>' +
             `   <span class="air-datepicker-time--current-minutes">${getLeadingZeroNum(minutes)}</span>` +
+            (timepickerWithSeconds ?
+                '   <span class="air-datepicker-time--current-colon">:</span>' +
+                `   <span class="air-datepicker-time--current-seconds">${getLeadingZeroNum(seconds)}</span>`
+                :
+                '') +
             `   ${ampm ? `<span class='air-datepicker-time--current-ampm'>${dayPeriod}</span>` : ''}` +
             '</div>' +
             '<div class="air-datepicker-time--sliders">' +
@@ -99,6 +113,12 @@ export default class DatepickerTime {
             // eslint-disable-next-line max-len
             `      <input type="range" name="minutes" value="${minutes}" min="${minMinutes}" max="${maxMinutes}" step="${minutesStep}"/>` +
             '   </div>' +
+            (timepickerWithSeconds ?
+                '   <div class="air-datepicker-time--row">' +
+                // eslint-disable-next-line max-len
+                `      <input type="range" name="seconds" value="${seconds}" min="${minMinutes}" max="${maxMinutes}" step="${secondsStep}"/>` +
+                '   </div>'
+                : '') +
             '</div>';
     }
 
@@ -110,6 +130,7 @@ export default class DatepickerTime {
         this.$minutes = getElWithContext('[name="minutes"]');
         this.$hoursText = getElWithContext('.air-datepicker-time--current-hours');
         this.$minutesText = getElWithContext('.air-datepicker-time--current-minutes');
+        this.$secondsText = getElWithContext('.air-datepicker-time--current-seconds');
         this.$ampm = getElWithContext('.air-datepicker-time--current-ampm');
     }
 
@@ -123,13 +144,14 @@ export default class DatepickerTime {
         if (!date) return;
         date.setHours(this.hours);
         date.setMinutes(this.minutes);
+        date.setSeconds(this.seconds);
     }
 
     setMinMaxTime(date) {
         this.setMinMaxTimeFromOptions();
 
         if (date) {
-            let {minDate, maxDate} = this.dp;
+            let { minDate, maxDate } = this.dp;
             if (minDate && isSameDate(date, minDate)) {
                 this.setMinTimeFromMinDate(minDate);
             }
@@ -140,37 +162,43 @@ export default class DatepickerTime {
     }
 
     setCurrentTime(date) {
-        let {hours, minutes} = date ? getParsedDate(date) : this;
+        let { hours, minutes, seconds } = date ? getParsedDate(date) : this;
 
         this.hours = clamp(hours, this.minHours, this.maxHours);
         this.minutes = clamp(minutes, this.minMinutes, this.maxMinutes);
+        this.seconds = clamp(seconds, this.minSeconds, this.maxSeconds);
     }
 
     setMinMaxTimeFromOptions() {
         let maxHoursPossible = 23,
             maxMinutesPossible = 59,
-            {minHours, minMinutes, maxHours, maxMinutes} = this.opts;
+            maxSecondsPossible = 59,
+            { minHours, minMinutes, minSeconds, maxHours, maxMinutes, maxSeconds } = this.opts;
 
         this.minHours = clamp(minHours, 0, maxHoursPossible);
         this.minMinutes = clamp(minMinutes, 0, maxMinutesPossible);
+        this.minSeconds = clamp(minSeconds, 0, maxSecondsPossible);
         this.maxHours = clamp(maxHours, 0, maxHoursPossible);
         this.maxMinutes = clamp(maxMinutes, 0, maxMinutesPossible);
+        this.maxSeconds = clamp(maxSeconds, 0, maxSecondsPossible);
     }
 
     setMinTimeFromMinDate(date) {
-        let {lastSelectedDate} = this.dp;
+        let { lastSelectedDate } = this.dp;
 
         this.minHours = date.getHours();
 
         if (lastSelectedDate && lastSelectedDate.getHours() > date.getHours()) {
             this.minMinutes = this.opts.minMinutes;
+            this.minSeconds = this.opts.minSeconds;
         } else {
             this.minMinutes = date.getMinutes();
+            this.minSeconds = date.getSeconds();
         }
     }
 
     setMaxTimeFromMaxDate(date) {
-        let {lastSelectedDate} = this.dp;
+        let { lastSelectedDate } = this.dp;
 
         this.maxHours = date.getHours();
 
@@ -195,7 +223,11 @@ export default class DatepickerTime {
 
     updateText() {
         this.$hoursText.innerHTML = getLeadingZeroNum(this.displayHours);
-        this.$minutesText.innerHTML =  getLeadingZeroNum(this.minutes);
+        this.$minutesText.innerHTML = getLeadingZeroNum(this.minutes);
+
+        if (this.$secondsText) {
+            this.$secondsText.innerHTML = getLeadingZeroNum(this.seconds);
+        }
 
         if (this.ampm) {
             this.$ampm.innerHTML = this.dayPeriod;
@@ -206,7 +238,7 @@ export default class DatepickerTime {
         this.dp.timepickerIsActive = value;
     }
 
-    onChangeSelectedDate = ({date, updateTime = false}) => {
+    onChangeSelectedDate = ({ date, updateTime = false }) => {
         if (!date) return;
 
         // Check if date is minDate or maxDate and set timepicker's time to corresponding values
@@ -232,7 +264,8 @@ export default class DatepickerTime {
 
         this.dp.trigger(consts.eventChangeTime, {
             hours: this.hours,
-            minutes: this.minutes
+            minutes: this.minutes,
+            seconds: this.seconds
         });
     }
 
@@ -242,6 +275,10 @@ export default class DatepickerTime {
 
         if (name === 'hours') {
             $el = this.$hoursText;
+        }
+
+        if (name === 'seconds') {
+            $el = this.$secondsText;
         }
 
         $el.classList.toggle('-focus-');
@@ -258,7 +295,7 @@ export default class DatepickerTime {
     set hours(val) {
         this._hours = val;
 
-        let {hours, dayPeriod} = getDayPeriodFromHours24(val);
+        let { hours, dayPeriod } = getDayPeriodFromHours24(val);
 
         this.displayHours = this.ampm ? hours : val;
         this.dayPeriod = dayPeriod;
