@@ -42,7 +42,9 @@ async function run() {
     }
 
     try {
-        await execAsync('set NODE_ENV="production"&& webpack');
+        await execAsync('webpack', {
+            env: {...process.env, NODE_ENV: 'production'}
+        });
         log.success('Bundle compiled successfully');
     } catch (e) {
         log.error(`Bundle compilation error: ${e}`);

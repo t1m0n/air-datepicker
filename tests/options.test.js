@@ -71,6 +71,22 @@ describe('OPTIONS TESTS', () => {
         });
     });
 
+    describe('currentDate', () => {
+        it('should change current date', () => {
+
+            let today = new Date();
+            let yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            init({currentDate: yesterday});
+
+            let $currentDay = $datepicker.querySelectorAll('.-current-');
+
+            expect($currentDay).toHaveLength(1);
+            expect($currentDay[0]).toHaveTextContent(yesterday.getDate().toString());
+        });
+    });
+
     describe('startDate', () => {
         it('should change start date', () => {
             let startDate = new Date('2021-02-04');

@@ -87,6 +87,7 @@ export default {
     optsInline: 'Makes the calendar to be permanently visible',
     optsLocale: 'Language of the calendar. Available locales are in {dir}.',
     optsLocale2: 'For more information about the localization structure, see in corresponding {link}.',
+    optsCurrentDate: 'Sets the current date highlighted on the calendar. ',
     optsStartDate: 'Sets the start view date of calendar. ',
     optsFirstDay: 'The index of the day from which the week begins. Possible values are from 0 (Sunday) to 6 (Saturday). By default, it is taken from the localization, if the value is passed here, it will have a higher priority.',
     optsWeekends: 'Indexes of the days that will be considered a weekend. The {className} class will be added to them. By default, this is Saturday and Sunday.',

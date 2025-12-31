@@ -71,6 +71,9 @@ function Docs({} = {}) {
                                         <Code>{examples.optsLocaleBasic}</Code>
                                     </Example>
                                 </Param>
+                                <Param name='currentDate' type='Date' defaultValue='new Date()'>
+                                    <Paragraph id='optsCurrentDate'/>
+                                </Param>
                                 <Param name='startDate' type='Date | string | number' defaultValue='new Date()'>
                                     <Paragraph id='optsStartDate'/>
                                 </Param>

@@ -67,7 +67,7 @@ export default class Datepicker {
         this.inited = false;
         this.visible = false;
 
-        this.viewDate = createDate(this.opts.startDate);
+        this.viewDate = createDate(startDate);
         this.focusDate = false;
         this.initialReadonly = this.$el.getAttribute('readonly');
         this.customHide = false;

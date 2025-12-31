@@ -72,7 +72,7 @@ export default class DatepickerCell {
     }
 
     _getClassName() {
-        let currentDate = new Date();
+        let currentDate = this.opts.currentDate || new Date();
         let {selectOtherMonths, selectOtherYears} = this.opts;
         let {minDate, maxDate, isDateDisabled} = this.dp;
         let {day} = getParsedDate(this.date);
