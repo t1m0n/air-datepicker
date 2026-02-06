@@ -7,6 +7,7 @@
     "prod": "cross-env NODE_ENV=production webpack",
     "browser": "open-cli http://localhost:8080 -- 'chrome' ",
     "build": "node scripts/build.js",
+    "build:dev": "cross-env NODE_ENV=development node scripts/build.js",
     "lint-js": "eslint --fix ./src/*.js",
     "test": "jest",
     "check-gzip-size": "node scripts/checkGzipSize.js"

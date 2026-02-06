@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = {
+var _default = exports.default = {
   days: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
   daysShort: ['Nie', 'Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob'],
   daysMin: ['Nd', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
@@ -12,8 +12,7 @@ var _default = {
   monthsShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
   today: 'Dzisiaj',
   clear: 'Wyczyść',
-  dateFormat: 'yyyy-MM-dd',
+  dateFormat: 'YYYY-MM-DD',
   timeFormat: 'hh:mm:aa',
   firstDay: 1
 };
-exports.default = _default;

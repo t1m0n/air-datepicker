@@ -1,10 +1,11 @@
-import localeRu from './locale/ru';
+import localeEn from './locale/en';
 import consts from './consts';
 
 export default {
     classes: '',
     inline: false,
-    locale: localeRu,
+    autoSize: true,
+    locale: localeEn,
     startDate: new Date(),
     firstDay: '',
     weekends: [6, 0],
@@ -74,4 +75,12 @@ export default {
     onShow: false,
     onHide: false,
     onClickDayName: false,
+    
+    minDays: 1,
+    maxDays: 0,
+
+    queueMode: false,
+    includeTemporaryInSelected: false,
+    allowExtendRange: true,
+    nonStrictRanges: false
 };

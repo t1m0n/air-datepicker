@@ -6,7 +6,7 @@ export default {
     monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
     today: '今天',
     clear: '清除',
-    dateFormat: 'yyyy-MM-dd',
+    dateFormat: 'YYYY-MM-DD',
     timeFormat: 'HH:mm',
     firstDay: 1
 };

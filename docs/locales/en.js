@@ -185,6 +185,12 @@ export default {
     optsHoursStep: 'Hours step.',
     optsMinutesStep: 'Minutes step.',
     optsFixedHeight: 'Sets fixed height of the calendar. If {trueField} then there will be 6 weeks rendered in every month.',
+    optsMinDays: 'The minimum number of days that can be selected at once (e.g. when selecting a date range).',
+    optsMaxDays: 'The maximum number of days that can be selected at once (e.g. when selecting a date range).',
+    optsQueueMode: 'Enables queue mode when selecting dates. If the allowed number of selected dates is exceeded, the earliest dates are deleted automatically.',
+    optsIncludeTemporaryInSelected: 'Determines whether dates are considered selected before the minDays and maxDays restrictions are met.',
+    optsAllowExtendRange: 'Allows you to automatically expand the date range when clicking outside it, taking into account minDays and maxDays.',
+    optsNonStictRanges: 'Defines the behavior of a range when there are blocked dates inside it.',
 
     localeTitle: 'Localization',
     localeNote: 'Starting from version 3.0.0, the calendar language must be passed as an object, instead of a string, as it was before. You can pass one of the available localizations or create your own. The available localizations are located in the {dirName} directory',

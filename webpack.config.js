@@ -21,7 +21,8 @@ let plugins = [
 
 let buildPlugins = [
     new MiniCssExtractPlugin({
-        filename: `${NAME}.css`,
+        filename: 
+        `${NAME}.css`
     }),
 ];
 
@@ -42,6 +43,9 @@ let config = {
     mode: dev ? 'development' : 'production',
     entry: entry,
     devtool: dev ? 'eval-source-map' : false,
+    optimization: {
+        minimize: true,
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: dev ? 'js/[name].js' : `${NAME}.js`,

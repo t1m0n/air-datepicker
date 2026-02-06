@@ -128,7 +128,7 @@
 
   //  Main axis
   // -------------------------
-
+  .-top- &,
   .-top-left- &,
   .-top-center- &,
   .-top-right- &,
@@ -139,6 +139,7 @@
     }
   }
 
+  .-right- &,
   .-right-top- &,
   .-right-center- &,
   .-right-bottom- &,
@@ -149,6 +150,7 @@
     }
   }
 
+  .-bottom- &,
   .-bottom-left- &,
   .-bottom-center- &,
   .-bottom-right- &,
@@ -159,6 +161,7 @@
     }
   }
 
+  .-left- &,
   .-left-top- &,
   .-left-center- &,
   .-left-bottom- &,
@@ -182,7 +185,7 @@
     left: calc(50% - var(--adp-pointer-size) / 2);
   }
 
-  .-left-top- &, .-right-top- & {
+  .-left- &, .-left-top- &, .-right-top- & {
     top: var(--adp-pointer-offset);
   }
   .-left-bottom- &, .-right-bottom- & {

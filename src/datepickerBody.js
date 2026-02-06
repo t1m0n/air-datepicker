@@ -18,7 +18,7 @@ import DatepickerCell from './datepickerCell';
 import './datepickerBody.scss';
 
 let templates = {
-    [consts.days]:'' +
+    [consts.days]: '' +
         '<div class="air-datepicker-body--day-names"></div>' +
         `<div class="air-datepicker-body--cells -${consts.days}-"></div>`,
     [consts.months]: `<div class="air-datepicker-body--cells -${consts.months}-"></div>`,
@@ -28,7 +28,7 @@ let templates = {
 const cellClassName = '.air-datepicker-cell';
 
 export default class DatepickerBody {
-    constructor({dp, type, opts}) {
+    constructor({ dp, type, opts }) {
         this.dp = dp;
         this.type = type;
         this.opts = opts;
@@ -51,7 +51,7 @@ export default class DatepickerBody {
     }
 
     _bindEvents() {
-        let {range, dynamicRange} = this.opts;
+        let { range, dynamicRange } = this.opts;
 
         addEventListener(this.$el, 'mouseover', this.onMouseOverCell);
         addEventListener(this.$el, 'mouseout', this.onMouseOutCell);
@@ -84,7 +84,7 @@ export default class DatepickerBody {
     _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
         let html = '',
             isWeekend = this.dp.isWeekend,
-            {onClickDayName} = this.opts,
+            { onClickDayName } = this.opts,
             curDay = firstDay,
             totalDays = 7,
             i = 0;
@@ -106,11 +106,11 @@ export default class DatepickerBody {
     }
 
     renderDayNames() {
-        this.$names.innerHTML =  this._getDayNamesHtml();
+        this.$names.innerHTML = this._getDayNamesHtml();
     }
 
     _generateCell(date) {
-        let {type, dp, opts} = this;
+        let { type, dp, opts } = this;
         return new DatepickerCell({
             type,
             dp,
@@ -159,13 +159,13 @@ export default class DatepickerBody {
             this.dp.down();
             return;
         }
-
-        let alreadySelectedDate = this.dp._checkIfDateIsSelected(cell.date, cell.type);
+        let date = this.dp.lastDateInRange ? this.dp.lastDateInRange : cell.date;
+        let alreadySelectedDate = this.dp._checkIfDateIsSelected(date, cell.type);
 
         if (alreadySelectedDate) {
-            this.dp._handleAlreadySelectedDates(alreadySelectedDate, cell.date);
+            this.dp._handleAlreadySelectedDates(alreadySelectedDate, date);
         } else {
-            this.dp.selectDate(cell.date);
+            this.dp.selectDate(date);
         }
     }
 
@@ -197,7 +197,7 @@ export default class DatepickerBody {
     }
 
     onClickBody = (e) => {
-        let {onClickDayName} = this.opts;
+        let { onClickDayName } = this.opts;
         let target = e.target;
 
         if (target.closest(cellClassName)) {
@@ -229,17 +229,17 @@ export default class DatepickerBody {
 
         let $cell = closest(e.target, cellClassName),
             cell = $cell && $cell.adpCell,
-            {selectedDates, rangeDateTo, rangeDateFrom} = this.dp;
+            { selectedDates, rangeDateTo, rangeDateFrom } = this.dp;
 
         if (!cell || cell.isDisabled) return;
 
-        let {date} = cell;
+        let { date } = cell;
 
         // Allow user to change selected range
         if (selectedDates.length === 2) {
             // Add hours and minute to new selected date, to update time sliders properly
             if (this.rangeFromFocused && !isDateBigger(date, rangeDateTo)) {
-                let {hours, minutes} = getParsedDate(rangeDateFrom);
+                let { hours, minutes } = getParsedDate(rangeDateFrom);
                 date.setHours(hours);
                 date.setMinutes(minutes);
 
@@ -247,7 +247,7 @@ export default class DatepickerBody {
                 this.dp.replaceDate(rangeDateFrom, date);
             }
             if (this.rangeToFocused && !isDateSmaller(date, rangeDateFrom)) {
-                let {hours, minutes} = getParsedDate(rangeDateTo);
+                let { hours, minutes } = getParsedDate(rangeDateTo);
                 date.setHours(hours);
                 date.setMinutes(minutes);
 
@@ -303,9 +303,13 @@ export default class DatepickerBody {
 
 
     static getDaysDates(dp, cb) {
-        let {viewDate, opts: {fixedHeight}, locale: {firstDay}} = dp,
+        let {
+            viewDate,
+            opts: { fixedHeight },
+            locale: { firstDay }
+        } = dp,
             totalMonthDays = getDaysCount(viewDate),
-            {year, month} = getParsedDate(viewDate),
+            { year, month } = getParsedDate(viewDate),
             firstMonthDay = new Date(year, month, 1),
             lastMonthDay = new Date(year, month, totalMonthDays),
             daysFromPrevMonth = firstMonthDay.getDay() - firstDay,
@@ -317,11 +321,11 @@ export default class DatepickerBody {
         let firstRenderDate = subDays(firstMonthDay, daysFromPrevMonth),
             totalRenderDays = totalMonthDays + daysFromPrevMonth + daysFromNextMonth,
             firstRenderDayDate = firstRenderDate.getDate(),
-            {year:renderYear, month: renderMonth} = getParsedDate(firstRenderDate),
+            { year: renderYear, month: renderMonth } = getParsedDate(firstRenderDate),
             i = 0;
 
         if (fixedHeight) {
-            totalRenderDays = 6 * 7; // Render 6 weeks in every month
+            totalRenderDays = 42 - daysFromPrevMonth;
         }
 
         const dates = [];
@@ -338,9 +342,10 @@ export default class DatepickerBody {
         return dates;
     }
 
+
     static getMonthsDates(dp, cb) {
         let totalMonths = 12,
-            {year} = dp.parsedViewDate,
+            { year } = dp.parsedViewDate,
             currentMonth = 0,
             dates = [];
 

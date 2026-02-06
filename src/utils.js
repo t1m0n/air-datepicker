@@ -82,41 +82,55 @@ export function getDaysCount(date) {
 }
 
 /**
- * Get detailed date object
+ * Get detailed date parts for formatting
+ *
  * @param {Date} date
- * @return {{
- *  date: number,
- *  hours: number,
- *  fullDate: (string|*),
- *  month: number,
- *  fullHours: (string|*),
- *  year: number,
- *  minutes: number,
- *  fullMonth: string,
- *  day: number,
- *  fullMinutes: (string|*),
- *  hours12: number,
- *  dayPeriod: 'am' | 'pm'
+ * @returns {{
+ *   year: number,
+ *   month: number,              // 0–11
+ *   date: number,               // 1–31
+ *   day: number,                // 0–6 (Sun–Sat)
+ *
+ *   hours: number,              // 0–23
+ *   hours12: number,            // 1–12
+ *   minutes: number,            // 0–59
+ *   seconds: number,            // 0–59
+ *   milliseconds: number,       // 0–999
+ *
+ *   fullMonth: string,          // 01–12
+ *   fullDate: string,           // 01–31
+ *   fullHours: string,          // 00–23
+ *   fullHours12: string,        // 01–12
+ *   fullMinutes: string,        // 00–59
+ *   fullSeconds: string,        // 00–59
+ *
+ *   dayPeriod: 'am' | 'pm'
  * }}
  */
 export function getParsedDate(date) {
+
     let hours = date.getHours(),
         {hours: hours12, dayPeriod} = getDayPeriodFromHours24(hours);
 
     return {
         year: date.getFullYear(),
         month: date.getMonth(),
-        fullMonth: (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1, // One based
         date: date.getDate(),
-        fullDate: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
         day: date.getDay(),
         hours,
-        fullHours: getLeadingZeroNum(hours),
-        hours12,
-        dayPeriod,
-        fullHours12: getLeadingZeroNum(hours12),
         minutes: date.getMinutes(),
-        fullMinutes:  date.getMinutes() < 10 ? '0' + date.getMinutes() :  date.getMinutes()
+        seconds: date.getSeconds(),
+        milliseconds: date.getMilliseconds(),
+
+        fullMonth: String(date.getMonth() + 1).padStart(2, '0'),
+        fullDate: String(date.getDate()).padStart(2, '0'),
+        fullHours: String(hours).padStart(2, '0'),
+        fullHours12: String(hours12).padStart(2, '0'),
+        fullMinutes: String(date.getMinutes()).padStart(2, '0'),
+        fullSeconds: String(date.getSeconds()).padStart(2, '0'),
+
+        hours12,
+        dayPeriod
     };
 }
 
@@ -326,7 +340,7 @@ export function clamp(val, min, max,) {
 export function deepMerge(target, ...objects) {
     objects.filter(o => o).forEach((obj) => {
         for (let [key, value] of Object.entries(obj)) {
-            let arrayOrObject = value !== undefined ? value.toString() === ('[object Object]' || '[object Array]') : false;
+            let arrayOrObject = value !== undefined ? value?.toString() === ('[object Object]' || '[object Array]') : false;
 
             if (arrayOrObject) {
                 let targetType = target[key] !== undefined ? target[key].toString() : undefined,
@@ -391,3 +405,55 @@ export function getWordBoundaryRegExp(sign) {
 
     return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
 }
+
+
+export function ordinal(n) {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+export function getDayOfYear(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff = date - start;
+    return Math.floor(diff / 86400000);
+}
+
+export function getWeek(date) {
+    const d = new Date(date);
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+    const yearStart = new Date(d.getFullYear(),0,1);
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+export function getWeekYear(date) {
+    const d = new Date(date);
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+    return d.getFullYear();
+}
+
+export function getTimezoneOffset(date, colon = true) {
+    const offset = -date.getTimezoneOffset();
+    const sign = offset >= 0 ? '+' : '-';
+    const abs = Math.abs(offset);
+    const h = String(Math.floor(abs / 60)).padStart(2, '0');
+    const m = String(abs % 60).padStart(2, '0');
+    return colon ? `${sign}${h}:${m}` : `${sign}${h}${m}`;
+}
+
+export function formatExpandedYear(year, len = 6) {
+    const sign = year >= 0 ? '+' : '-';
+    return sign + String(Math.abs(year)).padStart(len - 1, '0');
+}
+
+export function addDays(date, days = 0) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
+export function dateDifference(date1, date2) {
+        return Math.ceil(Math.abs(date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+};
+

@@ -49,6 +49,16 @@
     }
   }
 
+  &.-temporary-, &.-temporary-.-selected- {
+    color: inherit;
+    background: inherit;
+    border: 1px solid var(--adp-cell-border-color-temporary);
+    background-color: var(--adp-cell-background-color-temporary);
+    &:hover, &.-focus- {
+      background: var(--adp-cell-background-color-temporary-hover);
+    }
+  }
+
   &.-in-range- {
     background: var(--adp-cell-background-color-in-range);
     border-radius: 0;
@@ -94,7 +104,7 @@
    ------------------------------------------------- */
 
 .air-datepicker-cell.-day- {
-  &.-other-month-, {
+  &.-other-month- {
     @extend %otherMonth;
   }
 }
@@ -103,7 +113,7 @@
    ------------------------------------------------- */
 
 .air-datepicker-cell.-year- {
-  &.-other-decade-, {
+  &.-other-decade- {
     @extend %otherMonth;
   }
 }

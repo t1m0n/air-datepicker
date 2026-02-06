@@ -65,6 +65,10 @@
   --adp-cell-background-color-in-range-hover: rgba(92, 196, 239, 0.2);
   --adp-cell-border-color-in-range: var(--adp-cell-background-color-selected);
 
+  --adp-cell-border-color-temporary: var(--adp-cell-background-color-selected);
+  --adp-cell-background-color-temporary:rgba(92, 196, 239, 0.1);
+  --adp-cell-background-color-temporary-hover:rgba(92, 196, 239, 0.2);
+
   --adp-btn-height: 32px;
   --adp-btn-color: var(--adp-accent-color);
   --adp-btn-color-hover: var(--adp-color);
