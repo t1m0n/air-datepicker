@@ -239,6 +239,13 @@ new AirDatepicker('#el', {
 })
 `
 
+export let exampleAvailableDatesUsage = () =>
+  `new AirDatepicker('#el', {
+    availableDates: ['2023-05-22','2023-06-23','2023-06-26'],
+    minDate: '2023-05-22',
+    maxDate: '2023-06-26'
+})`
+
 export let optsNavTitlesDefaults =
 `let navTitlesDefaults = {
     days: 'MMMM, <i>yyyy</i>',
@@ -251,6 +258,11 @@ export let optsNavTitlesUsage =
     navTitles: {
         days: '<strong>Choose date</strong> MM, yyyy'
     }
+})`
+
+export let optsAvailableDatesUsage =
+  `new AirDatepicker('#el', {
+    availableDates: ['2023-06-22','2023-06-23','2023-06-26'],
 })`
 
 export let eventsOnRenderCell =
@@ -285,10 +297,10 @@ export let basicPositionCallback =
         let coords = $target.getBoundingClientRect(),
             dpHeight = $datepicker.clientHeight,
             dpWidth = $datepicker.clientWidth;
-    
+
         let top = coords.y + coords.height / 2 + window.scrollY - dpHeight / 2;
         let left = coords.x + coords.width / 2 - dpWidth / 2;
-    
+
         $datepicker.style.left = \`\${left}px\`;
         $datepicker.style.top = \`\${top}px\`;
     

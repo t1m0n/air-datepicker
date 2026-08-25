@@ -80,6 +80,8 @@ export default {
     examplePositionAnimeTitle: 'Create show\\hide animation',
     examplePositionAnimeNote1: 'Air Datepicker allows you to add your own hide and show animations. You can also do it yourself or use any library for animations.',
     examplePositionAnimeNote2: 'For the next example, let\'s take the {anime} library and combine it with {popper}',
+    exampleAvailableDatesUsage: 'Disabled dates',
+    exampleAvailableDatesUsage2: 'To allow selection of only some dates, you need to pass parameters as in the table below.',
 
     docsOptionsTitle: 'Options',
     docsIntro: 'Air Datepicker has a large amount of options, which allows you to customize it to your needs. This page contains all the parameters with a detailed description that the calendar accepts.',
@@ -185,6 +187,8 @@ export default {
     optsHoursStep: 'Hours step.',
     optsMinutesStep: 'Minutes step.',
     optsFixedHeight: 'Sets fixed height of the calendar. If {trueField} then there will be 6 weeks rendered in every month.',
+    optsAvailableDates: 'Used to enable only certain dates. Other dates will be disabled for selection.',
+    optsAvailableDates2: 'Usage:',
 
     localeTitle: 'Localization',
     localeNote: 'Starting from version 3.0.0, the calendar language must be passed as an object, instead of a string, as it was before. You can pass one of the available localizations or create your own. The available localizations are located in the {dirName} directory',

@@ -185,6 +185,10 @@ export default class DatepickerKeyboard {
             }
             if (focusDate) {
                 let alreadySelectedDate = dp._checkIfDateIsSelected(focusDate);
+                let isAvailableDate = dp._checkIfDateIsAvailable(focusDate);
+                if (!isAvailableDate) {
+                    return;
+                }
                 if (!alreadySelectedDate) {
                     dp.selectDate(focusDate);
                 } else {

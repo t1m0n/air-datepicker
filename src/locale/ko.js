@@ -9,4 +9,5 @@ export default {
     dateFormat: 'MM/dd/yyyy',
     timeFormat: 'hh:mm aa',
     firstDay: 0,
+    selected: '선택된'
 };

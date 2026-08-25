@@ -8,5 +8,6 @@ export default {
     clear: 'حذف',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'hh:mm aa',
-    firstDay: 0
+    firstDay: 0,
+    selected: 'تم اختياره'
 };

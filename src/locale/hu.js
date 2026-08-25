@@ -8,5 +8,6 @@ export default {
     clear: 'Törlés',
     dateFormat: 'yyyy-MM-dd',
     timeFormat: 'hh:mm aa',
-    firstDay: 1
-}
+    firstDay: 1,
+    selected: 'kiválasztott'
+};

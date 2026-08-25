@@ -8,5 +8,6 @@ export default {
     clear: '清除',
     dateFormat: 'yyyy-MM-dd',
     timeFormat: 'HH:mm',
-    firstDay: 1
+    firstDay: 1,
+    selected: '已选择'
 };

@@ -8,5 +8,6 @@ export default {
     clear: 'Очистити',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
-    firstDay: 1
+    firstDay: 1,
+    selected: 'вибрано'
 };

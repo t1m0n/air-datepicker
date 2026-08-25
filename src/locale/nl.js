@@ -8,5 +8,6 @@ export default {
     clear: 'Legen',
     dateFormat: 'dd-MM-yyyy',
     timeFormat: 'HH:mm',
-    firstDay: 0
+    firstDay: 0,
+    selected: 'gekozen'
 };

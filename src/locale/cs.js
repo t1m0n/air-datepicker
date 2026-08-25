@@ -8,5 +8,6 @@ export default {
     clear: 'Vymazat',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
-    firstDay: 1
+    firstDay: 1,
+    selected: 'vybraný'
 };

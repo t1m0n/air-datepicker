@@ -13,6 +13,7 @@ import {
     isDateBigger,
     isDateSmaller,
     isSameDate,
+    generateId,
 } from './utils';
 import DatepickerBody from './datepickerBody';
 import DatepickerNav from './datepickerNav';
@@ -48,7 +49,9 @@ export default class Datepicker {
 
         if (!this.$el) return;
 
-        this.$datepicker = createElement({className: 'air-datepicker'});
+        const id = generateId();
+
+        this.$datepicker = createElement({className: 'air-datepicker', id, attrs: {'role': 'application'}});
         this.opts = deepMerge({}, defaults, opts);
         this.$customContainer = this.opts.container ? getEl(this.opts.container) : false;
         this.$altField = getEl(this.opts.altField || false);
@@ -63,6 +66,11 @@ export default class Datepicker {
         if (this.$el.nodeName === 'INPUT') {
             this.elIsInput = true;
         }
+
+        if (this.elIsInput) {
+            this.$el.setAttribute('aria-owns', id);
+        }
+
 
         this.inited = false;
         this.visible = false;
@@ -119,6 +127,7 @@ export default class Datepicker {
         this._handleLocale();
         this._bindSubEvents();
         this._createMinMaxDates();
+        this._createAvailableDates();
         this._limitViewDateByMaxMinDates();
 
         if (this.elIsInput) {
@@ -246,6 +255,20 @@ export default class Datepicker {
 
         this.minDate = minDate ? createDate(minDate) : false;
         this.maxDate = maxDate ? createDate(maxDate) : false;
+    }
+
+    _createAvailableDates() {
+        let {availableDates} = this.opts;
+        let dates = [];
+        if (Array.isArray(availableDates)) {
+            availableDates.forEach((givenDate) => {
+                let date = createDate(givenDate);
+                if (date) {
+                    dates.push(date);
+                }
+            });
+        }
+        this.availableDates = dates;
     }
 
     _addTimepicker() {
@@ -819,14 +842,14 @@ export default class Datepicker {
 
     _getInputValue = (dateFormat) => {
         let {selectedDates, opts} = this,
-            {multipleDates, multipleDatesSeparator} = opts;
+            {multipleDates, multipleDatesSeparator, range} = opts;
 
         if (!selectedDates.length) return '';
 
         let formatIsFunction = typeof dateFormat === 'function';
 
         let value = formatIsFunction
-            ? dateFormat(multipleDates ? selectedDates : selectedDates[0])
+            ? dateFormat(multipleDates || range ? selectedDates : selectedDates[0])
             : selectedDates.map((date) => {
                 return this.formatDate(date, dateFormat);
             });
@@ -880,6 +903,16 @@ export default class Datepicker {
         });
 
         return alreadySelectedDate;
+    }
+
+    _checkIfDateIsAvailable = (date, cellType = consts.days) => {
+        let isAvailableDate = true;
+
+        if (Array.isArray(this.availableDates) && this.availableDates.length) {
+            isAvailableDate = this.availableDates.some(availableDate => isSameDate(date, availableDate, cellType));
+        }
+
+        return isAvailableDate;
     }
 
     _handleAlreadySelectedDates(alreadySelectedDate, cellDate) {
@@ -1179,6 +1212,10 @@ export default class Datepicker {
                     this.setPosition();
                 }
             }
+        }
+
+        if (this.opts.availableDates) {
+            this._createAvailableDates();
         }
 
         if (!shouldUpdateDOM) return;

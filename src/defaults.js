@@ -74,4 +74,5 @@ export default {
     onShow: false,
     onHide: false,
     onClickDayName: false,
+    availableDates: undefined,
 };

@@ -8,5 +8,6 @@ export default {
     clear: 'Clear',
     dateFormat: 'mm/dd/yyyy',
     timeFormat: 'hh:ii aa',
-    firstDay: 0
+    firstDay: 0,
+    selected: 'selected',
 };

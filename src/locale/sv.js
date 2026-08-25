@@ -8,5 +8,6 @@ export default {
     clear: 'Nollställ',
     dateFormat: 'yyyy-MM-dd',
     timeFormat: 'HH:mm',
-    firstDay: 1
+    firstDay: 1,
+    selected: 'vald'
 };

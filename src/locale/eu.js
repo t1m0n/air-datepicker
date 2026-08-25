@@ -8,5 +8,6 @@ export default {
     clear: 'Garbitu',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'hh:mm aa',
-    firstDay: 1
+    firstDay: 1,
+    selected: 'hautatua'
 };

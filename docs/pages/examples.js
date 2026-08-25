@@ -21,6 +21,7 @@ import css from './examples.module.scss';
 import anime from 'animejs';
 import {ExampleDisabledRange} from 'examples/snippets/ExampleDisabledRange';
 import {disabledRangeDateExample, disabledRangeDateExampleCSS} from 'examples/code/disabledRangeDateExample';
+import {exampleAvailableDatesUsage} from "examples/code/commonExamples";
 
 const PopperLink = () => {
     return <Link href={'https://popper.js.org/'} target={'_blank'}>Popper.js</Link>
@@ -517,6 +518,19 @@ export default function Examples() {
                                     <Code>{code.exampleButtonsAdvance(messages)}</Code>
                                 </Example>
                             </Section.SubSection>
+                        </Section>
+                        <Section title={'exampleAvailableDatesUsage'}>
+                            <Paragraph id='exampleAvailableDatesUsage2' />
+
+                            <Example>
+                                <AirDatepicker
+                                    inline
+                                    availableDates={['2023-05-22','2023-06-23','2023-06-26']}
+                                    minDate={'2023-05-22'}
+                                    maxDate={'2023-06-26'}
+                                />
+                                <Code>{code.exampleAvailableDatesUsage()}</Code>
+                            </Example>
                         </Section>
                     </main>
                 </ContentGrid>

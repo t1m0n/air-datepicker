@@ -9,4 +9,5 @@ export default {
     dateFormat: 'yyyy/MM/dd',
     timeFormat: 'HH:mm',
     firstDay: 0,
+    selected: '選択された'
 };

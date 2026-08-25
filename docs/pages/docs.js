@@ -18,7 +18,7 @@ import enLocaleText from 'examples/locales/en';
 import Head from 'next/head';
 import usePageTitle from 'hooks/usePageTitle';
 import {
-    eventsOnRenderCell,
+    eventsOnRenderCell, optsAvailableDatesUsage,
     optsButtonsExample,
     optsButtonsShape, optsDateFormatFunc,
     optsNavTitlesDefaults,
@@ -405,6 +405,13 @@ function Docs({} = {}) {
                                 </Param>
                                 <Param name={'minutesStep'} type={'number'} defaultValue={'1'}>
                                     <Paragraph id={'optsMinutesStep'}/>
+                                </Param>
+                                <Param name={'availableDates'} type={'string[]'} defaultValue={'undefined'}>
+                                    <Paragraph id={'optsAvailableDates'} />
+                                    <Paragraph id={'optsAvailableDates2'} />
+                                    <Example>
+                                        <Code>{examples.optsAvailableDatesUsage}</Code>
+                                    </Example>
                                 </Param>
                             </Param.List>
                         </Section>

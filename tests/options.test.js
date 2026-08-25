@@ -172,6 +172,65 @@ describe('OPTIONS TESTS', () => {
                 done();
             });
         });
+
+        it('should format both dates in range mode with default separator', (done) => {
+            init({
+                range: true,
+                dateFormat: 'dd.MM.yyyy',
+            });
+
+            dp.selectDate(['2023-10-10', '2023-10-22']).then(() => {
+                expect(dp.$el.value).toEqual('10.10.2023, 22.10.2023');
+                done();
+            });
+        });
+
+        it('should use multipleDatesSeparator between range dates', (done) => {
+            init({
+                range: true,
+                dateFormat: 'dd.MM.yyyy',
+                multipleDatesSeparator: ' - ',
+            });
+
+            dp.selectDate(['2023-10-10', '2023-10-22']).then(() => {
+                expect(dp.$el.value).toEqual('10.10.2023 - 22.10.2023');
+                done();
+            });
+        });
+
+        it('should pass array of dates to dateFormat function when range is true', (done) => {
+            const received = [];
+            init({
+                range: true,
+                dateFormat: (dates) => {
+                    received.push(dates);
+                    return 'range-fn';
+                },
+            });
+
+            dp.selectDate(['2023-10-10', '2023-10-22']).then(() => {
+                expect(Array.isArray(received[received.length - 1])).toBe(true);
+                expect(received[received.length - 1]).toHaveLength(2);
+                expect(dp.$el.value).toEqual('range-fn');
+                done();
+            });
+        });
+
+        it('should pass one-item array to dateFormat function when only range start is selected', (done) => {
+            init({
+                range: true,
+                dateFormat: (dates) => {
+                    expect(Array.isArray(dates)).toBe(true);
+                    expect(dates).toHaveLength(1);
+                    return 'single-in-range';
+                },
+            });
+
+            dp.selectDate('2023-10-10').then(() => {
+                expect(dp.$el.value).toEqual('single-in-range');
+                done();
+            });
+        });
     });
 
 

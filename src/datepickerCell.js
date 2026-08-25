@@ -58,6 +58,15 @@ export default class DatepickerCell {
     _createElement() {
         let {year, month, fullMonth, date, fullDate} = getParsedDate(this.date);
         let extraAttrs = this.customData?.attrs || {};
+        let format = 'EEEE, MMMM d, yyyy';
+
+        if (this.singleType === 'month') {
+            format = 'MMMM';
+        } else if (this.singleType === 'year') {
+            format = 'yyyy';
+        }
+
+        const ariaLabel = this.dp.formatDate(this.date, format);
 
         this.$cell = createElement({
             attrs: {
@@ -65,6 +74,11 @@ export default class DatepickerCell {
                 'data-month': month,
                 'data-date': date,
                 'data-iso-date': `${year}-${fullMonth}-${fullDate}`,
+                'aria-label': ariaLabel,
+                'data-aria-label': ariaLabel,
+                'id': this.date.getTime(),
+                'role': 'button',
+                'aria-disabled': this.singleType === 'day' && !this.dp._checkIfDateIsAvailable(this.date),
                 ...extraAttrs,
             }
         });
@@ -95,7 +109,7 @@ export default class DatepickerCell {
                 classNameType = classNames({
                     '-weekend-': this.dp.isWeekend(day),
                     '-other-month-': this.isOtherMonth,
-                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || isDisabled
+                    '-disabled-': this.isOtherMonth && !selectOtherMonths || isOutOfMinMaxRange || isDisabled || !this.dp._checkIfDateIsAvailable(this.date)
                 });
                 break;
             case consts.months:
@@ -169,6 +183,7 @@ export default class DatepickerCell {
     focus = () => {
         this.$cell.classList.add('-focus-');
         this.focused = true;
+        this.dp.$el.setAttribute('aria-activedescendant', this.$cell.getAttribute('id'));
     }
 
     removeFocus = () => {
@@ -179,11 +194,13 @@ export default class DatepickerCell {
     select = () => {
         this.$cell.classList.add('-selected-');
         this.selected = true;
+        this.$cell.setAttribute('aria-label', this.$cell.getAttribute('data-aria-label') + `, ${this.dp.locale?.selected || 'selected'}`);
     }
 
     removeSelect = () => {
         this.$cell.classList.remove('-selected-', '-range-from-', '-range-to-');
         this.selected = false;
+        this.$cell.setAttribute('aria-label', this.$cell.getAttribute('data-aria-label'));
     }
 
     _handleRangeStatus() {
@@ -212,6 +229,10 @@ export default class DatepickerCell {
 
         if (classes) {
             this.$cell.classList.add(...classes.split(' '));
+        }
+
+        if (this.$cell.classList.contains('-in-range-')) {
+            this.$cell.setAttribute('aria-label', this.$cell.getAttribute('data-aria-label') + `, ${this.dp.locale?.selected || 'selected'}`);
         }
     }
 
