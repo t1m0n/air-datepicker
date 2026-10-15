@@ -805,7 +805,7 @@ export default class Datepicker {
         this.$datepicker.style.cssText = `left: ${left + scrollLeft}px; top: ${top + scrollTop}px`;
     }
 
-    _setInputValue = () => {
+    _setInputValue = ({silent} = {}) => {
         let {opts, $altField, locale: {dateFormat}} = this,
             {altFieldDateFormat, altField} = opts;
 
@@ -814,7 +814,9 @@ export default class Datepicker {
         }
 
         this.$el.value = this._getInputValue(dateFormat);
-        this.$el.dispatchEvent(new Event('change'));
+        if (!silent) {
+            this.$el.dispatchEvent(new Event('change'));
+        }
     }
 
     _getInputValue = (dateFormat) => {
@@ -1131,7 +1133,7 @@ export default class Datepicker {
             this.setCurrentView(newOpts.view, {silent});
         }
 
-        this._setInputValue();
+        this._setInputValue({silent});
 
         if (prevOpts.range && !range) {
             this.rangeDateTo = false;
@@ -1270,7 +1272,7 @@ export default class Datepicker {
     _onChangeSelectedDate = ({silent}) => {
         // Use timeout here for wait for all changes that could be made to selected date (e.g. timepicker adds time)
         setTimeout(() => {
-            this._setInputValue();
+            this._setInputValue({silent});
             if (this.opts.onSelect && !silent) {
                 this._triggerOnSelect();
             }
