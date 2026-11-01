@@ -8,5 +8,5 @@ export default {
     clear: 'Limpar',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
-    firstDay: 1
+    firstDay: 0
 };
