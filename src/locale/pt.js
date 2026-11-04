@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
     today: 'Hoje',
     clear: 'Limpar',
+    weekNumber: 'Sem',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

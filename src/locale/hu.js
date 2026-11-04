@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Szep', 'Okt', 'Nov', 'Dec'],
     today: 'Ma',
     clear: 'Törlés',
+    weekNumber: 'Hét',
     dateFormat: 'yyyy-MM-dd',
     timeFormat: 'hh:mm aa',
     firstDay: 1

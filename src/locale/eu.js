@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Urt', 'Ots', 'Mar', 'Api', 'Mai', 'Eka', 'Uzt', 'Abu', 'Ira', 'Urr', 'Aza', 'Abe'],
     today: 'Gaur',
     clear: 'Garbitu',
+    weekNumber: 'Ast',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'hh:mm aa',
     firstDay: 1

@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'],
     today: 'Danas',
     clear: 'Očisti',
+    weekNumber: 'Tj',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

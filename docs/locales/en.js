@@ -185,7 +185,7 @@ export default {
     optsHoursStep: 'Hours step.',
     optsMinutesStep: 'Minutes step.',
     optsFixedHeight: 'Sets fixed height of the calendar. If {trueField} then there will be 6 weeks rendered in every month.',
-    optsShowWeekNumbers: 'If {trueField} then ISO 8601 week numbers will be displayed in a separate column before every week in the days view.',
+    optsShowWeekNumbers: 'If {trueField} then ISO 8601 week numbers will be displayed in a separate column before every week in the days view. The column header is taken from the {weekNumberField} locale field, to leave it empty pass an empty string, e.g. {exampleField}',
 
     localeTitle: 'Localization',
     localeNote: 'Starting from version 3.0.0, the calendar language must be passed as an object, instead of a string, as it was before. You can pass one of the available localizations or create your own. The available localizations are located in the {dirName} directory',

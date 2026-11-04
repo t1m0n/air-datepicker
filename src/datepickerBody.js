@@ -84,7 +84,7 @@ export default class DatepickerBody {
     }
 
     _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
-        let html = this.opts.showWeekNumbers ? `<div class="${weekNumberClassName}"></div>` : '',
+        let html = this.opts.showWeekNumbers ? `<div class="${weekNumberClassName}">${this.dp.locale.weekNumber || ''}</div>` : '',
             isWeekend = this.dp.isWeekend,
             {onClickDayName} = this.opts,
             curDay = firstDay,

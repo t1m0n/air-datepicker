@@ -6,6 +6,7 @@ export default {
     monthsShort: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'اكتوبر', 'نوفمبر', 'ديسمبر'],
     today: 'اليوم',
     clear: 'حذف',
+    weekNumber: 'أسبوع',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'hh:mm aa',
     firstDay: 0

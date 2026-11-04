@@ -8,6 +8,7 @@ export declare type AirDatepickerLocale = {
     monthsShort: string[],
     today: string,
     clear: string,
+    weekNumber?: string,
     dateFormat: string,
     timeFormat: string,
     firstDay: 0 | 1 | 2 | 3 | 4 | 5 | 6,

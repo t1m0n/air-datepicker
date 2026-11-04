@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     today: 'Azi',
     clear: 'Şterge',
+    weekNumber: 'Săpt',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

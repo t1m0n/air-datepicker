@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 'Heinä', 'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'],
     today: 'Tänään',
     clear: 'Tyhjennä',
+    weekNumber: 'Vk',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

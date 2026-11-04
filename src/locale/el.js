@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μάι', 'Ιούν', 'Ιούλ', 'Αύγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'],
     today: 'Σήμερα',
     clear: 'Καθαρισμός',
+    weekNumber: 'Εβδ',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'hh:mm aa',
     firstDay: 1

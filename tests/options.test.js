@@ -756,7 +756,22 @@ describe('OPTIONS TESTS', () => {
             });
 
             expect(getWeekNumbers()).toEqual(['44', '45', '46', '47', '48', '49']);
-            expect($datepicker.querySelector('.air-datepicker-body--day-names .air-datepicker-body--week-number')).toBeInTheDocument();
+        });
+        it('should render week number header from locale', () => {
+            init({
+                locale: de,
+                showWeekNumbers: true
+            });
+
+            expect($datepicker.querySelector('.air-datepicker-body--day-names .air-datepicker-body--week-number')).toHaveTextContent('KW');
+        });
+        it('should render empty week number header, when locale field is empty', () => {
+            init({
+                locale: {...de, weekNumber: ''},
+                showWeekNumbers: true
+            });
+
+            expect($datepicker.querySelector('.air-datepicker-body--day-names .air-datepicker-body--week-number')).toBeEmptyDOMElement();
         });
         it('should calculate week numbers correctly when week starts on Sunday', () => {
             init({
