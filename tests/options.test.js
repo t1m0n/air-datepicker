@@ -1,4 +1,4 @@
-import {beforeAll, afterEach, describe, test, it, expect} from '@jest/globals';
+import {beforeAll, afterEach, describe, test, it, expect, jest} from '@jest/globals';
 import Datepicker from 'datepicker';
 import en from 'locale/en';
 import de from 'locale/de';
@@ -736,6 +736,66 @@ describe('OPTIONS TESTS', () => {
             const $dayCells = $datepicker.querySelectorAll('.air-datepicker-cell');
 
             expect($dayCells).toHaveLength(28);
+        });
+    });
+
+    describe('showWeekNumbers', () => {
+        const getWeekNumbers = () => [...$datepicker.querySelectorAll('.air-datepicker-body--cells .air-datepicker-body--week-number')]
+            .map(el => el.innerHTML);
+
+        it('should not render week numbers by default', () => {
+            init({startDate: '2026-11-04'});
+
+            expect($datepicker.querySelectorAll('.air-datepicker-body--week-number')).toHaveLength(0);
+        });
+        it('should render ISO week number before every week', () => {
+            init({
+                locale: de,
+                showWeekNumbers: true,
+                startDate: '2026-11-04'
+            });
+
+            expect(getWeekNumbers()).toEqual(['44', '45', '46', '47', '48', '49']);
+            expect($datepicker.querySelector('.air-datepicker-body--day-names .air-datepicker-body--week-number')).toBeInTheDocument();
+        });
+        it('should calculate week numbers correctly when week starts on Sunday', () => {
+            init({
+                locale: en,
+                showWeekNumbers: true,
+                startDate: '2021-01-01'
+            });
+
+            // First row is Dec 27 - Jan 2, which mostly belongs to 2020-W53
+            expect(getWeekNumbers()).toEqual(['53', '1', '2', '3', '4', '5']);
+        });
+        it('should render week number for every week, when fixedHeight is true', () => {
+            init({
+                showWeekNumbers: true,
+                fixedHeight: true,
+                startDate: '2021-02-01'
+            });
+
+            expect(getWeekNumbers()).toHaveLength(6);
+        });
+        it('should not trigger onClickDayName when clicking week number header', () => {
+            let onClickDayName = jest.fn();
+            init({
+                showWeekNumbers: true,
+                onClickDayName
+            });
+
+            $datepicker.querySelector('.air-datepicker-body--day-names .air-datepicker-body--week-number').click();
+
+            expect(onClickDayName).not.toHaveBeenCalled();
+        });
+        it('should toggle week numbers with update()', () => {
+            init({startDate: '2026-11-04'});
+
+            dp.update({showWeekNumbers: true});
+            expect(getWeekNumbers()).toHaveLength(6);
+
+            dp.update({showWeekNumbers: false});
+            expect($datepicker.querySelectorAll('.air-datepicker-body--week-number')).toHaveLength(0);
         });
     });
 

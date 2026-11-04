@@ -7,6 +7,7 @@ import {
     getDaysCount,
     getDecade,
     getEl,
+    getIsoWeekNumber,
     getParsedDate,
     isDateBigger,
     isDateSmaller,
@@ -26,6 +27,7 @@ let templates = {
 };
 
 const cellClassName = '.air-datepicker-cell';
+const weekNumberClassName = 'air-datepicker-body--week-number';
 
 export default class DatepickerBody {
     constructor({dp, type, opts}) {
@@ -82,7 +84,7 @@ export default class DatepickerBody {
     }
 
     _getDayNamesHtml(firstDay = this.dp.locale.firstDay) {
-        let html = '',
+        let html = this.opts.showWeekNumbers ? `<div class="${weekNumberClassName}"></div>` : '',
             isWeekend = this.dp.isWeekend,
             {onClickDayName} = this.opts,
             curDay = firstDay,
@@ -107,6 +109,17 @@ export default class DatepickerBody {
 
     renderDayNames() {
         this.$names.innerHTML =  this._getDayNamesHtml();
+    }
+
+    _getWeekNumberEl(weekDates) {
+        // ISO week is determined by its Thursday, so take it regardless of the first day of the week
+        let thursdayIndex = (4 - this.dp.locale.firstDay + 7) % 7,
+            weekNumber = getIsoWeekNumber(weekDates[thursdayIndex]);
+
+        return createElement({
+            className: weekNumberClassName,
+            innerHtml: String(weekNumber)
+        });
     }
 
     _generateCell(date) {
@@ -183,6 +196,9 @@ export default class DatepickerBody {
             this.hide();
         } else {
             this.show();
+            if (this.type === consts.days) {
+                this.renderDayNames();
+            }
             this.render();
         }
     }
@@ -296,7 +312,15 @@ export default class DatepickerBody {
         this.destroyCells();
 
         this._generateCells();
-        this.cells.forEach((c) => {
+
+        let showWeekNumbers = this.type === consts.days && !!this.opts.showWeekNumbers;
+        this.$el.classList.toggle('-week-numbers-', showWeekNumbers);
+
+        this.cells.forEach((c, i) => {
+            if (showWeekNumbers && i % 7 === 0) {
+                let weekDates = this.cells.slice(i, i + 7).map(cell => cell.date);
+                this.$cells.appendChild(this._getWeekNumberEl(weekDates));
+            }
             this.$cells.appendChild(c.render());
         });
     }

@@ -359,6 +359,10 @@ function Docs({} = {}) {
                                     <Paragraph id={'optsFixedHeight'} values={{trueField}}/>
                                 </Param>
 
+                                <Param name={'showWeekNumbers'} type={'boolean'} defaultValue={'false'}>
+                                    <Paragraph id={'optsShowWeekNumbers'} values={{trueField}}/>
+                                </Param>
+
                                 <Param name={'timepicker'} type={'boolean'} defaultValue={'false'}>
                                     <Paragraph id={'optsTimepicker'} />
                                 </Param>

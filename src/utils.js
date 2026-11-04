@@ -161,6 +161,23 @@ export function subDays(date, days) {
 }
 
 /**
+ * Calculates ISO 8601 week number of passed date
+ * Week starts on Monday, first week of the year is the one which contains January 4th
+ * @param {Date} date
+ * @return {Number}
+ */
+export function getIsoWeekNumber(date) {
+    let {year, month, date: _date, day} = getParsedDate(date),
+        // Thursday of the same week determines the year to which the week belongs
+        thursday = new Date(year, month, _date + 3 - (day + 6) % 7),
+        firstDayOfYear = new Date(thursday.getFullYear(), 0, 1),
+        // Round to compensate possible DST shifts
+        dayOfYear = Math.round((thursday - firstDayOfYear) / (1000 * 60 * 60 * 24));
+
+    return Math.floor(dayOfYear / 7) + 1;
+}
+
+/**
  * Class names' handler, inspired by https://github.com/JedWatson/classnames but very simplified
  * @param {String|Object} classes - class names, could contain strings or object
  */
