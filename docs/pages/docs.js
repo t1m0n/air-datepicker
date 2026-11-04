@@ -359,6 +359,14 @@ function Docs({} = {}) {
                                     <Paragraph id={'optsFixedHeight'} values={{trueField}}/>
                                 </Param>
 
+                                <Param name={'showWeekNumbers'} type={'boolean'} defaultValue={'false'}>
+                                    <Paragraph id={'optsShowWeekNumbers'} values={{
+                                        trueField,
+                                        weekNumberField: <Code inline>weekNumber</Code>,
+                                        exampleField: <Code inline language={'javascript'}>{`{locale: {...localeEn, weekNumber: ''}}`}</Code>
+                                    }}/>
+                                </Param>
+
                                 <Param name={'timepicker'} type={'boolean'} defaultValue={'false'}>
                                     <Paragraph id={'optsTimepicker'} />
                                 </Param>

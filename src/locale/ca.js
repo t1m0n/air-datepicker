@@ -6,6 +6,7 @@ export default {
     monthsShort: ["Gen", "Feb", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Des"],
     today: "Avui",
     clear: 'Neteja',
+    weekNumber: 'Set',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'hh:mm aa',
     firstDay: 1

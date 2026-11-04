@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру'],
     today: 'Сьогодні',
     clear: 'Очистити',
+    weekNumber: 'Тиж',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

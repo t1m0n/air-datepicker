@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Oca', 'Şbt', 'Mrt', 'Nsn', 'Mys', 'Hzr', 'Tmz', 'Ağt', 'Eyl', 'Ekm', 'Ksm', 'Arl'],
     today: 'Bugün',
     clear: 'Temizle',
+    weekNumber: 'Hf',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'hh:mm aa',
     firstDay: 1

@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
     today: 'Dzisiaj',
     clear: 'Wyczyść',
+    weekNumber: 'Tydz',
     dateFormat: 'yyyy-MM-dd',
     timeFormat: 'hh:mm:aa',
     firstDay: 1

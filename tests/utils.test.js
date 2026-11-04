@@ -1,4 +1,4 @@
-import {createDate, getParsedDate} from '../src/utils';
+import {createDate, getIsoWeekNumber, getParsedDate} from '../src/utils';
 import {describe, it, expect} from '@jest/globals';
 
 
@@ -30,5 +30,20 @@ describe('createDate', () => {
         const allEqual = year === 2024 && fullMonth === '03' && fullDate === '01';
 
         expect(allEqual).toBeTruthy();
+    });
+});
+
+describe('getIsoWeekNumber', () => {
+    it('should return ISO 8601 week number', () => {
+        expect(getIsoWeekNumber(new Date(2021, 0, 4))).toBe(1);
+        expect(getIsoWeekNumber(new Date(2026, 10, 4))).toBe(45);
+        expect(getIsoWeekNumber(new Date(2026, 11, 31))).toBe(53);
+    });
+    it('should assign days to the previous year week if needed', () => {
+        expect(getIsoWeekNumber(new Date(2021, 0, 1))).toBe(53);
+        expect(getIsoWeekNumber(new Date(2023, 0, 1))).toBe(52);
+    });
+    it('should assign days to the next year week if needed', () => {
+        expect(getIsoWeekNumber(new Date(2024, 11, 30))).toBe(1);
     });
 });

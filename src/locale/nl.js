@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
     today: 'Vandaag',
     clear: 'Legen',
+    weekNumber: 'Wk',
     dateFormat: 'dd-MM-yyyy',
     timeFormat: 'HH:mm',
     firstDay: 0

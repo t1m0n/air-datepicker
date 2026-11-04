@@ -6,6 +6,7 @@ export default {
     monthsShort: ['ජන', 'පෙබ', 'මාර්', 'අප්‍රේල්', 'මැයි', 'ජූනි', 'ජූලි', 'අගෝ', 'සැප්', 'ඔක්', 'නොවැ', 'දෙසැ'],
     today: 'අද',
     clear: 'යලි සකසන්න',
+    weekNumber: 'සති',
     dateFormat: 'yyyy-mm-dd',
     timeFormat: 'hh:ii aa',
     firstDay: 1

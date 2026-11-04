@@ -39,6 +39,24 @@
   }
 }
 
+/*  Week numbers
+   ------------------------------------------------- */
+
+.air-datepicker-body.-week-numbers- {
+  .air-datepicker-body--day-names,
+  .air-datepicker-body--cells.-days- {
+    grid-template-columns: var(--adp-week-number-width) repeat(7, var(--adp-day-cell-width));
+  }
+}
+
+.air-datepicker-body--week-number {
+  color: var(--adp-week-number-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8em;
+}
+
 /*  Cells container
    ------------------------------------------------- */
 

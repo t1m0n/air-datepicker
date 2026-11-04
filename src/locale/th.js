@@ -6,6 +6,7 @@ export default {
     monthsShort: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
     today: 'วันนี้',
     clear: 'ล้าง',
+    weekNumber: 'สัปดาห์',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
     firstDay: 0

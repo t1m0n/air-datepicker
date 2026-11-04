@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'],
     today: 'Dnes',
     clear: 'Vymazat',
+    weekNumber: 'Týd',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

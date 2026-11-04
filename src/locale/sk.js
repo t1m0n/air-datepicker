@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Máj', 'Jún', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
     today: 'Dnes',
     clear: 'Vymazať',
+    weekNumber: 'Týž',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

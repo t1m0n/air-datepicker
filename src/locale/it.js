@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
     today: 'Oggi',
     clear: 'Cancella',
+    weekNumber: 'Sett',
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1

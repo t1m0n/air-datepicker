@@ -6,6 +6,7 @@ export default {
     monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
     today: 'Heute',
     clear: 'Löschen',
+    weekNumber: 'KW',
     dateFormat: 'dd.MM.yyyy',
     timeFormat: 'HH:mm',
     firstDay: 1
