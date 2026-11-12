@@ -227,6 +227,11 @@ export default class DatepickerTime {
         let $target = e.target,
             name = $target.getAttribute('name');
 
+        if (this.dp.$el.matches(':disabled')) {
+            $target.value = this[name];
+            return;
+        }
+
         this[name] = $target.value;
         this.updateText();
 
