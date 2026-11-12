@@ -25,6 +25,40 @@ function init(opts) {
 
 describe('EVENTS TEST', () => {
     describe('onSelect', () => {
+        it('ignores date clicks when an open mobile picker input becomes disabled', async () => {
+            const initialDate = new Date(2025, 4, 5);
+            const nextDate = new Date(2025, 4, 12);
+            const selectedDates = [];
+
+            init({
+                isMobile: true,
+                startDate: initialDate,
+                selectedDates: [initialDate],
+                onSelect({date}) {
+                    selectedDates.push(date);
+                }
+            });
+            dp.show();
+
+            try {
+                $input.disabled = true;
+                dp.getCell(nextDate).click();
+                await new Promise(resolve => setTimeout(resolve));
+
+                expect(dp.selectedDates).toEqual([initialDate]);
+                expect(selectedDates).toEqual([]);
+
+                $input.disabled = false;
+                dp.getCell(nextDate).click();
+                await new Promise(resolve => setTimeout(resolve));
+
+                expect(dp.selectedDates).toEqual([nextDate]);
+                expect(selectedDates).toEqual([nextDate]);
+            } finally {
+                $input.disabled = false;
+            }
+        });
+
         it('should be called when date is selected', (done) => {
             let selectedDate = new Date();
 
