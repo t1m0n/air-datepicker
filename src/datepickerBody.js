@@ -153,7 +153,7 @@ export default class DatepickerBody {
     handleClick = (e) => {
         let $cell = e.target.closest(cellClassName);
         let cell = $cell.adpCell;
-        if (cell.isDisabled) return;
+        if (cell.isDisabled || this.dp.$el.matches(':disabled')) return;
 
         if (!this.dp.isMinViewReached) {
             this.dp.down();
